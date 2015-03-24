@@ -1,17 +1,18 @@
 /* Options:
-Date: 2015-03-08 07:34:03
+Date: 2015-03-23 23:00:11
 Version: 1
 BaseUrl: http://techstacks.io
 
 Package: io.techstacks
 //GlobalNamespace: dto
 //AddPropertyAccessors: True
+//SettersReturnThis: True
 //AddServiceStackTypes: True
 //AddResponseStatus: False
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
-//DefaultImports: java.math.*,java.util.*,net.servicestack.*
+//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
 */
 
 package io.techstacks;
@@ -22,54 +23,48 @@ import net.servicestack.client.*;
 
 public class dto
 {
-    public static interface IReturnVoid
-    {
-    }
-
-    public static interface IReturn<T>
-    {
-    }
 
     public static class Technology extends TechnologyBase
     {
+
     }
 
     public static enum TechnologyTier
     {
-        programmingLanguage,
-        client,
-        http,
-        server,
-        data,
-        softwareInfrastructure,
-        operatingSystem,
-        hardwareInfrastructure,
-        thirdPartyServices;
+        ProgrammingLanguage,
+        Client,
+        Http,
+        Server,
+        Data,
+        SoftwareInfrastructure,
+        OperatingSystem,
+        HardwareInfrastructure,
+        ThirdPartyServices;
     }
 
     @DataContract
     public static class ResponseStatus
     {
         @DataMember(Order=1)
-        public String errorCode = null;
+        public String ErrorCode = null;
 
         @DataMember(Order=2)
-        public String message = null;
+        public String Message = null;
 
         @DataMember(Order=3)
-        public String stackTrace = null;
+        public String StackTrace = null;
 
         @DataMember(Order=4)
-        public ArrayList<ResponseError> errors = null;
+        public ArrayList<ResponseError> Errors = null;
 
-        public String getErrorCode() { return errorCode; }
-        public void setErrorCode(String value) { this.errorCode = value; }
-        public String getMessage() { return message; }
-        public void setMessage(String value) { this.message = value; }
-        public String getStackTrace() { return stackTrace; }
-        public void setStackTrace(String value) { this.stackTrace = value; }
-        public ArrayList<ResponseError> getErrors() { return errors; }
-        public void setErrors(ArrayList<ResponseError> value) { this.errors = value; }
+        public String getErrorCode() { return ErrorCode; }
+        public ResponseStatus setErrorCode(String value) { this.ErrorCode = value; return this; }
+        public String getMessage() { return Message; }
+        public ResponseStatus setMessage(String value) { this.Message = value; return this; }
+        public String getStackTrace() { return StackTrace; }
+        public ResponseStatus setStackTrace(String value) { this.StackTrace = value; return this; }
+        public ArrayList<ResponseError> getErrors() { return Errors; }
+        public ResponseStatus setErrors(ArrayList<ResponseError> value) { this.Errors = value; return this; }
     }
 
     public static class TechnologyStack extends TechnologyStackBase
@@ -79,13 +74,13 @@ public class dto
 
     public static class TechnologyHistory extends TechnologyBase
     {
-        public Long technologyId = null;
-        public String operation = null;
+        public Long TechnologyId = null;
+        public String Operation = null;
 
-        public Long getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Long value) { this.technologyId = value; }
-        public String getOperation() { return operation; }
-        public void setOperation(String value) { this.operation = value; }
+        public Long getTechnologyId() { return TechnologyId; }
+        public TechnologyHistory setTechnologyId(Long value) { this.TechnologyId = value; return this; }
+        public String getOperation() { return Operation; }
+        public TechnologyHistory setOperation(String value) { this.Operation = value; return this; }
     }
 
     public static class QueryBase_1<T> extends QueryBase
@@ -95,305 +90,305 @@ public class dto
 
     public static class TechStackDetails extends TechnologyStackBase
     {
-        public String detailsHtml = null;
-        public ArrayList<TechnologyInStack> technologyChoices = null;
+        public String DetailsHtml = null;
+        public ArrayList<TechnologyInStack> TechnologyChoices = null;
 
-        public String getDetailsHtml() { return detailsHtml; }
-        public void setDetailsHtml(String value) { this.detailsHtml = value; }
-        public ArrayList<TechnologyInStack> getTechnologyChoices() { return technologyChoices; }
-        public void setTechnologyChoices(ArrayList<TechnologyInStack> value) { this.technologyChoices = value; }
+        public String getDetailsHtml() { return DetailsHtml; }
+        public TechStackDetails setDetailsHtml(String value) { this.DetailsHtml = value; return this; }
+        public ArrayList<TechnologyInStack> getTechnologyChoices() { return TechnologyChoices; }
+        public TechStackDetails setTechnologyChoices(ArrayList<TechnologyInStack> value) { this.TechnologyChoices = value; return this; }
     }
 
     public static class TechnologyStackHistory extends TechnologyStackBase
     {
-        public Long technologyStackId = null;
-        public String operation = null;
-        public ArrayList<Long> technologyIds = null;
+        public Long TechnologyStackId = null;
+        public String Operation = null;
+        public ArrayList<Long> TechnologyIds = null;
 
-        public Long getTechnologyStackId() { return technologyStackId; }
-        public void setTechnologyStackId(Long value) { this.technologyStackId = value; }
-        public String getOperation() { return operation; }
-        public void setOperation(String value) { this.operation = value; }
-        public ArrayList<Long> getTechnologyIds() { return technologyIds; }
-        public void setTechnologyIds(ArrayList<Long> value) { this.technologyIds = value; }
+        public Long getTechnologyStackId() { return TechnologyStackId; }
+        public TechnologyStackHistory setTechnologyStackId(Long value) { this.TechnologyStackId = value; return this; }
+        public String getOperation() { return Operation; }
+        public TechnologyStackHistory setOperation(String value) { this.Operation = value; return this; }
+        public ArrayList<Long> getTechnologyIds() { return TechnologyIds; }
+        public TechnologyStackHistory setTechnologyIds(ArrayList<Long> value) { this.TechnologyIds = value; return this; }
     }
 
     @DataContract
     public static class Option
     {
         @DataMember(Name="name")
-        public String name = null;
+        public String Name = null;
 
         @DataMember(Name="title")
-        public String title = null;
+        public String Title = null;
 
         @DataMember(Name="value")
-        public TechnologyTier value = null;
+        public TechnologyTier Value = null;
 
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getTitle() { return title; }
-        public void setTitle(String value) { this.title = value; }
-        public TechnologyTier getValue() { return value; }
-        public void setValue(TechnologyTier value) { this.value = value; }
+        public String getName() { return Name; }
+        public Option setName(String value) { this.Name = value; return this; }
+        public String getTitle() { return Title; }
+        public Option setTitle(String value) { this.Title = value; return this; }
+        public TechnologyTier getValue() { return Value; }
+        public Option setValue(TechnologyTier value) { this.Value = value; return this; }
     }
 
     public static class UserInfo
     {
-        public String userName = null;
-        public String avatarUrl = null;
-        public Integer stacksCount = null;
+        public String UserName = null;
+        public String AvatarUrl = null;
+        public Integer StacksCount = null;
 
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public String getAvatarUrl() { return avatarUrl; }
-        public void setAvatarUrl(String value) { this.avatarUrl = value; }
-        public Integer getStacksCount() { return stacksCount; }
-        public void setStacksCount(Integer value) { this.stacksCount = value; }
+        public String getUserName() { return UserName; }
+        public UserInfo setUserName(String value) { this.UserName = value; return this; }
+        public String getAvatarUrl() { return AvatarUrl; }
+        public UserInfo setAvatarUrl(String value) { this.AvatarUrl = value; return this; }
+        public Integer getStacksCount() { return StacksCount; }
+        public UserInfo setStacksCount(Integer value) { this.StacksCount = value; return this; }
     }
 
     public static class TechnologyInfo
     {
-        public TechnologyTier tier = null;
-        public String slug = null;
-        public String name = null;
-        public String logoUrl = null;
-        public Integer stacksCount = null;
+        public TechnologyTier Tier = null;
+        public String Slug = null;
+        public String Name = null;
+        public String LogoUrl = null;
+        public Integer StacksCount = null;
 
-        public TechnologyTier getTier() { return tier; }
-        public void setTier(TechnologyTier value) { this.tier = value; }
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getLogoUrl() { return logoUrl; }
-        public void setLogoUrl(String value) { this.logoUrl = value; }
-        public Integer getStacksCount() { return stacksCount; }
-        public void setStacksCount(Integer value) { this.stacksCount = value; }
+        public TechnologyTier getTier() { return Tier; }
+        public TechnologyInfo setTier(TechnologyTier value) { this.Tier = value; return this; }
+        public String getSlug() { return Slug; }
+        public TechnologyInfo setSlug(String value) { this.Slug = value; return this; }
+        public String getName() { return Name; }
+        public TechnologyInfo setName(String value) { this.Name = value; return this; }
+        public String getLogoUrl() { return LogoUrl; }
+        public TechnologyInfo setLogoUrl(String value) { this.LogoUrl = value; return this; }
+        public Integer getStacksCount() { return StacksCount; }
+        public TechnologyInfo setStacksCount(Integer value) { this.StacksCount = value; return this; }
     }
 
     public static class Post
     {
-        public Integer id = null;
-        public String userId = null;
-        public String userName = null;
-        public String date = null;
-        public String shortDate = null;
-        public String textHtml = null;
-        public ArrayList<PostComment> comments = null;
+        public Integer Id = null;
+        public String UserId = null;
+        public String UserName = null;
+        public String Date = null;
+        public String ShortDate = null;
+        public String TextHtml = null;
+        public ArrayList<PostComment> Comments = null;
 
-        public Integer getId() { return id; }
-        public void setId(Integer value) { this.id = value; }
-        public String getUserId() { return userId; }
-        public void setUserId(String value) { this.userId = value; }
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public String getDate() { return date; }
-        public void setDate(String value) { this.date = value; }
-        public String getShortDate() { return shortDate; }
-        public void setShortDate(String value) { this.shortDate = value; }
-        public String getTextHtml() { return textHtml; }
-        public void setTextHtml(String value) { this.textHtml = value; }
-        public ArrayList<PostComment> getComments() { return comments; }
-        public void setComments(ArrayList<PostComment> value) { this.comments = value; }
+        public Integer getId() { return Id; }
+        public Post setId(Integer value) { this.Id = value; return this; }
+        public String getUserId() { return UserId; }
+        public Post setUserId(String value) { this.UserId = value; return this; }
+        public String getUserName() { return UserName; }
+        public Post setUserName(String value) { this.UserName = value; return this; }
+        public String getDate() { return Date; }
+        public Post setDate(String value) { this.Date = value; return this; }
+        public String getShortDate() { return ShortDate; }
+        public Post setShortDate(String value) { this.ShortDate = value; return this; }
+        public String getTextHtml() { return TextHtml; }
+        public Post setTextHtml(String value) { this.TextHtml = value; return this; }
+        public ArrayList<PostComment> getComments() { return Comments; }
+        public Post setComments(ArrayList<PostComment> value) { this.Comments = value; return this; }
     }
 
     public static class TechnologyBase
     {
-        public Long id = null;
-        public String name = null;
-        public String vendorName = null;
-        public String vendorUrl = null;
-        public String productUrl = null;
-        public String logoUrl = null;
-        public String description = null;
-        public Date created = null;
-        public String createdBy = null;
-        public Date lastModified = null;
-        public String lastModifiedBy = null;
-        public String ownerId = null;
-        public String slug = null;
-        public Boolean logoApproved = null;
-        public Boolean isLocked = null;
-        public TechnologyTier tier = null;
-        public Date lastStatusUpdate = null;
+        public Long Id = null;
+        public String Name = null;
+        public String VendorName = null;
+        public String VendorUrl = null;
+        public String ProductUrl = null;
+        public String LogoUrl = null;
+        public String Description = null;
+        public Date Created = null;
+        public String CreatedBy = null;
+        public Date LastModified = null;
+        public String LastModifiedBy = null;
+        public String OwnerId = null;
+        public String Slug = null;
+        public Boolean LogoApproved = null;
+        public Boolean IsLocked = null;
+        public TechnologyTier Tier = null;
+        public Date LastStatusUpdate = null;
 
-        public Long getId() { return id; }
-        public void setId(Long value) { this.id = value; }
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getVendorName() { return vendorName; }
-        public void setVendorName(String value) { this.vendorName = value; }
-        public String getVendorUrl() { return vendorUrl; }
-        public void setVendorUrl(String value) { this.vendorUrl = value; }
-        public String getProductUrl() { return productUrl; }
-        public void setProductUrl(String value) { this.productUrl = value; }
-        public String getLogoUrl() { return logoUrl; }
-        public void setLogoUrl(String value) { this.logoUrl = value; }
-        public String getDescription() { return description; }
-        public void setDescription(String value) { this.description = value; }
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public String getCreatedBy() { return createdBy; }
-        public void setCreatedBy(String value) { this.createdBy = value; }
-        public Date getLastModified() { return lastModified; }
-        public void setLastModified(Date value) { this.lastModified = value; }
-        public String getLastModifiedBy() { return lastModifiedBy; }
-        public void setLastModifiedBy(String value) { this.lastModifiedBy = value; }
-        public String getOwnerId() { return ownerId; }
-        public void setOwnerId(String value) { this.ownerId = value; }
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
-        public Boolean isLogoApproved() { return logoApproved; }
-        public void setLogoApproved(Boolean value) { this.logoApproved = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
-        public TechnologyTier getTier() { return tier; }
-        public void setTier(TechnologyTier value) { this.tier = value; }
-        public Date getLastStatusUpdate() { return lastStatusUpdate; }
-        public void setLastStatusUpdate(Date value) { this.lastStatusUpdate = value; }
+        public Long getId() { return Id; }
+        public TechnologyBase setId(Long value) { this.Id = value; return this; }
+        public String getName() { return Name; }
+        public TechnologyBase setName(String value) { this.Name = value; return this; }
+        public String getVendorName() { return VendorName; }
+        public TechnologyBase setVendorName(String value) { this.VendorName = value; return this; }
+        public String getVendorUrl() { return VendorUrl; }
+        public TechnologyBase setVendorUrl(String value) { this.VendorUrl = value; return this; }
+        public String getProductUrl() { return ProductUrl; }
+        public TechnologyBase setProductUrl(String value) { this.ProductUrl = value; return this; }
+        public String getLogoUrl() { return LogoUrl; }
+        public TechnologyBase setLogoUrl(String value) { this.LogoUrl = value; return this; }
+        public String getDescription() { return Description; }
+        public TechnologyBase setDescription(String value) { this.Description = value; return this; }
+        public Date getCreated() { return Created; }
+        public TechnologyBase setCreated(Date value) { this.Created = value; return this; }
+        public String getCreatedBy() { return CreatedBy; }
+        public TechnologyBase setCreatedBy(String value) { this.CreatedBy = value; return this; }
+        public Date getLastModified() { return LastModified; }
+        public TechnologyBase setLastModified(Date value) { this.LastModified = value; return this; }
+        public String getLastModifiedBy() { return LastModifiedBy; }
+        public TechnologyBase setLastModifiedBy(String value) { this.LastModifiedBy = value; return this; }
+        public String getOwnerId() { return OwnerId; }
+        public TechnologyBase setOwnerId(String value) { this.OwnerId = value; return this; }
+        public String getSlug() { return Slug; }
+        public TechnologyBase setSlug(String value) { this.Slug = value; return this; }
+        public Boolean isLogoApproved() { return LogoApproved; }
+        public TechnologyBase setLogoApproved(Boolean value) { this.LogoApproved = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public TechnologyBase setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        public TechnologyTier getTier() { return Tier; }
+        public TechnologyBase setTier(TechnologyTier value) { this.Tier = value; return this; }
+        public Date getLastStatusUpdate() { return LastStatusUpdate; }
+        public TechnologyBase setLastStatusUpdate(Date value) { this.LastStatusUpdate = value; return this; }
     }
 
     @DataContract
     public static class ResponseError
     {
         @DataMember(Order=1, EmitDefaultValue=false)
-        public String errorCode = null;
+        public String ErrorCode = null;
 
         @DataMember(Order=2, EmitDefaultValue=false)
-        public String fieldName = null;
+        public String FieldName = null;
 
         @DataMember(Order=3, EmitDefaultValue=false)
-        public String message = null;
+        public String Message = null;
 
-        public String getErrorCode() { return errorCode; }
-        public void setErrorCode(String value) { this.errorCode = value; }
-        public String getFieldName() { return fieldName; }
-        public void setFieldName(String value) { this.fieldName = value; }
-        public String getMessage() { return message; }
-        public void setMessage(String value) { this.message = value; }
+        public String getErrorCode() { return ErrorCode; }
+        public ResponseError setErrorCode(String value) { this.ErrorCode = value; return this; }
+        public String getFieldName() { return FieldName; }
+        public ResponseError setFieldName(String value) { this.FieldName = value; return this; }
+        public String getMessage() { return Message; }
+        public ResponseError setMessage(String value) { this.Message = value; return this; }
     }
 
     public static class TechnologyStackBase
     {
-        public Long id = null;
-        public String name = null;
-        public String vendorName = null;
-        public String description = null;
-        public String appUrl = null;
-        public String screenshotUrl = null;
-        public Date created = null;
-        public String createdBy = null;
-        public Date lastModified = null;
-        public String lastModifiedBy = null;
-        public Boolean isLocked = null;
-        public String ownerId = null;
-        public String slug = null;
-        public String details = null;
-        public Date lastStatusUpdate = null;
+        public Long Id = null;
+        public String Name = null;
+        public String VendorName = null;
+        public String Description = null;
+        public String AppUrl = null;
+        public String ScreenshotUrl = null;
+        public Date Created = null;
+        public String CreatedBy = null;
+        public Date LastModified = null;
+        public String LastModifiedBy = null;
+        public Boolean IsLocked = null;
+        public String OwnerId = null;
+        public String Slug = null;
+        public String Details = null;
+        public Date LastStatusUpdate = null;
 
-        public Long getId() { return id; }
-        public void setId(Long value) { this.id = value; }
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getVendorName() { return vendorName; }
-        public void setVendorName(String value) { this.vendorName = value; }
-        public String getDescription() { return description; }
-        public void setDescription(String value) { this.description = value; }
-        public String getAppUrl() { return appUrl; }
-        public void setAppUrl(String value) { this.appUrl = value; }
-        public String getScreenshotUrl() { return screenshotUrl; }
-        public void setScreenshotUrl(String value) { this.screenshotUrl = value; }
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public String getCreatedBy() { return createdBy; }
-        public void setCreatedBy(String value) { this.createdBy = value; }
-        public Date getLastModified() { return lastModified; }
-        public void setLastModified(Date value) { this.lastModified = value; }
-        public String getLastModifiedBy() { return lastModifiedBy; }
-        public void setLastModifiedBy(String value) { this.lastModifiedBy = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
-        public String getOwnerId() { return ownerId; }
-        public void setOwnerId(String value) { this.ownerId = value; }
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
-        public String getDetails() { return details; }
-        public void setDetails(String value) { this.details = value; }
-        public Date getLastStatusUpdate() { return lastStatusUpdate; }
-        public void setLastStatusUpdate(Date value) { this.lastStatusUpdate = value; }
+        public Long getId() { return Id; }
+        public TechnologyStackBase setId(Long value) { this.Id = value; return this; }
+        public String getName() { return Name; }
+        public TechnologyStackBase setName(String value) { this.Name = value; return this; }
+        public String getVendorName() { return VendorName; }
+        public TechnologyStackBase setVendorName(String value) { this.VendorName = value; return this; }
+        public String getDescription() { return Description; }
+        public TechnologyStackBase setDescription(String value) { this.Description = value; return this; }
+        public String getAppUrl() { return AppUrl; }
+        public TechnologyStackBase setAppUrl(String value) { this.AppUrl = value; return this; }
+        public String getScreenshotUrl() { return ScreenshotUrl; }
+        public TechnologyStackBase setScreenshotUrl(String value) { this.ScreenshotUrl = value; return this; }
+        public Date getCreated() { return Created; }
+        public TechnologyStackBase setCreated(Date value) { this.Created = value; return this; }
+        public String getCreatedBy() { return CreatedBy; }
+        public TechnologyStackBase setCreatedBy(String value) { this.CreatedBy = value; return this; }
+        public Date getLastModified() { return LastModified; }
+        public TechnologyStackBase setLastModified(Date value) { this.LastModified = value; return this; }
+        public String getLastModifiedBy() { return LastModifiedBy; }
+        public TechnologyStackBase setLastModifiedBy(String value) { this.LastModifiedBy = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public TechnologyStackBase setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        public String getOwnerId() { return OwnerId; }
+        public TechnologyStackBase setOwnerId(String value) { this.OwnerId = value; return this; }
+        public String getSlug() { return Slug; }
+        public TechnologyStackBase setSlug(String value) { this.Slug = value; return this; }
+        public String getDetails() { return Details; }
+        public TechnologyStackBase setDetails(String value) { this.Details = value; return this; }
+        public Date getLastStatusUpdate() { return LastStatusUpdate; }
+        public TechnologyStackBase setLastStatusUpdate(Date value) { this.LastStatusUpdate = value; return this; }
     }
 
     public static class QueryBase
     {
         @DataMember(Order=1)
-        public Integer skip = null;
+        public Integer Skip = null;
 
         @DataMember(Order=2)
-        public Integer take = null;
+        public Integer Take = null;
 
         @DataMember(Order=3)
-        public String orderBy = null;
+        public String OrderBy = null;
 
         @DataMember(Order=4)
-        public String orderByDesc = null;
+        public String OrderByDesc = null;
 
-        public Integer getSkip() { return skip; }
-        public void setSkip(Integer value) { this.skip = value; }
-        public Integer getTake() { return take; }
-        public void setTake(Integer value) { this.take = value; }
-        public String getOrderBy() { return orderBy; }
-        public void setOrderBy(String value) { this.orderBy = value; }
-        public String getOrderByDesc() { return orderByDesc; }
-        public void setOrderByDesc(String value) { this.orderByDesc = value; }
+        public Integer getSkip() { return Skip; }
+        public QueryBase setSkip(Integer value) { this.Skip = value; return this; }
+        public Integer getTake() { return Take; }
+        public QueryBase setTake(Integer value) { this.Take = value; return this; }
+        public String getOrderBy() { return OrderBy; }
+        public QueryBase setOrderBy(String value) { this.OrderBy = value; return this; }
+        public String getOrderByDesc() { return OrderByDesc; }
+        public QueryBase setOrderByDesc(String value) { this.OrderByDesc = value; return this; }
     }
 
     public static class TechnologyInStack extends TechnologyBase
     {
-        public Long technologyId = null;
-        public Long technologyStackId = null;
-        public String justification = null;
+        public Long TechnologyId = null;
+        public Long TechnologyStackId = null;
+        public String Justification = null;
 
-        public Long getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Long value) { this.technologyId = value; }
-        public Long getTechnologyStackId() { return technologyStackId; }
-        public void setTechnologyStackId(Long value) { this.technologyStackId = value; }
-        public String getJustification() { return justification; }
-        public void setJustification(String value) { this.justification = value; }
+        public Long getTechnologyId() { return TechnologyId; }
+        public TechnologyInStack setTechnologyId(Long value) { this.TechnologyId = value; return this; }
+        public Long getTechnologyStackId() { return TechnologyStackId; }
+        public TechnologyInStack setTechnologyStackId(Long value) { this.TechnologyStackId = value; return this; }
+        public String getJustification() { return Justification; }
+        public TechnologyInStack setJustification(String value) { this.Justification = value; return this; }
     }
 
     public static class PostComment
     {
-        public Integer id = null;
-        public Integer postId = null;
-        public String userId = null;
-        public String userName = null;
-        public String date = null;
-        public String shortDate = null;
-        public String textHtml = null;
+        public Integer Id = null;
+        public Integer PostId = null;
+        public String UserId = null;
+        public String UserName = null;
+        public String Date = null;
+        public String ShortDate = null;
+        public String TextHtml = null;
 
-        public Integer getId() { return id; }
-        public void setId(Integer value) { this.id = value; }
-        public Integer getPostId() { return postId; }
-        public void setPostId(Integer value) { this.postId = value; }
-        public String getUserId() { return userId; }
-        public void setUserId(String value) { this.userId = value; }
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public String getDate() { return date; }
-        public void setDate(String value) { this.date = value; }
-        public String getShortDate() { return shortDate; }
-        public void setShortDate(String value) { this.shortDate = value; }
-        public String getTextHtml() { return textHtml; }
-        public void setTextHtml(String value) { this.textHtml = value; }
+        public Integer getId() { return Id; }
+        public PostComment setId(Integer value) { this.Id = value; return this; }
+        public Integer getPostId() { return PostId; }
+        public PostComment setPostId(Integer value) { this.PostId = value; return this; }
+        public String getUserId() { return UserId; }
+        public PostComment setUserId(String value) { this.UserId = value; return this; }
+        public String getUserName() { return UserName; }
+        public PostComment setUserName(String value) { this.UserName = value; return this; }
+        public String getDate() { return Date; }
+        public PostComment setDate(String value) { this.Date = value; return this; }
+        public String getShortDate() { return ShortDate; }
+        public PostComment setShortDate(String value) { this.ShortDate = value; return this; }
+        public String getTextHtml() { return TextHtml; }
+        public PostComment setTextHtml(String value) { this.TextHtml = value; return this; }
     }
 
     public static class LogoUrlApprovalResponse
     {
-        public Technology result = null;
+        public Technology Result = null;
 
-        public Technology getResult() { return result; }
-        public void setResult(Technology value) { this.result = value; }
+        public Technology getResult() { return Result; }
+        public LogoUrlApprovalResponse setResult(Technology value) { this.Result = value; return this; }
     }
 
     public static class LockStackResponse
@@ -403,398 +398,404 @@ public class dto
 
     public static class CreateTechnologyResponse
     {
-        public Technology result = null;
-        public ResponseStatus responseStatus = null;
+        public Technology Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Technology getResult() { return result; }
-        public void setResult(Technology value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Technology getResult() { return Result; }
+        public CreateTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public CreateTechnologyResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class UpdateTechnologyResponse
     {
-        public Technology result = null;
-        public ResponseStatus responseStatus = null;
+        public Technology Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Technology getResult() { return result; }
-        public void setResult(Technology value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Technology getResult() { return Result; }
+        public UpdateTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public UpdateTechnologyResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class DeleteTechnologyResponse
     {
-        public Technology result = null;
-        public ResponseStatus responseStatus = null;
+        public Technology Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Technology getResult() { return result; }
-        public void setResult(Technology value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Technology getResult() { return Result; }
+        public DeleteTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public DeleteTechnologyResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class GetTechnologyResponse
     {
-        public Date created = null;
-        public Technology technology = null;
-        public ArrayList<TechnologyStack> technologyStacks = null;
-        public ResponseStatus responseStatus = null;
+        public Date Created = null;
+        public Technology Technology = null;
+        public ArrayList<TechnologyStack> TechnologyStacks = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public Technology getTechnology() { return technology; }
-        public void setTechnology(Technology value) { this.technology = value; }
-        public ArrayList<TechnologyStack> getTechnologyStacks() { return technologyStacks; }
-        public void setTechnologyStacks(ArrayList<TechnologyStack> value) { this.technologyStacks = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Date getCreated() { return Created; }
+        public GetTechnologyResponse setCreated(Date value) { this.Created = value; return this; }
+        public Technology getTechnology() { return Technology; }
+        public GetTechnologyResponse setTechnology(Technology value) { this.Technology = value; return this; }
+        public ArrayList<TechnologyStack> getTechnologyStacks() { return TechnologyStacks; }
+        public GetTechnologyResponse setTechnologyStacks(ArrayList<TechnologyStack> value) { this.TechnologyStacks = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public GetTechnologyResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class GetTechnologyPreviousVersionsResponse
     {
-        public ArrayList<TechnologyHistory> results = null;
+        public ArrayList<TechnologyHistory> Results = null;
 
-        public ArrayList<TechnologyHistory> getResults() { return results; }
-        public void setResults(ArrayList<TechnologyHistory> value) { this.results = value; }
+        public ArrayList<TechnologyHistory> getResults() { return Results; }
+        public GetTechnologyPreviousVersionsResponse setResults(ArrayList<TechnologyHistory> value) { this.Results = value; return this; }
     }
 
     public static class GetTechnologyFavoriteDetailsResponse
     {
-        public ArrayList<String> users = null;
-        public Integer favoriteCount = null;
+        public ArrayList<String> Users = null;
+        public Integer FavoriteCount = null;
 
-        public ArrayList<String> getUsers() { return users; }
-        public void setUsers(ArrayList<String> value) { this.users = value; }
-        public Integer getFavoriteCount() { return favoriteCount; }
-        public void setFavoriteCount(Integer value) { this.favoriteCount = value; }
+        public ArrayList<String> getUsers() { return Users; }
+        public GetTechnologyFavoriteDetailsResponse setUsers(ArrayList<String> value) { this.Users = value; return this; }
+        public Integer getFavoriteCount() { return FavoriteCount; }
+        public GetTechnologyFavoriteDetailsResponse setFavoriteCount(Integer value) { this.FavoriteCount = value; return this; }
     }
 
     public static class GetAllTechnologiesResponse
     {
-        public ArrayList<Technology> results = null;
+        public ArrayList<Technology> Results = null;
 
-        public ArrayList<Technology> getResults() { return results; }
-        public void setResults(ArrayList<Technology> value) { this.results = value; }
+        public ArrayList<Technology> getResults() { return Results; }
+        public GetAllTechnologiesResponse setResults(ArrayList<Technology> value) { this.Results = value; return this; }
     }
 
     @DataContract
     public static class QueryResponse<Technology>
     {
         @DataMember(Order=1)
-        public Integer offset = null;
+        public Integer Offset = null;
 
         @DataMember(Order=2)
-        public Integer total = null;
+        public Integer Total = null;
 
         @DataMember(Order=3)
-        public ArrayList<Technology> results = null;
+        public ArrayList<Technology> Results = null;
 
         @DataMember(Order=4)
-        public HashMap<String,String> meta = null;
+        public HashMap<String,String> Meta = null;
 
         @DataMember(Order=5)
-        public ResponseStatus responseStatus = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Integer getOffset() { return offset; }
-        public void setOffset(Integer value) { this.offset = value; }
-        public Integer getTotal() { return total; }
-        public void setTotal(Integer value) { this.total = value; }
-        public ArrayList<Technology> getResults() { return results; }
-        public void setResults(ArrayList<Technology> value) { this.results = value; }
-        public HashMap<String,String> getMeta() { return meta; }
-        public void setMeta(HashMap<String,String> value) { this.meta = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Integer getOffset() { return Offset; }
+        public QueryResponse<Technology> setOffset(Integer value) { this.Offset = value; return this; }
+        public Integer getTotal() { return Total; }
+        public QueryResponse<Technology> setTotal(Integer value) { this.Total = value; return this; }
+        public ArrayList<Technology> getResults() { return Results; }
+        public QueryResponse<Technology> setResults(ArrayList<Technology> value) { this.Results = value; return this; }
+        public HashMap<String,String> getMeta() { return Meta; }
+        public QueryResponse<Technology> setMeta(HashMap<String,String> value) { this.Meta = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public QueryResponse<Technology> setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class CreateTechnologyStackResponse
     {
-        public TechStackDetails result = null;
-        public ResponseStatus responseStatus = null;
+        public TechStackDetails Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public TechStackDetails getResult() { return result; }
-        public void setResult(TechStackDetails value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public TechStackDetails getResult() { return Result; }
+        public CreateTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public CreateTechnologyStackResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class UpdateTechnologyStackResponse
     {
-        public TechStackDetails result = null;
-        public ResponseStatus responseStatus = null;
+        public TechStackDetails Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public TechStackDetails getResult() { return result; }
-        public void setResult(TechStackDetails value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public TechStackDetails getResult() { return Result; }
+        public UpdateTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public UpdateTechnologyStackResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class DeleteTechnologyStackResponse
     {
-        public TechStackDetails result = null;
-        public ResponseStatus responseStatus = null;
+        public TechStackDetails Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public TechStackDetails getResult() { return result; }
-        public void setResult(TechStackDetails value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public TechStackDetails getResult() { return Result; }
+        public DeleteTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public DeleteTechnologyStackResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class GetAllTechnologyStacksResponse
     {
-        public ArrayList<TechnologyStack> results = null;
+        public ArrayList<TechnologyStack> Results = null;
 
-        public ArrayList<TechnologyStack> getResults() { return results; }
-        public void setResults(ArrayList<TechnologyStack> value) { this.results = value; }
+        public ArrayList<TechnologyStack> getResults() { return Results; }
+        public GetAllTechnologyStacksResponse setResults(ArrayList<TechnologyStack> value) { this.Results = value; return this; }
     }
 
     public static class GetTechnologyStackResponse
     {
-        public Date created = null;
-        public TechStackDetails result = null;
-        public ResponseStatus responseStatus = null;
+        public Date Created = null;
+        public TechStackDetails Result = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public TechStackDetails getResult() { return result; }
-        public void setResult(TechStackDetails value) { this.result = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Date getCreated() { return Created; }
+        public GetTechnologyStackResponse setCreated(Date value) { this.Created = value; return this; }
+        public TechStackDetails getResult() { return Result; }
+        public GetTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public GetTechnologyStackResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class GetTechnologyStackPreviousVersionsResponse
     {
-        public ArrayList<TechnologyStackHistory> results = null;
+        public ArrayList<TechnologyStackHistory> Results = null;
 
-        public ArrayList<TechnologyStackHistory> getResults() { return results; }
-        public void setResults(ArrayList<TechnologyStackHistory> value) { this.results = value; }
+        public ArrayList<TechnologyStackHistory> getResults() { return Results; }
+        public GetTechnologyStackPreviousVersionsResponse setResults(ArrayList<TechnologyStackHistory> value) { this.Results = value; return this; }
     }
 
     public static class GetTechnologyStackFavoriteDetailsResponse
     {
-        public ArrayList<String> users = null;
-        public Integer favoriteCount = null;
+        public ArrayList<String> Users = null;
+        public Integer FavoriteCount = null;
 
-        public ArrayList<String> getUsers() { return users; }
-        public void setUsers(ArrayList<String> value) { this.users = value; }
-        public Integer getFavoriteCount() { return favoriteCount; }
-        public void setFavoriteCount(Integer value) { this.favoriteCount = value; }
+        public ArrayList<String> getUsers() { return Users; }
+        public GetTechnologyStackFavoriteDetailsResponse setUsers(ArrayList<String> value) { this.Users = value; return this; }
+        public Integer getFavoriteCount() { return FavoriteCount; }
+        public GetTechnologyStackFavoriteDetailsResponse setFavoriteCount(Integer value) { this.FavoriteCount = value; return this; }
     }
 
     public static class GetConfigResponse
     {
-        public ArrayList<Option> allTiers = null;
+        public ArrayList<Option> AllTiers = null;
 
-        public ArrayList<Option> getAllTiers() { return allTiers; }
-        public void setAllTiers(ArrayList<Option> value) { this.allTiers = value; }
+        public ArrayList<Option> getAllTiers() { return AllTiers; }
+        public GetConfigResponse setAllTiers(ArrayList<Option> value) { this.AllTiers = value; return this; }
     }
 
     public static class OverviewResponse
     {
-        public Date created = null;
-        public ArrayList<UserInfo> topUsers = null;
-        public ArrayList<TechnologyInfo> topTechnologies = null;
-        public ArrayList<TechStackDetails> latestTechStacks = null;
-        public HashMap<TechnologyTier,ArrayList<TechnologyInfo>> topTechnologiesByTier = null;
-        public ResponseStatus responseStatus = null;
+        public Date Created = null;
+        public ArrayList<UserInfo> TopUsers = null;
+        public ArrayList<TechnologyInfo> TopTechnologies = null;
+        public ArrayList<TechStackDetails> LatestTechStacks = null;
+        public HashMap<TechnologyTier,ArrayList<TechnologyInfo>> TopTechnologiesByTier = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public ArrayList<UserInfo> getTopUsers() { return topUsers; }
-        public void setTopUsers(ArrayList<UserInfo> value) { this.topUsers = value; }
-        public ArrayList<TechnologyInfo> getTopTechnologies() { return topTechnologies; }
-        public void setTopTechnologies(ArrayList<TechnologyInfo> value) { this.topTechnologies = value; }
-        public ArrayList<TechStackDetails> getLatestTechStacks() { return latestTechStacks; }
-        public void setLatestTechStacks(ArrayList<TechStackDetails> value) { this.latestTechStacks = value; }
-        public HashMap<TechnologyTier,ArrayList<TechnologyInfo>> getTopTechnologiesByTier() { return topTechnologiesByTier; }
-        public void setTopTechnologiesByTier(HashMap<TechnologyTier,ArrayList<TechnologyInfo>> value) { this.topTechnologiesByTier = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Date getCreated() { return Created; }
+        public OverviewResponse setCreated(Date value) { this.Created = value; return this; }
+        public ArrayList<UserInfo> getTopUsers() { return TopUsers; }
+        public OverviewResponse setTopUsers(ArrayList<UserInfo> value) { this.TopUsers = value; return this; }
+        public ArrayList<TechnologyInfo> getTopTechnologies() { return TopTechnologies; }
+        public OverviewResponse setTopTechnologies(ArrayList<TechnologyInfo> value) { this.TopTechnologies = value; return this; }
+        public ArrayList<TechStackDetails> getLatestTechStacks() { return LatestTechStacks; }
+        public OverviewResponse setLatestTechStacks(ArrayList<TechStackDetails> value) { this.LatestTechStacks = value; return this; }
+        public HashMap<TechnologyTier,ArrayList<TechnologyInfo>> getTopTechnologiesByTier() { return TopTechnologiesByTier; }
+        public OverviewResponse setTopTechnologiesByTier(HashMap<TechnologyTier,ArrayList<TechnologyInfo>> value) { this.TopTechnologiesByTier = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public OverviewResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class AppOverviewResponse
     {
-        public Date created = null;
-        public ArrayList<Option> allTiers = null;
-        public ArrayList<TechnologyInfo> topTechnologies = null;
-        public ResponseStatus responseStatus = null;
+        public Date Created = null;
+        public ArrayList<Option> AllTiers = null;
+        public ArrayList<TechnologyInfo> TopTechnologies = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public ArrayList<Option> getAllTiers() { return allTiers; }
-        public void setAllTiers(ArrayList<Option> value) { this.allTiers = value; }
-        public ArrayList<TechnologyInfo> getTopTechnologies() { return topTechnologies; }
-        public void setTopTechnologies(ArrayList<TechnologyInfo> value) { this.topTechnologies = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public Date getCreated() { return Created; }
+        public AppOverviewResponse setCreated(Date value) { this.Created = value; return this; }
+        public ArrayList<Option> getAllTiers() { return AllTiers; }
+        public AppOverviewResponse setAllTiers(ArrayList<Option> value) { this.AllTiers = value; return this; }
+        public ArrayList<TechnologyInfo> getTopTechnologies() { return TopTechnologies; }
+        public AppOverviewResponse setTopTechnologies(ArrayList<TechnologyInfo> value) { this.TopTechnologies = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public AppOverviewResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class GetFavoriteTechStackResponse
     {
-        public ArrayList<TechnologyStack> results = null;
+        public ArrayList<TechnologyStack> Results = null;
 
-        public ArrayList<TechnologyStack> getResults() { return results; }
-        public void setResults(ArrayList<TechnologyStack> value) { this.results = value; }
+        public ArrayList<TechnologyStack> getResults() { return Results; }
+        public GetFavoriteTechStackResponse setResults(ArrayList<TechnologyStack> value) { this.Results = value; return this; }
     }
 
     public static class FavoriteTechStackResponse
     {
-        public TechnologyStack result = null;
+        public TechnologyStack Result = null;
 
-        public TechnologyStack getResult() { return result; }
-        public void setResult(TechnologyStack value) { this.result = value; }
+        public TechnologyStack getResult() { return Result; }
+        public FavoriteTechStackResponse setResult(TechnologyStack value) { this.Result = value; return this; }
     }
 
     public static class GetFavoriteTechnologiesResponse
     {
-        public ArrayList<Technology> results = null;
+        public ArrayList<Technology> Results = null;
 
-        public ArrayList<Technology> getResults() { return results; }
-        public void setResults(ArrayList<Technology> value) { this.results = value; }
+        public ArrayList<Technology> getResults() { return Results; }
+        public GetFavoriteTechnologiesResponse setResults(ArrayList<Technology> value) { this.Results = value; return this; }
     }
 
     public static class FavoriteTechnologyResponse
     {
-        public Technology result = null;
+        public Technology Result = null;
 
-        public Technology getResult() { return result; }
-        public void setResult(Technology value) { this.result = value; }
+        public Technology getResult() { return Result; }
+        public FavoriteTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
     }
 
     public static class GetUserFeedResponse
     {
-        public ArrayList<TechStackDetails> results = null;
+        public ArrayList<TechStackDetails> Results = null;
 
-        public ArrayList<TechStackDetails> getResults() { return results; }
-        public void setResults(ArrayList<TechStackDetails> value) { this.results = value; }
+        public ArrayList<TechStackDetails> getResults() { return Results; }
+        public GetUserFeedResponse setResults(ArrayList<TechStackDetails> value) { this.Results = value; return this; }
     }
 
     public static class GetUserInfoResponse
     {
-        public String userName = null;
-        public Date created = null;
-        public String avatarUrl = null;
-        public ArrayList<TechnologyStack> techStacks = null;
-        public ArrayList<TechnologyStack> favoriteTechStacks = null;
-        public ArrayList<Technology> favoriteTechnologies = null;
+        public String UserName = null;
+        public Date Created = null;
+        public String AvatarUrl = null;
+        public ArrayList<TechnologyStack> TechStacks = null;
+        public ArrayList<TechnologyStack> FavoriteTechStacks = null;
+        public ArrayList<Technology> FavoriteTechnologies = null;
 
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public Date getCreated() { return created; }
-        public void setCreated(Date value) { this.created = value; }
-        public String getAvatarUrl() { return avatarUrl; }
-        public void setAvatarUrl(String value) { this.avatarUrl = value; }
-        public ArrayList<TechnologyStack> getTechStacks() { return techStacks; }
-        public void setTechStacks(ArrayList<TechnologyStack> value) { this.techStacks = value; }
-        public ArrayList<TechnologyStack> getFavoriteTechStacks() { return favoriteTechStacks; }
-        public void setFavoriteTechStacks(ArrayList<TechnologyStack> value) { this.favoriteTechStacks = value; }
-        public ArrayList<Technology> getFavoriteTechnologies() { return favoriteTechnologies; }
-        public void setFavoriteTechnologies(ArrayList<Technology> value) { this.favoriteTechnologies = value; }
+        public String getUserName() { return UserName; }
+        public GetUserInfoResponse setUserName(String value) { this.UserName = value; return this; }
+        public Date getCreated() { return Created; }
+        public GetUserInfoResponse setCreated(Date value) { this.Created = value; return this; }
+        public String getAvatarUrl() { return AvatarUrl; }
+        public GetUserInfoResponse setAvatarUrl(String value) { this.AvatarUrl = value; return this; }
+        public ArrayList<TechnologyStack> getTechStacks() { return TechStacks; }
+        public GetUserInfoResponse setTechStacks(ArrayList<TechnologyStack> value) { this.TechStacks = value; return this; }
+        public ArrayList<TechnologyStack> getFavoriteTechStacks() { return FavoriteTechStacks; }
+        public GetUserInfoResponse setFavoriteTechStacks(ArrayList<TechnologyStack> value) { this.FavoriteTechStacks = value; return this; }
+        public ArrayList<Technology> getFavoriteTechnologies() { return FavoriteTechnologies; }
+        public GetUserInfoResponse setFavoriteTechnologies(ArrayList<Technology> value) { this.FavoriteTechnologies = value; return this; }
     }
 
     @DataContract
     public static class AuthenticateResponse
     {
         @DataMember(Order=1)
-        public String userId = null;
+        public String UserId = null;
 
         @DataMember(Order=2)
-        public String sessionId = null;
+        public String SessionId = null;
 
         @DataMember(Order=3)
-        public String userName = null;
+        public String UserName = null;
 
         @DataMember(Order=4)
-        public String displayName = null;
+        public String DisplayName = null;
 
         @DataMember(Order=5)
-        public String referrerUrl = null;
+        public String ReferrerUrl = null;
 
         @DataMember(Order=6)
-        public ResponseStatus responseStatus = null;
+        public ResponseStatus ResponseStatus = null;
 
         @DataMember(Order=7)
-        public HashMap<String,String> meta = null;
+        public HashMap<String,String> Meta = null;
 
-        public String getUserId() { return userId; }
-        public void setUserId(String value) { this.userId = value; }
-        public String getSessionId() { return sessionId; }
-        public void setSessionId(String value) { this.sessionId = value; }
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public String getDisplayName() { return displayName; }
-        public void setDisplayName(String value) { this.displayName = value; }
-        public String getReferrerUrl() { return referrerUrl; }
-        public void setReferrerUrl(String value) { this.referrerUrl = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
-        public HashMap<String,String> getMeta() { return meta; }
-        public void setMeta(HashMap<String,String> value) { this.meta = value; }
+        public String getUserId() { return UserId; }
+        public AuthenticateResponse setUserId(String value) { this.UserId = value; return this; }
+        public String getSessionId() { return SessionId; }
+        public AuthenticateResponse setSessionId(String value) { this.SessionId = value; return this; }
+        public String getUserName() { return UserName; }
+        public AuthenticateResponse setUserName(String value) { this.UserName = value; return this; }
+        public String getDisplayName() { return DisplayName; }
+        public AuthenticateResponse setDisplayName(String value) { this.DisplayName = value; return this; }
+        public String getReferrerUrl() { return ReferrerUrl; }
+        public AuthenticateResponse setReferrerUrl(String value) { this.ReferrerUrl = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public AuthenticateResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
+        public HashMap<String,String> getMeta() { return Meta; }
+        public AuthenticateResponse setMeta(HashMap<String,String> value) { this.Meta = value; return this; }
     }
 
     public static class AssignRolesResponse
     {
-        public ArrayList<String> allRoles = null;
-        public ArrayList<String> allPermissions = null;
-        public ResponseStatus responseStatus = null;
+        public ArrayList<String> AllRoles = null;
+        public ArrayList<String> AllPermissions = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public ArrayList<String> getAllRoles() { return allRoles; }
-        public void setAllRoles(ArrayList<String> value) { this.allRoles = value; }
-        public ArrayList<String> getAllPermissions() { return allPermissions; }
-        public void setAllPermissions(ArrayList<String> value) { this.allPermissions = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public ArrayList<String> getAllRoles() { return AllRoles; }
+        public AssignRolesResponse setAllRoles(ArrayList<String> value) { this.AllRoles = value; return this; }
+        public ArrayList<String> getAllPermissions() { return AllPermissions; }
+        public AssignRolesResponse setAllPermissions(ArrayList<String> value) { this.AllPermissions = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public AssignRolesResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class UnAssignRolesResponse
     {
-        public ArrayList<String> allRoles = null;
-        public ArrayList<String> allPermissions = null;
-        public ResponseStatus responseStatus = null;
+        public ArrayList<String> AllRoles = null;
+        public ArrayList<String> AllPermissions = null;
+        public ResponseStatus ResponseStatus = null;
 
-        public ArrayList<String> getAllRoles() { return allRoles; }
-        public void setAllRoles(ArrayList<String> value) { this.allRoles = value; }
-        public ArrayList<String> getAllPermissions() { return allPermissions; }
-        public void setAllPermissions(ArrayList<String> value) { this.allPermissions = value; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public void setResponseStatus(ResponseStatus value) { this.responseStatus = value; }
+        public ArrayList<String> getAllRoles() { return AllRoles; }
+        public UnAssignRolesResponse setAllRoles(ArrayList<String> value) { this.AllRoles = value; return this; }
+        public ArrayList<String> getAllPermissions() { return AllPermissions; }
+        public UnAssignRolesResponse setAllPermissions(ArrayList<String> value) { this.AllPermissions = value; return this; }
+        public ResponseStatus getResponseStatus() { return ResponseStatus; }
+        public UnAssignRolesResponse setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     @Route("/admin/technology/{TechnologyId}/logo")
     public static class LogoUrlApproval implements IReturn<LogoUrlApprovalResponse>
     {
-        public Long technologyId = null;
-        public Boolean approved = null;
+        public Long TechnologyId = null;
+        public Boolean Approved = null;
 
-        public Long getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Long value) { this.technologyId = value; }
-        public Boolean isApproved() { return approved; }
-        public void setApproved(Boolean value) { this.approved = value; }
+        public Long getTechnologyId() { return TechnologyId; }
+        public LogoUrlApproval setTechnologyId(Long value) { this.TechnologyId = value; return this; }
+        public Boolean isApproved() { return Approved; }
+        public LogoUrlApproval setApproved(Boolean value) { this.Approved = value; return this; }
+        private static Class responseType = LogoUrlApprovalResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/admin/techstacks/{TechnologyStackId}/lock")
     public static class LockTechStack implements IReturn<LockStackResponse>
     {
-        public Long technologyStackId = null;
-        public Boolean isLocked = null;
+        public Long TechnologyStackId = null;
+        public Boolean IsLocked = null;
 
-        public Long getTechnologyStackId() { return technologyStackId; }
-        public void setTechnologyStackId(Long value) { this.technologyStackId = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
+        public Long getTechnologyStackId() { return TechnologyStackId; }
+        public LockTechStack setTechnologyStackId(Long value) { this.TechnologyStackId = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public LockTechStack setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        private static Class responseType = LockStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/admin/technology/{TechnologyId}/lock")
     public static class LockTech implements IReturn<LockStackResponse>
     {
-        public Long technologyId = null;
-        public Boolean isLocked = null;
+        public Long TechnologyId = null;
+        public Boolean IsLocked = null;
 
-        public Long getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Long value) { this.technologyId = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
+        public Long getTechnologyId() { return TechnologyId; }
+        public LockTech setTechnologyId(Long value) { this.TechnologyId = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public LockTech setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        private static Class responseType = LockStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/ping")
@@ -806,10 +807,10 @@ public class dto
     @Route("/{PathInfo*}")
     public static class FallbackForClientRoutes
     {
-        public String pathInfo = null;
+        public String PathInfo = null;
 
-        public String getPathInfo() { return pathInfo; }
-        public void setPathInfo(String value) { this.pathInfo = value; }
+        public String getPathInfo() { return PathInfo; }
+        public FallbackForClientRoutes setPathInfo(String value) { this.PathInfo = value; return this; }
     }
 
     @Route("/stacks")
@@ -827,19 +828,19 @@ public class dto
     @Route("/tech/{Slug}")
     public static class ClientTechnology
     {
-        public String slug = null;
+        public String Slug = null;
 
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
+        public String getSlug() { return Slug; }
+        public ClientTechnology setSlug(String value) { this.Slug = value; return this; }
     }
 
     @Route("/users/{UserName}")
     public static class ClientUser
     {
-        public String userName = null;
+        public String UserName = null;
 
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
+        public String getUserName() { return UserName; }
+        public ClientUser setUserName(String value) { this.UserName = value; return this; }
     }
 
     @Route("/my-session")
@@ -851,339 +852,393 @@ public class dto
     @Route(Path="/technology", Verbs="POST")
     public static class CreateTechnology implements IReturn<CreateTechnologyResponse>
     {
-        public String name = null;
-        public String vendorName = null;
-        public String vendorUrl = null;
-        public String productUrl = null;
-        public String logoUrl = null;
-        public String description = null;
-        public Boolean isLocked = null;
-        public TechnologyTier tier = null;
+        public String Name = null;
+        public String VendorName = null;
+        public String VendorUrl = null;
+        public String ProductUrl = null;
+        public String LogoUrl = null;
+        public String Description = null;
+        public Boolean IsLocked = null;
+        public TechnologyTier Tier = null;
 
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getVendorName() { return vendorName; }
-        public void setVendorName(String value) { this.vendorName = value; }
-        public String getVendorUrl() { return vendorUrl; }
-        public void setVendorUrl(String value) { this.vendorUrl = value; }
-        public String getProductUrl() { return productUrl; }
-        public void setProductUrl(String value) { this.productUrl = value; }
-        public String getLogoUrl() { return logoUrl; }
-        public void setLogoUrl(String value) { this.logoUrl = value; }
-        public String getDescription() { return description; }
-        public void setDescription(String value) { this.description = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
-        public TechnologyTier getTier() { return tier; }
-        public void setTier(TechnologyTier value) { this.tier = value; }
+        public String getName() { return Name; }
+        public CreateTechnology setName(String value) { this.Name = value; return this; }
+        public String getVendorName() { return VendorName; }
+        public CreateTechnology setVendorName(String value) { this.VendorName = value; return this; }
+        public String getVendorUrl() { return VendorUrl; }
+        public CreateTechnology setVendorUrl(String value) { this.VendorUrl = value; return this; }
+        public String getProductUrl() { return ProductUrl; }
+        public CreateTechnology setProductUrl(String value) { this.ProductUrl = value; return this; }
+        public String getLogoUrl() { return LogoUrl; }
+        public CreateTechnology setLogoUrl(String value) { this.LogoUrl = value; return this; }
+        public String getDescription() { return Description; }
+        public CreateTechnology setDescription(String value) { this.Description = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public CreateTechnology setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        public TechnologyTier getTier() { return Tier; }
+        public CreateTechnology setTier(TechnologyTier value) { this.Tier = value; return this; }
+        private static Class responseType = CreateTechnologyResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology/{Id}", Verbs="PUT")
     public static class UpdateTechnology implements IReturn<UpdateTechnologyResponse>
     {
-        public Long id = null;
-        public String name = null;
-        public String vendorName = null;
-        public String vendorUrl = null;
-        public String productUrl = null;
-        public String logoUrl = null;
-        public String description = null;
-        public Boolean isLocked = null;
-        public TechnologyTier tier = null;
+        public Long Id = null;
+        public String Name = null;
+        public String VendorName = null;
+        public String VendorUrl = null;
+        public String ProductUrl = null;
+        public String LogoUrl = null;
+        public String Description = null;
+        public Boolean IsLocked = null;
+        public TechnologyTier Tier = null;
 
-        public Long getId() { return id; }
-        public void setId(Long value) { this.id = value; }
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getVendorName() { return vendorName; }
-        public void setVendorName(String value) { this.vendorName = value; }
-        public String getVendorUrl() { return vendorUrl; }
-        public void setVendorUrl(String value) { this.vendorUrl = value; }
-        public String getProductUrl() { return productUrl; }
-        public void setProductUrl(String value) { this.productUrl = value; }
-        public String getLogoUrl() { return logoUrl; }
-        public void setLogoUrl(String value) { this.logoUrl = value; }
-        public String getDescription() { return description; }
-        public void setDescription(String value) { this.description = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
-        public TechnologyTier getTier() { return tier; }
-        public void setTier(TechnologyTier value) { this.tier = value; }
+        public Long getId() { return Id; }
+        public UpdateTechnology setId(Long value) { this.Id = value; return this; }
+        public String getName() { return Name; }
+        public UpdateTechnology setName(String value) { this.Name = value; return this; }
+        public String getVendorName() { return VendorName; }
+        public UpdateTechnology setVendorName(String value) { this.VendorName = value; return this; }
+        public String getVendorUrl() { return VendorUrl; }
+        public UpdateTechnology setVendorUrl(String value) { this.VendorUrl = value; return this; }
+        public String getProductUrl() { return ProductUrl; }
+        public UpdateTechnology setProductUrl(String value) { this.ProductUrl = value; return this; }
+        public String getLogoUrl() { return LogoUrl; }
+        public UpdateTechnology setLogoUrl(String value) { this.LogoUrl = value; return this; }
+        public String getDescription() { return Description; }
+        public UpdateTechnology setDescription(String value) { this.Description = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public UpdateTechnology setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        public TechnologyTier getTier() { return Tier; }
+        public UpdateTechnology setTier(TechnologyTier value) { this.Tier = value; return this; }
+        private static Class responseType = UpdateTechnologyResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology/{Id}", Verbs="DELETE")
     public static class DeleteTechnology implements IReturn<DeleteTechnologyResponse>
     {
-        public Long id = null;
+        public Long Id = null;
 
-        public Long getId() { return id; }
-        public void setId(Long value) { this.id = value; }
+        public Long getId() { return Id; }
+        public DeleteTechnology setId(Long value) { this.Id = value; return this; }
+        private static Class responseType = DeleteTechnologyResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/technology/{Slug}")
     public static class GetTechnology implements IReturn<GetTechnologyResponse>
     {
-        public Boolean reload = null;
-        public String slug = null;
+        public Boolean Reload = null;
+        public String Slug = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
+        public Boolean isReload() { return Reload; }
+        public GetTechnology setReload(Boolean value) { this.Reload = value; return this; }
+        public String getSlug() { return Slug; }
+        public GetTechnology setSlug(String value) { this.Slug = value; return this; }
+        private static Class responseType = GetTechnologyResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology/{Slug}/previous-versions", Verbs="GET")
     public static class GetTechnologyPreviousVersions implements IReturn<GetTechnologyPreviousVersionsResponse>
     {
-        public String slug = null;
+        public String Slug = null;
 
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
+        public String getSlug() { return Slug; }
+        public GetTechnologyPreviousVersions setSlug(String value) { this.Slug = value; return this; }
+        private static Class responseType = GetTechnologyPreviousVersionsResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/technology/{Slug}/favorites")
     public static class GetTechnologyFavoriteDetails implements IReturn<GetTechnologyFavoriteDetailsResponse>
     {
-        public String slug = null;
-        public Boolean reload = null;
+        public String Slug = null;
+        public Boolean Reload = null;
 
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
+        public String getSlug() { return Slug; }
+        public GetTechnologyFavoriteDetails setSlug(String value) { this.Slug = value; return this; }
+        public Boolean isReload() { return Reload; }
+        public GetTechnologyFavoriteDetails setReload(Boolean value) { this.Reload = value; return this; }
+        private static Class responseType = GetTechnologyFavoriteDetailsResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology", Verbs="GET")
     public static class GetAllTechnologies implements IReturn<GetAllTechnologiesResponse>
     {
 
+        private static Class responseType = GetAllTechnologiesResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/technology/search")
     @AutoQueryViewer(Title="Find Technologies", Description="Explore different Technologies", IconUrl="/img/app/tech-white-75.png", DefaultSearchField="Tier", DefaultSearchType="=", DefaultSearchText="Data")
     public static class FindTechnologies extends QueryBase_1<Technology> implements IReturn<QueryResponse<Technology>>
     {
-        public Boolean reload = null;
+        public Boolean Reload = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
+        public Boolean isReload() { return Reload; }
+        public FindTechnologies setReload(Boolean value) { this.Reload = value; return this; }
+        private static Class responseType = new QueryResponse<Technology>().getClass();
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks", Verbs="POST")
     public static class CreateTechnologyStack implements IReturn<CreateTechnologyStackResponse>
     {
-        public String name = null;
-        public String vendorName = null;
-        public String appUrl = null;
-        public String screenshotUrl = null;
-        public String description = null;
-        public String details = null;
-        public Boolean isLocked = null;
-        public ArrayList<Long> technologyIds = null;
+        public String Name = null;
+        public String VendorName = null;
+        public String AppUrl = null;
+        public String ScreenshotUrl = null;
+        public String Description = null;
+        public String Details = null;
+        public Boolean IsLocked = null;
+        public ArrayList<Long> TechnologyIds = null;
 
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getVendorName() { return vendorName; }
-        public void setVendorName(String value) { this.vendorName = value; }
-        public String getAppUrl() { return appUrl; }
-        public void setAppUrl(String value) { this.appUrl = value; }
-        public String getScreenshotUrl() { return screenshotUrl; }
-        public void setScreenshotUrl(String value) { this.screenshotUrl = value; }
-        public String getDescription() { return description; }
-        public void setDescription(String value) { this.description = value; }
-        public String getDetails() { return details; }
-        public void setDetails(String value) { this.details = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
-        public ArrayList<Long> getTechnologyIds() { return technologyIds; }
-        public void setTechnologyIds(ArrayList<Long> value) { this.technologyIds = value; }
+        public String getName() { return Name; }
+        public CreateTechnologyStack setName(String value) { this.Name = value; return this; }
+        public String getVendorName() { return VendorName; }
+        public CreateTechnologyStack setVendorName(String value) { this.VendorName = value; return this; }
+        public String getAppUrl() { return AppUrl; }
+        public CreateTechnologyStack setAppUrl(String value) { this.AppUrl = value; return this; }
+        public String getScreenshotUrl() { return ScreenshotUrl; }
+        public CreateTechnologyStack setScreenshotUrl(String value) { this.ScreenshotUrl = value; return this; }
+        public String getDescription() { return Description; }
+        public CreateTechnologyStack setDescription(String value) { this.Description = value; return this; }
+        public String getDetails() { return Details; }
+        public CreateTechnologyStack setDetails(String value) { this.Details = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public CreateTechnologyStack setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        public ArrayList<Long> getTechnologyIds() { return TechnologyIds; }
+        public CreateTechnologyStack setTechnologyIds(ArrayList<Long> value) { this.TechnologyIds = value; return this; }
+        private static Class responseType = CreateTechnologyStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Id}", Verbs="PUT")
     public static class UpdateTechnologyStack implements IReturn<UpdateTechnologyStackResponse>
     {
-        public Long id = null;
-        public String name = null;
-        public String vendorName = null;
-        public String appUrl = null;
-        public String screenshotUrl = null;
-        public String description = null;
-        public String details = null;
-        public Boolean isLocked = null;
-        public ArrayList<Long> technologyIds = null;
+        public Long Id = null;
+        public String Name = null;
+        public String VendorName = null;
+        public String AppUrl = null;
+        public String ScreenshotUrl = null;
+        public String Description = null;
+        public String Details = null;
+        public Boolean IsLocked = null;
+        public ArrayList<Long> TechnologyIds = null;
 
-        public Long getId() { return id; }
-        public void setId(Long value) { this.id = value; }
-        public String getName() { return name; }
-        public void setName(String value) { this.name = value; }
-        public String getVendorName() { return vendorName; }
-        public void setVendorName(String value) { this.vendorName = value; }
-        public String getAppUrl() { return appUrl; }
-        public void setAppUrl(String value) { this.appUrl = value; }
-        public String getScreenshotUrl() { return screenshotUrl; }
-        public void setScreenshotUrl(String value) { this.screenshotUrl = value; }
-        public String getDescription() { return description; }
-        public void setDescription(String value) { this.description = value; }
-        public String getDetails() { return details; }
-        public void setDetails(String value) { this.details = value; }
-        public Boolean getIsLocked() { return isLocked; }
-        public void setIsLocked(Boolean value) { this.isLocked = value; }
-        public ArrayList<Long> getTechnologyIds() { return technologyIds; }
-        public void setTechnologyIds(ArrayList<Long> value) { this.technologyIds = value; }
+        public Long getId() { return Id; }
+        public UpdateTechnologyStack setId(Long value) { this.Id = value; return this; }
+        public String getName() { return Name; }
+        public UpdateTechnologyStack setName(String value) { this.Name = value; return this; }
+        public String getVendorName() { return VendorName; }
+        public UpdateTechnologyStack setVendorName(String value) { this.VendorName = value; return this; }
+        public String getAppUrl() { return AppUrl; }
+        public UpdateTechnologyStack setAppUrl(String value) { this.AppUrl = value; return this; }
+        public String getScreenshotUrl() { return ScreenshotUrl; }
+        public UpdateTechnologyStack setScreenshotUrl(String value) { this.ScreenshotUrl = value; return this; }
+        public String getDescription() { return Description; }
+        public UpdateTechnologyStack setDescription(String value) { this.Description = value; return this; }
+        public String getDetails() { return Details; }
+        public UpdateTechnologyStack setDetails(String value) { this.Details = value; return this; }
+        public Boolean getIsLocked() { return IsLocked; }
+        public UpdateTechnologyStack setIsLocked(Boolean value) { this.IsLocked = value; return this; }
+        public ArrayList<Long> getTechnologyIds() { return TechnologyIds; }
+        public UpdateTechnologyStack setTechnologyIds(ArrayList<Long> value) { this.TechnologyIds = value; return this; }
+        private static Class responseType = UpdateTechnologyStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Id}", Verbs="DELETE")
     public static class DeleteTechnologyStack implements IReturn<DeleteTechnologyStackResponse>
     {
-        public Long id = null;
+        public Long Id = null;
 
-        public Long getId() { return id; }
-        public void setId(Long value) { this.id = value; }
+        public Long getId() { return Id; }
+        public DeleteTechnologyStack setId(Long value) { this.Id = value; return this; }
+        private static Class responseType = DeleteTechnologyStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks", Verbs="GET")
     public static class GetAllTechnologyStacks implements IReturn<GetAllTechnologyStacksResponse>
     {
 
+        private static Class responseType = GetAllTechnologyStacksResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Slug}", Verbs="GET")
     public static class GetTechnologyStack implements IReturn<GetTechnologyStackResponse>
     {
-        public Boolean reload = null;
-        public String slug = null;
+        public Boolean Reload = null;
+        public String Slug = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
+        public Boolean isReload() { return Reload; }
+        public GetTechnologyStack setReload(Boolean value) { this.Reload = value; return this; }
+        public String getSlug() { return Slug; }
+        public GetTechnologyStack setSlug(String value) { this.Slug = value; return this; }
+        private static Class responseType = GetTechnologyStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Slug}/previous-versions", Verbs="GET")
     public static class GetTechnologyStackPreviousVersions implements IReturn<GetTechnologyStackPreviousVersionsResponse>
     {
-        public String slug = null;
+        public String Slug = null;
 
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
+        public String getSlug() { return Slug; }
+        public GetTechnologyStackPreviousVersions setSlug(String value) { this.Slug = value; return this; }
+        private static Class responseType = GetTechnologyStackPreviousVersionsResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/techstacks/{Slug}/favorites")
     public static class GetTechnologyStackFavoriteDetails implements IReturn<GetTechnologyStackFavoriteDetailsResponse>
     {
-        public String slug = null;
-        public Boolean reload = null;
+        public String Slug = null;
+        public Boolean Reload = null;
 
-        public String getSlug() { return slug; }
-        public void setSlug(String value) { this.slug = value; }
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
+        public String getSlug() { return Slug; }
+        public GetTechnologyStackFavoriteDetails setSlug(String value) { this.Slug = value; return this; }
+        public Boolean isReload() { return Reload; }
+        public GetTechnologyStackFavoriteDetails setReload(Boolean value) { this.Reload = value; return this; }
+        private static Class responseType = GetTechnologyStackFavoriteDetailsResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/config")
     public static class GetConfig implements IReturn<GetConfigResponse>
     {
 
+        private static Class responseType = GetConfigResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/overview")
     public static class Overview implements IReturn<OverviewResponse>
     {
-        public Boolean reload = null;
+        public Boolean Reload = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
+        public Boolean isReload() { return Reload; }
+        public Overview setReload(Boolean value) { this.Reload = value; return this; }
+        private static Class responseType = OverviewResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/app-overview")
     public static class AppOverview implements IReturn<AppOverviewResponse>
     {
-        public Boolean reload = null;
+        public Boolean Reload = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
+        public Boolean isReload() { return Reload; }
+        public AppOverview setReload(Boolean value) { this.Reload = value; return this; }
+        private static Class responseType = AppOverviewResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/techstacks/search")
     @AutoQueryViewer(Title="Find Technology Stacks", Description="Explore different Technology Stacks", IconUrl="/img/app/stacks-white-75.png", DefaultSearchField="Description", DefaultSearchType="Contains", DefaultSearchText="ServiceStack")
     public static class FindTechStacks extends QueryBase_1<TechnologyStack> implements IReturn<QueryResponse<TechnologyStack>>
     {
-        public Boolean reload = null;
+        public Boolean Reload = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
+        public Boolean isReload() { return Reload; }
+        public FindTechStacks setReload(Boolean value) { this.Reload = value; return this; }
+        private static Class responseType = new QueryResponse<TechnologyStack>().getClass();
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/techtacks", Verbs="GET")
     public static class GetFavoriteTechStack implements IReturn<GetFavoriteTechStackResponse>
     {
-        public Integer technologyStackId = null;
+        public Integer TechnologyStackId = null;
 
-        public Integer getTechnologyStackId() { return technologyStackId; }
-        public void setTechnologyStackId(Integer value) { this.technologyStackId = value; }
+        public Integer getTechnologyStackId() { return TechnologyStackId; }
+        public GetFavoriteTechStack setTechnologyStackId(Integer value) { this.TechnologyStackId = value; return this; }
+        private static Class responseType = GetFavoriteTechStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/techtacks/{TechnologyStackId}", Verbs="PUT")
     public static class AddFavoriteTechStack implements IReturn<FavoriteTechStackResponse>
     {
-        public Integer technologyStackId = null;
+        public Integer TechnologyStackId = null;
 
-        public Integer getTechnologyStackId() { return technologyStackId; }
-        public void setTechnologyStackId(Integer value) { this.technologyStackId = value; }
+        public Integer getTechnologyStackId() { return TechnologyStackId; }
+        public AddFavoriteTechStack setTechnologyStackId(Integer value) { this.TechnologyStackId = value; return this; }
+        private static Class responseType = FavoriteTechStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/techtacks/{TechnologyStackId}", Verbs="DELETE")
     public static class RemoveFavoriteTechStack implements IReturn<FavoriteTechStackResponse>
     {
-        public Integer technologyStackId = null;
+        public Integer TechnologyStackId = null;
 
-        public Integer getTechnologyStackId() { return technologyStackId; }
-        public void setTechnologyStackId(Integer value) { this.technologyStackId = value; }
+        public Integer getTechnologyStackId() { return TechnologyStackId; }
+        public RemoveFavoriteTechStack setTechnologyStackId(Integer value) { this.TechnologyStackId = value; return this; }
+        private static Class responseType = FavoriteTechStackResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/technology", Verbs="GET")
     public static class GetFavoriteTechnologies implements IReturn<GetFavoriteTechnologiesResponse>
     {
-        public Integer technologyId = null;
+        public Integer TechnologyId = null;
 
-        public Integer getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Integer value) { this.technologyId = value; }
+        public Integer getTechnologyId() { return TechnologyId; }
+        public GetFavoriteTechnologies setTechnologyId(Integer value) { this.TechnologyId = value; return this; }
+        private static Class responseType = GetFavoriteTechnologiesResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/technology/{TechnologyId}", Verbs="PUT")
     public static class AddFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>
     {
-        public Integer technologyId = null;
+        public Integer TechnologyId = null;
 
-        public Integer getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Integer value) { this.technologyId = value; }
+        public Integer getTechnologyId() { return TechnologyId; }
+        public AddFavoriteTechnology setTechnologyId(Integer value) { this.TechnologyId = value; return this; }
+        private static Class responseType = FavoriteTechnologyResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/technology/{TechnologyId}", Verbs="DELETE")
     public static class RemoveFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>
     {
-        public Integer technologyId = null;
+        public Integer TechnologyId = null;
 
-        public Integer getTechnologyId() { return technologyId; }
-        public void setTechnologyId(Integer value) { this.technologyId = value; }
+        public Integer getTechnologyId() { return TechnologyId; }
+        public RemoveFavoriteTechnology setTechnologyId(Integer value) { this.TechnologyId = value; return this; }
+        private static Class responseType = FavoriteTechnologyResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/my-feed")
     public static class GetUserFeed implements IReturn<GetUserFeedResponse>
     {
 
+        private static Class responseType = GetUserFeedResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/userinfo/{UserName}")
     public static class GetUserInfo implements IReturn<GetUserInfoResponse>
     {
-        public Boolean reload = null;
-        public String userName = null;
+        public Boolean Reload = null;
+        public String UserName = null;
 
-        public Boolean isReload() { return reload; }
-        public void setReload(Boolean value) { this.reload = value; }
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
+        public Boolean isReload() { return Reload; }
+        public GetUserInfo setReload(Boolean value) { this.Reload = value; return this; }
+        public String getUserName() { return UserName; }
+        public GetUserInfo setUserName(String value) { this.UserName = value; return this; }
+        private static Class responseType = GetUserInfoResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/auth")
@@ -1197,7 +1252,7 @@ public class dto
         public String provider = null;
 
         @DataMember(Order=2)
-        public String state = null;
+        public String State = null;
 
         @DataMember(Order=3)
         public String oauth_token = null;
@@ -1206,13 +1261,13 @@ public class dto
         public String oauth_verifier = null;
 
         @DataMember(Order=5)
-        public String userName = null;
+        public String UserName = null;
 
         @DataMember(Order=6)
-        public String password = null;
+        public String Password = null;
 
         @DataMember(Order=7)
-        public Boolean rememberMe = null;
+        public Boolean RememberMe = null;
 
         @DataMember(Order=8)
         public String Continue = null;
@@ -1236,74 +1291,82 @@ public class dto
         public String cnonce = null;
 
         @DataMember(Order=15)
-        public HashMap<String,String> meta = null;
+        public HashMap<String,String> Meta = null;
 
         public String getProvider() { return provider; }
-        public void setProvider(String value) { this.provider = value; }
-        public String getState() { return state; }
-        public void setState(String value) { this.state = value; }
-        public String getOauth_token() { return oauth_token; }
-        public void setOauth_token(String value) { this.oauth_token = value; }
-        public String getOauth_verifier() { return oauth_verifier; }
-        public void setOauth_verifier(String value) { this.oauth_verifier = value; }
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public String getPassword() { return password; }
-        public void setPassword(String value) { this.password = value; }
-        public Boolean isRememberMe() { return rememberMe; }
-        public void setRememberMe(Boolean value) { this.rememberMe = value; }
+        public Authenticate setProvider(String value) { this.provider = value; return this; }
+        public String getState() { return State; }
+        public Authenticate setState(String value) { this.State = value; return this; }
+        public String getOauthToken() { return oauth_token; }
+        public Authenticate setOauthToken(String value) { this.oauth_token = value; return this; }
+        public String getOauthVerifier() { return oauth_verifier; }
+        public Authenticate setOauthVerifier(String value) { this.oauth_verifier = value; return this; }
+        public String getUserName() { return UserName; }
+        public Authenticate setUserName(String value) { this.UserName = value; return this; }
+        public String getPassword() { return Password; }
+        public Authenticate setPassword(String value) { this.Password = value; return this; }
+        public Boolean isRememberMe() { return RememberMe; }
+        public Authenticate setRememberMe(Boolean value) { this.RememberMe = value; return this; }
         public String getContinue() { return Continue; }
-        public void setContinue(String value) { this.Continue = value; }
+        public Authenticate setContinue(String value) { this.Continue = value; return this; }
         public String getNonce() { return nonce; }
-        public void setNonce(String value) { this.nonce = value; }
+        public Authenticate setNonce(String value) { this.nonce = value; return this; }
         public String getUri() { return uri; }
-        public void setUri(String value) { this.uri = value; }
+        public Authenticate setUri(String value) { this.uri = value; return this; }
         public String getResponse() { return response; }
-        public void setResponse(String value) { this.response = value; }
+        public Authenticate setResponse(String value) { this.response = value; return this; }
         public String getQop() { return qop; }
-        public void setQop(String value) { this.qop = value; }
+        public Authenticate setQop(String value) { this.qop = value; return this; }
         public String getNc() { return nc; }
-        public void setNc(String value) { this.nc = value; }
+        public Authenticate setNc(String value) { this.nc = value; return this; }
         public String getCnonce() { return cnonce; }
-        public void setCnonce(String value) { this.cnonce = value; }
-        public HashMap<String,String> getMeta() { return meta; }
-        public void setMeta(HashMap<String,String> value) { this.meta = value; }
+        public Authenticate setCnonce(String value) { this.cnonce = value; return this; }
+        public HashMap<String,String> getMeta() { return Meta; }
+        public Authenticate setMeta(HashMap<String,String> value) { this.Meta = value; return this; }
+        private static Class responseType = AuthenticateResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/assignroles")
     public static class AssignRoles implements IReturn<AssignRolesResponse>
     {
-        public String userName = null;
-        public ArrayList<String> permissions = null;
-        public ArrayList<String> roles = null;
+        public String UserName = null;
+        public ArrayList<String> Permissions = null;
+        public ArrayList<String> Roles = null;
 
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public ArrayList<String> getPermissions() { return permissions; }
-        public void setPermissions(ArrayList<String> value) { this.permissions = value; }
-        public ArrayList<String> getRoles() { return roles; }
-        public void setRoles(ArrayList<String> value) { this.roles = value; }
+        public String getUserName() { return UserName; }
+        public AssignRoles setUserName(String value) { this.UserName = value; return this; }
+        public ArrayList<String> getPermissions() { return Permissions; }
+        public AssignRoles setPermissions(ArrayList<String> value) { this.Permissions = value; return this; }
+        public ArrayList<String> getRoles() { return Roles; }
+        public AssignRoles setRoles(ArrayList<String> value) { this.Roles = value; return this; }
+        private static Class responseType = AssignRolesResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/unassignroles")
     public static class UnAssignRoles implements IReturn<UnAssignRolesResponse>
     {
-        public String userName = null;
-        public ArrayList<String> permissions = null;
-        public ArrayList<String> roles = null;
+        public String UserName = null;
+        public ArrayList<String> Permissions = null;
+        public ArrayList<String> Roles = null;
 
-        public String getUserName() { return userName; }
-        public void setUserName(String value) { this.userName = value; }
-        public ArrayList<String> getPermissions() { return permissions; }
-        public void setPermissions(ArrayList<String> value) { this.permissions = value; }
-        public ArrayList<String> getRoles() { return roles; }
-        public void setRoles(ArrayList<String> value) { this.roles = value; }
+        public String getUserName() { return UserName; }
+        public UnAssignRoles setUserName(String value) { this.UserName = value; return this; }
+        public ArrayList<String> getPermissions() { return Permissions; }
+        public UnAssignRoles setPermissions(ArrayList<String> value) { this.Permissions = value; return this; }
+        public ArrayList<String> getRoles() { return Roles; }
+        public UnAssignRoles setRoles(ArrayList<String> value) { this.Roles = value; return this; }
+        private static Class responseType = UnAssignRolesResponse.class;
+        public Class getResponseType() { return responseType; }
     }
 
     @Route("/posts")
     public static class QueryPosts extends QueryBase_1<Post> implements IReturn<QueryResponse<Post>>
     {
 
+        private static Class responseType = new QueryResponse<Post>().getClass();
+        public Class getResponseType() { return responseType; }
     }
 
 }
