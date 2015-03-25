@@ -4,15 +4,19 @@ package servicestack.net.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
-import android.util.Log;
 
+import net.servicestack.android.AndroidLogProvider;
 import net.servicestack.client.JsonServiceClient;
+import net.servicestack.client.Log;
+import net.servicestack.client.MimeTypes;
 import net.servicestack.client.TimeSpan;
+import net.servicestack.client.Utils;
 
 import servicestack.net.client.tests.testdtos.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,10 +27,46 @@ import java.util.UUID;
 public class TestServiceTests extends ApplicationTestCase<Application> {
     public TestServiceTests() {
         super(Application.class);
+        Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
     JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
 //    JsonServiceClient client = new JsonServiceClient("http://10.0.2.2:2020");
+
+    public void test_Can_GET_Hello(){
+        Hello request = new Hello()
+                .setName("World");
+
+        HelloResponse response = client.get(request);
+
+        assertEquals("Hello, World!", response.getResult());
+    }
+
+    public void test_Can_GET_Hello_with_CustomPath(){
+        HelloResponse response = client.get("/hello/World", HelloResponse.class);
+
+        assertEquals("Hello, World!", response.getResult());
+    }
+
+    public void test_Can_POST_Hello_with_CustomPath(){
+        HelloResponse response = client.post("/hello", new Hello().setName("World"), HelloResponse.class);
+
+        assertEquals("Hello, World!", response.getResult());
+    }
+
+    public void test_Can_GET_Hello_with_CustomPath_raw(){
+        HttpURLConnection response = client.get("/hello/World");
+        String json = Utils.readToEnd(response);
+
+        assertEquals("{\"result\":\"Hello, World!\"}", json);
+    }
+
+    public void test_Can_POST_Hello_with_CustomPath_raw(){
+        HttpURLConnection response = client.post("/hello", Utils.toUtf8Bytes("Name=World"), MimeTypes.FormUrlEncoded);
+        String json = Utils.readToEnd(response);
+
+        assertEquals("{\"result\":\"Hello, World!\"}", json);
+    }
 
     public void test_Can_POST_test_HelloAllTypes(){
         HelloAllTypes request = createHelloAllTypes();
@@ -34,9 +74,15 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         assertHelloAllTypesResponse(response, request);
     }
 
+    public void test_Can_PUT_test_HelloAllTypes(){
+        HelloAllTypes request = createHelloAllTypes();
+        HelloAllTypesResponse response = client.put(request);
+        assertHelloAllTypesResponse(response, request);
+    }
+
     public void test_Can_Serailize_AllTypes(){
         String json = client.getGson().toJson(createAllTypes());
-        Log.i("ZZZ-json",json);
+        Log.i(json);
     }
 
     /* TEST HELPERS */
