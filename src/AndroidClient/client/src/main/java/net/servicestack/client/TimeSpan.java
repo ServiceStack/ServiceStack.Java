@@ -96,11 +96,11 @@ public class TimeSpan {
         int seconds = 0;
         double ms = 0.0;
 
-        String[] t = S.splitOnFirst(xsdDuration.substring(1),'T'); //strip P
+        String[] t = Utils.splitOnFirst(xsdDuration.substring(1),'T'); //strip P
 
         boolean hasTime = t.length == 2;
 
-        String[] d = S.splitOnFirst(t[0],'D');
+        String[] d = Utils.splitOnFirst(t[0],'D');
         if (d.length == 2) {
             Integer day = Utils.tryParseInt(d[0]);
             if (day != null) {
@@ -109,7 +109,7 @@ public class TimeSpan {
         }
 
         if (hasTime) {
-            String[] h = S.splitOnFirst(t[1], 'H');
+            String[] h = Utils.splitOnFirst(t[1], 'H');
             if (h.length == 2) {
                 Integer hour = Utils.tryParseInt(h[0]);
                 if (hour != null) {
@@ -117,7 +117,7 @@ public class TimeSpan {
                 }
             }
 
-            String[] m = S.splitOnFirst(h[h.length -1], 'M');
+            String[] m = Utils.splitOnFirst(h[h.length -1], 'M');
             if (m.length == 2) {
                 Integer min = Utils.tryParseInt(m[0]);
                 if (min != null) {
@@ -125,7 +125,7 @@ public class TimeSpan {
                 }
             }
 
-            String[] s = S.splitOnFirst(m[m.length - 1], 'S');
+            String[] s = Utils.splitOnFirst(m[m.length - 1], 'S');
             if (s.length == 2) {
                 Double millis = Utils.tryParseDouble(s[0]);
                 if (millis != null){

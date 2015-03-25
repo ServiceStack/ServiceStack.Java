@@ -2,6 +2,14 @@
 
 package net.servicestack.client;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +18,7 @@ import java.util.UUID;
 
 // Generic Utils
 public class Utils {
+
     public static Integer tryParseInt(String str) {
         try {
             return Integer.parseInt(str);
@@ -156,8 +165,8 @@ public class Utils {
             : string;
 
         if (str.startsWith(wcfJsonPrefix)) {
-            String body = S.splitOnLast(S.splitOnFirst(str,'(')[1],')')[0];
-            String unixTimeStr = S.splitOnLast(body.replace('+','-'),'-')[0];
+            String body = splitOnLast(splitOnFirst(str, '(')[1], ')')[0];
+            String unixTimeStr = splitOnLast(body.replace('+', '-'), '-')[0];
             long unixTime = Long.parseLong(unixTimeStr);
             return new Date(unixTime);
         }
@@ -178,5 +187,77 @@ public class Utils {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /*String Utils*/
+    public static String[] splitOnFirst(String strVal, char needle) {
+        if (strVal == null) return new String[0];
+        int pos = strVal.indexOf(needle);
+        return pos == -1
+                ? new String[] { strVal }
+                : new String[] { strVal.substring(0, pos), strVal.substring(pos + 1) };
+    }
+
+    public static String[] splitOnLast(String strVal, char needle) {
+        if (strVal == null) return new String[0];
+        int pos = strVal.lastIndexOf(needle);
+        return pos == -1
+                ? new String[] { strVal }
+                : new String[] { strVal.substring(0, pos), strVal.substring(pos + 1) };
+    }
+
+    public static String combinePath(String basePath, String withPath){
+        if (basePath == null)
+            basePath = "";
+        if (withPath == null)
+            withPath = "";
+
+        String prefix = basePath.endsWith("/")
+                ? basePath
+                : basePath + "/";
+
+        String suffix = withPath.startsWith("/")
+                ? withPath.substring(1)
+                : withPath;
+
+        return prefix + suffix;
+    }
+
+    public static String fromUtf8Bytes(byte[] bytes) {
+        try {
+            return new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static byte[] toUtf8Bytes(String string) {
+        try {
+            return string.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String readToEnd(HttpURLConnection response){
+        try {
+            return readToEnd(response.getInputStream(), "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String readToEnd(InputStream stream, final String charsetName) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream, charsetName));
+
+        String line;
+        StringBuilder sb = new StringBuilder();
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+
+        String text = sb.toString();
+        reader.close();
+        return text;
     }
 }
