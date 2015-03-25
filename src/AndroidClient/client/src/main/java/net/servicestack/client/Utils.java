@@ -4,6 +4,10 @@ package net.servicestack.client;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +17,9 @@ import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.UUID;
 
 // Generic Utils
@@ -259,5 +265,78 @@ public class Utils {
         String text = sb.toString();
         reader.close();
         return text;
+    }
+
+    public static String getUnderlyingContentType(String contentType) {
+        return splitOnFirst(contentType, ';')[0].trim().toLowerCase();
+    }
+
+    public static boolean matchesContentType(String contentType, String matchesContentType) {
+        return getUnderlyingContentType(contentType).equals(getUnderlyingContentType(matchesContentType));
+    }
+
+    public static String sanitizeVarName(String name){
+        return name.replaceAll("_","").toLowerCase();
+    }
+
+    public static ResponseStatus createResponseStatus(Object obj) {
+        if (obj instanceof JSONObject){
+            return createResponseStatus((JSONObject)obj);
+        }
+        return null;
+    }
+    public static ResponseStatus createResponseStatus(JSONObject obj) {
+        ResponseStatus status = new ResponseStatus();
+        Iterator<?> keys = obj.keys();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            String varName = Utils.sanitizeVarName(key);
+
+            try {
+                Object field = obj.get(key);
+
+                if (varName.equals("errorcode")) {
+                    status.setErrorCode((String)field);
+                } else if (varName.equals("message")) {
+                    status.setMessage((String)field);
+                } else if (varName.equals("stacktrace")) {
+                    status.setStackTrace((String)field);
+                } else if (varName.equals("errors")) {
+
+                    if (field instanceof JSONArray){
+                        JSONArray jFields = (JSONArray)field;
+
+                        ArrayList<ResponseError> errors = new ArrayList<>();
+
+                        for (int i = 0; i < jFields.length(); i++) {
+                            JSONObject jField = jFields.getJSONObject(i);
+
+                            ResponseError fieldError = new ResponseError();
+                            Iterator<?> fieldKeys = jField.keys();
+                            while (fieldKeys.hasNext()) {
+                                String fieldKey = (String) fieldKeys.next();
+                                String fieldName = Utils.sanitizeVarName(fieldKey);
+                                Object fieldValue = jField.get(fieldKey);
+
+                                if (fieldName.equals("errorcode")) {
+                                    fieldError.setErrorCode((String)fieldValue);
+                                } else if (fieldName.equals("message")) {
+                                    fieldError.setMessage((String)fieldValue);
+                                } else if (fieldName.equals("fieldname")) {
+                                    fieldError.setFieldName((String) fieldValue);
+                                }
+                            }
+                            errors.add(fieldError);
+                        }
+                        status.setErrors(errors);
+                    }
+
+                    status.setStackTrace(obj.getString(key));
+                }
+            } catch (JSONException e) {
+                Log.e(e);
+            }
+        }
+        return status;
     }
 }

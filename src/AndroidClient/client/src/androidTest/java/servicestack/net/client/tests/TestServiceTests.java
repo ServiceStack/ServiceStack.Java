@@ -6,11 +6,14 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import net.servicestack.android.AndroidLogProvider;
+import net.servicestack.client.ExceptionFilter;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Log;
 import net.servicestack.client.MimeTypes;
+import net.servicestack.client.ResponseStatus;
 import net.servicestack.client.TimeSpan;
 import net.servicestack.client.Utils;
+import net.servicestack.client.WebServiceException;
 
 import servicestack.net.client.tests.testdtos.*;
 
@@ -85,6 +88,48 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         Log.i(json);
     }
 
+    public void test_Does_handle_404_Error() {
+        JsonServiceClient testClient = new JsonServiceClient("http://test.servicestack.net");
+
+        final Exception[] globalError = new Exception[1]; //Wow Java, you suck.
+        final Exception[] localError = new Exception[1];
+        WebServiceException thrownError = null;
+
+        JsonServiceClient.GlobalExceptionFilter = new ExceptionFilter() {
+            @Override
+            public void exec(HttpURLConnection res, Exception ex) {
+                globalError[0] = ex;
+            }
+        };
+
+        testClient.ExceptionFilter = new ExceptionFilter() {
+            @Override
+            public void exec(HttpURLConnection res, Exception ex) {
+                localError[0] = ex;
+            }
+        };
+
+        ThrowType request = new ThrowType()
+            .setType("NotFound")
+            .setMessage("not here");
+
+        try {
+            ThrowTypeResponse response = testClient.put(request);
+        }
+        catch (WebServiceException webEx){
+            thrownError = webEx;
+        }
+
+        assertNotNull(globalError[0]);
+        assertNotNull(localError[0]);
+        assertNotNull(thrownError);
+
+        ResponseStatus status = thrownError.getResponseStatus();
+
+        assertEquals("not here", status.getErrorCode());
+        assertEquals("not here", status.getMessage());
+        assertNotNull(status.getStackTrace());
+    }
     /* TEST HELPERS */
 
     HelloAllTypes createHelloAllTypes(){

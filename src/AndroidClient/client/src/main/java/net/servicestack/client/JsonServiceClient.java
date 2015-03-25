@@ -4,6 +4,10 @@ package net.servicestack.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -18,6 +22,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -29,9 +34,11 @@ public class JsonServiceClient implements ServiceClient {
     Integer timeoutMs;
     public ConnectionFilter RequestFilter;
     public ConnectionFilter ResponseFilter;
+    public ExceptionFilter ExceptionFilter;
 
     public static ConnectionFilter GlobalRequestFilter;
     public static ConnectionFilter GlobalResponseFilter;
+    public static ExceptionFilter GlobalExceptionFilter;
     Gson gson;
 
     public JsonServiceClient(String baseUrl) {
@@ -43,21 +50,24 @@ public class JsonServiceClient implements ServiceClient {
         this.timeoutMs = timeoutMs;
     }
 
-    public void setGson(Gson gson) { this.gson = gson; }
+    public GsonBuilder getGsonBuilder() {
+        return new GsonBuilder()
+            .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
+            .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
+            .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
+            .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
+            .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
+            .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer());
+    }
 
     public Gson getGson() {
         if (gson == null) {
-            gson = new GsonBuilder()
-                .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
-                .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
-                .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
-                .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
-                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
-                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer())
-                .create();
+            gson = getGsonBuilder().create();
         }
         return gson;
     }
+
+    public void setGson(Gson gson) { this.gson = gson; }
 
     public String createUrl(Object requestDto){
         return createUrl(requestDto, null);
@@ -164,37 +174,71 @@ public class JsonServiceClient implements ServiceClient {
         }
     }
 
-    public <TResponse> TResponse send(HttpURLConnection req, Class responseClass) {
+    public static RuntimeException createException(HttpURLConnection res, int responseCode){
 
+        WebServiceException webEx = null;
         try {
+            String responseBody = Utils.readToEnd(res.getErrorStream(), UTF8.name());
+            webEx = new WebServiceException(responseCode, res.getResponseMessage(), responseBody);
+
+            if (Utils.matchesContentType(res.getHeaderField(HttpHeaders.ContentType), MimeTypes.Json)){
+                JSONObject jResponse = new JSONObject(responseBody);
+
+                Iterator<?> keys = jResponse.keys();
+                while (keys.hasNext()) {
+                    String key = (String)keys.next();
+                    String varName = Utils.sanitizeVarName(key);
+                    if (varName.equals("responsestatus")) {
+                        webEx.setResponseStatus(Utils.createResponseStatus(jResponse.get(key)));
+                        break;
+                    }
+                }
+            }
+
+            return webEx;
+
+        } catch (IOException | JSONException e) {
+            if (webEx != null)
+                return webEx;
+            return new RuntimeException(e);
+        }
+    }
+
+    public <TResponse> TResponse send(HttpURLConnection req, Class responseClass) {
+        try {
+            int responseCode = req.getResponseCode();
+            if (responseCode >= 400){
+                RuntimeException ex = createException(req, responseCode);
+
+                if (ExceptionFilter != null)
+                    ExceptionFilter.exec(req, ex);
+
+                if (GlobalExceptionFilter != null)
+                    GlobalExceptionFilter.exec(req, ex);
+
+                throw ex;
+            }
+
             InputStream is = req.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             if (Log.isDebugEnabled()) {
-                String line = null;
-                StringBuilder sb = new StringBuilder();
-                while((line = reader.readLine()) != null)
-                {
-                    sb.append(line);
-                    sb.append("\n");
-                }
-
-                String json = sb.toString();
-
+                String json = Utils.readToEnd(is, UTF8.name());
                 Log.d(json);
-
-                reader.close();
 
                 TResponse response = (TResponse) getGson().fromJson(json, responseClass);
                 return response;
             }
             else {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 TResponse response = (TResponse) getGson().fromJson(reader, responseClass);
+                reader.close();
                 return response;
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            req.disconnect();
         }
     }
 
