@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-03-21 19:28:31
+Date: 2015-03-25 04:55:22
 Version: 1
 BaseUrl: http://localhost:2020
 
@@ -12,7 +12,7 @@ Package: servicestack.net.client.tests
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
-//DefaultImports: java.math.*,java.util.*,net.servicestack.*
+//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
 */
 
 package servicestack.net.client.tests;
@@ -44,31 +44,6 @@ public class dto
         public Rockstar setLastName(String value) { this.LastName = value; return this; }
         public Integer getAge() { return Age; }
         public Rockstar setAge(Integer value) { this.Age = value; return this; }
-    }
-
-    @DataContract
-    public static class ResponseStatus
-    {
-        @DataMember(Order=1)
-        public String ErrorCode = null;
-
-        @DataMember(Order=2)
-        public String Message = null;
-
-        @DataMember(Order=3)
-        public String StackTrace = null;
-
-        @DataMember(Order=4)
-        public ArrayList<ResponseError> Errors = null;
-
-        public String getErrorCode() { return ErrorCode; }
-        public ResponseStatus setErrorCode(String value) { this.ErrorCode = value; return this; }
-        public String getMessage() { return Message; }
-        public ResponseStatus setMessage(String value) { this.Message = value; return this; }
-        public String getStackTrace() { return StackTrace; }
-        public ResponseStatus setStackTrace(String value) { this.StackTrace = value; return this; }
-        public ArrayList<ResponseError> getErrors() { return Errors; }
-        public ResponseStatus setErrors(ArrayList<ResponseError> value) { this.Errors = value; return this; }
     }
 
     public static class MetadataTestChild
@@ -296,12 +271,12 @@ public class dto
         public BigDecimal Decimal = null;
         public String String = null;
         public Date DateTime = null;
-        public String TimeSpan = null;
-        public String DateTimeOffset = null;
-        public String Guid = null;
-        public Integer Char = null;
+        public TimeSpan TimeSpan = null;
+        public Date DateTimeOffset = null;
+        public UUID Guid = null;
+        public String Char = null;
         public Date NullableDateTime = null;
-        public String NullableTimeSpan = null;
+        public TimeSpan NullableTimeSpan = null;
         public ArrayList<String> StringList = null;
         public ArrayList<String> StringArray = null;
         public HashMap<String,String> StringMap = null;
@@ -336,18 +311,18 @@ public class dto
         public AllTypes setString(String value) { this.String = value; return this; }
         public Date getDateTime() { return DateTime; }
         public AllTypes setDateTime(Date value) { this.DateTime = value; return this; }
-        public String getTimeSpan() { return TimeSpan; }
-        public AllTypes setTimeSpan(String value) { this.TimeSpan = value; return this; }
-        public String getDateTimeOffset() { return DateTimeOffset; }
-        public AllTypes setDateTimeOffset(String value) { this.DateTimeOffset = value; return this; }
-        public String getGuid() { return Guid; }
-        public AllTypes setGuid(String value) { this.Guid = value; return this; }
-        public Integer getChar() { return Char; }
-        public AllTypes setChar(Integer value) { this.Char = value; return this; }
+        public TimeSpan getTimeSpan() { return TimeSpan; }
+        public AllTypes setTimeSpan(TimeSpan value) { this.TimeSpan = value; return this; }
+        public Date getDateTimeOffset() { return DateTimeOffset; }
+        public AllTypes setDateTimeOffset(Date value) { this.DateTimeOffset = value; return this; }
+        public UUID getGuid() { return Guid; }
+        public AllTypes setGuid(UUID value) { this.Guid = value; return this; }
+        public String getChar() { return Char; }
+        public AllTypes setChar(String value) { this.Char = value; return this; }
         public Date getNullableDateTime() { return NullableDateTime; }
         public AllTypes setNullableDateTime(Date value) { this.NullableDateTime = value; return this; }
-        public String getNullableTimeSpan() { return NullableTimeSpan; }
-        public AllTypes setNullableTimeSpan(String value) { this.NullableTimeSpan = value; return this; }
+        public TimeSpan getNullableTimeSpan() { return NullableTimeSpan; }
+        public AllTypes setNullableTimeSpan(TimeSpan value) { this.NullableTimeSpan = value; return this; }
         public ArrayList<String> getStringList() { return StringList; }
         public AllTypes setStringList(ArrayList<String> value) { this.StringList = value; return this; }
         public ArrayList<String> getStringArray() { return StringArray; }
@@ -738,26 +713,6 @@ public class dto
         public QueryBase setOrderByDesc(String value) { this.OrderByDesc = value; return this; }
     }
 
-    @DataContract
-    public static class ResponseError
-    {
-        @DataMember(Order=1, EmitDefaultValue=false)
-        public String ErrorCode = null;
-
-        @DataMember(Order=2, EmitDefaultValue=false)
-        public String FieldName = null;
-
-        @DataMember(Order=3, EmitDefaultValue=false)
-        public String Message = null;
-
-        public String getErrorCode() { return ErrorCode; }
-        public ResponseError setErrorCode(String value) { this.ErrorCode = value; return this; }
-        public String getFieldName() { return FieldName; }
-        public ResponseError setFieldName(String value) { this.FieldName = value; return this; }
-        public String getMessage() { return Message; }
-        public ResponseError setMessage(String value) { this.Message = value; return this; }
-    }
-
     public static class MetadataTestNestedChild
     {
         public String Name = null;
@@ -1029,10 +984,10 @@ public class dto
 
     public static class NoRepeatResponse
     {
-        public String Id = null;
+        public UUID Id = null;
 
-        public String getId() { return Id; }
-        public NoRepeatResponse setId(String value) { this.Id = value; return this; }
+        public UUID getId() { return Id; }
+        public NoRepeatResponse setId(UUID value) { this.Id = value; return this; }
     }
 
     public static class BatchThrowsResponse
@@ -1356,10 +1311,10 @@ public class dto
 
     public static class NoRepeat implements IReturn<NoRepeatResponse>
     {
-        public String Id = null;
+        public UUID Id = null;
 
-        public String getId() { return Id; }
-        public NoRepeat setId(String value) { this.Id = value; return this; }
+        public UUID getId() { return Id; }
+        public NoRepeat setId(UUID value) { this.Id = value; return this; }
         private static Class responseType = NoRepeatResponse.class;
         public Class getResponseType() { return responseType; }
     }
@@ -1444,6 +1399,7 @@ public class dto
     }
 
     @Route("/hello/{Name}")
+    // @Route("/hello")
     public static class Hello implements IReturn<HelloResponse>
     {
         @Required()
@@ -1549,8 +1505,8 @@ public class dto
      * AllowedAttributes Description
      */
     @Route(Path="/allowed-attributes", Verbs="GET")
-    // @ApiResponse(400, "Your request was not understood")
     @Api("AllowedAttributes Description")
+    // @ApiResponse(400, "Your request was not understood")
     @DataContract
     public static class AllowedAttributes
     {

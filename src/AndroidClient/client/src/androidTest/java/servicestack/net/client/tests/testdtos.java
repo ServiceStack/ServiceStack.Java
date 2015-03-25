@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-03-23 10:31:03
+Date: 2015-03-25 08:30:04
 Version: 1
 BaseUrl: http://test.servicestack.net
 
@@ -24,31 +24,6 @@ import com.google.gson.annotations.*;
 
 public class testdtos
 {
-
-    @DataContract
-    public static class ResponseStatus
-    {
-        @DataMember(Order=1)
-        public String errorCode = null;
-
-        @DataMember(Order=2)
-        public String message = null;
-
-        @DataMember(Order=3)
-        public String stackTrace = null;
-
-        @DataMember(Order=4)
-        public ArrayList<ResponseError> errors = null;
-
-        public String getErrorCode() { return errorCode; }
-        public ResponseStatus setErrorCode(String value) { this.errorCode = value; return this; }
-        public String getMessage() { return message; }
-        public ResponseStatus setMessage(String value) { this.message = value; return this; }
-        public String getStackTrace() { return stackTrace; }
-        public ResponseStatus setStackTrace(String value) { this.stackTrace = value; return this; }
-        public ArrayList<ResponseError> getErrors() { return errors; }
-        public ResponseStatus setErrors(ArrayList<ResponseError> value) { this.errors = value; return this; }
-    }
 
     public static enum ExternalEnum
     {
@@ -431,26 +406,6 @@ public class testdtos
         public RequestLogEntry setErrorResponse(Object value) { this.errorResponse = value; return this; }
         public TimeSpan getRequestDuration() { return requestDuration; }
         public RequestLogEntry setRequestDuration(TimeSpan value) { this.requestDuration = value; return this; }
-    }
-
-    @DataContract
-    public static class ResponseError
-    {
-        @DataMember(Order=1, EmitDefaultValue=false)
-        public String errorCode = null;
-
-        @DataMember(Order=2, EmitDefaultValue=false)
-        public String fieldName = null;
-
-        @DataMember(Order=3, EmitDefaultValue=false)
-        public String message = null;
-
-        public String getErrorCode() { return errorCode; }
-        public ResponseError setErrorCode(String value) { this.errorCode = value; return this; }
-        public String getFieldName() { return fieldName; }
-        public ResponseError setFieldName(String value) { this.fieldName = value; return this; }
-        public String getMessage() { return message; }
-        public ResponseError setMessage(String value) { this.message = value; return this; }
     }
 
     public static enum ExternalEnum2

@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-03-23 23:00:11
+Date: 2015-03-25 08:31:34
 Version: 1
 BaseUrl: http://techstacks.io
 
@@ -40,31 +40,6 @@ public class dto
         OperatingSystem,
         HardwareInfrastructure,
         ThirdPartyServices;
-    }
-
-    @DataContract
-    public static class ResponseStatus
-    {
-        @DataMember(Order=1)
-        public String ErrorCode = null;
-
-        @DataMember(Order=2)
-        public String Message = null;
-
-        @DataMember(Order=3)
-        public String StackTrace = null;
-
-        @DataMember(Order=4)
-        public ArrayList<ResponseError> Errors = null;
-
-        public String getErrorCode() { return ErrorCode; }
-        public ResponseStatus setErrorCode(String value) { this.ErrorCode = value; return this; }
-        public String getMessage() { return Message; }
-        public ResponseStatus setMessage(String value) { this.Message = value; return this; }
-        public String getStackTrace() { return StackTrace; }
-        public ResponseStatus setStackTrace(String value) { this.StackTrace = value; return this; }
-        public ArrayList<ResponseError> getErrors() { return Errors; }
-        public ResponseStatus setErrors(ArrayList<ResponseError> value) { this.Errors = value; return this; }
     }
 
     public static class TechnologyStack extends TechnologyStackBase
@@ -247,26 +222,6 @@ public class dto
         public TechnologyBase setTier(TechnologyTier value) { this.Tier = value; return this; }
         public Date getLastStatusUpdate() { return LastStatusUpdate; }
         public TechnologyBase setLastStatusUpdate(Date value) { this.LastStatusUpdate = value; return this; }
-    }
-
-    @DataContract
-    public static class ResponseError
-    {
-        @DataMember(Order=1, EmitDefaultValue=false)
-        public String ErrorCode = null;
-
-        @DataMember(Order=2, EmitDefaultValue=false)
-        public String FieldName = null;
-
-        @DataMember(Order=3, EmitDefaultValue=false)
-        public String Message = null;
-
-        public String getErrorCode() { return ErrorCode; }
-        public ResponseError setErrorCode(String value) { this.ErrorCode = value; return this; }
-        public String getFieldName() { return FieldName; }
-        public ResponseError setFieldName(String value) { this.FieldName = value; return this; }
-        public String getMessage() { return Message; }
-        public ResponseError setMessage(String value) { this.Message = value; return this; }
     }
 
     public static class TechnologyStackBase
