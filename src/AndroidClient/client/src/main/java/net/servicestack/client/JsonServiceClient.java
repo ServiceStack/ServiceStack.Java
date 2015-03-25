@@ -2,8 +2,6 @@
 
 package net.servicestack.client;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -35,35 +33,10 @@ public class JsonServiceClient implements ServiceClient {
     public static ConnectionFilter GlobalRequestFilter;
     public static ConnectionFilter GlobalResponseFilter;
     Gson gson;
-    static boolean DEBUG = true;
 
     public JsonServiceClient(String baseUrl) {
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
         this.replyUrl = this.baseUrl + "json/reply/";
-    }
-
-    public static class MimeTypes
-    {
-        public static final String Json = "application/json";
-    }
-
-    public static class Headers
-    {
-        public static final String Accept = "Accept";
-        public static final String ContentType = "Content-Type";
-        public static final String ContentLength = "Content-Length";
-    }
-
-    public static class HttpMethods
-    {
-        public static final String Options = "OPTIONS";
-        public static final String Head = "HEAD";
-        public static final String Get = "GET";
-        public static final String Post = "POST";
-        public static final String Put = "PUT";
-        public static final String Delete = "DELETE";
-        public static final String Trace = "TRACE";
-        public static final String Patch = "PATCH";
     }
 
     public void setTimeout(int timeoutMs) {
@@ -141,16 +114,16 @@ public class JsonServiceClient implements ServiceClient {
         if (request != null) {
             contentType = MimeTypes.Json;
             String json = getGson().toJson(request);
-            if (DEBUG){
-                Log.i("ZZZ-json>", json);
+            if (Log.isDebugEnabled()){
+                Log.d(json);
             }
             requestBody = json.getBytes(UTF8);
         }
 
-        return createRequest(url, httpMethod, contentType, requestBody);
+        return createRequest(url, httpMethod, requestBody, contentType);
     }
 
-    public HttpURLConnection createRequest(String requestUrl, String httpMethod, String requestType, byte[] requestBody) {
+    public HttpURLConnection createRequest(String requestUrl, String httpMethod, byte[] requestBody, String requestType) {
         try {
             URL url = new URL(requestUrl);
 
@@ -162,14 +135,14 @@ public class JsonServiceClient implements ServiceClient {
             }
 
             req.setRequestMethod(httpMethod);
-            req.setRequestProperty(Headers.Accept, MimeTypes.Json);
+            req.setRequestProperty(HttpHeaders.Accept, MimeTypes.Json);
 
             if (requestType != null) {
-                req.setRequestProperty(Headers.ContentType, requestType);
+                req.setRequestProperty(HttpHeaders.ContentType, requestType);
             }
 
             if (requestBody != null) {
-                req.setRequestProperty(Headers.ContentLength, Integer.toString(requestBody.length));
+                req.setRequestProperty(HttpHeaders.ContentLength, Integer.toString(requestBody.length));
                 DataOutputStream wr = new DataOutputStream(req.getOutputStream());
                 wr.write(requestBody);
                 wr.flush();
@@ -191,13 +164,13 @@ public class JsonServiceClient implements ServiceClient {
         }
     }
 
-    public <TResponse> TResponse send(HttpURLConnection req, String httpMethod, Class responseClass) {
+    public <TResponse> TResponse send(HttpURLConnection req, Class responseClass) {
 
         try {
             InputStream is = req.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-            if (DEBUG) {
+            if (Log.isDebugEnabled()) {
                 String line = null;
                 StringBuilder sb = new StringBuilder();
                 while((line = reader.readLine()) != null)
@@ -208,7 +181,7 @@ public class JsonServiceClient implements ServiceClient {
 
                 String json = sb.toString();
 
-                Log.i("ZZZ-json<", json);
+                Log.d(json);
 
                 reader.close();
 
@@ -225,45 +198,105 @@ public class JsonServiceClient implements ServiceClient {
         }
     }
 
-    static String combinePath(String basePath, String withPath){
-        if (basePath == null)
-            basePath = "";
-        if (withPath == null)
-            withPath = "";
-
-        String prefix = basePath.endsWith("/")
-                ? basePath
-                : basePath + "/";
-
-        String suffix = withPath.startsWith("/")
-                ? withPath.substring(1)
-                : withPath;
-
-        return prefix + suffix;
-    }
-
     static String typeName(Object o){
         return o.getClass().getSimpleName();
     }
 
+    private String resolveUrl(String relativeOrAbsoluteUrl) {
+        return relativeOrAbsoluteUrl.startsWith("http:")
+            || relativeOrAbsoluteUrl.startsWith("https:")
+            ? relativeOrAbsoluteUrl
+            : Utils.combinePath(baseUrl, relativeOrAbsoluteUrl);
+    }
+
     @Override
     public <TResponse> TResponse get(IReturn<TResponse> request) {
-        return send(createRequest(createUrl(request), HttpMethods.Get), Headers.ContentType, request.getResponseType());
+        return send(
+            createRequest(createUrl(request), HttpMethods.Get),
+            request.getResponseType());
+    }
+
+    @Override
+    public <TResponse> TResponse get(String path, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Get),
+                responseType);
+    }
+
+    @Override
+    public HttpURLConnection get(String path) {
+        return createRequest(resolveUrl(path), HttpMethods.Get);
     }
 
     @Override
     public <TResponse> TResponse post(IReturn<TResponse> request) {
-        return send(createRequest(combinePath(replyUrl, typeName(request)), HttpMethods.Post, request), Headers.ContentType, request.getResponseType());
+        return send(
+            createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request),
+            request.getResponseType());
+    }
+
+    @Override
+    public <TResponse> TResponse post(String path, Object request, Class responseType) {
+        return send(
+            createRequest(resolveUrl(path), HttpMethods.Post, request),
+            responseType);
+    }
+
+    @Override
+    public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Class responseType) {
+        return send(
+            createRequest(resolveUrl(path), HttpMethods.Post, requestBody, contentType),
+            responseType);
+    }
+
+    @Override
+    public HttpURLConnection post(String path, byte[] requestBody, String contentType) {
+        return createRequest(resolveUrl(path), HttpMethods.Post, requestBody, contentType);
     }
 
     @Override
     public <TResponse> TResponse put(IReturn<TResponse> request) {
-        return send(createRequest(combinePath(replyUrl,typeName(request)), HttpMethods.Put, request), Headers.ContentType, request.getResponseType());
+        return send(
+            createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request),
+            request.getResponseType());
+    }
+
+    @Override
+    public <TResponse> TResponse put(String path, Object request, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Put, request),
+                responseType);
+    }
+
+    @Override
+    public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Put, requestBody, contentType),
+                responseType);
+    }
+
+    @Override
+    public HttpURLConnection put(String path, byte[] requestBody, String contentType) {
+        return createRequest(resolveUrl(path), HttpMethods.Put, requestBody, contentType);
     }
 
     @Override
     public <TResponse> TResponse delete(IReturn<TResponse> request) {
-        return send(createRequest(createUrl(request), HttpMethods.Delete), Headers.ContentType, request.getResponseType());
+        return send(
+            createRequest(createUrl(request), HttpMethods.Delete),
+            request.getResponseType());
+    }
+
+    @Override
+    public <TResponse> TResponse delete(String path, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Delete),
+                responseType);
+    }
+
+    @Override
+    public HttpURLConnection delete(String path) {
+        return createRequest(resolveUrl(path), HttpMethods.Delete);
     }
 
 }
