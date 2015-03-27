@@ -43,6 +43,24 @@ public class Utils {
         }
     }
 
+    public static Field[] getSerializableFields(Class type){
+        List<Field> fields = new ArrayList<Field>();
+        for (Class<?> c = type; c != null; c = c.getSuperclass()) {
+            if (c == Object.class)
+                break;
+
+            for (Field f : c.getDeclaredFields()) {
+                if (Modifier.isStatic(f.getModifiers()))
+                    continue;
+                if (!Modifier.isPublic(f.getModifiers()))
+                    continue;
+
+                fields.add(f);
+            }
+        }
+        return fields.toArray(new Field[fields.size()]);
+    }
+
     public static void reverse(byte[] bytes) {
         if (bytes == null)
             return;
