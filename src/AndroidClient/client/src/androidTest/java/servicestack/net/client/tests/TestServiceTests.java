@@ -130,6 +130,51 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         assertEquals("not here", status.getMessage());
         assertNotNull(status.getStackTrace());
     }
+
+    public void test_Does_handle_ValidationException(){
+        ThrowValidation request = new ThrowValidation()
+            .setEmail("invalidemail");
+
+        try {
+            client.post(request);
+            fail("Should throw");
+        } catch (WebServiceException webEx){
+            ResponseStatus status = webEx.getResponseStatus();
+
+            assertNotNull(status);
+            assertEquals(3, status.getErrors().size());
+
+            assertEquals(status.getErrors().get(0).getErrorCode(), status.getErrorCode());
+            assertEquals(status.getErrors().get(0).getMessage(), status.getMessage());
+
+            assertEquals("InclusiveBetween", status.getErrors().get(0).errorCode);
+            assertEquals("'Age' must be between 1 and 120. You entered 0.", status.getErrors().get(0).getMessage());
+            assertEquals("Age", status.getErrors().get(0).getFieldName());
+
+            assertEquals("NotEmpty", status.getErrors().get(1).errorCode);
+            assertEquals("'Required' should not be empty.", status.getErrors().get(1).getMessage());
+            assertEquals("Required", status.getErrors().get(1).getFieldName());
+
+            assertEquals("Email", status.getErrors().get(2).errorCode);
+            assertEquals("'Email' is not a valid email address.", status.getErrors().get(2).getMessage());
+            assertEquals("Email", status.getErrors().get(2).getFieldName());
+        }
+    }
+
+    public void test_Can_POST_valid_ThrowValidation_request() {
+        ThrowValidation request = new ThrowValidation()
+            .setAge(21)
+            .setRequired("foo")
+            .setEmail("my@gmail.com");
+
+        ThrowValidationResponse response = client.post(request);
+
+        assertNotNull(response);
+        assertEquals(request.getAge(), response.getAge());
+        assertEquals(request.getRequired(), response.getRequired());
+        assertEquals(request.getEmail(), response.getEmail());
+    }
+
     /* TEST HELPERS */
 
     HelloAllTypes createHelloAllTypes(){
