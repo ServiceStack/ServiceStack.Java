@@ -79,10 +79,7 @@ public class JsonServiceClient implements ServiceClient {
         StringBuilder sb = new StringBuilder();
         Field lastField = null;
         try {
-            for (Field f : requestDto.getClass().getDeclaredFields()) {
-                if (Modifier.isStatic(f.getModifiers()))
-                    continue;
-
+            for (Field f : Utils.getSerializableFields(requestDto.getClass())) {
                 Object val = f.get(requestDto);
 
                 if (val == null)
@@ -261,6 +258,13 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public <TResponse> TResponse get(IReturn<TResponse> request, Map<String, String> queryParams) {
+        return send(
+            createRequest(createUrl(request, queryParams), HttpMethods.Get),
+            request.getResponseType());
+    }
+
+    @Override
     public <TResponse> TResponse get(String path, Class responseType) {
         return send(
                 createRequest(resolveUrl(path), HttpMethods.Get),
@@ -282,8 +286,8 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public <TResponse> TResponse post(String path, Object request, Class responseType) {
         return send(
-            createRequest(resolveUrl(path), HttpMethods.Post, request),
-            responseType);
+                createRequest(resolveUrl(path), HttpMethods.Post, request),
+                responseType);
     }
 
     @Override
@@ -328,6 +332,13 @@ public class JsonServiceClient implements ServiceClient {
     public <TResponse> TResponse delete(IReturn<TResponse> request) {
         return send(
             createRequest(createUrl(request), HttpMethods.Delete),
+            request.getResponseType());
+    }
+
+    @Override
+    public <TResponse> TResponse delete(IReturn<TResponse> request, Map<String, String> queryParams) {
+        return send(
+            createRequest(createUrl(request, queryParams), HttpMethods.Delete),
             request.getResponseType());
     }
 
