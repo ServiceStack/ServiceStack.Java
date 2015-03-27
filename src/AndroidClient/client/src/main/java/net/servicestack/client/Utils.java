@@ -2,8 +2,6 @@
 
 package net.servicestack.client;
 
-import com.google.gson.Gson;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,13 +11,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 // Generic Utils
@@ -161,6 +163,14 @@ public class Utils {
         }
     };
 
+    private static final ThreadLocal<SimpleDateFormat> iso8601FormatterWithMs = new ThreadLocal<SimpleDateFormat>(){
+        @Override
+        protected SimpleDateFormat initialValue()
+        {
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        }
+    };
+
     public static String toJsonDate(Date date) {
         return "/Date(" + date.getTime() + "-0000)/";
     }
@@ -180,6 +190,24 @@ public class Utils {
         return fromIsoDateString(string);
     }
 
+    public final static int isoDateLength = "YYYY-MM-DDT00:00:00+00:00".length();
+    public final static int isoDateWithMsLength = "YYYY-MM-DDT00:00:00.000+00:00".length();
+
+    public final static int isoDateWithSubMsMin = "YYYY-MM-DDT00:00:00.0000+00:00".length();
+    public final static int isoDateWithSubMsMax = "YYYY-MM-DDT00:00:00.0000000+00:00".length();
+
+    public static String stripSubMillis(String iso8601string){
+        if (iso8601string.length() < isoDateWithSubMsMin || iso8601string.length() > isoDateWithSubMsMax)
+            return iso8601string;
+
+        String[] parts = splitOnFirst(iso8601string, '.');
+
+        String suffix = parts[1].substring(parts[1].length() - 6); //+00:00
+        String ms = parts[1].substring(0, 3);
+
+        return parts[0] + "." + ms + suffix;
+    }
+
     public static Date fromIsoDateString(String iso8601string){
         if (iso8601string == null)
             return null;
@@ -187,12 +215,128 @@ public class Utils {
         String s = iso8601string.replace("Z", "+00:00");
         try {
             s = s.substring(0, 22) + s.substring(23);  // to get rid of the ":"
+            s = stripSubMillis(s);
+
+            if (s.length() == isoDateWithMsLength)
+                return iso8601FormatterWithMs.get().parse(s);
+
             return iso8601Formatter.get().parse(s);
-        } catch (IndexOutOfBoundsException e) {
-            throw new RuntimeException("Invalid length");
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+
+        } catch (Exception e) {
+            return ParseManual(iso8601string);
         }
+    }
+
+    public static Date ParseManual(String dateTimeStr)
+    {
+        if (dateTimeStr == null || dateTimeStr.length() < "yyyy-MM-dd".length())
+            return null;
+
+        if (dateTimeStr.endsWith("Z"))
+            dateTimeStr = dateTimeStr.substring(0, dateTimeStr.length() - 1);
+
+        String[] parts = dateTimeStr.split("T");
+        if (parts.length == 1)
+            parts = Utils.splitOnFirst(dateTimeStr, ' ');
+
+        String[] dateParts = parts[0].split("-");
+        int hh = 0, min = 0, ss = 0, ms = 0;
+        double subMs = 0;
+        int offsetMultiplier = 0;
+
+        if (parts.length == 1)
+        {
+            return new Date(
+                Utils.tryParseInt(dateParts[0]) - 1900,
+                Utils.tryParseInt(dateParts[1]) - 1,
+                Utils.tryParseInt(dateParts[2]),
+                0, 0, 0);
+        }
+        else if (parts.length == 2)
+        {
+            String[] timeStringParts = parts[1].split("\\+");
+            if (timeStringParts.length == 2)
+            {
+                offsetMultiplier = -1;
+            }
+            else
+            {
+                timeStringParts = parts[1].split("-");
+                if (timeStringParts.length == 2)
+                {
+                    offsetMultiplier = 1;
+                }
+            }
+
+            String timeOffset = timeStringParts.length == 2 ? timeStringParts[1] : null;
+            String[] timeParts = timeStringParts[0].split(":");
+
+            if (timeParts.length == 3)
+            {
+                Integer val = null;
+                if ((val = Utils.tryParseInt(timeParts[0])) != null)
+                    hh = val;
+
+                if ((val = Utils.tryParseInt(timeParts[1])) != null)
+                    min = val;
+
+                String[] secParts = timeParts[2].split("\\.");
+
+                if ((val = Utils.tryParseInt(secParts[0])) != null)
+                    ss = val;
+
+                if (secParts.length == 2)
+                {
+                    String msStr = String.format("%03d", Utils.tryParseInt(secParts[1]));
+                    ms = Utils.tryParseInt(msStr.substring(0, 3));
+
+                    if (msStr.length() > 3)
+                    {
+                        String subMsStr = msStr.substring(3);
+//                        subMs = Utils.tryParseDouble(subMsStr) / Math.pow(10, subMsStr.length());
+                    }
+                }
+            }
+
+            Date dateTime = new Date(
+                Utils.tryParseInt(dateParts[0]) - 1900,
+                Utils.tryParseInt(dateParts[1]) - 1,
+                Utils.tryParseInt(dateParts[2]),
+                hh, min, ss);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(dateTime);
+
+            if (ms > 0){
+                cal.add(Calendar.MILLISECOND, ms);
+            }
+
+//            if (subMs != 0)
+//                dateTime=dateTime.AddMilliseconds(subMs); //Doesn't support sub millis
+
+            if (offsetMultiplier != 0 && timeOffset != null)
+            {
+                timeParts = timeOffset.split(":");
+                if (timeParts.length == 2)
+                {
+                    hh = Utils.tryParseInt(timeParts[0]);
+                    min = Utils.tryParseInt(timeParts[1]);
+                }
+                else
+                {
+                    hh = Utils.tryParseInt(timeOffset.substring(0, 2));
+                    min = Utils.tryParseInt(timeOffset.substring(2));
+                }
+
+                cal.add(Calendar.HOUR, offsetMultiplier * hh);
+                cal.add(Calendar.MINUTE, offsetMultiplier * min);
+            }
+
+            dateTime = cal.getTime();
+            return dateTime;
+        }
+
+        return null;
     }
 
     /*String Utils*/
