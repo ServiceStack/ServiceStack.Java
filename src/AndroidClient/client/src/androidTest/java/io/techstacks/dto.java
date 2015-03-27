@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-03-25 08:31:34
+Date: 2015-03-27 05:53:22
 Version: 1
 BaseUrl: http://techstacks.io
 
@@ -933,8 +933,11 @@ public class dto
     @AutoQueryViewer(Title="Find Technologies", Description="Explore different Technologies", IconUrl="/img/app/tech-white-75.png", DefaultSearchField="Tier", DefaultSearchType="=", DefaultSearchText="Data")
     public static class FindTechnologies extends QueryBase_1<Technology> implements IReturn<QueryResponse<Technology>>
     {
+        public String Name = null;
         public Boolean Reload = null;
 
+        public String getName() { return Name; }
+        public FindTechnologies setName(String value) { this.Name = value; return this; }
         public Boolean isReload() { return Reload; }
         public FindTechnologies setReload(Boolean value) { this.Reload = value; return this; }
         private static Class responseType = new QueryResponse<Technology>().getClass();
