@@ -21,7 +21,7 @@ public abstract class AsyncResult<T> {
 
     public final void completeResult(T value){
         try {
-            if (ex != null){
+            if (ex == null){
                 setResult(value);
                 success(value);
             }
