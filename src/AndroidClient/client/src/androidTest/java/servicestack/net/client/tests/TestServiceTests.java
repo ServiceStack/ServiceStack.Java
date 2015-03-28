@@ -209,10 +209,10 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
             .setDateTimeOffset(new Date(101, 0, 1))
             .setTimeSpan(new TimeSpan().addHours(1))
             .setGuid(UUID.randomUUID())
-            .setStringList(createList("A", "B", "C"))
-            .setStringArray(createList("D", "E", "F"))
-            .setStringMap(createMap("A", "D", "B", "E", "C", "F"))
-            .setIntStringMap(createMap(1, "A", 2, "B", 3, "C"))
+            .setStringList(Utils.createList("A", "B", "C"))
+            .setStringArray(Utils.createList("D", "E", "F"))
+            .setStringMap(Utils.createMap("A", "D", "B", "E", "C", "F"))
+            .setIntStringMap(Utils.createMap(1, "A", 2, "B", 3, "C"))
             .setSubType(new SubType().setId(1).setName("name"));
 
         return to;
@@ -220,14 +220,14 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
     AllCollectionTypes createAllCollectionTypes(){
         AllCollectionTypes to = new AllCollectionTypes()
-            .setIntArray(createList(1, 2, 3))
-            .setIntList(createList(4, 5, 6))
-            .setStringArray(createList("A", "B", "C"))
-            .setStringList(createList("D","E","F"))
-            .setPocoArray(createList(createPoco("pocoArray")))
-            .setPocoList(createList(createPoco("pocoList")))
-            .setPocoLookup(createMap("A", createList(createPoco("B"), createPoco("C"))))
-            .setPocoLookupMap(createMap("A", createList(createMap("B", createPoco("C")), createMap("D", createPoco("E")))));
+            .setIntArray(Utils.createList(1, 2, 3))
+            .setIntList(Utils.createList(4, 5, 6))
+            .setStringArray(Utils.createList("A", "B", "C"))
+            .setStringList(Utils.createList("D","E","F"))
+            .setPocoArray(Utils.createList(createPoco("pocoArray")))
+            .setPocoList(Utils.createList(createPoco("pocoList")))
+            .setPocoLookup(Utils.createMap("A", Utils.createList(createPoco("B"), createPoco("C"))))
+            .setPocoLookupMap(Utils.createMap("A", Utils.createList(Utils.createMap("B", createPoco("C")), Utils.createMap("D", createPoco("E")))));
         return to;
     }
 
@@ -311,32 +311,5 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
     void assertPocoEquals(Poco expected, Poco actual){
         assertNotNull(actual);
         assertEquals(actual.getName(), expected.getName());
-    }
-
-    <T> ArrayList<T> createList(T... params) {
-        ArrayList<T> to = new ArrayList<>();
-        to.addAll(Arrays.asList(params));
-        return to;
-    }
-
-    <K,V> HashMap<K,V> createMap(K k1, V v1) {
-        HashMap<K,V> to = new HashMap<>();
-        to.put(k1, v1);
-        return to;
-    }
-
-    <K,V> HashMap<K,V> createMap(K k1, V v1, K k2, V v2) {
-        HashMap<K,V> to = new HashMap<>();
-        to.put(k1, v1);
-        to.put(k2, v2);
-        return to;
-    }
-
-    <K,V> HashMap<K,V> createMap(K k1, V v1, K k2, V v2, K k3, V v3) {
-        HashMap<K,V> to = new HashMap<>();
-        to.put(k1, v1);
-        to.put(k2, v2);
-        to.put(k3, v3);
-        return to;
     }
 }

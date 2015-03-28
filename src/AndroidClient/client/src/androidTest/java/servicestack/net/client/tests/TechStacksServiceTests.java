@@ -73,7 +73,7 @@ public class TechStacksServiceTests extends ApplicationTestCase<Application> {
             .setTake(5);
 
         QueryResponse<Technology> response = client.get(request,
-                createMap("DescriptionContains","framework"));
+            Utils.createMap("DescriptionContains","framework"));
 
         assertEquals(5, response.getResults().size());
     }
@@ -195,7 +195,7 @@ public class TechStacksServiceTests extends ApplicationTestCase<Application> {
     }
     /* TEST HELPERS */
 
-    private void assertOverviewResponse(OverviewResponse r) {
+    public static void assertOverviewResponse(OverviewResponse r) {
         assertNotNull(r);
         assertTrue(r.getTopUsers().size() > 0);
         assertTrue(r.getTopTechnologies().size() > 0);
@@ -204,16 +204,9 @@ public class TechStacksServiceTests extends ApplicationTestCase<Application> {
         assertTrue(r.getTopTechnologiesByTier().size() > 0);
     }
 
-    private void assertGetTechnologyResponse(GetTechnologyResponse r) {
+    public static void assertGetTechnologyResponse(GetTechnologyResponse r) {
         assertNotNull(r);
         assertEquals("ServiceStack", r.getTechnology().getName());
         assertTrue(r.getTechnologyStacks().size() > 0);
     }
-
-    <K,V> HashMap<K,V> createMap(K k1, V v1) {
-        HashMap<K,V> to = new HashMap<>();
-        to.put(k1, v1);
-        return to;
-    }
-
 }
