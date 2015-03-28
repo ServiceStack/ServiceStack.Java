@@ -1,3 +1,5 @@
+//  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
+
 package net.servicestack.android;
 
 import net.servicestack.client.LogProvider;

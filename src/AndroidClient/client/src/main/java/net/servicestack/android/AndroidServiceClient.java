@@ -1,8 +1,10 @@
+//  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
+
 package net.servicestack.android;
 
 import android.os.AsyncTask;
 
-import net.servicestack.client.AsyncResponse;
+import net.servicestack.client.AsyncResult;
 import net.servicestack.client.AsyncServiceClient;
 import net.servicestack.client.IReturn;
 import net.servicestack.client.JsonServiceClient;
@@ -16,403 +18,360 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         super(baseUrl);
     }
 
+    // Override to customize execution of AsyncTask
+    public <T,TResponse> void execTask(AsyncTask<T,Void,TResponse> asyncTask, T... request){
+        asyncTask.execute(request);
+    }
+
     /* GET */
 
-    public <T> void getAsync(IReturn<T> request, final AsyncResponse<T> asyncResponse){
+    public <T> void getAsync(IReturn<T> request, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
-        new AsyncTask<IReturn<T>, Void, T>(){
+        execTask(new AsyncTask<IReturn<T>, Void, T>(){
             @Override
             protected T doInBackground(IReturn<T>... params) {
                 try {
                     return client.get(params[0]);
                 } catch (Exception e){
-                    asyncResponse.error(e);
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(request);
+        }, request);
     }
 
-    public <T> void getAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResponse<T> asyncResponse){
+    public <T> void getAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
-        new AsyncTask<IReturn<T>, Void, T>(){
+        execTask(new AsyncTask<IReturn<T>, Void, T>() {
             @Override
             protected T doInBackground(IReturn<T>... params) {
                 try {
                     return client.get(params[0], queryParams);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(request);
+        }, request);
     }
 
-    public <T> void getAsync(String path, final Class responseType, final AsyncResponse<T> asyncResponse) {
+    public <T> void getAsync(String path, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, T>(){
+        execTask(new AsyncTask<String, Void, T>() {
             @Override
             protected T doInBackground(String... params) {
                 try {
                     return client.get(params[0], responseType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
-    public void getAsync(String path, final AsyncResponse<HttpURLConnection> asyncResponse) {
+    public void getAsync(String path, final AsyncResult<HttpURLConnection> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, HttpURLConnection>(){
+        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
             @Override
             protected HttpURLConnection doInBackground(String... params) {
                 try {
                     return client.get(params[0]);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(HttpURLConnection response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     /* POST */
 
     @Override
-    public <T> void postAsync(IReturn<T> request, final AsyncResponse<T> asyncResponse) {
+    public <T> void postAsync(IReturn<T> request, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<IReturn<T>, Void, T>(){
+        execTask(new AsyncTask<IReturn<T>, Void, T>() {
             @Override
             protected T doInBackground(IReturn<T>... params) {
                 try {
                     return client.post(params[0]);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(request);
+        }, request);
     }
 
     @Override
-    public <T> void postAsync(String path, final Object request, final Class responseType, final AsyncResponse<T> asyncResponse) {
+    public <T> void postAsync(String path, final Object request, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, T>(){
+        execTask(new AsyncTask<String, Void, T>() {
             @Override
             protected T doInBackground(String... params) {
                 try {
                     return client.post(params[0], request, responseType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     @Override
-    public <T> void postAsync(String path, final byte[] requestBody, final String contentType, final Class responseType, final AsyncResponse<T> asyncResponse) {
+    public <T> void postAsync(String path, final byte[] requestBody, final String contentType, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, T>(){
+        execTask(new AsyncTask<String, Void, T>() {
             @Override
             protected T doInBackground(String... params) {
                 try {
                     return client.post(params[0], requestBody, contentType, responseType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     @Override
-    public void postAsync(String path, final byte[] requestBody, final String contentType, final AsyncResponse<HttpURLConnection> asyncResponse) {
+    public void postAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<HttpURLConnection> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, HttpURLConnection>(){
+        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
             @Override
             protected HttpURLConnection doInBackground(String... params) {
                 try {
                     return client.post(params[0], requestBody, contentType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(HttpURLConnection response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     /* PUT */
 
     @Override
-    public <T> void putAsync(IReturn<T> request, final AsyncResponse<T> asyncResponse) {
+    public <T> void putAsync(IReturn<T> request, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<IReturn<T>, Void, T>(){
+        execTask(new AsyncTask<IReturn<T>, Void, T>() {
             @Override
             protected T doInBackground(IReturn<T>... params) {
                 try {
                     return client.put(params[0]);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(request);
+        }, request);
     }
 
     @Override
-    public <T> void putAsync(String path, final Object request, final Class responseType, final AsyncResponse<T> asyncResponse) {
+    public <T> void putAsync(String path, final Object request, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, T>(){
+        execTask(new AsyncTask<String, Void, T>() {
             @Override
             protected T doInBackground(String... params) {
                 try {
                     return client.put(params[0], request, responseType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     @Override
-    public <T> void putAsync(String path, final byte[] requestBody, final String contentType, final Class responseType, final AsyncResponse<T> asyncResponse) {
+    public <T> void putAsync(String path, final byte[] requestBody, final String contentType, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, T>(){
+        execTask(new AsyncTask<String, Void, T>() {
             @Override
             protected T doInBackground(String... params) {
                 try {
                     return client.put(params[0], requestBody, contentType, responseType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     @Override
-    public void putAsync(String path, final byte[] requestBody, final String contentType, final AsyncResponse<HttpURLConnection> asyncResponse) {
+    public void putAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<HttpURLConnection> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, HttpURLConnection>(){
+        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
             @Override
             protected HttpURLConnection doInBackground(String... params) {
                 try {
                     return client.put(params[0], requestBody, contentType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(HttpURLConnection response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
     /* DELETE */
 
-    public <T> void deleteAsync(IReturn<T> request, final AsyncResponse<T> asyncResponse){
+    public <T> void deleteAsync(IReturn<T> request, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
-        new AsyncTask<IReturn<T>, Void, T>(){
+        execTask(new AsyncTask<IReturn<T>, Void, T>() {
             @Override
             protected T doInBackground(IReturn<T>... params) {
                 try {
                     return client.delete(params[0]);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(request);
+        }, request);
     }
 
-    public <T> void deleteAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResponse<T> asyncResponse){
+    public <T> void deleteAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
-        new AsyncTask<IReturn<T>, Void, T>(){
+        execTask(new AsyncTask<IReturn<T>, Void, T>() {
             @Override
             protected T doInBackground(IReturn<T>... params) {
                 try {
                     return client.delete(params[0], queryParams);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(request);
+        }, request);
     }
 
-    public <T> void deleteAsync(String path, final Class responseType, final AsyncResponse<T> asyncResponse) {
+    public <T> void deleteAsync(String path, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, T>(){
+        execTask(new AsyncTask<String, Void, T>() {
             @Override
             protected T doInBackground(String... params) {
                 try {
                     return client.delete(params[0], responseType);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(T response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 
-    public void deleteAsync(String path, final AsyncResponse<HttpURLConnection> asyncResponse) {
+    public void deleteAsync(String path, final AsyncResult<HttpURLConnection> asyncResult) {
         final AndroidServiceClient client = this;
-        new AsyncTask<String, Void, HttpURLConnection>(){
+        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
             @Override
             protected HttpURLConnection doInBackground(String... params) {
                 try {
                     return client.delete(params[0]);
-                } catch (Exception e){
-                    asyncResponse.error(e);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
                     return null;
                 }
             }
 
             @Override
             protected void onPostExecute(HttpURLConnection response) {
-                if (response != null) {
-                    asyncResponse.success(response);
-                }
-                asyncResponse.complete();
+                asyncResult.completeResult(response);
             }
 
-        }.execute(path);
+        }, path);
     }
 }

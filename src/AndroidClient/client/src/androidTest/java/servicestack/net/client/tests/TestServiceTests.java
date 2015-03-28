@@ -177,20 +177,21 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
     /* TEST HELPERS */
 
-    HelloAllTypes createHelloAllTypes(){
+    public static HelloAllTypes createHelloAllTypes(){
         HelloAllTypes to = new HelloAllTypes()
             .setName("name")
             .setAllTypes(createAllTypes())
             .setAllCollectionTypes(createAllCollectionTypes());
         return to;
     }
-    private void assertHelloAllTypesResponse(HelloAllTypesResponse actual, HelloAllTypes expected) {
+
+    public static void assertHelloAllTypesResponse(HelloAllTypesResponse actual, HelloAllTypes expected) {
         assertNotNull(actual);
         assertAllTypes(actual.allTypes, expected.allTypes);
         assertAllCollectionTypes(actual.allCollectionTypes, expected.allCollectionTypes);
     }
 
-    AllTypes createAllTypes() {
+    public static AllTypes createAllTypes() {
         AllTypes to = new AllTypes()
             .setId(1)
             .setChar("c")
@@ -218,7 +219,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         return to;
     }
 
-    AllCollectionTypes createAllCollectionTypes(){
+    public static AllCollectionTypes createAllCollectionTypes(){
         AllCollectionTypes to = new AllCollectionTypes()
             .setIntArray(Utils.createList(1, 2, 3))
             .setIntList(Utils.createList(4, 5, 6))
@@ -231,11 +232,11 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         return to;
     }
 
-    Poco createPoco(String name){
+    public static Poco createPoco(String name){
         return new Poco().setName(name);
     }
 
-    private void assertAllTypes(AllTypes actual, AllTypes expected) {
+    public static void assertAllTypes(AllTypes actual, AllTypes expected) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getByte(), actual.getByte());
         assertEquals(expected.getShort(), actual.getShort());
@@ -261,7 +262,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         assertEquals(expected.getSubType().getName(), actual.getSubType().getName());
     }
 
-    private void assertAllCollectionTypes(AllCollectionTypes actual, AllCollectionTypes expected) {
+    public static void assertAllCollectionTypes(AllCollectionTypes actual, AllCollectionTypes expected) {
         assertEquals(expected.getIntArray(), actual.getIntArray());
         assertEquals(expected.getIntList(), actual.getIntList());
         assertEquals(expected.getStringArray(), actual.getStringArray());
@@ -273,42 +274,42 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         assertPocoLookupMapEquals(expected.getPocoLookupMap(), actual.getPocoLookupMap());
     }
 
-    void assertPocoEquals(List<Poco> expected, List<Poco> actual){
+    public static void assertPocoEquals(List<Poco> expected, List<Poco> actual){
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             assertPocoEquals(expected.get(i), actual.get(i));
         }
     }
 
-    void assertPocoLookupEquals(HashMap<String,ArrayList<Poco>> expected, HashMap<String,ArrayList<Poco>> actual){
+    public static void assertPocoLookupEquals(HashMap<String,ArrayList<Poco>> expected, HashMap<String,ArrayList<Poco>> actual){
         assertEquals(expected.size(), actual.size());
         for (String key : actual.keySet()) {
             assertPocoEquals(expected.get(key), actual.get(key));
         }
     }
 
-    void assertPocoLookupMapEquals(HashMap<String,ArrayList<HashMap<String,Poco>>> expected, HashMap<String,ArrayList<HashMap<String,Poco>>> actual){
+    public static void assertPocoLookupMapEquals(HashMap<String,ArrayList<HashMap<String,Poco>>> expected, HashMap<String,ArrayList<HashMap<String,Poco>>> actual){
         assertEquals(expected.size(), actual.size());
         for (String key : actual.keySet()) {
             assertPocoEquals(expected.get(key), actual.get(key));
         }
     }
 
-    private void assertPocoEquals(ArrayList<HashMap<String, Poco>> expected, ArrayList<HashMap<String, Poco>> actual) {
+    public static void assertPocoEquals(ArrayList<HashMap<String, Poco>> expected, ArrayList<HashMap<String, Poco>> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             assertPocoEquals(expected.get(i), actual.get(i));
         }
     }
 
-    private void assertPocoEquals(HashMap<String, Poco> expected, HashMap<String, Poco> actual) {
+    public static void assertPocoEquals(HashMap<String, Poco> expected, HashMap<String, Poco> actual) {
         assertEquals(expected.size(), actual.size());
         for (String key : actual.keySet()) {
             assertPocoEquals(expected.get(key), actual.get(key));
         }
     }
 
-    void assertPocoEquals(Poco expected, Poco actual){
+    public static void assertPocoEquals(Poco expected, Poco actual){
         assertNotNull(actual);
         assertEquals(actual.getName(), expected.getName());
     }

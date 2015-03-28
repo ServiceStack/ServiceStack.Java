@@ -5,7 +5,7 @@ import android.test.ApplicationTestCase;
 
 import net.servicestack.android.AndroidLogProvider;
 import net.servicestack.android.AndroidServiceClient;
-import net.servicestack.client.AsyncResponse;
+import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
 
@@ -25,7 +25,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
     public void test_Can_GET_TechStacks_Overview() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync(new Overview(), new AsyncResponse<OverviewResponse>(){
+        client.getAsync(new Overview(), new AsyncResult<OverviewResponse>(){
             @Override
             public void success(OverviewResponse response) {
                 TechStacksServiceTests.assertOverviewResponse(response);
@@ -43,7 +43,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
     public void test_Can_GET_TechStacks_AppOverview_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync(new AppOverview(), new AsyncResponse<AppOverviewResponse>(){
+        client.getAsync(new AppOverview(), new AsyncResult<AppOverviewResponse>(){
             @Override
             public void success(AppOverviewResponse r) {
                 assertNotNull(r);
@@ -63,7 +63,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
     public void test_Can_GET_TechStacks_Overview_with_relative_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync("/overview", OverviewResponse.class, new AsyncResponse<OverviewResponse>() {
+        client.getAsync("/overview", OverviewResponse.class, new AsyncResult<OverviewResponse>() {
             @Override
             public void success(OverviewResponse response) {
                 TechStacksServiceTests.assertOverviewResponse(response);
@@ -81,7 +81,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
     public void test_Can_GET_TechStacks_Overview_with_absolute_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync("http://techstacks.io/overview", OverviewResponse.class, new AsyncResponse<OverviewResponse>() {
+        client.getAsync("http://techstacks.io/overview", OverviewResponse.class, new AsyncResult<OverviewResponse>() {
             @Override
             public void success(OverviewResponse response) {
                 TechStacksServiceTests.assertOverviewResponse(response);
@@ -102,7 +102,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
 
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync(requestDto, new AsyncResponse<GetTechnologyResponse>() {
+        client.getAsync(requestDto, new AsyncResult<GetTechnologyResponse>() {
             @Override
             public void success(GetTechnologyResponse response) {
                 TechStacksServiceTests.assertGetTechnologyResponse(response);
@@ -120,7 +120,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
     public void test_Can_GET_GetTechnology_with_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync("/technology/servicestack", GetTechnologyResponse.class, new AsyncResponse<GetTechnologyResponse>() {
+        client.getAsync("/technology/servicestack", GetTechnologyResponse.class, new AsyncResult<GetTechnologyResponse>() {
             @Override
             public void success(GetTechnologyResponse response) {
                 TechStacksServiceTests.assertGetTechnologyResponse(response);
@@ -141,7 +141,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
 
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync(request, new AsyncResponse<QueryResponse<Technology>>() {
+        client.getAsync(request, new AsyncResult<QueryResponse<Technology>>() {
             @Override
             public void success(QueryResponse<Technology> response) {
                 assertEquals(1, response.getResults().size());
@@ -164,7 +164,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         final CountDownLatch signal = new CountDownLatch(1);
 
         client.getAsync(request, Utils.createMap("DescriptionContains", "framework"),
-            new AsyncResponse<QueryResponse<Technology>>() {
+            new AsyncResult<QueryResponse<Technology>>() {
                 @Override
                 public void success(QueryResponse<Technology> response) {
                     assertEquals(5, response.getResults().size());
