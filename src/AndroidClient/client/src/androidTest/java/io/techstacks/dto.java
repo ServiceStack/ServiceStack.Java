@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-03-27 05:53:22
+Date: 2015-03-28 01:45:59
 Version: 1
 BaseUrl: http://techstacks.io
 
@@ -12,7 +12,7 @@ Package: io.techstacks
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
-//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
+//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*
 */
 
 package io.techstacks;
@@ -20,6 +20,7 @@ package io.techstacks;
 import java.math.*;
 import java.util.*;
 import net.servicestack.client.*;
+import com.google.gson.annotations.*;
 
 public class dto
 {
@@ -92,12 +93,15 @@ public class dto
     public static class Option
     {
         @DataMember(Name="name")
+        @SerializedName("name")
         public String Name = null;
 
         @DataMember(Name="title")
+        @SerializedName("title")
         public String Title = null;
 
         @DataMember(Name="value")
+        @SerializedName("value")
         public TechnologyTier Value = null;
 
         public String getName() { return Name; }

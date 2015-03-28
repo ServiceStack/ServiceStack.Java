@@ -67,6 +67,16 @@ public class JsonServiceClient implements ServiceClient {
         return gson;
     }
 
+    public String toJson(Object o){
+        String json = getGson().toJson(o);
+        return json;
+    }
+
+    public Object fromJson(String json, Class c){
+        Object o = getGson().fromJson(json, c);
+        return o;
+    }
+
     public void setGson(Gson gson) { this.gson = gson; }
 
     public String createUrl(Object requestDto){
