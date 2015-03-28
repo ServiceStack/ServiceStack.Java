@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -500,5 +501,32 @@ public class Utils {
             }
         }
         return status;
+    }
+
+    public static <T> ArrayList<T> createList(T... params) {
+        ArrayList<T> to = new ArrayList<>();
+        to.addAll(Arrays.asList(params));
+        return to;
+    }
+
+    public static <K,V> HashMap<K,V> createMap(K k1, V v1) {
+        HashMap<K,V> to = new HashMap<>();
+        to.put(k1, v1);
+        return to;
+    }
+
+    public static <K,V> HashMap<K,V> createMap(K k1, V v1, K k2, V v2) {
+        HashMap<K,V> to = new HashMap<>();
+        to.put(k1, v1);
+        to.put(k2, v2);
+        return to;
+    }
+
+    public static <K,V> HashMap<K,V> createMap(K k1, V v1, K k2, V v2, K k3, V v3) {
+        HashMap<K,V> to = new HashMap<>();
+        to.put(k1, v1);
+        to.put(k2, v2);
+        to.put(k3, v3);
+        return to;
     }
 }
