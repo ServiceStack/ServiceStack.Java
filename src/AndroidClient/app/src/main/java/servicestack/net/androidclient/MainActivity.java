@@ -4,16 +4,47 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import net.servicestack.android.AndroidServiceClient;
+import net.servicestack.client.AsyncResult;
+import net.servicestack.client.Utils;
+
+import java.util.ArrayList;
+import servicestack.net.androidclient.techstacksdtos.*;
+import static net.servicestack.client.Func.*;
 
 public class MainActivity extends ActionBarActivity {
+
+    AndroidServiceClient client = new AndroidServiceClient("http://techstacks.io");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        final ListView lstResults = (ListView) findViewById(R.id.lstResults);
+
+        final MainActivity self = this;
+        client.getAsync(new AppOverview(), new AsyncResult<AppOverviewResponse>() {
+            @Override
+            public void success(AppOverviewResponse response) {
+                ArrayList<String> topTechs = map(response.getTopTechnologies(), new Function<TechnologyInfo, String>() {
+                    @Override
+                    public String apply(TechnologyInfo x) {
+                        return x.getName() + " (" + x.getStacksCount() + ")";
+                    }
+                });
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(self,
+                    android.R.layout.simple_list_item_1,
+                    topTechs);
+
+                lstResults.setAdapter(adapter);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
