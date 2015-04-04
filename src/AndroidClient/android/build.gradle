@@ -36,7 +36,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "ServiceStack.Client"
+        name = "ServiceStack.Android"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
@@ -86,7 +86,7 @@ install {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile project(':client')
 }
 
 task sourcesJar(type: Jar) {
