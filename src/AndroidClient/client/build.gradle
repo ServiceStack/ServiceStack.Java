@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.0.2"
+version = "0.0.3"
 
 android {
     compileSdkVersion 21
@@ -39,7 +39,7 @@ bintray {
         name = "ServiceStack.Client"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
-        licenses = ["Apache-2.0"]
+        licenses = ["BSD 3-Clause"]
         publish = true
         userOrg = 'servicestack'
     }
@@ -59,8 +59,8 @@ install {
                 // Set your license
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        name 'The BSD 3-Clause License'
+                        url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
                     }
                 }
 
@@ -70,12 +70,16 @@ install {
                         name 'Demis Bellot'
                         email 'team@servicestack.net'
                     }
+                    developer {
+                        id 'layoric'
+                        name 'Darren Reid'
+                        email 'team@servicestack.net'
+                    }
                 }
                 scm {
                     connection 'https://github.com/ServiceStack/ServiceStack.Java'
                     developerConnection 'https://github.com/ServiceStack/ServiceStack.Java'
                     url 'https://github.com/ServiceStack/ServiceStack.Java'
-
                 }
             }
         }
