@@ -5,6 +5,8 @@ package net.servicestack.android;
 import net.servicestack.client.LogProvider;
 import net.servicestack.client.LogType;
 
+import static net.servicestack.client.LogType.*;
+
 public class AndroidLogProvider extends LogProvider {
 
     public AndroidLogProvider(){
