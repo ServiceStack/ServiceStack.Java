@@ -1,9 +1,14 @@
 import com.google.gson.Gson;
 import com.intellij.ide.util.PackageChooserDialog;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -19,10 +24,11 @@ public class AddRef extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextPane messageTextPane;
     private JTextPane errorTextPane;
     private JTextField addressUrlTextField;
     private TextFieldWithBrowseButton packageBrowse;
+    private JTextField nameTextField;
+    private JTextPane infoTextPane;
     private Module module;
 
     public AddRef(@Nullable Module module) {
@@ -30,6 +36,10 @@ public class AddRef extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        ImageIcon imageIcon = createImageIcon("/icons/logo-16.png","ServiceStack");
+        if(imageIcon != null) {
+            this.setIconImage(imageIcon.getImage());
+        }
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -65,10 +75,20 @@ public class AddRef extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    private ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
 
     private void onOK() throws IOException {
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
-        gradleBuildFileHelper.addJsonServiceClientDependency();
+        gradleBuildFileHelper.addDependency("com.google.code.gson", "gson", "2.3.1");
+        refreshBuildFile();
         String url = createUrl(addressUrlTextField.getText());
         String typeMetadataUrl = createUrl(addressUrlTextField.getText()).replace("types/java/", "types/metadata/?format=json");
         URL metadataUrl = new URL(typeMetadataUrl);
@@ -95,6 +115,17 @@ public class AddRef extends JDialog {
         metadataBufferReader.close();
 
         dispose();
+    }
+
+    private void refreshBuildFile() {
+        VirtualFileManager.getInstance().syncRefresh();
+        VirtualFile fileByUrl = VirtualFileManager.getInstance().findFileByUrl(module.getModuleFile().getParent().getUrl() + "/build.gradle");
+
+        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl,false);
+        Document document = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor().getDocument();
+
+        FileDocumentManager.getInstance().reloadFromDisk(document);
+        VirtualFileManager.getInstance().syncRefresh();
     }
 
     private static class BrowsePackageListener implements ActionListener {

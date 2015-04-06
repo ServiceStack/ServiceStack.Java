@@ -37,7 +37,7 @@
   </project-components>
 
   <actions>
-    <action id="AddServiceStackReference" class="AddServiceStackReference" text="Add ServiceStack Reference..." icon="/icons/logo-16.png"
+    <action id="AddServiceStackReference" class="AddServiceStackReference" text="ServiceStack Reference..." icon="/icons/logo-16.png"
             description="Adds a ServiceStack reference to the selected module">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
