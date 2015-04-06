@@ -117,6 +117,7 @@ public class AddRef extends JDialog {
         if(!writeDtoFile(javaCodeLines,dtoPath)) {
             return;
         }
+        refreshFile(dtoPath,false);
         dispose();
     }
 

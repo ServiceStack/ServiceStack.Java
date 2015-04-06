@@ -6,9 +6,16 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.util.IncorrectOperationException;
+import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class UpdateServiceStackReference extends QuickEditAction implements Iconable {
@@ -39,7 +46,41 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
 
     @Override
     public void invoke(@NotNull Project project, Editor editor, PsiFile psiFile) throws IncorrectOperationException {
-        String foo = "";
+        String code = psiFile.getText();
+        Scanner scanner = new Scanner(code);
+        List<String> linesOfCode = new ArrayList<>();
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            linesOfCode.add(line);
+            if(line.startsWith("*/")) break;
+        }
+        scanner.close();
+
+        int startParamsIndex = 0;
+        String baseUrl = null;
+        for(String item : linesOfCode) {
+            startParamsIndex++;
+            if(item.startsWith("BaseUrl:")) {
+                baseUrl = item.split(":",2)[1].trim();
+                break;
+            }
+        }
+
+        URIBuilder builder = null;
+        try {
+            builder = new URIBuilder(baseUrl);
+        } catch (URISyntaxException e) {
+            //Log error to IDEA warning bubble/window.
+            return;
+        }
+
+        for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
+            String configLine = linesOfCode.get(i);
+            if(!configLine.startsWith("//") && configLine.contains(":")) {
+                String[] keyVal = configLine.split(":");
+                builder.addParameter(keyVal[0],keyVal[1].trim());
+            }
+        }
     }
 
     @Override
