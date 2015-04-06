@@ -103,6 +103,7 @@ public class AddRef extends JDialog {
         while ((metadataInputLine = metadataBufferReader.readLine()) != null)
             metadataResponse.append(metadataInputLine);
 
+        metadataBufferReader.close();
         String metadataJson = metadataResponse.toString();
         Gson gson = new Gson();
         ServiceStackMetadata metadata = gson.fromJson(metadataJson, ServiceStackMetadata.class);
@@ -111,8 +112,7 @@ public class AddRef extends JDialog {
             return;
         }
 
-
-        metadataBufferReader.close();
+        
 
         dispose();
     }
