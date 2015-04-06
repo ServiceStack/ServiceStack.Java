@@ -26,6 +26,11 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <intentionAction>
+      <className>UpdateServiceStackReference</className>
+      <category>ServiceStack</category>
+      <descriptionDirectoryName>ServiceStack</descriptionDirectoryName>
+    </intentionAction>
   </extensions>
 
   <application-components>

@@ -8,12 +8,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -110,6 +112,7 @@ public class AddRef extends JDialog {
             javaCodeLines.add(metadataInputLine);
 
         javaResponseReader.close();
+
         String dtoPath = getDtoPath();
         if(!writeDtoFile(javaCodeLines,dtoPath)) {
             return;
@@ -236,11 +239,12 @@ public class AddRef extends JDialog {
         }
 
         if(packageBrowse.getText() != null && !packageBrowse.getText().isEmpty()) {
-            String packVal = "Package=" + packageBrowse.getText();
-            if(serverUrl.contains("?")) {
-                serverUrl += "&" + packVal;
-            } else {
-                serverUrl += "?" + packVal;
+            try {
+                URIBuilder builder = new URIBuilder(serverUrl);
+                builder.addParameter("Package",packageBrowse.getText());
+                serverUrl = builder.build().toString();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
         }
 
