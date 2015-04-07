@@ -18,7 +18,7 @@ public class GradleBuildFileHelper {
         this.module = module;
     }
 
-    public void addJsonServiceClientDependency() {
+    public void addDependency(String groupId, String packageName, String version) {
         VirtualFile moduleFile = module.getModuleFile();
         if(moduleFile == null) {
             return;
@@ -28,7 +28,7 @@ public class GradleBuildFileHelper {
         File[] matchingFiles = file.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return name.startsWith("gradle.build");
+                return name.startsWith("build.gradle");
             }
         });
         if(matchingFiles == null || matchingFiles.length == 0) {
@@ -62,7 +62,20 @@ public class GradleBuildFileHelper {
             return;
         }
 
-        list.add(dependenciesEndIndex - 1, "compile: 'net.servicestack:client:0.1'");
+        boolean dependencyRequired = true;
+        //Check if groupId + package already listed as dependency
+        for (int i = dependenciesStartIndex; i < dependenciesEndIndex; i++) {
+            String dependencyLoC = list.get(i);
+            if(dependencyLoC.contains(groupId + ":" + packageName)) {
+                dependencyRequired = false;
+                break;
+            }
+        }
+
+        if(!dependencyRequired) {
+            return;
+        }
+        list.add(dependenciesEndIndex, "    compile '" + groupId + ":" + packageName + ":" + version + "'");
         try {
             PrintWriter writer = new PrintWriter(gradleFile);
             for(String item : list) {

@@ -1,28 +1,35 @@
 import com.google.gson.Gson;
 import com.intellij.ide.util.PackageChooserDialog;
-import com.intellij.openapi.module.ModuleManager;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
+import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddRef extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextPane messageTextPane;
     private JTextPane errorTextPane;
     private JTextField addressUrlTextField;
     private TextFieldWithBrowseButton packageBrowse;
+    private JTextField nameTextField;
+    private JTextPane infoTextPane;
     private Module module;
 
     public AddRef(@Nullable Module module) {
@@ -30,6 +37,10 @@ public class AddRef extends JDialog {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        ImageIcon imageIcon = createImageIcon("/icons/logo-16.png","ServiceStack");
+        if(imageIcon != null) {
+            this.setIconImage(imageIcon.getImage());
+        }
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -65,14 +76,90 @@ public class AddRef extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    private ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
+    }
 
     private void onOK() throws IOException {
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
-        gradleBuildFileHelper.addJsonServiceClientDependency();
+        gradleBuildFileHelper.addDependency("com.google.code.gson", "gson", "2.3.1");
+        refreshBuildFile();
+
+        try
+        {
+            if (!ValidateEndpoint()) return;
+        } catch (IOException exception) {
+            this.errorTextPane.setText("Error has occurred updating build.gradle file - " + exception.getLocalizedMessage());
+            return;
+        }
+
+
         String url = createUrl(addressUrlTextField.getText());
+        URL serviceUrl = new URL(url);
+        URLConnection javaResponseConnection = serviceUrl.openConnection();
+        BufferedReader javaResponseReader = new BufferedReader(
+                new InputStreamReader(
+                        javaResponseConnection.getInputStream()));
+        String metadataInputLine;
+        List<String> javaCodeLines = new ArrayList<>();
+        while ((metadataInputLine = javaResponseReader.readLine()) != null)
+            javaCodeLines.add(metadataInputLine);
+
+        javaResponseReader.close();
+
+        String dtoPath = getDtoPath();
+        if(!writeDtoFile(javaCodeLines,dtoPath)) {
+            return;
+        }
+        //refreshFile(dtoPath,false);
+        dispose();
+    }
+
+    private boolean writeDtoFile(List<String> javaCode, String path) {
+        BufferedWriter writer = null;
+        boolean result = true;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(path), "utf-8"));
+            for(String item : javaCode) {
+                writer.write(item);
+                writer.newLine();
+            }
+        } catch (IOException ex) {
+            result = false;
+            errorTextPane.setText("Error writing DTOs to file - " + ex.getLocalizedMessage());
+        } finally {
+            try {
+                assert writer != null;
+                writer.close();} catch (Exception ignored) {}
+        }
+        return result;
+    }
+
+    private String getDtoPath() {
+        String moduleSourcePath = module.getModuleFile().getParent().getPath() + "/src/main/java";
+        String packagePath = packageBrowse.getText().replace(".", "/");
+        File assumedPackageDirectory = new File(moduleSourcePath + "/" + packagePath);
+        String fullDtoPath;
+        if(assumedPackageDirectory.exists()) {
+            File dtoFile = new File(assumedPackageDirectory.getPath() + "/" + nameTextField.getText());
+            fullDtoPath = dtoFile.getPath();
+        } else {
+            File dtoFile = new File(moduleSourcePath + "/" + nameTextField.getText());
+            fullDtoPath = dtoFile.getPath();
+        }
+        return fullDtoPath;
+    }
+
+    private boolean ValidateEndpoint() throws IOException {
         String typeMetadataUrl = createUrl(addressUrlTextField.getText()).replace("types/java/", "types/metadata/?format=json");
         URL metadataUrl = new URL(typeMetadataUrl);
-        URL serviceUrl = new URL(url);
         URLConnection metadataConnection = metadataUrl.openConnection();
         metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
         BufferedReader metadataBufferReader = new BufferedReader(
@@ -83,18 +170,39 @@ public class AddRef extends JDialog {
         while ((metadataInputLine = metadataBufferReader.readLine()) != null)
             metadataResponse.append(metadataInputLine);
 
+        metadataBufferReader.close();
         String metadataJson = metadataResponse.toString();
         Gson gson = new Gson();
         ServiceStackMetadata metadata = gson.fromJson(metadataJson, ServiceStackMetadata.class);
         if(metadata == null || metadata.getConfig() == null || metadata.getConfig().getBaseUrl() == null) {
             errorTextPane.setText("The address url is not a valid ServiceStack endpoint.");
-            return;
+            return false;
         }
+        return true;
+    }
 
+    private void refreshBuildFile() {
+        VirtualFileManager.getInstance().syncRefresh();
+        VirtualFile fileByUrl = VirtualFileManager.getInstance().findFileByUrl(module.getModuleFile().getParent().getUrl() + "/build.gradle");
 
-        metadataBufferReader.close();
+        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl,false);
+        Document document = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor().getDocument();
 
-        dispose();
+        FileDocumentManager.getInstance().reloadFromDisk(document);
+        VirtualFileManager.getInstance().syncRefresh();
+    }
+
+    private void refreshFile(String filePath, boolean openFile) {
+        VirtualFileManager.getInstance().syncRefresh();
+        VirtualFile fileByUrl = VirtualFileManager.getInstance().findFileByUrl(filePath);
+
+        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl,false);
+        Document document = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor().getDocument();
+
+        if(!openFile) FileEditorManager.getInstance(module.getProject()).closeFile(fileByUrl);
+
+        FileDocumentManager.getInstance().reloadFromDisk(document);
+        VirtualFileManager.getInstance().syncRefresh();
     }
 
     private static class BrowsePackageListener implements ActionListener {
@@ -129,6 +237,16 @@ public class AddRef extends JDialog {
         if (!path.endsWith("types/java/"))
         {
             serverUrl += "types/java/";
+        }
+
+        if(packageBrowse.getText() != null && !packageBrowse.getText().isEmpty()) {
+            try {
+                URIBuilder builder = new URIBuilder(serverUrl);
+                builder.addParameter("Package",packageBrowse.getText());
+                serverUrl = builder.build().toString();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
 
         return serverUrl;

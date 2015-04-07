@@ -1,3 +1,4 @@
+import com.intellij.facet.Facet;
 import com.intellij.facet.FacetManager;
 import com.intellij.facet.FacetTypeId;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -8,7 +9,7 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
+import java.util.Objects;
 
 public class AddServiceStackReference extends AnAction {
     public static final FacetTypeId ID = new FacetTypeId("android");
@@ -22,17 +23,18 @@ public class AddServiceStackReference extends AnAction {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setSize(dialog.getPreferredSize());
+        dialog.setResizable(false);
         dialog.setVisible(true);
     }
 
     @Override
     public void update(AnActionEvent e) {
         Module m = getModule(e);
-//        if (m == null || !isAndroidProject(m)) {
-//            e.getPresentation().setEnabled(false);
-//            return;
-//        }
-//        e.getPresentation().setEnabled(false);
+        if (m == null || !isAndroidProject(m)) {
+            e.getPresentation().setEnabled(false);
+            return;
+        }
+        e.getPresentation().setEnabled(true);
         super.update(e);
     }
 
@@ -47,8 +49,13 @@ public class AddServiceStackReference extends AnAction {
     }
 
     private static boolean isAndroidProject(@NotNull Module module) {
-        Collection facetsByType = FacetManager.getInstance(module).getFacetsByType(ID);
-        return facetsByType.size() > 0;
+        Facet[] facetsByType = FacetManager.getInstance(module).getAllFacets();
+        for (Facet facet :facetsByType) {
+            if(Objects.equals(facet.getTypeId().toString(), "android")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static Module getModule(AnActionEvent e) {
