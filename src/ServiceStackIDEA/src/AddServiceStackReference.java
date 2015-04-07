@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class AddServiceStackReference extends AnAction {
-    public static final FacetTypeId ID = new FacetTypeId("android");
 
     public void actionPerformed(AnActionEvent e) {
 

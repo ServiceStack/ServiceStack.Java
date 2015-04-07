@@ -1,16 +1,26 @@
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.CommandProcessor;
+import com.intellij.openapi.command.UndoConfirmationPolicy;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
+import com.intellij.openapi.vfs.ReadonlyStatusHandler;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
 import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -48,7 +58,7 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
     }
 
     @Override
-    public void invoke(@NotNull Project project, Editor editor, PsiFile psiFile) throws IncorrectOperationException {
+    public void invoke(@NotNull Project project, Editor editor, final PsiFile psiFile) throws IncorrectOperationException {
         String code = psiFile.getText();
         Scanner scanner = new Scanner(code);
         List<String> linesOfCode = new ArrayList<>();
@@ -103,13 +113,20 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
                     new InputStreamReader(
                             javaCodeConnection.getInputStream()));
             String javaCodeInput;
-            StringBuilder metadataResponse = new StringBuilder();
-            while ((javaCodeInput = javaCodeBufferReader.readLine()) != null)
-                metadataResponse.append(javaCodeInput);
+            StringBuilder javaCodeResponse = new StringBuilder();
+            while ((javaCodeInput = javaCodeBufferReader.readLine()) != null) {
+                javaCodeResponse.append(javaCodeInput);
+                //All documents inside IntelliJ IDEA always use \n line separators.
+                //http://confluence.jetbrains.net/display/IDEADEV/IntelliJ+IDEA+Architectural+Overview
+                javaCodeResponse.append("\n");
+            }
 
-            //Line formatting lost...
-            editor.getDocument().setText(metadataResponse);
-
+            Document document = FileDocumentManager.getInstance().getDocument(psiFile.getVirtualFile());
+            if (document != null) {
+                document.setText(javaCodeResponse);
+            } else {
+                //Show error
+            }
         } catch (Exception e) {
             //Log with IDEA bubble
             e.printStackTrace();
