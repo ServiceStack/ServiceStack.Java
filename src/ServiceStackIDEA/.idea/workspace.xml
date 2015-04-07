@@ -3,6 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="a954d2f0-e4a1-4dc5-be04-5257d763afa5" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AddRef.java" afterPath="$PROJECT_DIR$/src/AddRef.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AddServiceStackReference.java" afterPath="$PROJECT_DIR$/src/AddServiceStackReference.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UpdateServiceStackReference.java" afterPath="$PROJECT_DIR$/src/UpdateServiceStackReference.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ServiceStackIDEA.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,13 +37,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddRef.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AddRef.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AddRef.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5093555">
-              <caret line="119" column="10" selection-start-line="119" selection-start-column="10" selection-end-line="119" selection-end-column="10" />
+            <state vertical-scroll-proportion="-12.793103">
+              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2769#2770#0" expanded="true" />
+                <element signature="e#2819#2820#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -59,14 +64,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddServiceStackReference.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AddServiceStackReference.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AddServiceStackReference.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
+            <state vertical-scroll-proportion="0.36798337">
+              <caret line="70" column="89" selection-start-line="70" selection-start-column="89" selection-end-line="70" selection-end-column="89" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FocusManagerImpl.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/openapi/wm/impl/FocusManagerImpl.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.44">
+              <caret line="858" column="5" selection-start-line="858" selection-start-column="5" selection-end-line="858" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -75,16 +90,16 @@
         <entry file="file://$PROJECT_DIR$/src/UpdateServiceStackReference.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="81" column="13" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="13" />
+              <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
               <folding>
-                <element signature="e#771#772#0" expanded="true" />
-                <element signature="e#825#826#0" expanded="true" />
-                <element signature="e#876#877#0" expanded="true" />
-                <element signature="e#928#929#0" expanded="true" />
-                <element signature="e#2751#2752#0" expanded="true" />
-                <element signature="e#2778#2779#0" expanded="true" />
-                <element signature="e#2837#2838#0" expanded="true" />
-                <element signature="e#2924#2925#0" expanded="true" />
+                <element signature="e#867#868#0" expanded="true" />
+                <element signature="e#921#922#0" expanded="true" />
+                <element signature="e#972#973#0" expanded="true" />
+                <element signature="e#1024#1025#0" expanded="true" />
+                <element signature="e#3532#3533#0" expanded="true" />
+                <element signature="e#3559#3560#0" expanded="true" />
+                <element signature="e#3618#3619#0" expanded="true" />
+                <element signature="e#3705#3706#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -105,16 +120,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="37" column="1" selection-start-line="37" selection-start-column="1" selection-end-line="37" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="before.java.template" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReference/before.java.template">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -168,12 +173,12 @@
         <option value="$PROJECT_DIR$/src/Utilities/GearSpecManager.java" />
         <option value="$PROJECT_DIR$/src/AddRef.form" />
         <option value="$PROJECT_DIR$/src/GradleBuildFileHelper.java" />
-        <option value="$PROJECT_DIR$/src/AddServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReference/description.html" />
         <option value="$PROJECT_DIR$/src/UpdateServiceStackReference.kt" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/src/UpdateServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/AddRef.java" />
+        <option value="$PROJECT_DIR$/src/AddServiceStackReference.java" />
       </list>
     </option>
   </component>
@@ -580,36 +585,35 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/UpdateServiceStackReference.java</url>
-          <line>48</line>
+          <line>51</line>
           <properties />
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/UpdateServiceStackReference.java</url>
-          <line>34</line>
+          <line>37</line>
           <properties />
           <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/UpdateServiceStackReference.java</url>
-          <line>68</line>
+          <line>71</line>
           <properties />
           <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="38" />
+      <option name="time" value="46" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-        <watch expression="getClass().getResource(&quot;/icons/logo-16.png&quot;)" language="JAVA" custom="" />
-        <watch expression="name" language="JAVA" custom="" />
-        <watch expression="module.getModuleFile().getParent().getPath()" language="JAVA" custom="" />
-        <watch expression="aPackage.getName()" language="JAVA" custom="" />
-        <watch expression="aPackage.getParent().getParent().getParent().getParent()" language="JAVA" custom="" />
-        <watch expression="aPackage.getFiles(GlobalSearchScope.allScope(module.getProject()))[0].getOriginalFile().getVirtualFile().getPath()" language="JAVA" custom="com.intellij.psi.search.GlobalSearchScope" />
-        <watch expression="aPackage.isValid()" language="JAVA" custom="" />
-        <watch expression="module.getModuleFile().getParent() + &quot;/src&quot;" language="JAVA" custom="" />
-        <watch expression="module.getModuleFile().getParent().getPath()" language="JAVA" custom="" />
+        <watch expression="e.getPlace()" language="JAVA" custom="" />
+        <watch expression="e.getPresentation()" language="JAVA" custom="" />
+        <watch expression="e.getDataContext()" language="JAVA" custom="" />
+        <watch expression="DataKeys.PROJECT_FILE_DIRECTORY.getData(e.getDataContext())" language="JAVA" custom="" />
+        <watch expression="DataKeys.CONTEXT_MENU_POINT.getData(e.getDataContext())" language="JAVA" custom="" />
+        <watch expression="DataKeys.VIRTUAL_FILE.getData(e.getDataContext())" language="JAVA" custom="" />
+        <watch expression="DataKeys.PSI_ELEMENT.getData(e.getDataContext())" language="JAVA" custom="" />
+        <watch expression="element instanceof PsiDirectory" language="JAVA" custom="" />
       </configuration>
     </watches-manager>
   </component>
@@ -618,16 +622,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/AddRef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/ui/TextFieldWithBrowseButton.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -734,6 +728,8 @@
           <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2769#2770#0" expanded="true" />
+            <element signature="e#2819#2820#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -786,6 +782,8 @@
           <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2769#2770#0" expanded="true" />
+            <element signature="e#2819#2820#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -835,6 +833,8 @@
           <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2769#2770#0" expanded="true" />
+            <element signature="e#2819#2820#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -999,8 +999,8 @@
         <state vertical-scroll-proportion="-6.6444907">
           <caret line="73" column="7" selection-start-line="73" selection-start-column="7" selection-end-line="73" selection-end-column="7" />
           <folding>
-            <element signature="e#5388#5389#0" expanded="true" />
-            <element signature="e#5428#5429#0" expanded="true" />
+            <element signature="e#5388#5389#0" expanded="false" />
+            <element signature="e#5428#5429#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1016,33 +1016,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AddServiceStackReference.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="43" selection-start-line="21" selection-start-column="43" selection-end-line="21" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/UpdateServiceStackReference.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="81" column="13" selection-start-line="81" selection-start-column="13" selection-end-line="81" selection-end-column="13" />
-          <folding>
-            <element signature="e#771#772#0" expanded="true" />
-            <element signature="e#825#826#0" expanded="true" />
-            <element signature="e#876#877#0" expanded="true" />
-            <element signature="e#928#929#0" expanded="true" />
-            <element signature="e#2751#2752#0" expanded="true" />
-            <element signature="e#2778#2779#0" expanded="true" />
-            <element signature="e#2837#2838#0" expanded="true" />
-            <element signature="e#2924#2925#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/codeInsight/intention/impl/config/IntentionActionWrapper.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.96">
@@ -1051,10 +1024,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/UpdateServiceStackReference.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+          <folding>
+            <element signature="e#867#868#0" expanded="true" />
+            <element signature="e#921#922#0" expanded="true" />
+            <element signature="e#972#973#0" expanded="true" />
+            <element signature="e#1024#1025#0" expanded="true" />
+            <element signature="e#3532#3533#0" expanded="true" />
+            <element signature="e#3559#3560#0" expanded="true" />
+            <element signature="e#3618#3619#0" expanded="true" />
+            <element signature="e#3705#3706#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/AddRef.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5093555">
-          <caret line="119" column="10" selection-start-line="119" selection-start-column="10" selection-end-line="119" selection-end-column="10" />
+        <state vertical-scroll-proportion="-12.793103">
+          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2769#2770#0" expanded="true" />
+            <element signature="e#2819#2820#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/idea.jar!/com/intellij/openapi/wm/impl/FocusManagerImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.44">
+          <caret line="858" column="5" selection-start-line="858" selection-start-column="5" selection-end-line="858" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/AddServiceStackReference.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36798337">
+          <caret line="70" column="89" selection-start-line="70" selection-start-column="89" selection-end-line="70" selection-end-column="89" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

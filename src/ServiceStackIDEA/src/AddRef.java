@@ -76,6 +76,10 @@ public class AddRef extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public void setPackageBrowseText(String packageName) {
+        packageBrowse.setText(packageName);
+    }
+
     private ImageIcon createImageIcon(String path, String description) {
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {

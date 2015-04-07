@@ -10,9 +10,12 @@ import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -81,6 +84,20 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
                 builder.addParameter(keyVal[0],keyVal[1].trim());
             }
         }
+
+        String serverUrl = builder.toString();
+
+//        URL metadataUrl = new URL(serverUrl);
+//        URLConnection metadataConnection = metadataUrl.openConnection();
+//        metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
+//        BufferedReader metadataBufferReader = new BufferedReader(
+//                new InputStreamReader(
+//                        metadataConnection.getInputStream()));
+//        String metadataInputLine;
+//        StringBuilder metadataResponse = new StringBuilder();
+//        while ((metadataInputLine = metadataBufferReader.readLine()) != null)
+//            metadataResponse.append(metadataInputLine);
+
     }
 
     @Override
