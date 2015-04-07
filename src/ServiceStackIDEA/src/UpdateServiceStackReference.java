@@ -68,6 +68,13 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
                 break;
             }
         }
+        if(baseUrl == null) {
+            //throw error
+            return;
+        }
+        if(!baseUrl.endsWith("/")) {
+            baseUrl += "/";
+        }
 
         URIBuilder builder = null;
         try {
@@ -76,7 +83,7 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
             //Log error to IDEA warning bubble/window.
             return;
         }
-
+        builder.setPath("/types/java");
         for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
             String configLine = linesOfCode.get(i);
             if(!configLine.startsWith("//") && configLine.contains(":")) {
@@ -85,19 +92,28 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
             }
         }
 
-        String serverUrl = builder.toString();
 
-//        URL metadataUrl = new URL(serverUrl);
-//        URLConnection metadataConnection = metadataUrl.openConnection();
-//        metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
-//        BufferedReader metadataBufferReader = new BufferedReader(
-//                new InputStreamReader(
-//                        metadataConnection.getInputStream()));
-//        String metadataInputLine;
-//        StringBuilder metadataResponse = new StringBuilder();
-//        while ((metadataInputLine = metadataBufferReader.readLine()) != null)
-//            metadataResponse.append(metadataInputLine);
+        try {
+            String serverUrl = builder.build().toString();
+            URL javaCodeUrl = new URL(serverUrl);
 
+            URLConnection javaCodeConnection = javaCodeUrl.openConnection();
+            javaCodeConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
+            BufferedReader javaCodeBufferReader = new BufferedReader(
+                    new InputStreamReader(
+                            javaCodeConnection.getInputStream()));
+            String javaCodeInput;
+            StringBuilder metadataResponse = new StringBuilder();
+            while ((javaCodeInput = javaCodeBufferReader.readLine()) != null)
+                metadataResponse.append(javaCodeInput);
+
+            //Line formatting lost...
+            editor.getDocument().setText(metadataResponse);
+
+        } catch (Exception e) {
+            //Log with IDEA bubble
+            e.printStackTrace();
+        }
     }
 
     @Override
