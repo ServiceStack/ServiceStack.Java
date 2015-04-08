@@ -4,6 +4,7 @@ import com.android.internal.util.Predicate;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class Func {
     public static interface Function<T,R> {
@@ -57,6 +58,10 @@ public class Func {
             }
         }
         return null;
+    }
+
+    public static <T> boolean contains(Iterable<T> xs, Predicate<T> predicate){
+        return first(xs, predicate) != null;
     }
 
     public static <T> ArrayList<T> skip(Iterable<T> xs, int skip){
