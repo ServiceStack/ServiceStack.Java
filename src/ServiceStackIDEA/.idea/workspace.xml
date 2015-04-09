@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a954d2f0-e4a1-4dc5-be04-5257d763afa5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AddRef.form" afterPath="$PROJECT_DIR$/src/AddRef.form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AddRef.java" afterPath="$PROJECT_DIR$/src/AddRef.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AddServiceStackReference.java" afterPath="$PROJECT_DIR$/src/AddServiceStackReference.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GradleBuildFileHelper.java" afterPath="$PROJECT_DIR$/src/GradleBuildFileHelper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/UpdateServiceStackReference.java" afterPath="$PROJECT_DIR$/src/UpdateServiceStackReference.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ServiceStackIDEA.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,21 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="71" selection-start-line="31" selection-start-column="71" selection-end-line="31" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AddRef.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AddRef.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AddRef.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.63274336">
-              <caret line="327" column="9" selection-start-line="327" selection-start-column="9" selection-end-line="327" selection-end-column="9" />
+            <state vertical-scroll-proportion="-9.275862">
+              <caret line="329" column="20" selection-start-line="304" selection-start-column="8" selection-end-line="329" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3669#3670#0" expanded="true" />
@@ -122,21 +107,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UpdateServiceStackReference.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UpdateServiceStackReference.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UpdateServiceStackReference.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.29424778">
+              <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
               <folding>
-                <element signature="e#1410#1411#0" expanded="true" />
-                <element signature="e#1464#1465#0" expanded="true" />
-                <element signature="e#1515#1516#0" expanded="true" />
-                <element signature="e#1567#1568#0" expanded="true" />
-                <element signature="e#5681#5682#0" expanded="true" />
-                <element signature="e#5708#5709#0" expanded="true" />
-                <element signature="e#5767#5768#0" expanded="true" />
-                <element signature="e#5854#5855#0" expanded="true" />
+                <element signature="e#1585#1586#0" expanded="true" />
+                <element signature="e#1639#1640#0" expanded="true" />
+                <element signature="e#1690#1691#0" expanded="true" />
+                <element signature="e#1742#1743#0" expanded="true" />
+                <element signature="e#10336#10337#0" expanded="true" />
+                <element signature="e#10363#10364#0" expanded="true" />
+                <element signature="e#10422#10423#0" expanded="true" />
+                <element signature="e#10509#10510#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="URIBuilder.class" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/com.springsource.org.apache.httpcomponents.httpclient/4.2/com.springsource.org.apache.httpcomponents.httpclient-4.2.jar!/org/apache/http/client/utils/URIBuilder.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-6.4">
+              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -197,11 +192,11 @@
         <option value="$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReference/description.html" />
         <option value="$PROJECT_DIR$/src/UpdateServiceStackReference.kt" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
-        <option value="$PROJECT_DIR$/src/UpdateServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/AddServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/AddRef.form" />
         <option value="$PROJECT_DIR$/src/GradleBuildFileHelper.java" />
         <option value="$PROJECT_DIR$/src/AddRef.java" />
+        <option value="$PROJECT_DIR$/src/UpdateServiceStackReference.java" />
       </list>
     </option>
   </component>
@@ -614,7 +609,7 @@
           <option name="timeStamp" value="65" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="70" />
+      <option name="time" value="81" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
@@ -628,14 +623,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/ui/TextFieldWithBrowseButton.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="63" selection-start-line="25" selection-start-column="63" selection-end-line="25" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/project/Project.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1082,23 +1069,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UpdateServiceStackReference.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
-          <folding>
-            <element signature="e#1410#1411#0" expanded="true" />
-            <element signature="e#1464#1465#0" expanded="true" />
-            <element signature="e#1515#1516#0" expanded="true" />
-            <element signature="e#1567#1568#0" expanded="true" />
-            <element signature="e#5681#5682#0" expanded="true" />
-            <element signature="e#5708#5709#0" expanded="true" />
-            <element signature="e#5767#5768#0" expanded="true" />
-            <element signature="e#5854#5855#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AddServiceStackReference.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1132,8 +1102,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AddRef.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63274336">
-          <caret line="327" column="9" selection-start-line="327" selection-start-column="9" selection-end-line="327" selection-end-column="9" />
+        <state vertical-scroll-proportion="-9.275862">
+          <caret line="329" column="20" selection-start-line="304" selection-start-column="8" selection-end-line="329" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3669#3670#0" expanded="true" />
@@ -1160,6 +1130,31 @@
             <element signature="e#6922#6923#0" expanded="true" />
             <element signature="e#7028#7029#0" expanded="true" />
             <element signature="e#7078#7079#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/com.springsource.org.apache.httpcomponents.httpclient/4.2/com.springsource.org.apache.httpcomponents.httpclient-4.2.jar!/org/apache/http/client/utils/URIBuilder.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.4">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UpdateServiceStackReference.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29424778">
+          <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+          <folding>
+            <element signature="e#1585#1586#0" expanded="true" />
+            <element signature="e#1639#1640#0" expanded="true" />
+            <element signature="e#1690#1691#0" expanded="true" />
+            <element signature="e#1742#1743#0" expanded="true" />
+            <element signature="e#10336#10337#0" expanded="true" />
+            <element signature="e#10363#10364#0" expanded="true" />
+            <element signature="e#10422#10423#0" expanded="true" />
+            <element signature="e#10509#10510#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,4 +1,8 @@
+import com.google.gson.Gson;
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.command.UndoConfirmationPolicy;
@@ -78,6 +82,75 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
         return false;
     }
 
+    private boolean validateEndPoint(String url) {
+
+        URL metadataUrl = null;
+        URIBuilder builder = null;
+        try {
+            builder = new URIBuilder(url.replace("types/java","types/metadata"));
+            builder.addParameter("format","json");
+            metadataUrl = new URL(builder.build().toString());
+        } catch (URISyntaxException e) {
+            //Log error to IDEA warning bubble/window.
+            e.printStackTrace();
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid BaseUrl provided", NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return false;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid BaseUrl provided", NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return false;
+        }
+
+        URLConnection metadataConnection = null;
+        String errorMessage = null;
+        try {
+            metadataConnection = metadataUrl.openConnection();
+        } catch (IOException e) {
+            errorMessage = "Problem connecting to BaseUrl - " + e.getMessage();
+        }
+        metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
+        BufferedReader metadataBufferReader = null;
+        try {
+            metadataBufferReader = new BufferedReader(
+                    new InputStreamReader(
+                            metadataConnection.getInputStream()));
+        } catch (IOException e) {
+            errorMessage = "Problem connecting to BaseUrl - " + e.getMessage();
+        }
+        String metadataInputLine;
+        StringBuilder metadataResponse = new StringBuilder();
+        try {
+            while ((metadataInputLine = metadataBufferReader.readLine()) != null)
+                metadataResponse.append(metadataInputLine);
+
+            metadataBufferReader.close();
+        } catch (IOException e) {
+            errorMessage = "Invalid response, check the BaseUrl is a valid ServiceStack endpoint - " + e.getMessage();
+        }
+
+
+        String metadataJson = metadataResponse.toString();
+        Gson gson = new Gson();
+        try {
+            ServiceStackMetadata metadata = gson.fromJson(metadataJson, ServiceStackMetadata.class);
+            if (metadata == null || metadata.getConfig() == null || metadata.getConfig().getBaseUrl() == null) {
+                errorMessage = "The address url is not a valid ServiceStack endpoint.";
+            }
+        } catch (Exception e) {
+            errorMessage = "The address url is not a valid ServiceStack endpoint.";
+        }
+
+        if(errorMessage != null) {
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", errorMessage, NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public void invoke(@NotNull Project project, Editor editor, final PsiFile psiFile) throws IncorrectOperationException {
         String code = psiFile.getText();
@@ -100,7 +173,8 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
             }
         }
         if(baseUrl == null) {
-            //throw error
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "BaseUrl property not found.", NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
             return;
         }
         if(!baseUrl.endsWith("/")) {
@@ -112,9 +186,30 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
             builder = new URIBuilder(baseUrl);
         } catch (URISyntaxException e) {
             //Log error to IDEA warning bubble/window.
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid BaseUrl provided", NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
             return;
         }
-        builder.setPath("/types/java");
+
+        String existingPath = builder.getPath();
+        if(existingPath == null || existingPath.equals("/")) {
+            builder.setPath("/types/java");
+        } else {
+            builder.setPath(existingPath + "/types/java");
+        }
+
+
+        try {
+            if(!validateEndPoint(builder.build().toString())) {
+                return;
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Unable to parse BaseUrl", NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return;
+        }
+
         for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
             String configLine = linesOfCode.get(i);
             if(!configLine.startsWith("//") && configLine.contains(":")) {
@@ -122,7 +217,6 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
                 builder.addParameter(keyVal[0],keyVal[1].trim());
             }
         }
-
 
         try {
             String serverUrl = builder.build().toString();
@@ -147,9 +241,12 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
                 document.setText(javaCodeResponse);
             } else {
                 //Show error
+                Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "DTO file not found.", NotificationType.ERROR);
+                Notifications.Bus.notify(notification);
             }
         } catch (Exception e) {
-            //Log with IDEA bubble
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid BaseUrl provided", NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
             e.printStackTrace();
         }
     }
