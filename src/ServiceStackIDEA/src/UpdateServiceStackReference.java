@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiClass;
@@ -46,13 +47,33 @@ public class UpdateServiceStackReference extends QuickEditAction implements Icon
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile psiFile) {
         try {
+            if(psiFile == null || !(psiFile instanceof PsiJavaFile)) {
+                return false;
+            }
             PsiJavaFile classFile = (PsiJavaFile)psiFile;
-            String className= classFile.getClasses()[0].getName();
-            if(className.equals("dto")){
+            if(containsOptionsHeader(classFile)) {
                 return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean containsOptionsHeader(PsiJavaFile psiJavaFile) {
+        Document dtoDocument = FileDocumentManager.getInstance().getDocument(psiJavaFile.getVirtualFile());
+        if(dtoDocument == null) {
+            return false;
+        }
+        //Only pull in the first 1000 chars max to look for header.
+        int range = dtoDocument.getTextLength() > 1000 ? 1000 : dtoDocument.getTextLength();
+        String code = dtoDocument.getText(new TextRange(0,range));
+
+        String[] codeLines = code.split("\n");
+        for(String line : codeLines) {
+            if(line.startsWith("BaseUrl:")) {
+                return true;
+            }
         }
         return false;
     }
