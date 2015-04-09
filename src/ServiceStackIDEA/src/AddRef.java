@@ -73,7 +73,9 @@ public class AddRef extends JDialog {
             public boolean shouldYieldFocus(JComponent input) {
                 boolean valid = verify(input);
                 if (!valid) {
-                    JOptionPane.showMessageDialog(null, "A valid URL must be provided");
+                    errorMessage = "URL Address is required";
+                    errorTextPane.setVisible(true);
+                    errorTextPane.setText(errorMessage);
                 }
 
                 return true;
@@ -94,7 +96,9 @@ public class AddRef extends JDialog {
             public boolean shouldYieldFocus(JComponent input) {
                 boolean valid = verify(input);
                 if (!valid) {
-                    JOptionPane.showMessageDialog(null, "Please provide a name");
+                    errorMessage = "A file name is required.";
+                    errorTextPane.setVisible(true);
+                    errorTextPane.setText(errorMessage);
                 }
 
                 return true;
@@ -234,7 +238,7 @@ public class AddRef extends JDialog {
 
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
         boolean showDto = false;
-        if(gradleBuildFileHelper.addDependency("net.servicestack", "client", "0.0.1")) {
+        if(gradleBuildFileHelper.addDependency("net.servicestack", "android", "0.0.1")) {
             refreshBuildFile();
         } else {
             showDto = true;
@@ -251,8 +255,13 @@ public class AddRef extends JDialog {
             javaCodeLines.add(metadataInputLine);
 
         javaResponseReader.close();
+        String dtoPath;
+        try {
+            dtoPath = getDtoPath();
+        } catch (Exception e) {
+            return;
+        }
 
-        String dtoPath = getDtoPath();
         if (!writeDtoFile(javaCodeLines, dtoPath)) {
             return;
         }
@@ -285,8 +294,18 @@ public class AddRef extends JDialog {
         return result;
     }
 
-    private String getDtoPath() {
-        String moduleSourcePath = module.getModuleFile().getParent().getPath() + "/src/main/java";
+    private String getDtoPath() throws FileNotFoundException {
+        VirtualFile moduleFile = module.getModuleFile();
+        if(moduleFile == null) {
+            throw new FileNotFoundException("Module file not found. Unable to add DTO to project.");
+        }
+        String moduleSourcePath = null;
+        if(moduleFile.getParent() == null) {
+            moduleSourcePath = moduleFile.getPath() + "/main/java";
+        } else {
+            moduleSourcePath = moduleFile.getParent().getPath() + "/src/main/java";
+        }
+
         String packagePath = packageBrowse.getText().replace(".", "/");
         File assumedPackageDirectory = new File(moduleSourcePath + "/" + packagePath);
         String fullDtoPath;
