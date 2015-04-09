@@ -529,4 +529,12 @@ public class Utils {
         to.put(k3, v3);
         return to;
     }
+
+    public static boolean equals(String s1, String s2){
+        if (s1 == null)
+            return s2 == null;
+        if (s2 == null)
+            return s1 == null;
+        return s1.equals(s2);
+    }
 }
