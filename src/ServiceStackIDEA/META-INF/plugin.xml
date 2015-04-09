@@ -1,17 +1,16 @@
 <idea-plugin version="2">
   <id>net.servicestack.ideaplugin</id>
-  <name>ServiceStackIDEA</name>
+  <name>ServiceStack</name>
   <version>1.0</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Integration with ServiceStack Web Services, includes support for Java Add ServiceStack Reference.
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      1.0 - Initial release.<br>
+      <em></em>
     ]]>
   </change-notes>
 
@@ -27,7 +26,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
     <intentionAction>
-      <className>UpdateServiceStackReference</className>
+      <className>UpdateServiceStackReferenceIntention</className>
       <category>ServiceStack</category>
       <descriptionDirectoryName>ServiceStack</descriptionDirectoryName>
     </intentionAction>
@@ -46,6 +45,10 @@
             description="Adds a ServiceStack reference to the selected module">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
+    </action>
+    <action id="UpdateServiceStackReference" class="UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/icons/logo-16.png"
+            description="Updates the selected ServiceStack reference.">
+      <add-to-group group-id="ProjectViewPopupMenu"/>
     </action>
   </actions>
 </idea-plugin>

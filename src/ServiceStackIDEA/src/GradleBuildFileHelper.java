@@ -18,10 +18,10 @@ public class GradleBuildFileHelper {
         this.module = module;
     }
 
-    public void addDependency(String groupId, String packageName, String version) {
+    public boolean addDependency(String groupId, String packageName, String version) {
         VirtualFile moduleFile = module.getModuleFile();
         if(moduleFile == null) {
-            return;
+            return false;
         }
         String moduleDirectory = moduleFile.getParent().getPath();
         File file = new File(moduleDirectory);
@@ -32,7 +32,7 @@ public class GradleBuildFileHelper {
             }
         });
         if(matchingFiles == null || matchingFiles.length == 0) {
-            return;
+            return false;
         }
 
         File gradleFile = matchingFiles[0];
@@ -59,7 +59,7 @@ public class GradleBuildFileHelper {
         }
 
         if(dependenciesStartIndex == -1 || dependenciesEndIndex == -1) {
-            return;
+            return false;
         }
 
         boolean dependencyRequired = true;
@@ -73,7 +73,7 @@ public class GradleBuildFileHelper {
         }
 
         if(!dependencyRequired) {
-            return;
+            return false;
         }
         list.add(dependenciesEndIndex, "    compile '" + groupId + ":" + packageName + ":" + version + "'");
         try {
@@ -85,5 +85,6 @@ public class GradleBuildFileHelper {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return true;
     }
 }

@@ -1,6 +1,5 @@
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetManager;
-import com.intellij.facet.FacetTypeId;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -25,7 +24,8 @@ public class AddServiceStackReference extends AnAction {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setSize(dialog.getPreferredSize());
-        dialog.setResizable(false);
+        dialog.setResizable(true);
+        dialog.setTitle("Add ServiceStack Reference");
 
         //Check if a package was selected in the left hand menu, populate package name
         PsiElement element = DataKeys.PSI_ELEMENT.getData(e.getDataContext());

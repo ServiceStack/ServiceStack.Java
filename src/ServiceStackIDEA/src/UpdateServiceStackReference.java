@@ -1,145 +1,117 @@
-import com.intellij.codeInsight.intention.impl.QuickEditAction;
+import com.intellij.facet.Facet;
+import com.intellij.facet.FacetManager;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
-import com.intellij.openapi.command.UndoConfirmationPolicy;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.vfs.ReadonlyStatusHandler;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.util.IncorrectOperationException;
-import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Objects;
 
-
-public class UpdateServiceStackReference extends QuickEditAction implements Iconable {
+/**
+ * Created by Layoric on 9/04/2015.
+ */
+public class UpdateServiceStackReference extends AnAction {
 
     @Override
-    public String getText() {
-        return "Update ServiceStack reference";
+    public void actionPerformed(AnActionEvent anActionEvent) {
+        final PsiJavaFile psiJavaFile = getPsiFile(anActionEvent);
+        if(UpdateServiceStackUtils.containsOptionsHeader(psiJavaFile)) {
+            ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    UpdateServiceStackUtils.updateServiceStackReference(psiJavaFile);
+                }
+            });
+        }
     }
 
     @Override
-    public String getFamilyName() {
-        return "UpdateServiceStackReference";
+    public void update(AnActionEvent e) {
+        Module module = getModule(e);
+        PsiJavaFile psiJavaFile = getPsiFile(e);
+        if (psiJavaFile == null || !isAndroidProject(module)) {
+            e.getPresentation().setVisible(false);
+            return;
+        }
+
+        if(!UpdateServiceStackUtils.containsOptionsHeader(psiJavaFile)) {
+            e.getPresentation().setVisible(false);
+            return;
+        }
+        e.getPresentation().setVisible(true);
+        super.update(e);
     }
 
-    @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile psiFile) {
-        try {
-            PsiJavaFile classFile = (PsiJavaFile)psiFile;
-            String className= classFile.getClasses()[0].getName();
-            if(className.equals("dto")){
+    static Module getModule(Project project) {
+        if (project == null)
+            return null;
+        Module[] modules = ModuleManager.getInstance(project).getModules();
+        if (modules.length > 0) {
+            return modules[0];
+        }
+        return null;
+    }
+
+    private static boolean isAndroidProject(@NotNull Module module) {
+        Facet[] facetsByType = FacetManager.getInstance(module).getAllFacets();
+        for (Facet facet :facetsByType) {
+            if(Objects.equals(facet.getTypeId().toString(), "android")) {
                 return true;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return false;
     }
 
-    @Override
-    public void invoke(@NotNull Project project, Editor editor, final PsiFile psiFile) throws IncorrectOperationException {
-        String code = psiFile.getText();
-        Scanner scanner = new Scanner(code);
-        List<String> linesOfCode = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            linesOfCode.add(line);
-            if(line.startsWith("*/")) break;
-        }
-        scanner.close();
+    private static PsiJavaFile getPsiFile(AnActionEvent e) {
 
-        int startParamsIndex = 0;
-        String baseUrl = null;
-        for(String item : linesOfCode) {
-            startParamsIndex++;
-            if(item.startsWith("BaseUrl:")) {
-                baseUrl = item.split(":",2)[1].trim();
-                break;
-            }
+        Module module = getModule(e);
+        if(module == null) {
+            return null;
         }
-        if(baseUrl == null) {
-            //throw error
-            return;
+        VirtualFile selectedFile = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+        if(selectedFile == null) {
+            return null;
         }
-        if(!baseUrl.endsWith("/")) {
-            baseUrl += "/";
+        Document document = FileDocumentManager.getInstance().getDocument(selectedFile);
+        if(document == null) {
+            return null;
         }
 
-        URIBuilder builder = null;
-        try {
-            builder = new URIBuilder(baseUrl);
-        } catch (URISyntaxException e) {
-            //Log error to IDEA warning bubble/window.
-            return;
-        }
-        builder.setPath("/types/java");
-        for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
-            String configLine = linesOfCode.get(i);
-            if(!configLine.startsWith("//") && configLine.contains(":")) {
-                String[] keyVal = configLine.split(":");
-                builder.addParameter(keyVal[0],keyVal[1].trim());
-            }
+        //Check if a 'PsiFile', display without a package name if no PsiFile.
+        PsiFile psiFile = PsiDocumentManager.getInstance(module.getProject()).getPsiFile(document);
+        if(psiFile == null) {
+            return null;
         }
 
-
-        try {
-            String serverUrl = builder.build().toString();
-            URL javaCodeUrl = new URL(serverUrl);
-
-            URLConnection javaCodeConnection = javaCodeUrl.openConnection();
-            javaCodeConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
-            BufferedReader javaCodeBufferReader = new BufferedReader(
-                    new InputStreamReader(
-                            javaCodeConnection.getInputStream()));
-            String javaCodeInput;
-            StringBuilder javaCodeResponse = new StringBuilder();
-            while ((javaCodeInput = javaCodeBufferReader.readLine()) != null) {
-                javaCodeResponse.append(javaCodeInput);
-                //All documents inside IntelliJ IDEA always use \n line separators.
-                //http://confluence.jetbrains.net/display/IDEADEV/IntelliJ+IDEA+Architectural+Overview
-                javaCodeResponse.append("\n");
-            }
-
-            Document document = FileDocumentManager.getInstance().getDocument(psiFile.getVirtualFile());
-            if (document != null) {
-                document.setText(javaCodeResponse);
-            } else {
-                //Show error
-            }
-        } catch (Exception e) {
-            //Log with IDEA bubble
-            e.printStackTrace();
+        if(!isJavaFile(psiFile)) {
+            return null;
         }
+        return (PsiJavaFile)psiFile;
     }
 
-    @Override
-    public boolean startInWriteAction() {
-        return true;
+    private static boolean isJavaFile(@Nullable PsiFile psiFile) {
+        return psiFile != null && psiFile instanceof PsiJavaFile;
     }
 
-    @Override
-    public Icon getIcon(@IconFlags int i) {
-        return new ImageIcon(this.getClass().getResource("/icons/logo-16.png"));
+    static Module getModule(AnActionEvent e) {
+        Module module = e.getData(DataKeys.MODULE);
+        if (module == null) {
+            Project project = e.getData(DataKeys.PROJECT);
+            return getModule(project);
+        } else {
+            return module;
+        }
     }
 }
