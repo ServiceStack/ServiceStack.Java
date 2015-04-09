@@ -48,7 +48,7 @@
     </action>
     <action id="UpdateServiceStackReference" class="UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/icons/logo-16.png"
             description="Updates the selected ServiceStack reference.">
-      <add-to-group group-id="ProjectViewPopupMenu"/>
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
     </action>
   </actions>
 </idea-plugin>
