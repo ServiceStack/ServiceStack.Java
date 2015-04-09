@@ -1,17 +1,16 @@
 <idea-plugin version="2">
   <id>net.servicestack.ideaplugin</id>
-  <name>ServiceStackIDEA</name>
+  <name>ServiceStack</name>
   <version>1.0</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Integration with ServiceStack Web Services, includes support for Java Add ServiceStack Reference.
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      1.0 - Initial release.<br>
+      <em></em>
     ]]>
   </change-notes>
 
