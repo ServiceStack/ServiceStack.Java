@@ -25,6 +25,7 @@ public class AddServiceStackReference extends AnAction {
         dialog.setLocationRelativeTo(null);
         dialog.setSize(dialog.getPreferredSize());
         dialog.setResizable(true);
+        dialog.setTitle("Add ServiceStack Reference");
 
         //Check if a package was selected in the left hand menu, populate package name
         PsiElement element = DataKeys.PSI_ELEMENT.getData(e.getDataContext());
