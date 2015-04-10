@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -211,8 +212,13 @@ public class JsonServiceClient implements ServiceClient {
         }
     }
 
-    public <TResponse> TResponse send(HttpURLConnection req, Class responseClass) {
+    public <TResponse> TResponse send(HttpURLConnection req, Object responseClass) {
         try {
+            Class resClass = responseClass instanceof Class ? (Class)responseClass : null;
+            Type resType = responseClass instanceof Type ? (Type)responseClass : null;
+            if (resClass == null && resType == null)
+                throw new RuntimeException("responseClass '" + responseClass.getClass().getSimpleName() + "' must be a Class or Type");
+
             int responseCode = req.getResponseCode();
             if (responseCode >= 400){
                 RuntimeException ex = createException(req, responseCode);
@@ -226,18 +232,32 @@ public class JsonServiceClient implements ServiceClient {
                 throw ex;
             }
 
+            if (RequestFilter != null) {
+                RequestFilter.exec(req);
+            }
+
+            if (GlobalRequestFilter != null) {
+                GlobalRequestFilter.exec(req);
+            }
+
             InputStream is = req.getInputStream();
 
             if (Log.isDebugEnabled()) {
                 String json = Utils.readToEnd(is, UTF8.name());
                 Log.d(json);
 
-                TResponse response = (TResponse) getGson().fromJson(json, responseClass);
+                TResponse response = resClass != null
+                    ? (TResponse) getGson().fromJson(json, resClass)
+                    : (TResponse) getGson().fromJson(json, resType);
+
                 return response;
             }
             else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                TResponse response = (TResponse) getGson().fromJson(reader, responseClass);
+                TResponse response = resClass != null
+                        ? (TResponse) getGson().fromJson(reader, resClass)
+                        : (TResponse) getGson().fromJson(reader, resType);
+
                 reader.close();
                 return response;
             }
@@ -263,19 +283,26 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public <TResponse> TResponse get(IReturn<TResponse> request) {
         return send(
-            createRequest(createUrl(request), HttpMethods.Get),
-            request.getResponseType());
+                createRequest(createUrl(request), HttpMethods.Get),
+                request.getResponseType());
     }
 
     @Override
     public <TResponse> TResponse get(IReturn<TResponse> request, Map<String, String> queryParams) {
         return send(
-            createRequest(createUrl(request, queryParams), HttpMethods.Get),
-            request.getResponseType());
+                createRequest(createUrl(request, queryParams), HttpMethods.Get),
+                request.getResponseType());
     }
 
     @Override
     public <TResponse> TResponse get(String path, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Get),
+                responseType);
+    }
+
+    @Override
+    public <TResponse> TResponse get(String path, Type responseType) {
         return send(
                 createRequest(resolveUrl(path), HttpMethods.Get),
                 responseType);
@@ -301,10 +328,24 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public <TResponse> TResponse post(String path, Object request, Type responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Post, request),
+                responseType);
+    }
+
+    @Override
     public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Class responseType) {
         return send(
             createRequest(resolveUrl(path), HttpMethods.Post, requestBody, contentType),
             responseType);
+    }
+
+    @Override
+    public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Type responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Post, requestBody, contentType),
+                responseType);
     }
 
     @Override
@@ -327,7 +368,21 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public <TResponse> TResponse put(String path, Object request, Type responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Put, request),
+                responseType);
+    }
+
+    @Override
     public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Put, requestBody, contentType),
+                responseType);
+    }
+
+    @Override
+    public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Type responseType) {
         return send(
                 createRequest(resolveUrl(path), HttpMethods.Put, requestBody, contentType),
                 responseType);
@@ -354,6 +409,13 @@ public class JsonServiceClient implements ServiceClient {
 
     @Override
     public <TResponse> TResponse delete(String path, Class responseType) {
+        return send(
+                createRequest(resolveUrl(path), HttpMethods.Delete),
+                responseType);
+    }
+
+    @Override
+    public <TResponse> TResponse delete(String path, Type responseType) {
         return send(
                 createRequest(resolveUrl(path), HttpMethods.Delete),
                 responseType);
