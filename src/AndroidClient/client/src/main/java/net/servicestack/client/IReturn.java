@@ -4,5 +4,5 @@ package net.servicestack.client;
 
 public interface IReturn<T>
 {
-    public Class getResponseType();
+    public Object getResponseType();
 }
