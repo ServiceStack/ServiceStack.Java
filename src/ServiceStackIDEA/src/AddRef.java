@@ -1,17 +1,26 @@
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileChooser.FileSystemTree;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.io.FileSystemUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.vfs.newvfs.impl.VirtualDirectoryImpl;
+import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
+import com.intellij.psi.JavaPsiFacade;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiPackage;
+import com.intellij.psi.impl.file.PsiDirectoryImpl;
+import com.intellij.psi.util.ClassUtil;
 import com.intellij.ui.JBColor;
+import com.sun.javafx.fxml.builder.URLBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,9 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -44,6 +50,8 @@ public class AddRef extends JDialog {
     private Module module;
 
     private String errorMessage;
+    private PsiPackage selectedPackage;
+    private String selectedDirectory;
 
     public AddRef(@NotNull Module module) {
         this.module = module;
@@ -185,6 +193,15 @@ public class AddRef extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public void setSelectedPackage(@NotNull PsiPackage selectedPackage) {
+        this.selectedPackage = selectedPackage;
+        setPackageBrowseText(selectedPackage.getQualifiedName());
+    }
+
+    public void setSelectedDirectory(@NotNull String selectedDirectory) {
+        this.selectedDirectory = selectedDirectory;
+    }
+
     private void processOK() {
         buttonOK.setEnabled(false);
         buttonCancel.setEnabled(false);
@@ -211,7 +228,7 @@ public class AddRef extends JDialog {
         SwingUtilities.invokeLater(r);
     }
 
-    public void setPackageBrowseText(String packageName) {
+    private void setPackageBrowseText(String packageName) {
         packageBrowse.setText(packageName);
     }
 
@@ -243,7 +260,18 @@ public class AddRef extends JDialog {
         } else {
             showDto = true;
         }
-        String url = createUrl(addressUrlTextField.getText());
+        String url = null;
+        try {
+            URIBuilder urlBuilder = createUrl(addressUrlTextField.getText());
+            urlBuilder.addParameter("Package", packageBrowse.getText());
+            String name = getDtoNameWithoutExtention().replaceAll("\\.", "_");
+            urlBuilder.addParameter("GlobalNamespace", name);
+            url = urlBuilder.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            errorMessage = errorMessage != null ? errorMessage : "URISyntaxException - Invalid ServiceStack endpoint provided - " + addressUrlTextField.getText();
+            return;
+        }
         URL serviceUrl = new URL(url);
         URLConnection javaResponseConnection = serviceUrl.openConnection();
         BufferedReader javaResponseReader = new BufferedReader(
@@ -299,29 +327,40 @@ public class AddRef extends JDialog {
         if(moduleFile == null) {
             throw new FileNotFoundException("Module file not found. Unable to add DTO to project.");
         }
-        String moduleSourcePath = null;
-        if(moduleFile.getParent() == null) {
-            moduleSourcePath = moduleFile.getPath() + "/main/java";
-        } else {
-            moduleSourcePath = moduleFile.getParent().getPath() + "/src/main/java";
-        }
-
-        String packagePath = packageBrowse.getText().replace(".", "/");
-        File assumedPackageDirectory = new File(moduleSourcePath + "/" + packagePath);
         String fullDtoPath;
-        if (assumedPackageDirectory.exists()) {
-            File dtoFile = new File(assumedPackageDirectory.getPath() + "/" + getDtoFileName());
-            fullDtoPath = dtoFile.getPath();
+
+        PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(packageBrowse.getText());
+        if(mainPackage != null && mainPackage.isValid() && mainPackage.getDirectories().length > 0) {
+            File foo = new File(selectedDirectory);
+            VirtualFile selectedFolder = LocalFileSystem.getInstance().findFileByIoFile(foo);
+            PsiDirectory rootPackageDir = PsiManager.getInstance(module.getProject()).findDirectory(selectedFolder);
+            fullDtoPath = rootPackageDir.getVirtualFile().getPath() + "/" + getDtoFileName();
         } else {
-            File dtoFile = new File(moduleSourcePath + "/" + getDtoFileName());
-            fullDtoPath = dtoFile.getPath();
+            String moduleSourcePath;
+            if(moduleFile.getParent() == null) {
+                moduleSourcePath = moduleFile.getPath() + "/main/java";
+            } else {
+                moduleSourcePath = moduleFile.getParent().getPath() + "/src/main/java";
+            }
+            fullDtoPath = moduleSourcePath + "/" + getDtoFileName();
         }
         return fullDtoPath;
     }
 
     private boolean ValidateEndpoint() throws IOException {
-        String typeMetadataUrl = createUrl(addressUrlTextField.getText()).replace("types/java/", "types/metadata/?format=json");
-        URL metadataUrl = new URL(typeMetadataUrl);
+        URIBuilder metaDataUrlBuilder;
+        String url = null;
+        try {
+            metaDataUrlBuilder = createUrl(addressUrlTextField.getText());
+            metaDataUrlBuilder.addParameter("format","json");
+            url = metaDataUrlBuilder.build().toString().replace("types/java","types/metadata");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+        URL metadataUrl = new URL(url);
         URLConnection metadataConnection = metadataUrl.openConnection();
         metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
         BufferedReader metadataBufferReader = new BufferedReader(
@@ -335,6 +374,7 @@ public class AddRef extends JDialog {
         metadataBufferReader.close();
         String metadataJson = metadataResponse.toString();
         Gson gson = new Gson();
+
         try {
             ServiceStackMetadata metadata = gson.fromJson(metadataJson, ServiceStackMetadata.class);
             if (metadata == null || metadata.getConfig() == null || metadata.getConfig().getBaseUrl() == null) {
@@ -378,7 +418,7 @@ public class AddRef extends JDialog {
         VirtualFileManager.getInstance().syncRefresh();
     }
 
-    private static class BrowsePackageListener implements ActionListener {
+    private class BrowsePackageListener implements ActionListener {
         private TextFieldWithBrowseButton _textField;
         private Project _project;
         private String _title;
@@ -397,12 +437,12 @@ public class AddRef extends JDialog {
             if (dialog.getExitCode() == PackageChooserDialog.CANCEL_EXIT_CODE) {
                 return;
             }
-
+            selectedPackage = dialog.getSelectedPackage();
             _textField.setText(dialog.getSelectedPackage().getQualifiedName());
         }
     }
 
-    private String createUrl(String text) throws MalformedURLException {
+    private URIBuilder createUrl(String text) throws MalformedURLException, URISyntaxException {
         String serverUrl = text.endsWith("/") ? text : (text + "/");
         serverUrl = (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) ? serverUrl : ("http://" + serverUrl);
         URL url = new URL(serverUrl);
@@ -410,20 +450,17 @@ public class AddRef extends JDialog {
         if (!path.endsWith("types/java/")) {
             serverUrl += "types/java/";
         }
+        URIBuilder builder;
 
-        if (packageBrowse.getText() != null && !packageBrowse.getText().isEmpty()) {
-            try {
-                URIBuilder builder = new URIBuilder(serverUrl);
-                builder.addParameter("Package", packageBrowse.getText());
-                String name = getDtoNameWithoutExtention().replaceAll("\\.", "_");
-                builder.addParameter("GlobalNamespace", name);
-                serverUrl = builder.build().toString();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+        try {
+            builder = new URIBuilder(serverUrl);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            throw e;
         }
 
-        return serverUrl;
+
+        return builder;
     }
 
     private String getDtoFileName() {
