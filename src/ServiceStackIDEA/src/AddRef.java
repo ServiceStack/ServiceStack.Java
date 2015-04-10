@@ -212,9 +212,9 @@ public class AddRef extends JDialog {
             public void run() {
                 try {
                     onOK();
-                } catch (IOException e1) {
+                } catch (Exception e1) {
                     e1.printStackTrace();
-                    errorMessage = errorMessage != null ? errorMessage : "An error occurred saving the file - " + e1.getMessage();
+                    errorMessage = errorMessage != null ? errorMessage : "An error occurred adding reference - " + e1.getMessage();
                 }
                 if (errorMessage != null) {
                     errorTextPane.setVisible(true);
@@ -242,16 +242,44 @@ public class AddRef extends JDialog {
         }
     }
 
-    private void onOK() throws IOException {
+    private void onOK() {
+        String url;
+        List<String> javaCodeLines = new ArrayList<>();
         try {
-            if (!ValidateEndpoint()) {
-                errorMessage = errorMessage != null ? errorMessage : "Invalid ServiceStack endpoint provided - " + addressUrlTextField.getText();
+            URIBuilder urlBuilder = createUrl(addressUrlTextField.getText());
+            urlBuilder.addParameter("Package", packageBrowse.getText());
+            String name = getDtoNameWithoutExtention().replaceAll("\\.", "_");
+            urlBuilder.addParameter("GlobalNamespace", name);
+            url = urlBuilder.build().toString();
+
+            URL serviceUrl = new URL(url);
+            URLConnection javaResponseConnection = serviceUrl.openConnection();
+            BufferedReader javaResponseReader = new BufferedReader(
+                    new InputStreamReader(
+                            javaResponseConnection.getInputStream()));
+            String metadataInputLine;
+
+            while ((metadataInputLine = javaResponseReader.readLine()) != null)
+                javaCodeLines.add(metadataInputLine);
+
+            javaResponseReader.close();
+
+            if(!javaCodeLines.get(0).startsWith("/* Options:")) {
+                //Invalid endpoint
+                errorMessage = "The address url is not a valid ServiceStack endpoint.";
                 return;
             }
-        } catch (Exception exception) {
-            errorMessage = errorMessage != null ? errorMessage : "Invalid ServiceStack endpoint provided - " + addressUrlTextField.getText();
+
+        } catch (URISyntaxException | MalformedURLException e) {
+            e.printStackTrace();
+            errorMessage = e.getClass().getName() + " - Invalid ServiceStack endpoint provided - " + addressUrlTextField.getText();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorMessage = e.getClass().getName() + " - Failed to read response - " + addressUrlTextField.getText();
             return;
         }
+
 
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
         boolean showDto = false;
@@ -260,29 +288,7 @@ public class AddRef extends JDialog {
         } else {
             showDto = true;
         }
-        String url = null;
-        try {
-            URIBuilder urlBuilder = createUrl(addressUrlTextField.getText());
-            urlBuilder.addParameter("Package", packageBrowse.getText());
-            String name = getDtoNameWithoutExtention().replaceAll("\\.", "_");
-            urlBuilder.addParameter("GlobalNamespace", name);
-            url = urlBuilder.build().toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            errorMessage = errorMessage != null ? errorMessage : "URISyntaxException - Invalid ServiceStack endpoint provided - " + addressUrlTextField.getText();
-            return;
-        }
-        URL serviceUrl = new URL(url);
-        URLConnection javaResponseConnection = serviceUrl.openConnection();
-        BufferedReader javaResponseReader = new BufferedReader(
-                new InputStreamReader(
-                        javaResponseConnection.getInputStream()));
-        String metadataInputLine;
-        List<String> javaCodeLines = new ArrayList<>();
-        while ((metadataInputLine = javaResponseReader.readLine()) != null)
-            javaCodeLines.add(metadataInputLine);
 
-        javaResponseReader.close();
         String dtoPath;
         try {
             dtoPath = getDtoPath();
@@ -333,6 +339,10 @@ public class AddRef extends JDialog {
         if(mainPackage != null && mainPackage.isValid() && mainPackage.getDirectories().length > 0) {
             File foo = new File(selectedDirectory);
             VirtualFile selectedFolder = LocalFileSystem.getInstance().findFileByIoFile(foo);
+            if(selectedFolder == null) {
+                errorMessage = "Unable to determine path for DTO file.";
+                throw new FileNotFoundException();
+            }
             PsiDirectory rootPackageDir = PsiManager.getInstance(module.getProject()).findDirectory(selectedFolder);
             fullDtoPath = rootPackageDir.getVirtualFile().getPath() + "/" + getDtoFileName();
         } else {
@@ -345,48 +355,6 @@ public class AddRef extends JDialog {
             fullDtoPath = moduleSourcePath + "/" + getDtoFileName();
         }
         return fullDtoPath;
-    }
-
-    private boolean ValidateEndpoint() throws IOException {
-        URIBuilder metaDataUrlBuilder;
-        String url = null;
-        try {
-            metaDataUrlBuilder = createUrl(addressUrlTextField.getText());
-            metaDataUrlBuilder.addParameter("format","json");
-            url = metaDataUrlBuilder.build().toString().replace("types/java","types/metadata");
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-
-        URL metadataUrl = new URL(url);
-        URLConnection metadataConnection = metadataUrl.openConnection();
-        metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
-        BufferedReader metadataBufferReader = new BufferedReader(
-                new InputStreamReader(
-                        metadataConnection.getInputStream()));
-        String metadataInputLine;
-        StringBuilder metadataResponse = new StringBuilder();
-        while ((metadataInputLine = metadataBufferReader.readLine()) != null)
-            metadataResponse.append(metadataInputLine);
-
-        metadataBufferReader.close();
-        String metadataJson = metadataResponse.toString();
-        Gson gson = new Gson();
-
-        try {
-            ServiceStackMetadata metadata = gson.fromJson(metadataJson, ServiceStackMetadata.class);
-            if (metadata == null || metadata.getConfig() == null || metadata.getConfig().getBaseUrl() == null) {
-                errorMessage = "The address url is not a valid ServiceStack endpoint.";
-                return false;
-            }
-        } catch (Exception e) {
-            errorMessage = "The address url is not a valid ServiceStack endpoint.";
-            return false;
-        }
-
-        return true;
     }
 
     private void refreshBuildFile() {
