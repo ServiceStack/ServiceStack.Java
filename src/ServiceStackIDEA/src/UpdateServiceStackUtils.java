@@ -71,18 +71,6 @@ public class UpdateServiceStackUtils {
             builder.setPath(existingPath + "/types/java");
         }
 
-
-        try {
-            if(!UpdateServiceStackUtils.validateEndPoint(builder.build().toString())) {
-                return;
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Unable to parse BaseUrl", NotificationType.ERROR);
-            Notifications.Bus.notify(notification);
-            return;
-        }
-
         for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
             String configLine = linesOfCode.get(i);
             if(!configLine.startsWith("//") && configLine.contains(":")) {
@@ -109,6 +97,12 @@ public class UpdateServiceStackUtils {
                 javaCodeResponse.append("\n");
             }
 
+            String javaCode = javaCodeResponse.toString();
+            if(!javaCode.startsWith("/* Options:")) {
+                Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid response from provided BaseUrl - " + baseUrl, NotificationType.ERROR);
+                Notifications.Bus.notify(notification);
+                return;
+            }
             Document document = FileDocumentManager.getInstance().getDocument(psiFile.getVirtualFile());
             if (document != null) {
                 document.setText(javaCodeResponse);
@@ -144,12 +138,11 @@ public class UpdateServiceStackUtils {
 
     public static boolean validateEndPoint(String url) {
 
-        URL metadataUrl = null;
-        URIBuilder builder = null;
+        URL javaCodeUrl;
+        URIBuilder builder;
         try {
-            builder = new URIBuilder(url.replace("types/java","types/metadata"));
-            builder.addParameter("format","json");
-            metadataUrl = new URL(builder.build().toString());
+            builder = new URIBuilder(url);
+            javaCodeUrl = new URL(builder.build().toString());
         } catch (URISyntaxException e) {
             //Log error to IDEA warning bubble/window.
             e.printStackTrace();
@@ -163,46 +156,46 @@ public class UpdateServiceStackUtils {
             return false;
         }
 
-        URLConnection metadataConnection = null;
-        String errorMessage = null;
+        URLConnection javaCodeConnection;
+        String errorMessage;
         try {
-            metadataConnection = metadataUrl.openConnection();
+            javaCodeConnection = javaCodeUrl.openConnection();
         } catch (IOException e) {
             errorMessage = "Problem connecting to BaseUrl - " + e.getMessage();
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", errorMessage, NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return false;
         }
-        metadataConnection.setRequestProperty("content-type", "application/json; charset=utf-8");
-        BufferedReader metadataBufferReader = null;
+        BufferedReader javaCodeBufferReader;
         try {
-            metadataBufferReader = new BufferedReader(
+            javaCodeBufferReader = new BufferedReader(
                     new InputStreamReader(
-                            metadataConnection.getInputStream()));
+                            javaCodeConnection.getInputStream()));
         } catch (IOException e) {
             errorMessage = "Problem connecting to BaseUrl - " + e.getMessage();
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", errorMessage, NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return false;
         }
-        String metadataInputLine;
-        StringBuilder metadataResponse = new StringBuilder();
-        try {
-            while ((metadataInputLine = metadataBufferReader.readLine()) != null)
-                metadataResponse.append(metadataInputLine);
 
-            metadataBufferReader.close();
+        String javaCodeInputLine;
+        StringBuilder javaCodeResponse = new StringBuilder();
+        try {
+            while ((javaCodeInputLine = javaCodeBufferReader.readLine()) != null)
+                javaCodeResponse.append(javaCodeInputLine);
+
+            javaCodeBufferReader.close();
         } catch (IOException e) {
             errorMessage = "Invalid response, check the BaseUrl is a valid ServiceStack endpoint - " + e.getMessage();
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", errorMessage, NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
+            return false;
         }
 
 
-        String metadataJson = metadataResponse.toString();
-        Gson gson = new Gson();
-        try {
-            ServiceStackMetadata metadata = gson.fromJson(metadataJson, ServiceStackMetadata.class);
-            if (metadata == null || metadata.getConfig() == null || metadata.getConfig().getBaseUrl() == null) {
-                errorMessage = "The address url is not a valid ServiceStack endpoint.";
-            }
-        } catch (Exception e) {
-            errorMessage = "The address url is not a valid ServiceStack endpoint.";
-        }
-
-        if(errorMessage != null) {
+        String javaCode = javaCodeResponse.toString();
+        if(!javaCode.startsWith("/* Options:")) {
+            errorMessage = "Invalid response, check the BaseUrl is a valid ServiceStack endpoint";
             Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", errorMessage, NotificationType.ERROR);
             Notifications.Bus.notify(notification);
             return false;

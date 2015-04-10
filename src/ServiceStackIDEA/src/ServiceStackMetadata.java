@@ -1,48 +1,51 @@
+import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Created by Layoric on 2/04/2015.
  */
 public class ServiceStackMetadata {
 
-    public Integer Version;
-    public MetadataConfig Config;
+    @Nullable
+    @SerializedName("version")
+    public Integer lowerCaseVersion;
+
+    @Nullable
+    @SerializedName("Version")
+    public Integer upperCaseVersion;
+
+    @Nullable
+    @SerializedName("Config")
+    public MetadataConfig upperCaseConfig;
+
+    @Nullable
+    @SerializedName("config")
+    public MetadataConfig lowerCaseConfig;
 
     public ServiceStackMetadata() {
 
     }
 
-    public ServiceStackMetadata(int version) {
-        this.Version = version;
+    public MetadataConfig getConfig() {
+        return this.upperCaseConfig == null ?
+                this.lowerCaseConfig : this.upperCaseConfig;
     }
 
     public Integer getVersion() {
-        return Version;
-    }
-
-    public void setVersion(Integer version) {
-        this.Version = version;
-    }
-
-    public MetadataConfig getConfig() {
-        return Config;
-    }
-
-    public void setConfig(MetadataConfig config) {
-        this.Config = config;
+        return this.lowerCaseVersion == null ?
+                this.upperCaseVersion : this.lowerCaseVersion;
     }
 
     public class MetadataConfig {
-        public String BaseUrl;
+        @SerializedName("baseUrl")
+        public String lowerCaseBaseUrl;
 
-        public MetadataConfig(String baseUrl) {
-            this.BaseUrl = baseUrl;
-        }
+        @SerializedName("BaseUrl")
+        public String upperCaseBaseUrl;
 
         public String getBaseUrl() {
-            return this.BaseUrl;
-        }
-
-        public void setBaseUrl(String baseUrl) {
-            this.BaseUrl = baseUrl;
+            return this.lowerCaseBaseUrl == null ?
+                    this.upperCaseBaseUrl : this.lowerCaseBaseUrl;
         }
     }
 }
