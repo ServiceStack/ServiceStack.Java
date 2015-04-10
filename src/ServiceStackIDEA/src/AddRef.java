@@ -1,29 +1,22 @@
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.TextEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.newvfs.impl.VirtualDirectoryImpl;
-import com.intellij.openapi.vfs.newvfs.impl.VirtualFileImpl;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiPackage;
-import com.intellij.psi.impl.file.PsiDirectoryImpl;
-import com.intellij.psi.util.ClassUtil;
 import com.intellij.ui.JBColor;
-import com.sun.javafx.fxml.builder.URLBuilder;
 import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -248,7 +241,7 @@ public class AddRef extends JDialog {
         try {
             URIBuilder urlBuilder = createUrl(addressUrlTextField.getText());
             urlBuilder.addParameter("Package", packageBrowse.getText());
-            String name = getDtoNameWithoutExtention().replaceAll("\\.", "_");
+            String name = getDtpNameWithoutExtension().replaceAll("\\.", "_");
             urlBuilder.addParameter("GlobalNamespace", name);
             url = urlBuilder.build().toString();
 
@@ -344,6 +337,10 @@ public class AddRef extends JDialog {
                 throw new FileNotFoundException();
             }
             PsiDirectory rootPackageDir = PsiManager.getInstance(module.getProject()).findDirectory(selectedFolder);
+            if(rootPackageDir == null) {
+                errorMessage = "Unable to determine path for DTO file.";
+                throw new FileNotFoundException();
+            }
             fullDtoPath = rootPackageDir.getVirtualFile().getPath() + "/" + getDtoFileName();
         } else {
             String moduleSourcePath;
@@ -359,10 +356,16 @@ public class AddRef extends JDialog {
 
     private void refreshBuildFile() {
         VirtualFileManager.getInstance().syncRefresh();
+        if(module.getModuleFile() == null) { return; }
+
         VirtualFile fileByUrl = VirtualFileManager.getInstance().findFileByUrl(module.getModuleFile().getParent().getUrl() + "/build.gradle");
 
+        if(fileByUrl == null) { return; }
+
         FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl, false);
-        Document document = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor().getDocument();
+        Editor currentEditor = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor();
+        if(currentEditor == null) { return; }
+        Document document = currentEditor.getDocument();
 
         FileDocumentManager.getInstance().reloadFromDisk(document);
         VirtualFileManager.getInstance().syncRefresh();
@@ -378,7 +381,9 @@ public class AddRef extends JDialog {
         }
 
         FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl, false);
-        Document document = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor().getDocument();
+        Editor currentEditor = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor();
+        if(currentEditor == null) { return; }
+        Document document = currentEditor.getDocument();
 
         if (!openFile) FileEditorManager.getInstance(module.getProject()).closeFile(fileByUrl);
 
@@ -444,7 +449,7 @@ public class AddRef extends JDialog {
         }
     }
 
-    private String getDtoNameWithoutExtention() {
+    private String getDtpNameWithoutExtension() {
         String name = nameTextField.getText();
         int p = name.lastIndexOf(".");
         String e = name.substring(p + 1);
@@ -460,12 +465,5 @@ public class AddRef extends JDialog {
     private void onCancel() {
 // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        AddRef dialog = new AddRef(null);
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }

@@ -42,7 +42,7 @@ The Java file will then be added to the related package or `/src/main/java` fold
 
 #### Update ServiceStack Reference
 
-Once you have added a ServiceStack reference, it can be easily updated by using AndroidStudio `Intension` shortcut, usually Alt+Enter when in the file.
+Once you have added a ServiceStack reference, it can be easily updated by using AndroidStudio `Intention` shortcut, usually Alt+Enter when in the file.
 
 ![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackidea/android-update-example.gif)
 

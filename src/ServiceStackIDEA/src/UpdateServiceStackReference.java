@@ -4,7 +4,6 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
@@ -21,6 +20,7 @@ import java.util.Objects;
 
 /**
  * Created by Layoric on 9/04/2015.
+ * Update ServiceStack Reference Project menu context action
  */
 public class UpdateServiceStackReference extends AnAction {
 

@@ -1,48 +1,24 @@
-import com.google.gson.Gson;
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.command.CommandProcessor;
-import com.intellij.openapi.command.UndoConfirmationPolicy;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.ReadonlyStatusHandler;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.util.IncorrectOperationException;
-import org.apache.http.client.utils.URIBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 
 public class UpdateServiceStackReferenceIntention extends QuickEditAction implements Iconable {
 
+    @NotNull
     @Override
     public String getText() {
-        return "Update ServiceStack reference";
+        return "Update ServiceStack Reference";
     }
 
+    @NotNull
     @Override
     public String getFamilyName() {
         return "UpdateServiceStackReferenceIntention";

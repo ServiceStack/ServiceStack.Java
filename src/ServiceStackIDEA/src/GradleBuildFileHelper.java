@@ -1,6 +1,4 @@
-import com.google.common.base.Joiner;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.*;
@@ -9,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by Layoric on 2/04/2015.
+ * Methods to help insert gradle dependency
  */
 public class GradleBuildFileHelper {
 
