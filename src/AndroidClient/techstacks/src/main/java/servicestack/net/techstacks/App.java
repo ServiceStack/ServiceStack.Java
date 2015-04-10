@@ -2,8 +2,9 @@ package servicestack.net.techstacks;
 
 import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.AsyncResult;
+import net.servicestack.client.Utils;
 
-import servicestack.net.techstacks.techstacksdtos.*;
+import servicestack.net.techstacks.dto.*;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,7 @@ public class App {
 
         ArrayList<AppDataListener> listeners = new ArrayList<>();
         AppOverviewResponse appOverviewResponse;
+        QueryResponse<TechnologyStack> techStacksResponse;
 
         public AppData addListener(AppDataListener callback){
             if (!listeners.contains(callback)){
@@ -65,8 +67,35 @@ public class App {
             return this;
         }
 
+        String lastTechStacksQuery = null;
+
+        public AppData searchTechStacks(final String query){
+            if (techStacksResponse != null && Utils.equals(query,lastTechStacksQuery)){
+                onUpdate(DataType.SearchTechStacks);
+            }
+
+            lastTechStacksQuery = query;
+            client.getAsync(new FindTechStacks(),
+                Utils.createMap("NameContains",query,"DescriptionContains",query),
+                new AsyncResult<QueryResponse<TechnologyStack>>() {
+                    @Override
+                    public void success(QueryResponse<TechnologyStack> response) {
+                        if (Utils.equals(query,lastTechStacksQuery)){
+                            techStacksResponse = response;
+                            onUpdate(DataType.SearchTechStacks);
+                        }
+                    }
+                });
+
+            return this;
+        }
+
         public AppOverviewResponse getAppOverviewResponse(){
             return appOverviewResponse;
+        }
+
+        public QueryResponse<TechnologyStack> getSearchTechStacksResponse() {
+            return techStacksResponse;
         }
     }
 
@@ -78,6 +107,7 @@ public class App {
     public static enum DataType
     {
         AppOverview,
+        SearchTechStacks,
     }
 
 

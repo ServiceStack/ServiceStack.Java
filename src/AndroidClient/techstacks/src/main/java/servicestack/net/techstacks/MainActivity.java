@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 
 import static net.servicestack.client.Func.map;
 
-import servicestack.net.techstacks.techstacksdtos.*;
+import servicestack.net.techstacks.dto.*;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -180,7 +183,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
             App.getData().addListener(this);
         }
 
@@ -191,12 +193,12 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             final View rootView = inflater.inflate(R.layout.fragment_top_rated, container, false);
 
-            Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner_category);
+            Spinner spinner = (Spinner)rootView.findViewById(R.id.spinnerCategory);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedCategory = App.getData().getAppOverviewResponse().getAllTiers().get(position);
-                    refreshTopTechnologies(App.getData(), (ListView) rootView.findViewById(R.id.list_results));
+                    refreshTopTechnologies(App.getData(), (ListView) rootView.findViewById(R.id.listTopRated));
                 }
 
                 @Override
@@ -211,13 +213,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         Spinner getCategorySpinner(){
             if (getActivity() == null)
                 return null;
-            return (Spinner) getActivity().findViewById(R.id.spinner_category);
+            return (Spinner) getActivity().findViewById(R.id.spinnerCategory);
         }
 
-        ListView getResultsList(){
+        ListView getTopRatedListView(){
             if (getActivity() == null)
                 return null;
-            return (ListView) getActivity().findViewById(R.id.list_results);
+            return (ListView) getActivity().findViewById(R.id.listTopRated);
         }
 
         @Override
@@ -235,7 +237,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                         spinner.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories));
                     }
 
-                    ListView list = getResultsList();
+                    ListView list = getTopRatedListView();
                     if (list != null) {
                         refreshTopTechnologies(data, list);
                     }
@@ -263,7 +265,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
-    public static class TechStacksFragment extends Fragment {
+    public static class TechStacksFragment extends Fragment implements App.AppDataListener {
         public static TechStacksFragment create(int sectionNumber) {
             TechStacksFragment fragment = new TechStacksFragment();
             Bundle args = new Bundle();
@@ -273,10 +275,59 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            App.getData().addListener(this);
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tech_stacks, container, false);
+
+            EditText txtSearch = (EditText)rootView.findViewById(R.id.searchTechStacks);
+            txtSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    App.getData().searchTechStacks(s.toString());
+                }
+
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void afterTextChanged(Editable s) {}
+            });
+
             return rootView;
+        }
+
+        EditText getSearchTechStacks(){
+            if (getActivity() == null)
+                return null;
+            return (EditText) getActivity().findViewById(R.id.searchTechStacks);
+        }
+
+        ListView getTechStacksListView(){
+            if (getActivity() == null)
+                return null;
+            return (ListView) getActivity().findViewById(R.id.listTechStacks);
+        }
+
+        @Override
+        public void onUpdate(App.AppData data, App.DataType dataType) {
+            switch (dataType) {
+                case SearchTechStacks:
+                    ListView list = getTechStacksListView();
+                    if (list != null){
+                        ArrayList<TechnologyStack> searchResults = data.getSearchTechStacksResponse().getResults();
+                        ArrayList<String> results = map(searchResults, new Function<TechnologyStack, String>() {
+                            @Override
+                            public String apply(TechnologyStack o) {
+                                return o.getName();
+                            }
+                        });
+                        list.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, results));
+                    }
+                    break;
+            }
         }
     }
 

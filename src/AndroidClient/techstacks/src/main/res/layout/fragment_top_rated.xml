@@ -14,11 +14,11 @@
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/spinner_category"
+            android:id="@+id/spinnerCategory"
             android:layout_alignParentStart="true" />
 
         <ListView
-            android:id="@+id/list_results"
+            android:id="@+id/listTopRated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
