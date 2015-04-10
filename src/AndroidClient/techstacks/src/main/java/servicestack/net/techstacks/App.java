@@ -33,8 +33,6 @@ public class App {
         AndroidServiceClient client;
 
         ArrayList<AppDataListener> listeners = new ArrayList<>();
-        AppOverviewResponse appOverviewResponse;
-        QueryResponse<TechnologyStack> techStacksResponse;
 
         public AppData addListener(AppDataListener callback){
             if (!listeners.contains(callback)){
@@ -67,6 +65,11 @@ public class App {
             return this;
         }
 
+        AppOverviewResponse appOverviewResponse;
+        public AppOverviewResponse getAppOverviewResponse(){
+            return appOverviewResponse;
+        }
+
         String lastTechStacksQuery = null;
 
         public AppData searchTechStacks(final String query){
@@ -76,26 +79,51 @@ public class App {
 
             lastTechStacksQuery = query;
             client.getAsync(new FindTechStacks(),
-                Utils.createMap("NameContains",query,"DescriptionContains",query),
-                new AsyncResult<QueryResponse<TechnologyStack>>() {
-                    @Override
-                    public void success(QueryResponse<TechnologyStack> response) {
-                        if (Utils.equals(query,lastTechStacksQuery)){
-                            techStacksResponse = response;
-                            onUpdate(DataType.SearchTechStacks);
+                    Utils.createMap("NameContains",query,"DescriptionContains",query),
+                    new AsyncResult<QueryResponse<TechnologyStack>>() {
+                        @Override
+                        public void success(QueryResponse<TechnologyStack> response) {
+                            if (Utils.equals(query,lastTechStacksQuery)){
+                                techStacksResponse = response;
+                                onUpdate(DataType.SearchTechStacks);
+                            }
                         }
-                    }
-                });
+                    });
 
             return this;
         }
 
-        public AppOverviewResponse getAppOverviewResponse(){
-            return appOverviewResponse;
-        }
-
+        QueryResponse<TechnologyStack> techStacksResponse;
         public QueryResponse<TechnologyStack> getSearchTechStacksResponse() {
             return techStacksResponse;
+        }
+
+        String lastTechnologiesQuery = null;
+
+        public AppData searchTechnologies(final String query){
+            if (technologiesResponse != null && Utils.equals(query,lastTechnologiesQuery)){
+                onUpdate(DataType.SearchTechnologies);
+            }
+
+            lastTechnologiesQuery = query;
+            client.getAsync(new FindTechnologies(),
+                    Utils.createMap("NameContains",query,"DescriptionContains",query),
+                    new AsyncResult<QueryResponse<Technology>>() {
+                        @Override
+                        public void success(QueryResponse<Technology> response) {
+                            if (Utils.equals(query,lastTechnologiesQuery)){
+                                technologiesResponse = response;
+                                onUpdate(DataType.SearchTechnologies);
+                            }
+                        }
+                    });
+
+            return this;
+        }
+
+        QueryResponse<Technology> technologiesResponse;
+        public QueryResponse<Technology> getSearchTechnologiesResponse() {
+            return technologiesResponse;
         }
     }
 
@@ -108,6 +136,7 @@ public class App {
     {
         AppOverview,
         SearchTechStacks,
+        SearchTechnologies,
     }
 
 

@@ -299,13 +299,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return rootView;
         }
 
-        EditText getSearchTechStacks(){
-            if (getActivity() == null)
-                return null;
-            return (EditText) getActivity().findViewById(R.id.searchTechStacks);
-        }
-
-        ListView getTechStacksListView(){
+        ListView getListViewResults(){
             if (getActivity() == null)
                 return null;
             return (ListView) getActivity().findViewById(R.id.listTechStacks);
@@ -315,10 +309,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public void onUpdate(App.AppData data, App.DataType dataType) {
             switch (dataType) {
                 case SearchTechStacks:
-                    ListView list = getTechStacksListView();
+                    ListView list = getListViewResults();
                     if (list != null){
-                        ArrayList<TechnologyStack> searchResults = data.getSearchTechStacksResponse().getResults();
-                        ArrayList<String> results = map(searchResults, new Function<TechnologyStack, String>() {
+                        ArrayList<String> results = map(data.getSearchTechStacksResponse().getResults(), new Function<TechnologyStack, String>() {
                             @Override
                             public String apply(TechnologyStack o) {
                                 return o.getName();
@@ -331,7 +324,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
-    public static class TechnologiesFragment extends Fragment {
+    public static class TechnologiesFragment extends Fragment implements App.AppDataListener {
         public static TechnologiesFragment create(int sectionNumber) {
             TechnologiesFragment fragment = new TechnologiesFragment();
             Bundle args = new Bundle();
@@ -341,10 +334,52 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            App.getData().addListener(this);
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_technologies, container, false);
+
+            EditText txtSearch = (EditText)rootView.findViewById(R.id.searchTechnologies);
+            txtSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    App.getData().searchTechnologies(s.toString());
+                }
+
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void afterTextChanged(Editable s) {}
+            });
+
             return rootView;
+        }
+
+        ListView getListViewResults(){
+            if (getActivity() == null)
+                return null;
+            return (ListView) getActivity().findViewById(R.id.listTechnologies);
+        }
+
+        @Override
+        public void onUpdate(App.AppData data, App.DataType dataType) {
+            switch (dataType) {
+                case SearchTechnologies:
+                    ListView list = getListViewResults();
+                    if (list != null){
+                        ArrayList<String> results = map(data.getSearchTechnologiesResponse().getResults(), new Function<Technology, String>() {
+                            @Override
+                            public String apply(Technology o) {
+                                return o.getName();
+                            }
+                        });
+                        list.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, results));
+                    }
+                    break;
+            }
         }
     }
 
