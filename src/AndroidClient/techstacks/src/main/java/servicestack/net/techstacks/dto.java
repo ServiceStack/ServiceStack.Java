@@ -1,10 +1,10 @@
 /* Options:
-Date: 2015-03-30 01:26:23
+Date: 2015-04-10 12:41:14
 Version: 1
 BaseUrl: http://techstacks.io
 
-Package: servicestack.net.androidclient
-GlobalNamespace: techstacksdtos
+Package: servicestack.net.techstacks
+//GlobalNamespace: dto
 //AddPropertyAccessors: True
 //SettersReturnThis: True
 //AddServiceStackTypes: True
@@ -12,30 +12,23 @@ GlobalNamespace: techstacksdtos
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
-//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*
+//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
 package servicestack.net.techstacks;
 
-import com.google.gson.annotations.SerializedName;
+import java.math.*;
+import java.util.*;
+import net.servicestack.client.*;
+import com.google.gson.annotations.*;
+import com.google.gson.reflect.*;
 
-import net.servicestack.client.AutoQueryViewer;
-import net.servicestack.client.DataContract;
-import net.servicestack.client.DataMember;
-import net.servicestack.client.IReturn;
-import net.servicestack.client.ResponseStatus;
-import net.servicestack.client.Route;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
-public class techstacksdtos
+public class dto
 {
 
     public static class Technology extends TechnologyBase
     {
-
+        
     }
 
     public static enum TechnologyTier
@@ -53,14 +46,14 @@ public class techstacksdtos
 
     public static class TechnologyStack extends TechnologyStackBase
     {
-
+        
     }
 
     public static class TechnologyHistory extends TechnologyBase
     {
         public Long TechnologyId = null;
         public String Operation = null;
-
+        
         public Long getTechnologyId() { return TechnologyId; }
         public TechnologyHistory setTechnologyId(Long value) { this.TechnologyId = value; return this; }
         public String getOperation() { return Operation; }
@@ -69,14 +62,14 @@ public class techstacksdtos
 
     public static class QueryBase_1<T> extends QueryBase
     {
-
+        
     }
 
     public static class TechStackDetails extends TechnologyStackBase
     {
         public String DetailsHtml = null;
         public ArrayList<TechnologyInStack> TechnologyChoices = null;
-
+        
         public String getDetailsHtml() { return DetailsHtml; }
         public TechStackDetails setDetailsHtml(String value) { this.DetailsHtml = value; return this; }
         public ArrayList<TechnologyInStack> getTechnologyChoices() { return TechnologyChoices; }
@@ -88,7 +81,7 @@ public class techstacksdtos
         public Long TechnologyStackId = null;
         public String Operation = null;
         public ArrayList<Long> TechnologyIds = null;
-
+        
         public Long getTechnologyStackId() { return TechnologyStackId; }
         public TechnologyStackHistory setTechnologyStackId(Long value) { this.TechnologyStackId = value; return this; }
         public String getOperation() { return Operation; }
@@ -111,7 +104,7 @@ public class techstacksdtos
         @DataMember(Name="value")
         @SerializedName("value")
         public TechnologyTier Value = null;
-
+        
         public String getName() { return Name; }
         public Option setName(String value) { this.Name = value; return this; }
         public String getTitle() { return Title; }
@@ -125,7 +118,7 @@ public class techstacksdtos
         public String UserName = null;
         public String AvatarUrl = null;
         public Integer StacksCount = null;
-
+        
         public String getUserName() { return UserName; }
         public UserInfo setUserName(String value) { this.UserName = value; return this; }
         public String getAvatarUrl() { return AvatarUrl; }
@@ -141,7 +134,7 @@ public class techstacksdtos
         public String Name = null;
         public String LogoUrl = null;
         public Integer StacksCount = null;
-
+        
         public TechnologyTier getTier() { return Tier; }
         public TechnologyInfo setTier(TechnologyTier value) { this.Tier = value; return this; }
         public String getSlug() { return Slug; }
@@ -163,7 +156,7 @@ public class techstacksdtos
         public String ShortDate = null;
         public String TextHtml = null;
         public ArrayList<PostComment> Comments = null;
-
+        
         public Integer getId() { return Id; }
         public Post setId(Integer value) { this.Id = value; return this; }
         public String getUserId() { return UserId; }
@@ -199,7 +192,7 @@ public class techstacksdtos
         public Boolean IsLocked = null;
         public TechnologyTier Tier = null;
         public Date LastStatusUpdate = null;
-
+        
         public Long getId() { return Id; }
         public TechnologyBase setId(Long value) { this.Id = value; return this; }
         public String getName() { return Name; }
@@ -253,7 +246,7 @@ public class techstacksdtos
         public String Slug = null;
         public String Details = null;
         public Date LastStatusUpdate = null;
-
+        
         public Long getId() { return Id; }
         public TechnologyStackBase setId(Long value) { this.Id = value; return this; }
         public String getName() { return Name; }
@@ -299,7 +292,7 @@ public class techstacksdtos
 
         @DataMember(Order=4)
         public String OrderByDesc = null;
-
+        
         public Integer getSkip() { return Skip; }
         public QueryBase setSkip(Integer value) { this.Skip = value; return this; }
         public Integer getTake() { return Take; }
@@ -315,7 +308,7 @@ public class techstacksdtos
         public Long TechnologyId = null;
         public Long TechnologyStackId = null;
         public String Justification = null;
-
+        
         public Long getTechnologyId() { return TechnologyId; }
         public TechnologyInStack setTechnologyId(Long value) { this.TechnologyId = value; return this; }
         public Long getTechnologyStackId() { return TechnologyStackId; }
@@ -333,7 +326,7 @@ public class techstacksdtos
         public String Date = null;
         public String ShortDate = null;
         public String TextHtml = null;
-
+        
         public Integer getId() { return Id; }
         public PostComment setId(Integer value) { this.Id = value; return this; }
         public Integer getPostId() { return PostId; }
@@ -353,21 +346,21 @@ public class techstacksdtos
     public static class LogoUrlApprovalResponse
     {
         public Technology Result = null;
-
+        
         public Technology getResult() { return Result; }
         public LogoUrlApprovalResponse setResult(Technology value) { this.Result = value; return this; }
     }
 
     public static class LockStackResponse
     {
-
+        
     }
 
     public static class CreateTechnologyResponse
     {
         public Technology Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Technology getResult() { return Result; }
         public CreateTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
@@ -378,7 +371,7 @@ public class techstacksdtos
     {
         public Technology Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Technology getResult() { return Result; }
         public UpdateTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
@@ -389,7 +382,7 @@ public class techstacksdtos
     {
         public Technology Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Technology getResult() { return Result; }
         public DeleteTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
@@ -402,7 +395,7 @@ public class techstacksdtos
         public Technology Technology = null;
         public ArrayList<TechnologyStack> TechnologyStacks = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Date getCreated() { return Created; }
         public GetTechnologyResponse setCreated(Date value) { this.Created = value; return this; }
         public Technology getTechnology() { return Technology; }
@@ -416,7 +409,7 @@ public class techstacksdtos
     public static class GetTechnologyPreviousVersionsResponse
     {
         public ArrayList<TechnologyHistory> Results = null;
-
+        
         public ArrayList<TechnologyHistory> getResults() { return Results; }
         public GetTechnologyPreviousVersionsResponse setResults(ArrayList<TechnologyHistory> value) { this.Results = value; return this; }
     }
@@ -425,7 +418,7 @@ public class techstacksdtos
     {
         public ArrayList<String> Users = null;
         public Integer FavoriteCount = null;
-
+        
         public ArrayList<String> getUsers() { return Users; }
         public GetTechnologyFavoriteDetailsResponse setUsers(ArrayList<String> value) { this.Users = value; return this; }
         public Integer getFavoriteCount() { return FavoriteCount; }
@@ -435,13 +428,13 @@ public class techstacksdtos
     public static class GetAllTechnologiesResponse
     {
         public ArrayList<Technology> Results = null;
-
+        
         public ArrayList<Technology> getResults() { return Results; }
         public GetAllTechnologiesResponse setResults(ArrayList<Technology> value) { this.Results = value; return this; }
     }
 
     @DataContract
-    public static class QueryResponse<Technology>
+    public static class QueryResponse<T>
     {
         @DataMember(Order=1)
         public Integer Offset = null;
@@ -450,31 +443,31 @@ public class techstacksdtos
         public Integer Total = null;
 
         @DataMember(Order=3)
-        public ArrayList<Technology> Results = null;
+        public ArrayList<T> Results = null;
 
         @DataMember(Order=4)
         public HashMap<String,String> Meta = null;
 
         @DataMember(Order=5)
         public ResponseStatus ResponseStatus = null;
-
+        
         public Integer getOffset() { return Offset; }
-        public QueryResponse<Technology> setOffset(Integer value) { this.Offset = value; return this; }
+        public QueryResponse<T> setOffset(Integer value) { this.Offset = value; return this; }
         public Integer getTotal() { return Total; }
-        public QueryResponse<Technology> setTotal(Integer value) { this.Total = value; return this; }
-        public ArrayList<Technology> getResults() { return Results; }
-        public QueryResponse<Technology> setResults(ArrayList<Technology> value) { this.Results = value; return this; }
+        public QueryResponse<T> setTotal(Integer value) { this.Total = value; return this; }
+        public ArrayList<T> getResults() { return Results; }
+        public QueryResponse<T> setResults(ArrayList<T> value) { this.Results = value; return this; }
         public HashMap<String,String> getMeta() { return Meta; }
-        public QueryResponse<Technology> setMeta(HashMap<String,String> value) { this.Meta = value; return this; }
+        public QueryResponse<T> setMeta(HashMap<String,String> value) { this.Meta = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
-        public QueryResponse<Technology> setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
+        public QueryResponse<T> setResponseStatus(ResponseStatus value) { this.ResponseStatus = value; return this; }
     }
 
     public static class CreateTechnologyStackResponse
     {
         public TechStackDetails Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public TechStackDetails getResult() { return Result; }
         public CreateTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
@@ -485,7 +478,7 @@ public class techstacksdtos
     {
         public TechStackDetails Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public TechStackDetails getResult() { return Result; }
         public UpdateTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
@@ -496,7 +489,7 @@ public class techstacksdtos
     {
         public TechStackDetails Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public TechStackDetails getResult() { return Result; }
         public DeleteTechnologyStackResponse setResult(TechStackDetails value) { this.Result = value; return this; }
         public ResponseStatus getResponseStatus() { return ResponseStatus; }
@@ -506,7 +499,7 @@ public class techstacksdtos
     public static class GetAllTechnologyStacksResponse
     {
         public ArrayList<TechnologyStack> Results = null;
-
+        
         public ArrayList<TechnologyStack> getResults() { return Results; }
         public GetAllTechnologyStacksResponse setResults(ArrayList<TechnologyStack> value) { this.Results = value; return this; }
     }
@@ -516,7 +509,7 @@ public class techstacksdtos
         public Date Created = null;
         public TechStackDetails Result = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Date getCreated() { return Created; }
         public GetTechnologyStackResponse setCreated(Date value) { this.Created = value; return this; }
         public TechStackDetails getResult() { return Result; }
@@ -528,7 +521,7 @@ public class techstacksdtos
     public static class GetTechnologyStackPreviousVersionsResponse
     {
         public ArrayList<TechnologyStackHistory> Results = null;
-
+        
         public ArrayList<TechnologyStackHistory> getResults() { return Results; }
         public GetTechnologyStackPreviousVersionsResponse setResults(ArrayList<TechnologyStackHistory> value) { this.Results = value; return this; }
     }
@@ -537,7 +530,7 @@ public class techstacksdtos
     {
         public ArrayList<String> Users = null;
         public Integer FavoriteCount = null;
-
+        
         public ArrayList<String> getUsers() { return Users; }
         public GetTechnologyStackFavoriteDetailsResponse setUsers(ArrayList<String> value) { this.Users = value; return this; }
         public Integer getFavoriteCount() { return FavoriteCount; }
@@ -547,7 +540,7 @@ public class techstacksdtos
     public static class GetConfigResponse
     {
         public ArrayList<Option> AllTiers = null;
-
+        
         public ArrayList<Option> getAllTiers() { return AllTiers; }
         public GetConfigResponse setAllTiers(ArrayList<Option> value) { this.AllTiers = value; return this; }
     }
@@ -560,7 +553,7 @@ public class techstacksdtos
         public ArrayList<TechStackDetails> LatestTechStacks = null;
         public HashMap<TechnologyTier,ArrayList<TechnologyInfo>> TopTechnologiesByTier = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Date getCreated() { return Created; }
         public OverviewResponse setCreated(Date value) { this.Created = value; return this; }
         public ArrayList<UserInfo> getTopUsers() { return TopUsers; }
@@ -581,7 +574,7 @@ public class techstacksdtos
         public ArrayList<Option> AllTiers = null;
         public ArrayList<TechnologyInfo> TopTechnologies = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public Date getCreated() { return Created; }
         public AppOverviewResponse setCreated(Date value) { this.Created = value; return this; }
         public ArrayList<Option> getAllTiers() { return AllTiers; }
@@ -595,7 +588,7 @@ public class techstacksdtos
     public static class GetFavoriteTechStackResponse
     {
         public ArrayList<TechnologyStack> Results = null;
-
+        
         public ArrayList<TechnologyStack> getResults() { return Results; }
         public GetFavoriteTechStackResponse setResults(ArrayList<TechnologyStack> value) { this.Results = value; return this; }
     }
@@ -603,7 +596,7 @@ public class techstacksdtos
     public static class FavoriteTechStackResponse
     {
         public TechnologyStack Result = null;
-
+        
         public TechnologyStack getResult() { return Result; }
         public FavoriteTechStackResponse setResult(TechnologyStack value) { this.Result = value; return this; }
     }
@@ -611,7 +604,7 @@ public class techstacksdtos
     public static class GetFavoriteTechnologiesResponse
     {
         public ArrayList<Technology> Results = null;
-
+        
         public ArrayList<Technology> getResults() { return Results; }
         public GetFavoriteTechnologiesResponse setResults(ArrayList<Technology> value) { this.Results = value; return this; }
     }
@@ -619,7 +612,7 @@ public class techstacksdtos
     public static class FavoriteTechnologyResponse
     {
         public Technology Result = null;
-
+        
         public Technology getResult() { return Result; }
         public FavoriteTechnologyResponse setResult(Technology value) { this.Result = value; return this; }
     }
@@ -627,7 +620,7 @@ public class techstacksdtos
     public static class GetUserFeedResponse
     {
         public ArrayList<TechStackDetails> Results = null;
-
+        
         public ArrayList<TechStackDetails> getResults() { return Results; }
         public GetUserFeedResponse setResults(ArrayList<TechStackDetails> value) { this.Results = value; return this; }
     }
@@ -640,7 +633,7 @@ public class techstacksdtos
         public ArrayList<TechnologyStack> TechStacks = null;
         public ArrayList<TechnologyStack> FavoriteTechStacks = null;
         public ArrayList<Technology> FavoriteTechnologies = null;
-
+        
         public String getUserName() { return UserName; }
         public GetUserInfoResponse setUserName(String value) { this.UserName = value; return this; }
         public Date getCreated() { return Created; }
@@ -678,7 +671,7 @@ public class techstacksdtos
 
         @DataMember(Order=7)
         public HashMap<String,String> Meta = null;
-
+        
         public String getUserId() { return UserId; }
         public AuthenticateResponse setUserId(String value) { this.UserId = value; return this; }
         public String getSessionId() { return SessionId; }
@@ -700,7 +693,7 @@ public class techstacksdtos
         public ArrayList<String> AllRoles = null;
         public ArrayList<String> AllPermissions = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public ArrayList<String> getAllRoles() { return AllRoles; }
         public AssignRolesResponse setAllRoles(ArrayList<String> value) { this.AllRoles = value; return this; }
         public ArrayList<String> getAllPermissions() { return AllPermissions; }
@@ -714,7 +707,7 @@ public class techstacksdtos
         public ArrayList<String> AllRoles = null;
         public ArrayList<String> AllPermissions = null;
         public ResponseStatus ResponseStatus = null;
-
+        
         public ArrayList<String> getAllRoles() { return AllRoles; }
         public UnAssignRolesResponse setAllRoles(ArrayList<String> value) { this.AllRoles = value; return this; }
         public ArrayList<String> getAllPermissions() { return AllPermissions; }
@@ -728,13 +721,13 @@ public class techstacksdtos
     {
         public Long TechnologyId = null;
         public Boolean Approved = null;
-
+        
         public Long getTechnologyId() { return TechnologyId; }
         public LogoUrlApproval setTechnologyId(Long value) { this.TechnologyId = value; return this; }
         public Boolean isApproved() { return Approved; }
         public LogoUrlApproval setApproved(Boolean value) { this.Approved = value; return this; }
-        private static Class responseType = LogoUrlApprovalResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = LogoUrlApprovalResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/admin/techstacks/{TechnologyStackId}/lock")
@@ -742,13 +735,13 @@ public class techstacksdtos
     {
         public Long TechnologyStackId = null;
         public Boolean IsLocked = null;
-
+        
         public Long getTechnologyStackId() { return TechnologyStackId; }
         public LockTechStack setTechnologyStackId(Long value) { this.TechnologyStackId = value; return this; }
         public Boolean getIsLocked() { return IsLocked; }
         public LockTechStack setIsLocked(Boolean value) { this.IsLocked = value; return this; }
-        private static Class responseType = LockStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = LockStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/admin/technology/{TechnologyId}/lock")
@@ -756,26 +749,26 @@ public class techstacksdtos
     {
         public Long TechnologyId = null;
         public Boolean IsLocked = null;
-
+        
         public Long getTechnologyId() { return TechnologyId; }
         public LockTech setTechnologyId(Long value) { this.TechnologyId = value; return this; }
         public Boolean getIsLocked() { return IsLocked; }
         public LockTech setIsLocked(Boolean value) { this.IsLocked = value; return this; }
-        private static Class responseType = LockStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = LockStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/ping")
     public static class Ping
     {
-
+        
     }
 
     @Route("/{PathInfo*}")
     public static class FallbackForClientRoutes
     {
         public String PathInfo = null;
-
+        
         public String getPathInfo() { return PathInfo; }
         public FallbackForClientRoutes setPathInfo(String value) { this.PathInfo = value; return this; }
     }
@@ -783,20 +776,20 @@ public class techstacksdtos
     @Route("/stacks")
     public static class ClientAllTechnologyStacks
     {
-
+        
     }
 
     @Route("/tech")
     public static class ClientAllTechnologies
     {
-
+        
     }
 
     @Route("/tech/{Slug}")
     public static class ClientTechnology
     {
         public String Slug = null;
-
+        
         public String getSlug() { return Slug; }
         public ClientTechnology setSlug(String value) { this.Slug = value; return this; }
     }
@@ -805,7 +798,7 @@ public class techstacksdtos
     public static class ClientUser
     {
         public String UserName = null;
-
+        
         public String getUserName() { return UserName; }
         public ClientUser setUserName(String value) { this.UserName = value; return this; }
     }
@@ -813,7 +806,7 @@ public class techstacksdtos
     @Route("/my-session")
     public static class SessionInfo
     {
-
+        
     }
 
     @Route(Path="/technology", Verbs="POST")
@@ -827,7 +820,7 @@ public class techstacksdtos
         public String Description = null;
         public Boolean IsLocked = null;
         public TechnologyTier Tier = null;
-
+        
         public String getName() { return Name; }
         public CreateTechnology setName(String value) { this.Name = value; return this; }
         public String getVendorName() { return VendorName; }
@@ -844,8 +837,8 @@ public class techstacksdtos
         public CreateTechnology setIsLocked(Boolean value) { this.IsLocked = value; return this; }
         public TechnologyTier getTier() { return Tier; }
         public CreateTechnology setTier(TechnologyTier value) { this.Tier = value; return this; }
-        private static Class responseType = CreateTechnologyResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = CreateTechnologyResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology/{Id}", Verbs="PUT")
@@ -860,7 +853,7 @@ public class techstacksdtos
         public String Description = null;
         public Boolean IsLocked = null;
         public TechnologyTier Tier = null;
-
+        
         public Long getId() { return Id; }
         public UpdateTechnology setId(Long value) { this.Id = value; return this; }
         public String getName() { return Name; }
@@ -879,19 +872,19 @@ public class techstacksdtos
         public UpdateTechnology setIsLocked(Boolean value) { this.IsLocked = value; return this; }
         public TechnologyTier getTier() { return Tier; }
         public UpdateTechnology setTier(TechnologyTier value) { this.Tier = value; return this; }
-        private static Class responseType = UpdateTechnologyResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = UpdateTechnologyResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology/{Id}", Verbs="DELETE")
     public static class DeleteTechnology implements IReturn<DeleteTechnologyResponse>
     {
         public Long Id = null;
-
+        
         public Long getId() { return Id; }
         public DeleteTechnology setId(Long value) { this.Id = value; return this; }
-        private static Class responseType = DeleteTechnologyResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = DeleteTechnologyResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/technology/{Slug}")
@@ -899,24 +892,24 @@ public class techstacksdtos
     {
         public Boolean Reload = null;
         public String Slug = null;
-
+        
         public Boolean isReload() { return Reload; }
         public GetTechnology setReload(Boolean value) { this.Reload = value; return this; }
         public String getSlug() { return Slug; }
         public GetTechnology setSlug(String value) { this.Slug = value; return this; }
-        private static Class responseType = GetTechnologyResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetTechnologyResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology/{Slug}/previous-versions", Verbs="GET")
     public static class GetTechnologyPreviousVersions implements IReturn<GetTechnologyPreviousVersionsResponse>
     {
         public String Slug = null;
-
+        
         public String getSlug() { return Slug; }
         public GetTechnologyPreviousVersions setSlug(String value) { this.Slug = value; return this; }
-        private static Class responseType = GetTechnologyPreviousVersionsResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetTechnologyPreviousVersionsResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/technology/{Slug}/favorites")
@@ -924,21 +917,21 @@ public class techstacksdtos
     {
         public String Slug = null;
         public Boolean Reload = null;
-
+        
         public String getSlug() { return Slug; }
         public GetTechnologyFavoriteDetails setSlug(String value) { this.Slug = value; return this; }
         public Boolean isReload() { return Reload; }
         public GetTechnologyFavoriteDetails setReload(Boolean value) { this.Reload = value; return this; }
-        private static Class responseType = GetTechnologyFavoriteDetailsResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetTechnologyFavoriteDetailsResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/technology", Verbs="GET")
     public static class GetAllTechnologies implements IReturn<GetAllTechnologiesResponse>
     {
-
-        private static Class responseType = GetAllTechnologiesResponse.class;
-        public Class getResponseType() { return responseType; }
+        
+        private static Object responseType = GetAllTechnologiesResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/technology/search")
@@ -947,13 +940,13 @@ public class techstacksdtos
     {
         public String Name = null;
         public Boolean Reload = null;
-
+        
         public String getName() { return Name; }
         public FindTechnologies setName(String value) { this.Name = value; return this; }
         public Boolean isReload() { return Reload; }
         public FindTechnologies setReload(Boolean value) { this.Reload = value; return this; }
-        private static Class responseType = new QueryResponse<Technology>().getClass();
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = new TypeToken<QueryResponse<Technology>>(){}.getType();
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks", Verbs="POST")
@@ -967,7 +960,7 @@ public class techstacksdtos
         public String Details = null;
         public Boolean IsLocked = null;
         public ArrayList<Long> TechnologyIds = null;
-
+        
         public String getName() { return Name; }
         public CreateTechnologyStack setName(String value) { this.Name = value; return this; }
         public String getVendorName() { return VendorName; }
@@ -984,8 +977,8 @@ public class techstacksdtos
         public CreateTechnologyStack setIsLocked(Boolean value) { this.IsLocked = value; return this; }
         public ArrayList<Long> getTechnologyIds() { return TechnologyIds; }
         public CreateTechnologyStack setTechnologyIds(ArrayList<Long> value) { this.TechnologyIds = value; return this; }
-        private static Class responseType = CreateTechnologyStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = CreateTechnologyStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Id}", Verbs="PUT")
@@ -1000,7 +993,7 @@ public class techstacksdtos
         public String Details = null;
         public Boolean IsLocked = null;
         public ArrayList<Long> TechnologyIds = null;
-
+        
         public Long getId() { return Id; }
         public UpdateTechnologyStack setId(Long value) { this.Id = value; return this; }
         public String getName() { return Name; }
@@ -1019,27 +1012,27 @@ public class techstacksdtos
         public UpdateTechnologyStack setIsLocked(Boolean value) { this.IsLocked = value; return this; }
         public ArrayList<Long> getTechnologyIds() { return TechnologyIds; }
         public UpdateTechnologyStack setTechnologyIds(ArrayList<Long> value) { this.TechnologyIds = value; return this; }
-        private static Class responseType = UpdateTechnologyStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = UpdateTechnologyStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Id}", Verbs="DELETE")
     public static class DeleteTechnologyStack implements IReturn<DeleteTechnologyStackResponse>
     {
         public Long Id = null;
-
+        
         public Long getId() { return Id; }
         public DeleteTechnologyStack setId(Long value) { this.Id = value; return this; }
-        private static Class responseType = DeleteTechnologyStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = DeleteTechnologyStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks", Verbs="GET")
     public static class GetAllTechnologyStacks implements IReturn<GetAllTechnologyStacksResponse>
     {
-
-        private static Class responseType = GetAllTechnologyStacksResponse.class;
-        public Class getResponseType() { return responseType; }
+        
+        private static Object responseType = GetAllTechnologyStacksResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Slug}", Verbs="GET")
@@ -1047,24 +1040,24 @@ public class techstacksdtos
     {
         public Boolean Reload = null;
         public String Slug = null;
-
+        
         public Boolean isReload() { return Reload; }
         public GetTechnologyStack setReload(Boolean value) { this.Reload = value; return this; }
         public String getSlug() { return Slug; }
         public GetTechnologyStack setSlug(String value) { this.Slug = value; return this; }
-        private static Class responseType = GetTechnologyStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetTechnologyStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Slug}/previous-versions", Verbs="GET")
     public static class GetTechnologyStackPreviousVersions implements IReturn<GetTechnologyStackPreviousVersionsResponse>
     {
         public String Slug = null;
-
+        
         public String getSlug() { return Slug; }
         public GetTechnologyStackPreviousVersions setSlug(String value) { this.Slug = value; return this; }
-        private static Class responseType = GetTechnologyStackPreviousVersionsResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetTechnologyStackPreviousVersionsResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/techstacks/{Slug}/favorites")
@@ -1072,43 +1065,43 @@ public class techstacksdtos
     {
         public String Slug = null;
         public Boolean Reload = null;
-
+        
         public String getSlug() { return Slug; }
         public GetTechnologyStackFavoriteDetails setSlug(String value) { this.Slug = value; return this; }
         public Boolean isReload() { return Reload; }
         public GetTechnologyStackFavoriteDetails setReload(Boolean value) { this.Reload = value; return this; }
-        private static Class responseType = GetTechnologyStackFavoriteDetailsResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetTechnologyStackFavoriteDetailsResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/config")
     public static class GetConfig implements IReturn<GetConfigResponse>
     {
-
-        private static Class responseType = GetConfigResponse.class;
-        public Class getResponseType() { return responseType; }
+        
+        private static Object responseType = GetConfigResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/overview")
     public static class Overview implements IReturn<OverviewResponse>
     {
         public Boolean Reload = null;
-
+        
         public Boolean isReload() { return Reload; }
         public Overview setReload(Boolean value) { this.Reload = value; return this; }
-        private static Class responseType = OverviewResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = OverviewResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/app-overview")
     public static class AppOverview implements IReturn<AppOverviewResponse>
     {
         public Boolean Reload = null;
-
+        
         public Boolean isReload() { return Reload; }
         public AppOverview setReload(Boolean value) { this.Reload = value; return this; }
-        private static Class responseType = AppOverviewResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = AppOverviewResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/techstacks/search")
@@ -1116,85 +1109,85 @@ public class techstacksdtos
     public static class FindTechStacks extends QueryBase_1<TechnologyStack> implements IReturn<QueryResponse<TechnologyStack>>
     {
         public Boolean Reload = null;
-
+        
         public Boolean isReload() { return Reload; }
         public FindTechStacks setReload(Boolean value) { this.Reload = value; return this; }
-        private static Class responseType = new QueryResponse<TechnologyStack>().getClass();
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = new TypeToken<QueryResponse<TechnologyStack>>(){}.getType();
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/techtacks", Verbs="GET")
     public static class GetFavoriteTechStack implements IReturn<GetFavoriteTechStackResponse>
     {
         public Integer TechnologyStackId = null;
-
+        
         public Integer getTechnologyStackId() { return TechnologyStackId; }
         public GetFavoriteTechStack setTechnologyStackId(Integer value) { this.TechnologyStackId = value; return this; }
-        private static Class responseType = GetFavoriteTechStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetFavoriteTechStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/techtacks/{TechnologyStackId}", Verbs="PUT")
     public static class AddFavoriteTechStack implements IReturn<FavoriteTechStackResponse>
     {
         public Integer TechnologyStackId = null;
-
+        
         public Integer getTechnologyStackId() { return TechnologyStackId; }
         public AddFavoriteTechStack setTechnologyStackId(Integer value) { this.TechnologyStackId = value; return this; }
-        private static Class responseType = FavoriteTechStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = FavoriteTechStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/techtacks/{TechnologyStackId}", Verbs="DELETE")
     public static class RemoveFavoriteTechStack implements IReturn<FavoriteTechStackResponse>
     {
         public Integer TechnologyStackId = null;
-
+        
         public Integer getTechnologyStackId() { return TechnologyStackId; }
         public RemoveFavoriteTechStack setTechnologyStackId(Integer value) { this.TechnologyStackId = value; return this; }
-        private static Class responseType = FavoriteTechStackResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = FavoriteTechStackResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/technology", Verbs="GET")
     public static class GetFavoriteTechnologies implements IReturn<GetFavoriteTechnologiesResponse>
     {
         public Integer TechnologyId = null;
-
+        
         public Integer getTechnologyId() { return TechnologyId; }
         public GetFavoriteTechnologies setTechnologyId(Integer value) { this.TechnologyId = value; return this; }
-        private static Class responseType = GetFavoriteTechnologiesResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetFavoriteTechnologiesResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/technology/{TechnologyId}", Verbs="PUT")
     public static class AddFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>
     {
         public Integer TechnologyId = null;
-
+        
         public Integer getTechnologyId() { return TechnologyId; }
         public AddFavoriteTechnology setTechnologyId(Integer value) { this.TechnologyId = value; return this; }
-        private static Class responseType = FavoriteTechnologyResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = FavoriteTechnologyResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/favorites/technology/{TechnologyId}", Verbs="DELETE")
     public static class RemoveFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>
     {
         public Integer TechnologyId = null;
-
+        
         public Integer getTechnologyId() { return TechnologyId; }
         public RemoveFavoriteTechnology setTechnologyId(Integer value) { this.TechnologyId = value; return this; }
-        private static Class responseType = FavoriteTechnologyResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = FavoriteTechnologyResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/my-feed")
     public static class GetUserFeed implements IReturn<GetUserFeedResponse>
     {
-
-        private static Class responseType = GetUserFeedResponse.class;
-        public Class getResponseType() { return responseType; }
+        
+        private static Object responseType = GetUserFeedResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/userinfo/{UserName}")
@@ -1202,13 +1195,13 @@ public class techstacksdtos
     {
         public Boolean Reload = null;
         public String UserName = null;
-
+        
         public Boolean isReload() { return Reload; }
         public GetUserInfo setReload(Boolean value) { this.Reload = value; return this; }
         public String getUserName() { return UserName; }
         public GetUserInfo setUserName(String value) { this.UserName = value; return this; }
-        private static Class responseType = GetUserInfoResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = GetUserInfoResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/auth")
@@ -1262,7 +1255,7 @@ public class techstacksdtos
 
         @DataMember(Order=15)
         public HashMap<String,String> Meta = null;
-
+        
         public String getProvider() { return provider; }
         public Authenticate setProvider(String value) { this.provider = value; return this; }
         public String getState() { return State; }
@@ -1293,8 +1286,8 @@ public class techstacksdtos
         public Authenticate setCnonce(String value) { this.cnonce = value; return this; }
         public HashMap<String,String> getMeta() { return Meta; }
         public Authenticate setMeta(HashMap<String,String> value) { this.Meta = value; return this; }
-        private static Class responseType = AuthenticateResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = AuthenticateResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/assignroles")
@@ -1303,15 +1296,15 @@ public class techstacksdtos
         public String UserName = null;
         public ArrayList<String> Permissions = null;
         public ArrayList<String> Roles = null;
-
+        
         public String getUserName() { return UserName; }
         public AssignRoles setUserName(String value) { this.UserName = value; return this; }
         public ArrayList<String> getPermissions() { return Permissions; }
         public AssignRoles setPermissions(ArrayList<String> value) { this.Permissions = value; return this; }
         public ArrayList<String> getRoles() { return Roles; }
         public AssignRoles setRoles(ArrayList<String> value) { this.Roles = value; return this; }
-        private static Class responseType = AssignRolesResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = AssignRolesResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/unassignroles")
@@ -1320,23 +1313,23 @@ public class techstacksdtos
         public String UserName = null;
         public ArrayList<String> Permissions = null;
         public ArrayList<String> Roles = null;
-
+        
         public String getUserName() { return UserName; }
         public UnAssignRoles setUserName(String value) { this.UserName = value; return this; }
         public ArrayList<String> getPermissions() { return Permissions; }
         public UnAssignRoles setPermissions(ArrayList<String> value) { this.Permissions = value; return this; }
         public ArrayList<String> getRoles() { return Roles; }
         public UnAssignRoles setRoles(ArrayList<String> value) { this.Roles = value; return this; }
-        private static Class responseType = UnAssignRolesResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = UnAssignRolesResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/posts")
     public static class QueryPosts extends QueryBase_1<Post> implements IReturn<QueryResponse<Post>>
     {
-
-        private static Class responseType = new QueryResponse<Post>().getClass();
-        public Class getResponseType() { return responseType; }
+        
+        private static Object responseType = new TypeToken<QueryResponse<Post>>(){}.getType();
+        public Object getResponseType() { return responseType; }
     }
 
 }

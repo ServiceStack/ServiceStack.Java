@@ -1,10 +1,10 @@
 /* Options:
-Date: 2015-03-23 06:59:25
+Date: 2015-04-10 12:48:39
 Version: 1
-BaseUrl: http://localhost:55799
+BaseUrl: http://test.servicestack.net
 
 Package: test
-//GlobalNamespace: dto
+GlobalNamespace: dto
 //AddPropertyAccessors: True
 //SettersReturnThis: True
 //AddServiceStackTypes: True
@@ -12,7 +12,7 @@ Package: test
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
-//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*
+//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
 package test;
@@ -21,62 +21,38 @@ import java.math.*;
 import java.util.*;
 import net.servicestack.client.*;
 import com.google.gson.annotations.*;
+import com.google.gson.reflect.*;
 
 public class dto
 {
 
-    public static class QueryBase_1<T> extends QueryBase
+    public static enum ExternalEnum
     {
-
+        Foo,
+        Bar,
+        Baz;
     }
 
-    public static class Rockstar
+    public static class ExternalType
     {
-        public Integer id = null;
-        public String firstName = null;
-        public String lastName = null;
-        public Integer age = null;
-
-        public Integer getId() { return id; }
-        public Rockstar setId(Integer value) { this.id = value; return this; }
-        public String getFirstName() { return firstName; }
-        public Rockstar setFirstName(String value) { this.firstName = value; return this; }
-        public String getLastName() { return lastName; }
-        public Rockstar setLastName(String value) { this.lastName = value; return this; }
-        public Integer getAge() { return age; }
-        public Rockstar setAge(Integer value) { this.age = value; return this; }
+        public ExternalEnum2 externalEnum2 = null;
+        
+        public ExternalEnum2 getExternalEnum2() { return externalEnum2; }
+        public ExternalType setExternalEnum2(ExternalEnum2 value) { this.externalEnum2 = value; return this; }
     }
 
-    @DataContract
-    public static class ResponseStatus
+    public static enum ExternalEnum3
     {
-        @DataMember(Order=1)
-        public String errorCode = null;
-
-        @DataMember(Order=2)
-        public String message = null;
-
-        @DataMember(Order=3)
-        public String stackTrace = null;
-
-        @DataMember(Order=4)
-        public ArrayList<ResponseError> errors = null;
-
-        public String getErrorCode() { return errorCode; }
-        public ResponseStatus setErrorCode(String value) { this.errorCode = value; return this; }
-        public String getMessage() { return message; }
-        public ResponseStatus setMessage(String value) { this.message = value; return this; }
-        public String getStackTrace() { return stackTrace; }
-        public ResponseStatus setStackTrace(String value) { this.stackTrace = value; return this; }
-        public ArrayList<ResponseError> getErrors() { return errors; }
-        public ResponseStatus setErrors(ArrayList<ResponseError> value) { this.errors = value; return this; }
+        Un,
+        Deux,
+        Trois;
     }
 
     public static class MetadataTestChild
     {
         public String name = null;
         public ArrayList<MetadataTestNestedChild> results = null;
-
+        
         public String getName() { return name; }
         public MetadataTestChild setName(String value) { this.name = value; return this; }
         public ArrayList<MetadataTestNestedChild> getResults() { return results; }
@@ -89,160 +65,15 @@ public class dto
         @DataMember(Order=1)
         @ApiMember()
         public MenuItemExample menuItemExample1 = null;
-
+        
         public MenuItemExample getMenuItemExample1() { return menuItemExample1; }
         public MenuExample setMenuItemExample1(MenuItemExample value) { this.menuItemExample1 = value; return this; }
-    }
-
-    public static class MetadataType
-    {
-        public String name = null;
-        public String namespace = null;
-        public ArrayList<String> genericArgs = null;
-        public MetadataTypeName inherits = null;
-        public String displayType = null;
-        public String description = null;
-        public Boolean returnVoidMarker = null;
-        public Boolean isNested = null;
-        public Boolean isEnum = null;
-        public Boolean isInterface = null;
-        public Boolean isAbstract = null;
-        public MetadataTypeName returnMarkerTypeName = null;
-        public ArrayList<MetadataRoute> routes = null;
-        public MetadataDataContract dataContract = null;
-        public ArrayList<MetadataPropertyType> properties = null;
-        public ArrayList<MetadataAttribute> attributes = null;
-        public ArrayList<MetadataTypeName> innerTypes = null;
-        public ArrayList<String> enumNames = null;
-        public ArrayList<String> enumValues = null;
-
-        public String getName() { return name; }
-        public MetadataType setName(String value) { this.name = value; return this; }
-        public String getNamespace() { return namespace; }
-        public MetadataType setNamespace(String value) { this.namespace = value; return this; }
-        public ArrayList<String> getGenericArgs() { return genericArgs; }
-        public MetadataType setGenericArgs(ArrayList<String> value) { this.genericArgs = value; return this; }
-        public MetadataTypeName getInherits() { return inherits; }
-        public MetadataType setInherits(MetadataTypeName value) { this.inherits = value; return this; }
-        public String getDisplayType() { return displayType; }
-        public MetadataType setDisplayType(String value) { this.displayType = value; return this; }
-        public String getDescription() { return description; }
-        public MetadataType setDescription(String value) { this.description = value; return this; }
-        public Boolean isReturnVoidMarker() { return returnVoidMarker; }
-        public MetadataType setReturnVoidMarker(Boolean value) { this.returnVoidMarker = value; return this; }
-        public Boolean getIsNested() { return isNested; }
-        public MetadataType setIsNested(Boolean value) { this.isNested = value; return this; }
-        public Boolean getIsEnum() { return isEnum; }
-        public MetadataType setIsEnum(Boolean value) { this.isEnum = value; return this; }
-        public Boolean getIsInterface() { return isInterface; }
-        public MetadataType setIsInterface(Boolean value) { this.isInterface = value; return this; }
-        public Boolean getIsAbstract() { return isAbstract; }
-        public MetadataType setIsAbstract(Boolean value) { this.isAbstract = value; return this; }
-        public MetadataTypeName getReturnMarkerTypeName() { return returnMarkerTypeName; }
-        public MetadataType setReturnMarkerTypeName(MetadataTypeName value) { this.returnMarkerTypeName = value; return this; }
-        public ArrayList<MetadataRoute> getRoutes() { return routes; }
-        public MetadataType setRoutes(ArrayList<MetadataRoute> value) { this.routes = value; return this; }
-        public MetadataDataContract getDataContract() { return dataContract; }
-        public MetadataType setDataContract(MetadataDataContract value) { this.dataContract = value; return this; }
-        public ArrayList<MetadataPropertyType> getProperties() { return properties; }
-        public MetadataType setProperties(ArrayList<MetadataPropertyType> value) { this.properties = value; return this; }
-        public ArrayList<MetadataAttribute> getAttributes() { return attributes; }
-        public MetadataType setAttributes(ArrayList<MetadataAttribute> value) { this.attributes = value; return this; }
-        public ArrayList<MetadataTypeName> getInnerTypes() { return innerTypes; }
-        public MetadataType setInnerTypes(ArrayList<MetadataTypeName> value) { this.innerTypes = value; return this; }
-        public ArrayList<String> getEnumNames() { return enumNames; }
-        public MetadataType setEnumNames(ArrayList<String> value) { this.enumNames = value; return this; }
-        public ArrayList<String> getEnumValues() { return enumValues; }
-        public MetadataType setEnumValues(ArrayList<String> value) { this.enumValues = value; return this; }
-    }
-
-    public static class AutoQueryViewerConfig
-    {
-        public String serviceBaseUrl = null;
-        public String serviceName = null;
-        public String serviceDescription = null;
-        public String serviceIconUrl = null;
-        public Boolean isPublic = null;
-        public Boolean onlyShowAnnotatedServices = null;
-        public ArrayList<Property> implicitConventions = null;
-        public String defaultSearchField = null;
-        public String defaultSearchType = null;
-        public String defaultSearchText = null;
-        public String brandUrl = null;
-        public String brandImageUrl = null;
-        public String textColor = null;
-        public String linkColor = null;
-        public String backgroundColor = null;
-        public String backgroundImageUrl = null;
-        public String iconUrl = null;
-
-        public String getServiceBaseUrl() { return serviceBaseUrl; }
-        public AutoQueryViewerConfig setServiceBaseUrl(String value) { this.serviceBaseUrl = value; return this; }
-        public String getServiceName() { return serviceName; }
-        public AutoQueryViewerConfig setServiceName(String value) { this.serviceName = value; return this; }
-        public String getServiceDescription() { return serviceDescription; }
-        public AutoQueryViewerConfig setServiceDescription(String value) { this.serviceDescription = value; return this; }
-        public String getServiceIconUrl() { return serviceIconUrl; }
-        public AutoQueryViewerConfig setServiceIconUrl(String value) { this.serviceIconUrl = value; return this; }
-        public Boolean getIsPublic() { return isPublic; }
-        public AutoQueryViewerConfig setIsPublic(Boolean value) { this.isPublic = value; return this; }
-        public Boolean isOnlyShowAnnotatedServices() { return onlyShowAnnotatedServices; }
-        public AutoQueryViewerConfig setOnlyShowAnnotatedServices(Boolean value) { this.onlyShowAnnotatedServices = value; return this; }
-        public ArrayList<Property> getImplicitConventions() { return implicitConventions; }
-        public AutoQueryViewerConfig setImplicitConventions(ArrayList<Property> value) { this.implicitConventions = value; return this; }
-        public String getDefaultSearchField() { return defaultSearchField; }
-        public AutoQueryViewerConfig setDefaultSearchField(String value) { this.defaultSearchField = value; return this; }
-        public String getDefaultSearchType() { return defaultSearchType; }
-        public AutoQueryViewerConfig setDefaultSearchType(String value) { this.defaultSearchType = value; return this; }
-        public String getDefaultSearchText() { return defaultSearchText; }
-        public AutoQueryViewerConfig setDefaultSearchText(String value) { this.defaultSearchText = value; return this; }
-        public String getBrandUrl() { return brandUrl; }
-        public AutoQueryViewerConfig setBrandUrl(String value) { this.brandUrl = value; return this; }
-        public String getBrandImageUrl() { return brandImageUrl; }
-        public AutoQueryViewerConfig setBrandImageUrl(String value) { this.brandImageUrl = value; return this; }
-        public String getTextColor() { return textColor; }
-        public AutoQueryViewerConfig setTextColor(String value) { this.textColor = value; return this; }
-        public String getLinkColor() { return linkColor; }
-        public AutoQueryViewerConfig setLinkColor(String value) { this.linkColor = value; return this; }
-        public String getBackgroundColor() { return backgroundColor; }
-        public AutoQueryViewerConfig setBackgroundColor(String value) { this.backgroundColor = value; return this; }
-        public String getBackgroundImageUrl() { return backgroundImageUrl; }
-        public AutoQueryViewerConfig setBackgroundImageUrl(String value) { this.backgroundImageUrl = value; return this; }
-        public String getIconUrl() { return iconUrl; }
-        public AutoQueryViewerConfig setIconUrl(String value) { this.iconUrl = value; return this; }
-    }
-
-    public static class AutoQueryOperation
-    {
-        public String request = null;
-        public String from = null;
-        public String to = null;
-
-        public String getRequest() { return request; }
-        public AutoQueryOperation setRequest(String value) { this.request = value; return this; }
-        public String getFrom() { return from; }
-        public AutoQueryOperation setFrom(String value) { this.from = value; return this; }
-        public String getTo() { return to; }
-        public AutoQueryOperation setTo(String value) { this.to = value; return this; }
-    }
-
-    public static class Issue221Base<T>
-    {
-        public T id = null;
-
-        public T getId() { return id; }
-        public Issue221Base<T> setId(T value) { this.id = value; return this; }
-    }
-
-    public static class NativeTypesTestService
-    {
-
     }
 
     public static class NestedClass
     {
         public String value = null;
-
+        
         public String getValue() { return value; }
         public NestedClass setValue(String value) { this.value = value; return this; }
     }
@@ -250,7 +81,7 @@ public class dto
     public static class ListResult
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public ListResult setResult(String value) { this.result = value; return this; }
     }
@@ -258,7 +89,7 @@ public class dto
     public static class ArrayResult
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public ArrayResult setResult(String value) { this.result = value; return this; }
     }
@@ -308,7 +139,7 @@ public class dto
         public HashMap<String,String> stringMap = null;
         public HashMap<Integer,String> intStringMap = null;
         public SubType subType = null;
-
+        
         public Integer getId() { return id; }
         public AllTypes setId(Integer value) { this.id = value; return this; }
         public Integer getNullableId() { return nullableId; }
@@ -371,7 +202,7 @@ public class dto
         public ArrayList<Poco> pocoList = null;
         public HashMap<String,ArrayList<Poco>> pocoLookup = null;
         public HashMap<String,ArrayList<HashMap<String,Poco>>> pocoLookupMap = null;
-
+        
         public ArrayList<Integer> getIntArray() { return intArray; }
         public AllCollectionTypes setIntArray(ArrayList<Integer> value) { this.intArray = value; return this; }
         public ArrayList<Integer> getIntList() { return intList; }
@@ -393,7 +224,7 @@ public class dto
     public static class HelloBase
     {
         public Integer id = null;
-
+        
         public Integer getId() { return id; }
         public HelloBase setId(Integer value) { this.id = value; return this; }
     }
@@ -401,7 +232,7 @@ public class dto
     public static class HelloResponseBase
     {
         public Integer refId = null;
-
+        
         public Integer getRefId() { return refId; }
         public HelloResponseBase setRefId(Integer value) { this.refId = value; return this; }
     }
@@ -409,7 +240,7 @@ public class dto
     public static class Poco
     {
         public String name = null;
-
+        
         public String getName() { return name; }
         public Poco setName(String value) { this.name = value; return this; }
     }
@@ -418,7 +249,7 @@ public class dto
     {
         public ArrayList<T> items = null;
         public ArrayList<Integer> counts = null;
-
+        
         public ArrayList<T> getItems() { return items; }
         public HelloBase_1<T> setItems(ArrayList<T> value) { this.items = value; return this; }
         public ArrayList<Integer> getCounts() { return counts; }
@@ -428,7 +259,7 @@ public class dto
     public static class Item
     {
         public String value = null;
-
+        
         public String getValue() { return value; }
         public Item setValue(String value) { this.value = value; return this; }
     }
@@ -436,7 +267,7 @@ public class dto
     public static class InheritedItem
     {
         public String name = null;
-
+        
         public String getName() { return name; }
         public InheritedItem setName(String value) { this.name = value; return this; }
     }
@@ -444,7 +275,7 @@ public class dto
     public static class HelloWithReturnResponse
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloWithReturnResponse setResult(String value) { this.result = value; return this; }
     }
@@ -452,9 +283,188 @@ public class dto
     public static class HelloType
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloType setResult(String value) { this.result = value; return this; }
+    }
+
+    public static interface IPoco
+    {
+        public String name = null;
+    }
+
+    public static interface IEmptyInterface
+    {
+    }
+
+    public static class EmptyClass
+    {
+        
+    }
+
+    public static class InnerType
+    {
+        public Long id = null;
+        public String name = null;
+        
+        public Long getId() { return id; }
+        public InnerType setId(Long value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public InnerType setName(String value) { this.name = value; return this; }
+    }
+
+    public static enum InnerEnum
+    {
+        Foo,
+        Bar,
+        Baz;
+    }
+
+    public static class PingService
+    {
+        
+    }
+
+    public static class CustomUserSession extends AuthUserSession
+    {
+        @DataMember
+        public String customName = null;
+
+        @DataMember
+        public String customInfo = null;
+        
+        public String getCustomName() { return customName; }
+        public CustomUserSession setCustomName(String value) { this.customName = value; return this; }
+        public String getCustomInfo() { return customInfo; }
+        public CustomUserSession setCustomInfo(String value) { this.customInfo = value; return this; }
+    }
+
+    public static class UnAuthInfo
+    {
+        public String customInfo = null;
+        
+        public String getCustomInfo() { return customInfo; }
+        public UnAuthInfo setCustomInfo(String value) { this.customInfo = value; return this; }
+    }
+
+    public static class RequestLogEntry
+    {
+        public Long id = null;
+        public Date dateTime = null;
+        public String httpMethod = null;
+        public String absoluteUri = null;
+        public String pathInfo = null;
+        public String requestBody = null;
+        public Object requestDto = null;
+        public String userAuthId = null;
+        public String sessionId = null;
+        public String ipAddress = null;
+        public String forwardedFor = null;
+        public String referer = null;
+        public HashMap<String,String> headers = null;
+        public HashMap<String,String> formData = null;
+        public HashMap<String,String> items = null;
+        public Object session = null;
+        public Object responseDto = null;
+        public Object errorResponse = null;
+        public TimeSpan requestDuration = null;
+        
+        public Long getId() { return id; }
+        public RequestLogEntry setId(Long value) { this.id = value; return this; }
+        public Date getDateTime() { return dateTime; }
+        public RequestLogEntry setDateTime(Date value) { this.dateTime = value; return this; }
+        public String getHttpMethod() { return httpMethod; }
+        public RequestLogEntry setHttpMethod(String value) { this.httpMethod = value; return this; }
+        public String getAbsoluteUri() { return absoluteUri; }
+        public RequestLogEntry setAbsoluteUri(String value) { this.absoluteUri = value; return this; }
+        public String getPathInfo() { return pathInfo; }
+        public RequestLogEntry setPathInfo(String value) { this.pathInfo = value; return this; }
+        public String getRequestBody() { return requestBody; }
+        public RequestLogEntry setRequestBody(String value) { this.requestBody = value; return this; }
+        public Object getRequestDto() { return requestDto; }
+        public RequestLogEntry setRequestDto(Object value) { this.requestDto = value; return this; }
+        public String getUserAuthId() { return userAuthId; }
+        public RequestLogEntry setUserAuthId(String value) { this.userAuthId = value; return this; }
+        public String getSessionId() { return sessionId; }
+        public RequestLogEntry setSessionId(String value) { this.sessionId = value; return this; }
+        public String getIpAddress() { return ipAddress; }
+        public RequestLogEntry setIpAddress(String value) { this.ipAddress = value; return this; }
+        public String getForwardedFor() { return forwardedFor; }
+        public RequestLogEntry setForwardedFor(String value) { this.forwardedFor = value; return this; }
+        public String getReferer() { return referer; }
+        public RequestLogEntry setReferer(String value) { this.referer = value; return this; }
+        public HashMap<String,String> getHeaders() { return headers; }
+        public RequestLogEntry setHeaders(HashMap<String,String> value) { this.headers = value; return this; }
+        public HashMap<String,String> getFormData() { return formData; }
+        public RequestLogEntry setFormData(HashMap<String,String> value) { this.formData = value; return this; }
+        public HashMap<String,String> getItems() { return items; }
+        public RequestLogEntry setItems(HashMap<String,String> value) { this.items = value; return this; }
+        public Object getSession() { return session; }
+        public RequestLogEntry setSession(Object value) { this.session = value; return this; }
+        public Object getResponseDto() { return responseDto; }
+        public RequestLogEntry setResponseDto(Object value) { this.responseDto = value; return this; }
+        public Object getErrorResponse() { return errorResponse; }
+        public RequestLogEntry setErrorResponse(Object value) { this.errorResponse = value; return this; }
+        public TimeSpan getRequestDuration() { return requestDuration; }
+        public RequestLogEntry setRequestDuration(TimeSpan value) { this.requestDuration = value; return this; }
+    }
+
+    public static enum ExternalEnum2
+    {
+        Uno,
+        Due,
+        Tre;
+    }
+
+    public static class MetadataTestNestedChild
+    {
+        public String name = null;
+        
+        public String getName() { return name; }
+        public MetadataTestNestedChild setName(String value) { this.name = value; return this; }
+    }
+
+    public static class MenuItemExample
+    {
+        @DataMember(Order=1)
+        @ApiMember()
+        public String name1 = null;
+
+        public MenuItemExampleItem menuItemExampleItem = null;
+        
+        public String getName1() { return name1; }
+        public MenuItemExample setName1(String value) { this.name1 = value; return this; }
+        public MenuItemExampleItem getMenuItemExampleItem() { return menuItemExampleItem; }
+        public MenuItemExample setMenuItemExampleItem(MenuItemExampleItem value) { this.menuItemExampleItem = value; return this; }
+    }
+
+    public static class SubType
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public SubType setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public SubType setName(String value) { this.name = value; return this; }
+    }
+
+    public static class TypesGroup
+    {
+        
+    }
+
+    public static interface IAuthTokens
+    {
+        public String provider = null;
+        public String userId = null;
+        public String accessToken = null;
+        public String accessTokenSecret = null;
+        public String refreshToken = null;
+        public Date refreshTokenExpiry = null;
+        public String requestToken = null;
+        public String requestTokenSecret = null;
+        public HashMap<String,String> items = null;
     }
 
     @DataContract
@@ -579,7 +589,7 @@ public class dto
 
         @DataMember(Order=40)
         public ArrayList<IAuthTokens> providerOAuthAccess = null;
-
+        
         public String getReferrerUrl() { return referrerUrl; }
         public AuthUserSession setReferrerUrl(String value) { this.referrerUrl = value; return this; }
         public String getId() { return id; }
@@ -662,494 +672,100 @@ public class dto
         public AuthUserSession setProviderOAuthAccess(ArrayList<IAuthTokens> value) { this.providerOAuthAccess = value; return this; }
     }
 
-    public static interface IPoco
-    {
-        public String name = null;
-    }
-
-    public static interface IEmptyInterface
-    {
-    }
-
-    public static class EmptyClass
-    {
-
-    }
-
-    public static class TypeA
-    {
-        public ArrayList<TypeB> bar = null;
-
-        public ArrayList<TypeB> getBar() { return bar; }
-        public TypeA setBar(ArrayList<TypeB> value) { this.bar = value; return this; }
-    }
-
-    public static class InnerType
-    {
-        public Long id = null;
-        public String name = null;
-
-        public Long getId() { return id; }
-        public InnerType setId(Long value) { this.id = value; return this; }
-        public String getName() { return name; }
-        public InnerType setName(String value) { this.name = value; return this; }
-    }
-
-    public static enum InnerEnum
-    {
-        Foo,
-        Bar,
-        Baz;
-    }
-
-    public static interface IAuthTokens
-    {
-        public String provider = null;
-        public String userId = null;
-        public String accessToken = null;
-        public String accessTokenSecret = null;
-        public String refreshToken = null;
-        public Date refreshTokenExpiry = null;
-        public String requestToken = null;
-        public String requestTokenSecret = null;
-        public HashMap<String,String> items = null;
-    }
-
-    public static class QueryBase_2<From, Into> extends QueryBase
-    {
-
-    }
-
-    public static class CustomRockstar
-    {
-        @AutoQueryViewerField(Title="Name")
-        public String firstName = null;
-
-        @AutoQueryViewerField(HideInSummary=true)
-        public String lastName = null;
-
-        public Integer age = null;
-        @AutoQueryViewerField(Title="Album")
-        public String rockstarAlbumName = null;
-
-        @AutoQueryViewerField(Title="Genre")
-        public String rockstarGenreName = null;
-
-        public String getFirstName() { return firstName; }
-        public CustomRockstar setFirstName(String value) { this.firstName = value; return this; }
-        public String getLastName() { return lastName; }
-        public CustomRockstar setLastName(String value) { this.lastName = value; return this; }
-        public Integer getAge() { return age; }
-        public CustomRockstar setAge(Integer value) { this.age = value; return this; }
-        public String getRockstarAlbumName() { return rockstarAlbumName; }
-        public CustomRockstar setRockstarAlbumName(String value) { this.rockstarAlbumName = value; return this; }
-        public String getRockstarGenreName() { return rockstarGenreName; }
-        public CustomRockstar setRockstarGenreName(String value) { this.rockstarGenreName = value; return this; }
-    }
-
-    public static class Movie
-    {
-        public Integer id = null;
-        public String imdbId = null;
-        public String title = null;
-        public String rating = null;
-        public BigDecimal score = null;
-        public String director = null;
-        public Date releaseDate = null;
-        public String tagLine = null;
-        public ArrayList<String> genres = null;
-
-        public Integer getId() { return id; }
-        public Movie setId(Integer value) { this.id = value; return this; }
-        public String getImdbId() { return imdbId; }
-        public Movie setImdbId(String value) { this.imdbId = value; return this; }
-        public String getTitle() { return title; }
-        public Movie setTitle(String value) { this.title = value; return this; }
-        public String getRating() { return rating; }
-        public Movie setRating(String value) { this.rating = value; return this; }
-        public BigDecimal getScore() { return score; }
-        public Movie setScore(BigDecimal value) { this.score = value; return this; }
-        public String getDirector() { return director; }
-        public Movie setDirector(String value) { this.director = value; return this; }
-        public Date getReleaseDate() { return releaseDate; }
-        public Movie setReleaseDate(Date value) { this.releaseDate = value; return this; }
-        public String getTagLine() { return tagLine; }
-        public Movie setTagLine(String value) { this.tagLine = value; return this; }
-        public ArrayList<String> getGenres() { return genres; }
-        public Movie setGenres(ArrayList<String> value) { this.genres = value; return this; }
-    }
-
-    public static class RockstarReference
-    {
-        public Integer id = null;
-        public String firstName = null;
-        public String lastName = null;
-        public Integer age = null;
-        public ArrayList<RockstarAlbum> albums = null;
-
-        public Integer getId() { return id; }
-        public RockstarReference setId(Integer value) { this.id = value; return this; }
-        public String getFirstName() { return firstName; }
-        public RockstarReference setFirstName(String value) { this.firstName = value; return this; }
-        public String getLastName() { return lastName; }
-        public RockstarReference setLastName(String value) { this.lastName = value; return this; }
-        public Integer getAge() { return age; }
-        public RockstarReference setAge(Integer value) { this.age = value; return this; }
-        public ArrayList<RockstarAlbum> getAlbums() { return albums; }
-        public RockstarReference setAlbums(ArrayList<RockstarAlbum> value) { this.albums = value; return this; }
-    }
-
-    public static class QueryBase
-    {
-        @DataMember(Order=1)
-        public Integer skip = null;
-
-        @DataMember(Order=2)
-        public Integer take = null;
-
-        @DataMember(Order=3)
-        public String orderBy = null;
-
-        @DataMember(Order=4)
-        public String orderByDesc = null;
-
-        public Integer getSkip() { return skip; }
-        public QueryBase setSkip(Integer value) { this.skip = value; return this; }
-        public Integer getTake() { return take; }
-        public QueryBase setTake(Integer value) { this.take = value; return this; }
-        public String getOrderBy() { return orderBy; }
-        public QueryBase setOrderBy(String value) { this.orderBy = value; return this; }
-        public String getOrderByDesc() { return orderByDesc; }
-        public QueryBase setOrderByDesc(String value) { this.orderByDesc = value; return this; }
-    }
-
-    @DataContract
-    public static class ResponseError
-    {
-        @DataMember(Order=1, EmitDefaultValue=false)
-        public String errorCode = null;
-
-        @DataMember(Order=2, EmitDefaultValue=false)
-        public String fieldName = null;
-
-        @DataMember(Order=3, EmitDefaultValue=false)
-        public String message = null;
-
-        public String getErrorCode() { return errorCode; }
-        public ResponseError setErrorCode(String value) { this.errorCode = value; return this; }
-        public String getFieldName() { return fieldName; }
-        public ResponseError setFieldName(String value) { this.fieldName = value; return this; }
-        public String getMessage() { return message; }
-        public ResponseError setMessage(String value) { this.message = value; return this; }
-    }
-
-    public static class MetadataTestNestedChild
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public MetadataTestNestedChild setName(String value) { this.name = value; return this; }
-    }
-
-    public static class MenuItemExample
-    {
-        @DataMember(Order=1)
-        @ApiMember()
-        public String name1 = null;
-
-        public MenuItemExampleItem menuItemExampleItem = null;
-
-        public String getName1() { return name1; }
-        public MenuItemExample setName1(String value) { this.name1 = value; return this; }
-        public MenuItemExampleItem getMenuItemExampleItem() { return menuItemExampleItem; }
-        public MenuItemExample setMenuItemExampleItem(MenuItemExampleItem value) { this.menuItemExampleItem = value; return this; }
-    }
-
-    public static class MetadataTypeName
-    {
-        public String name = null;
-        public String namespace = null;
-        public ArrayList<String> genericArgs = null;
-
-        public String getName() { return name; }
-        public MetadataTypeName setName(String value) { this.name = value; return this; }
-        public String getNamespace() { return namespace; }
-        public MetadataTypeName setNamespace(String value) { this.namespace = value; return this; }
-        public ArrayList<String> getGenericArgs() { return genericArgs; }
-        public MetadataTypeName setGenericArgs(ArrayList<String> value) { this.genericArgs = value; return this; }
-    }
-
-    public static class MetadataRoute
-    {
-        public String path = null;
-        public String verbs = null;
-        public String notes = null;
-        public String summary = null;
-
-        public String getPath() { return path; }
-        public MetadataRoute setPath(String value) { this.path = value; return this; }
-        public String getVerbs() { return verbs; }
-        public MetadataRoute setVerbs(String value) { this.verbs = value; return this; }
-        public String getNotes() { return notes; }
-        public MetadataRoute setNotes(String value) { this.notes = value; return this; }
-        public String getSummary() { return summary; }
-        public MetadataRoute setSummary(String value) { this.summary = value; return this; }
-    }
-
-    public static class MetadataDataContract
-    {
-        public String name = null;
-        public String namespace = null;
-
-        public String getName() { return name; }
-        public MetadataDataContract setName(String value) { this.name = value; return this; }
-        public String getNamespace() { return namespace; }
-        public MetadataDataContract setNamespace(String value) { this.namespace = value; return this; }
-    }
-
-    public static class MetadataPropertyType
-    {
-        public String name = null;
-        public String type = null;
-        public Boolean isValueType = null;
-        public String typeNamespace = null;
-        public ArrayList<String> genericArgs = null;
-        public String value = null;
-        public String description = null;
-        public MetadataDataMember dataMember = null;
-        public Boolean readOnly = null;
-        public String paramType = null;
-        public String displayType = null;
-        public Boolean isRequired = null;
-        public ArrayList<String> allowableValues = null;
-        public Integer allowableMin = null;
-        public Integer allowableMax = null;
-        public ArrayList<MetadataAttribute> attributes = null;
-
-        public String getName() { return name; }
-        public MetadataPropertyType setName(String value) { this.name = value; return this; }
-        public String getType() { return type; }
-        public MetadataPropertyType setType(String value) { this.type = value; return this; }
-        public Boolean getIsValueType() { return isValueType; }
-        public MetadataPropertyType setIsValueType(Boolean value) { this.isValueType = value; return this; }
-        public String getTypeNamespace() { return typeNamespace; }
-        public MetadataPropertyType setTypeNamespace(String value) { this.typeNamespace = value; return this; }
-        public ArrayList<String> getGenericArgs() { return genericArgs; }
-        public MetadataPropertyType setGenericArgs(ArrayList<String> value) { this.genericArgs = value; return this; }
-        public String getValue() { return value; }
-        public MetadataPropertyType setValue(String value) { this.value = value; return this; }
-        public String getDescription() { return description; }
-        public MetadataPropertyType setDescription(String value) { this.description = value; return this; }
-        public MetadataDataMember getDataMember() { return dataMember; }
-        public MetadataPropertyType setDataMember(MetadataDataMember value) { this.dataMember = value; return this; }
-        public Boolean isReadOnly() { return readOnly; }
-        public MetadataPropertyType setReadOnly(Boolean value) { this.readOnly = value; return this; }
-        public String getParamType() { return paramType; }
-        public MetadataPropertyType setParamType(String value) { this.paramType = value; return this; }
-        public String getDisplayType() { return displayType; }
-        public MetadataPropertyType setDisplayType(String value) { this.displayType = value; return this; }
-        public Boolean getIsRequired() { return isRequired; }
-        public MetadataPropertyType setIsRequired(Boolean value) { this.isRequired = value; return this; }
-        public ArrayList<String> getAllowableValues() { return allowableValues; }
-        public MetadataPropertyType setAllowableValues(ArrayList<String> value) { this.allowableValues = value; return this; }
-        public Integer getAllowableMin() { return allowableMin; }
-        public MetadataPropertyType setAllowableMin(Integer value) { this.allowableMin = value; return this; }
-        public Integer getAllowableMax() { return allowableMax; }
-        public MetadataPropertyType setAllowableMax(Integer value) { this.allowableMax = value; return this; }
-        public ArrayList<MetadataAttribute> getAttributes() { return attributes; }
-        public MetadataPropertyType setAttributes(ArrayList<MetadataAttribute> value) { this.attributes = value; return this; }
-    }
-
-    public static class MetadataAttribute
-    {
-        public String name = null;
-        public ArrayList<MetadataPropertyType> constructorArgs = null;
-        public ArrayList<MetadataPropertyType> args = null;
-
-        public String getName() { return name; }
-        public MetadataAttribute setName(String value) { this.name = value; return this; }
-        public ArrayList<MetadataPropertyType> getConstructorArgs() { return constructorArgs; }
-        public MetadataAttribute setConstructorArgs(ArrayList<MetadataPropertyType> value) { this.constructorArgs = value; return this; }
-        public ArrayList<MetadataPropertyType> getArgs() { return args; }
-        public MetadataAttribute setArgs(ArrayList<MetadataPropertyType> value) { this.args = value; return this; }
-    }
-
-    @DataContract
-    public static class Property
-    {
-        @DataMember
-        public String name = null;
-
-        @DataMember
-        public String value = null;
-
-        public String getName() { return name; }
-        public Property setName(String value) { this.name = value; return this; }
-        public String getValue() { return value; }
-        public Property setValue(String value) { this.value = value; return this; }
-    }
-
-    public static class SubType
-    {
-        public Integer id = null;
-        public String name = null;
-
-        public Integer getId() { return id; }
-        public SubType setId(Integer value) { this.id = value; return this; }
-        public String getName() { return name; }
-        public SubType setName(String value) { this.name = value; return this; }
-    }
-
-    public static class TypeB
-    {
-        public String foo = null;
-
-        public String getFoo() { return foo; }
-        public TypeB setFoo(String value) { this.foo = value; return this; }
-    }
-
-    public static class TypesGroup
-    {
-
-    }
-
-    public static class RockstarAlbum
-    {
-        public Integer id = null;
-        public Integer rockstarId = null;
-        public String name = null;
-
-        public Integer getId() { return id; }
-        public RockstarAlbum setId(Integer value) { this.id = value; return this; }
-        public Integer getRockstarId() { return rockstarId; }
-        public RockstarAlbum setRockstarId(Integer value) { this.rockstarId = value; return this; }
-        public String getName() { return name; }
-        public RockstarAlbum setName(String value) { this.name = value; return this; }
-    }
-
     public static class MenuItemExampleItem
     {
         @DataMember(Order=1)
         @ApiMember()
         public String name1 = null;
-
+        
         public String getName1() { return name1; }
         public MenuItemExampleItem setName1(String value) { this.name1 = value; return this; }
-    }
-
-    public static class MetadataDataMember
-    {
-        public String name = null;
-        public Integer order = null;
-        public Boolean isRequired = null;
-        public Boolean emitDefaultValue = null;
-
-        public String getName() { return name; }
-        public MetadataDataMember setName(String value) { this.name = value; return this; }
-        public Integer getOrder() { return order; }
-        public MetadataDataMember setOrder(Integer value) { this.order = value; return this; }
-        public Boolean getIsRequired() { return isRequired; }
-        public MetadataDataMember setIsRequired(Boolean value) { this.isRequired = value; return this; }
-        public Boolean isEmitDefaultValue() { return emitDefaultValue; }
-        public MetadataDataMember setEmitDefaultValue(Boolean value) { this.emitDefaultValue = value; return this; }
-    }
-
-    @DataContract
-    public static class QueryResponse<Rockstar>
-    {
-        @DataMember(Order=1)
-        public Integer offset = null;
-
-        @DataMember(Order=2)
-        public Integer total = null;
-
-        @DataMember(Order=3)
-        public ArrayList<Rockstar> results = null;
-
-        @DataMember(Order=4)
-        public HashMap<String,String> meta = null;
-
-        @DataMember(Order=5)
-        public ResponseStatus responseStatus = null;
-
-        public Integer getOffset() { return offset; }
-        public QueryResponse<Rockstar> setOffset(Integer value) { this.offset = value; return this; }
-        public Integer getTotal() { return total; }
-        public QueryResponse<Rockstar> setTotal(Integer value) { this.total = value; return this; }
-        public ArrayList<Rockstar> getResults() { return results; }
-        public QueryResponse<Rockstar> setResults(ArrayList<Rockstar> value) { this.results = value; return this; }
-        public HashMap<String,String> getMeta() { return meta; }
-        public QueryResponse<Rockstar> setMeta(HashMap<String,String> value) { this.meta = value; return this; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public QueryResponse<Rockstar> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
-    }
-
-    public static class ChangeRequestResponse
-    {
-        public String contentType = null;
-        public String header = null;
-        public String queryString = null;
-        public String form = null;
-        public ResponseStatus responseStatus = null;
-
-        public String getContentType() { return contentType; }
-        public ChangeRequestResponse setContentType(String value) { this.contentType = value; return this; }
-        public String getHeader() { return header; }
-        public ChangeRequestResponse setHeader(String value) { this.header = value; return this; }
-        public String getQueryString() { return queryString; }
-        public ChangeRequestResponse setQueryString(String value) { this.queryString = value; return this; }
-        public String getForm() { return form; }
-        public ChangeRequestResponse setForm(String value) { this.form = value; return this; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public ChangeRequestResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
     public static class CustomHttpErrorResponse
     {
         public String custom = null;
         public ResponseStatus responseStatus = null;
-
+        
         public String getCustom() { return custom; }
         public CustomHttpErrorResponse setCustom(String value) { this.custom = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public CustomHttpErrorResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    public static class CustomFieldHttpErrorResponse
+    public static class ThrowTypeResponse
     {
-        public String custom = null;
         public ResponseStatus responseStatus = null;
-
-        public String getCustom() { return custom; }
-        public CustomFieldHttpErrorResponse setCustom(String value) { this.custom = value; return this; }
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
-        public CustomFieldHttpErrorResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+        public ThrowTypeResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    public static class NoRepeatResponse
+    public static class ThrowValidationResponse
     {
-        public UUID id = null;
-
-        public UUID getId() { return id; }
-        public NoRepeatResponse setId(UUID value) { this.id = value; return this; }
+        public Integer age = null;
+        public String required = null;
+        public String email = null;
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getAge() { return age; }
+        public ThrowValidationResponse setAge(Integer value) { this.age = value; return this; }
+        public String getRequired() { return required; }
+        public ThrowValidationResponse setRequired(String value) { this.required = value; return this; }
+        public String getEmail() { return email; }
+        public ThrowValidationResponse setEmail(String value) { this.email = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public ThrowValidationResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    public static class BatchThrowsResponse
+    public static class ExternalOperationResponse
     {
         public String result = null;
-        public ResponseStatus responseStatus = null;
-
+        
         public String getResult() { return result; }
-        public BatchThrowsResponse setResult(String value) { this.result = value; return this; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public BatchThrowsResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+        public ExternalOperationResponse setResult(String value) { this.result = value; return this; }
+    }
+
+    public static class ExternalOperation2Response
+    {
+        public ExternalType externalType = null;
+        
+        public ExternalType getExternalType() { return externalType; }
+        public ExternalOperation2Response setExternalType(ExternalType value) { this.externalType = value; return this; }
+    }
+
+    public static class ExternalReturnTypeResponse
+    {
+        public ExternalEnum3 externalEnum3 = null;
+        
+        public ExternalEnum3 getExternalEnum3() { return externalEnum3; }
+        public ExternalReturnTypeResponse setExternalEnum3(ExternalEnum3 value) { this.externalEnum3 = value; return this; }
+    }
+
+    public static class Account
+    {
+        public String name = null;
+        
+        public String getName() { return name; }
+        public Account setName(String value) { this.name = value; return this; }
+    }
+
+    public static class Project
+    {
+        public String account = null;
+        public String name = null;
+        
+        public String getAccount() { return account; }
+        public Project setAccount(String value) { this.account = value; return this; }
+        public String getName() { return name; }
+        public Project setName(String value) { this.name = value; return this; }
     }
 
     public static class MetadataTestResponse
     {
         public Integer id = null;
         public ArrayList<MetadataTestChild> results = null;
-
+        
         public Integer getId() { return id; }
         public MetadataTestResponse setId(Integer value) { this.id = value; return this; }
         public ArrayList<MetadataTestChild> getResults() { return results; }
@@ -1165,66 +781,27 @@ public class dto
         @DataMember(Order=2)
         @ApiMember()
         public MenuExample menuExample1 = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public GetExampleResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
         public MenuExample getMenuExample1() { return menuExample1; }
         public GetExampleResponse setMenuExample1(MenuExample value) { this.menuExample1 = value; return this; }
     }
 
-    public static class AutoQueryMetadataResponse
+    public static class GetRandomIdsResponse
     {
-        public AutoQueryViewerConfig config = null;
-        public ArrayList<AutoQueryOperation> operations = null;
-        public ArrayList<MetadataType> types = null;
-        public ResponseStatus responseStatus = null;
-
-        public AutoQueryViewerConfig getConfig() { return config; }
-        public AutoQueryMetadataResponse setConfig(AutoQueryViewerConfig value) { this.config = value; return this; }
-        public ArrayList<AutoQueryOperation> getOperations() { return operations; }
-        public AutoQueryMetadataResponse setOperations(ArrayList<AutoQueryOperation> value) { this.operations = value; return this; }
-        public ArrayList<MetadataType> getTypes() { return types; }
-        public AutoQueryMetadataResponse setTypes(ArrayList<MetadataType> value) { this.types = value; return this; }
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public AutoQueryMetadataResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+        public ArrayList<String> results = null;
+        
+        public ArrayList<String> getResults() { return results; }
+        public GetRandomIdsResponse setResults(ArrayList<String> value) { this.results = value; return this; }
     }
 
     public static class HelloResponse
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloResponse setResult(String value) { this.result = value; return this; }
-    }
-
-    /**
-     * Description on HelloAllResponse type
-     */
-    @DataContract
-    public static class HelloAnnotatedResponse
-    {
-        @DataMember
-        public String result = null;
-
-        public String getResult() { return result; }
-        public HelloAnnotatedResponse setResult(String value) { this.result = value; return this; }
-    }
-
-    public static class HelloExistingResponse
-    {
-        public HelloList helloList = null;
-        public HelloArray helloArray = null;
-        public ArrayList<ArrayResult> arrayResults = null;
-        public ArrayList<ListResult> listResults = null;
-
-        public HelloList getHelloList() { return helloList; }
-        public HelloExistingResponse setHelloList(HelloList value) { this.helloList = value; return this; }
-        public HelloArray getHelloArray() { return helloArray; }
-        public HelloExistingResponse setHelloArray(HelloArray value) { this.helloArray = value; return this; }
-        public ArrayList<ArrayResult> getArrayResults() { return arrayResults; }
-        public HelloExistingResponse setArrayResults(ArrayList<ArrayResult> value) { this.arrayResults = value; return this; }
-        public ArrayList<ListResult> getListResults() { return listResults; }
-        public HelloExistingResponse setListResults(ArrayList<ListResult> value) { this.listResults = value; return this; }
     }
 
     public static class HelloAllTypesResponse
@@ -1232,7 +809,7 @@ public class dto
         public String result = null;
         public AllTypes allTypes = null;
         public AllCollectionTypes allCollectionTypes = null;
-
+        
         public String getResult() { return result; }
         public HelloAllTypesResponse setResult(String value) { this.result = value; return this; }
         public AllTypes getAllTypes() { return allTypes; }
@@ -1245,19 +822,20 @@ public class dto
     public static class HelloWithDataContractResponse
     {
         @DataMember(Name="result", Order=1, IsRequired=true, EmitDefaultValue=false)
+        @SerializedName("result")
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloWithDataContractResponse setResult(String value) { this.result = value; return this; }
     }
 
     /**
-     * Description on HelloWithDescriptionResponse type
-     */
+    * Description on HelloWithDescriptionResponse type
+    */
     public static class HelloWithDescriptionResponse
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloWithDescriptionResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1265,7 +843,7 @@ public class dto
     public static class HelloWithInheritanceResponse extends HelloResponseBase
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloWithInheritanceResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1273,7 +851,7 @@ public class dto
     public static class HelloWithAlternateReturnResponse extends HelloWithReturnResponse
     {
         public String altResult = null;
-
+        
         public String getAltResult() { return altResult; }
         public HelloWithAlternateReturnResponse setAltResult(String value) { this.altResult = value; return this; }
     }
@@ -1281,7 +859,7 @@ public class dto
     public static class HelloWithRouteResponse
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloWithRouteResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1289,589 +867,157 @@ public class dto
     public static class HelloWithTypeResponse
     {
         public HelloType result = null;
-
+        
         public HelloType getResult() { return result; }
         public HelloWithTypeResponse setResult(HelloType value) { this.result = value; return this; }
-    }
-
-    public static class HelloSessionResponse
-    {
-        public AuthUserSession result = null;
-
-        public AuthUserSession getResult() { return result; }
-        public HelloSessionResponse setResult(AuthUserSession value) { this.result = value; return this; }
-    }
-
-    public static class Request1Response
-    {
-        public TypeA test = null;
-
-        public TypeA getTest() { return test; }
-        public Request1Response setTest(TypeA value) { this.test = value; return this; }
-    }
-
-    public static class Request2Response
-    {
-        public TypeA test = null;
-
-        public TypeA getTest() { return test; }
-        public Request2Response setTest(TypeA value) { this.test = value; return this; }
     }
 
     public static class HelloInnerTypesResponse
     {
         public InnerType innerType = null;
         public InnerEnum innerEnum = null;
-
+        
         public InnerType getInnerType() { return innerType; }
         public HelloInnerTypesResponse setInnerType(InnerType value) { this.innerType = value; return this; }
         public InnerEnum getInnerEnum() { return innerEnum; }
         public HelloInnerTypesResponse setInnerEnum(InnerEnum value) { this.innerEnum = value; return this; }
     }
 
-    public static class CustomUserSession extends AuthUserSession
+    public static class PingResponse
     {
-        @DataMember
-        public String customName = null;
-
-        @DataMember
-        public String customInfo = null;
-
-        public String getCustomName() { return customName; }
-        public CustomUserSession setCustomName(String value) { this.customName = value; return this; }
-        public String getCustomInfo() { return customInfo; }
-        public CustomUserSession setCustomInfo(String value) { this.customInfo = value; return this; }
+        public HashMap<String,ResponseStatus> responses = null;
+        public ResponseStatus responseStatus = null;
+        
+        public HashMap<String,ResponseStatus> getResponses() { return responses; }
+        public PingResponse setResponses(HashMap<String,ResponseStatus> value) { this.responses = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public PingResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    public static class Echo
+    public static class RequiresRoleResponse
     {
-        public String sentence = null;
-
-        public String getSentence() { return sentence; }
-        public Echo setSentence(String value) { this.sentence = value; return this; }
+        public String result = null;
+        public ResponseStatus responseStatus = null;
+        
+        public String getResult() { return result; }
+        public RequiresRoleResponse setResult(String value) { this.result = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public RequiresRoleResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    public static class ThrowTypeResponse
+    public static class GetSessionResponse
     {
+        public CustomUserSession result = null;
+        public UnAuthInfo unAuthInfo = null;
+        public ResponseStatus responseStatus = null;
+        
+        public CustomUserSession getResult() { return result; }
+        public GetSessionResponse setResult(CustomUserSession value) { this.result = value; return this; }
+        public UnAuthInfo getUnAuthInfo() { return unAuthInfo; }
+        public GetSessionResponse setUnAuthInfo(UnAuthInfo value) { this.unAuthInfo = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public GetSessionResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    @DataContract
+    public static class RequestLogsResponse
+    {
+        @DataMember(Order=1)
+        public ArrayList<RequestLogEntry> results = null;
+
+        @DataMember(Order=2)
+        public HashMap<String,String> usage = null;
+
+        @DataMember(Order=3)
+        public ResponseStatus responseStatus = null;
+        
+        public ArrayList<RequestLogEntry> getResults() { return results; }
+        public RequestLogsResponse setResults(ArrayList<RequestLogEntry> value) { this.results = value; return this; }
+        public HashMap<String,String> getUsage() { return usage; }
+        public RequestLogsResponse setUsage(HashMap<String,String> value) { this.usage = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public RequestLogsResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    @DataContract
+    public static class AuthenticateResponse
+    {
+        @DataMember(Order=1)
+        public String userId = null;
+
+        @DataMember(Order=2)
+        public String sessionId = null;
+
+        @DataMember(Order=3)
+        public String userName = null;
+
+        @DataMember(Order=4)
+        public String displayName = null;
+
+        @DataMember(Order=5)
+        public String referrerUrl = null;
+
+        @DataMember(Order=6)
         public ResponseStatus responseStatus = null;
 
+        @DataMember(Order=7)
+        public HashMap<String,String> meta = null;
+        
+        public String getUserId() { return userId; }
+        public AuthenticateResponse setUserId(String value) { this.userId = value; return this; }
+        public String getSessionId() { return sessionId; }
+        public AuthenticateResponse setSessionId(String value) { this.sessionId = value; return this; }
+        public String getUserName() { return userName; }
+        public AuthenticateResponse setUserName(String value) { this.userName = value; return this; }
+        public String getDisplayName() { return displayName; }
+        public AuthenticateResponse setDisplayName(String value) { this.displayName = value; return this; }
+        public String getReferrerUrl() { return referrerUrl; }
+        public AuthenticateResponse setReferrerUrl(String value) { this.referrerUrl = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
-        public ThrowTypeResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+        public AuthenticateResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public AuthenticateResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
     }
 
-    public static class acsprofileResponse
+    public static class AssignRolesResponse
     {
-        public String profileId = null;
-
-        public String getProfileId() { return profileId; }
-        public acsprofileResponse setProfileId(String value) { this.profileId = value; return this; }
+        public ArrayList<String> allRoles = null;
+        public ArrayList<String> allPermissions = null;
+        public ResponseStatus responseStatus = null;
+        
+        public ArrayList<String> getAllRoles() { return allRoles; }
+        public AssignRolesResponse setAllRoles(ArrayList<String> value) { this.allRoles = value; return this; }
+        public ArrayList<String> getAllPermissions() { return allPermissions; }
+        public AssignRolesResponse setAllPermissions(ArrayList<String> value) { this.allPermissions = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public AssignRolesResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    @Route("/anontype")
-    public static class AnonType
+    public static class UnAssignRolesResponse
     {
-
-    }
-
-    @Route("/query/rockstars")
-    public static class QueryRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
-    {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryRockstars setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route("/changerequest/{Id}")
-    public static class ChangeRequest implements IReturn<ChangeRequestResponse>
-    {
-        public String id = null;
-
-        public String getId() { return id; }
-        public ChangeRequest setId(String value) { this.id = value; return this; }
-        private static Class responseType = ChangeRequestResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route("/Routing/LeadPost.aspx")
-    public static class LegacyLeadPost
-    {
-        public String leadType = null;
-        public Integer myId = null;
-
-        public String getLeadType() { return leadType; }
-        public LegacyLeadPost setLeadType(String value) { this.leadType = value; return this; }
-        public Integer getMyId() { return myId; }
-        public LegacyLeadPost setMyId(Integer value) { this.myId = value; return this; }
-    }
-
-    @Route("/info/{Id}")
-    public static class Info
-    {
-        public String id = null;
-
-        public String getId() { return id; }
-        public Info setId(String value) { this.id = value; return this; }
+        public ArrayList<String> allRoles = null;
+        public ArrayList<String> allPermissions = null;
+        public ResponseStatus responseStatus = null;
+        
+        public ArrayList<String> getAllRoles() { return allRoles; }
+        public UnAssignRolesResponse setAllRoles(ArrayList<String> value) { this.allRoles = value; return this; }
+        public ArrayList<String> getAllPermissions() { return allPermissions; }
+        public UnAssignRolesResponse setAllPermissions(ArrayList<String> value) { this.allPermissions = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public UnAssignRolesResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
     public static class CustomHttpError implements IReturn<CustomHttpErrorResponse>
     {
         public Integer statusCode = null;
         public String statusDescription = null;
-
+        
         public Integer getStatusCode() { return statusCode; }
         public CustomHttpError setStatusCode(Integer value) { this.statusCode = value; return this; }
         public String getStatusDescription() { return statusDescription; }
         public CustomHttpError setStatusDescription(String value) { this.statusDescription = value; return this; }
-        private static Class responseType = CustomHttpErrorResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class CustomFieldHttpError implements IReturn<CustomFieldHttpErrorResponse>
-    {
-
-        private static Class responseType = CustomFieldHttpErrorResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route("{PathInfo*}")
-    public static class FallbackRoute
-    {
-        public String pathInfo = null;
-
-        public String getPathInfo() { return pathInfo; }
-        public FallbackRoute setPathInfo(String value) { this.pathInfo = value; return this; }
-    }
-
-    public static class NoRepeat implements IReturn<NoRepeatResponse>
-    {
-        public UUID id = null;
-
-        public UUID getId() { return id; }
-        public NoRepeat setId(UUID value) { this.id = value; return this; }
-        private static Class responseType = NoRepeatResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class BatchThrows implements IReturn<BatchThrowsResponse>
-    {
-        public Integer id = null;
-        public String name = null;
-
-        public Integer getId() { return id; }
-        public BatchThrows setId(Integer value) { this.id = value; return this; }
-        public String getName() { return name; }
-        public BatchThrows setName(String value) { this.name = value; return this; }
-        private static Class responseType = BatchThrowsResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class BatchThrowsAsync implements IReturn<BatchThrowsResponse>
-    {
-        public Integer id = null;
-        public String name = null;
-
-        public Integer getId() { return id; }
-        public BatchThrowsAsync setId(Integer value) { this.id = value; return this; }
-        public String getName() { return name; }
-        public BatchThrowsAsync setName(String value) { this.name = value; return this; }
-        private static Class responseType = BatchThrowsResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class MetadataTest implements IReturn<MetadataTestResponse>
-    {
-        public Integer id = null;
-
-        public Integer getId() { return id; }
-        public MetadataTest setId(Integer value) { this.id = value; return this; }
-        private static Class responseType = MetadataTestResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route(Path="/example", Verbs="GET")
-    @DataContract
-    public static class GetExample implements IReturn<GetExampleResponse>
-    {
-
-        private static Class responseType = GetExampleResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class MetadataRequest implements IReturn<AutoQueryMetadataResponse>
-    {
-        public MetadataType metadataType = null;
-
-        public MetadataType getMetadataType() { return metadataType; }
-        public MetadataRequest setMetadataType(MetadataType value) { this.metadataType = value; return this; }
-        private static Class responseType = AutoQueryMetadataResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route("/namedconnection")
-    public static class NamedConnection
-    {
-        public String emailAddresses = null;
-
-        public String getEmailAddresses() { return emailAddresses; }
-        public NamedConnection setEmailAddresses(String value) { this.emailAddresses = value; return this; }
-    }
-
-    public static class Issue221Long extends Issue221Base<Long>
-    {
-
-    }
-
-    public static class HelloInService implements IReturn<HelloResponse>
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloInService setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route("/hello/{Name}")
-    public static class Hello implements IReturn<HelloResponse>
-    {
-        @Required()
-        public String name = null;
-
-        public String title = null;
-
-        public String getName() { return name; }
-        public Hello setName(String value) { this.name = value; return this; }
-        public String getTitle() { return title; }
-        public Hello setTitle(String value) { this.title = value; return this; }
-        private static Class responseType = HelloResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    /**
-     * Description on HelloAll type
-     */
-    @DataContract
-    public static class HelloAnnotated implements IReturn<HelloAnnotatedResponse>
-    {
-        @DataMember
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloAnnotated setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloAnnotatedResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloWithNestedClass implements IReturn<HelloResponse>
-    {
-        public String name = null;
-        public NestedClass nestedClassProp = null;
-
-        public String getName() { return name; }
-        public HelloWithNestedClass setName(String value) { this.name = value; return this; }
-        public NestedClass getNestedClassProp() { return nestedClassProp; }
-        public HelloWithNestedClass setNestedClassProp(NestedClass value) { this.nestedClassProp = value; return this; }
-        private static Class responseType = HelloResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloList implements IReturn<ArrayList<ListResult>>
-    {
-        public ArrayList<String> names = null;
-
-        public ArrayList<String> getNames() { return names; }
-        public HelloList setNames(ArrayList<String> value) { this.names = value; return this; }
-        private static Class responseType = new ArrayList<ListResult>().getClass();
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloArray implements IReturn<ArrayList<ArrayResult>>
-    {
-        public ArrayList<String> names = null;
-
-        public ArrayList<String> getNames() { return names; }
-        public HelloArray setNames(ArrayList<String> value) { this.names = value; return this; }
-        private static Class responseType = new ArrayList<ArrayResult>().getClass();
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloExisting implements IReturn<HelloExistingResponse>
-    {
-        public ArrayList<String> names = null;
-
-        public ArrayList<String> getNames() { return names; }
-        public HelloExisting setNames(ArrayList<String> value) { this.names = value; return this; }
-        private static Class responseType = HelloExistingResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloWithEnum
-    {
-        public EnumType enumProp = null;
-        public EnumType nullableEnumProp = null;
-        public EnumFlags enumFlags = null;
-
-        public EnumType getEnumProp() { return enumProp; }
-        public HelloWithEnum setEnumProp(EnumType value) { this.enumProp = value; return this; }
-        public EnumType getNullableEnumProp() { return nullableEnumProp; }
-        public HelloWithEnum setNullableEnumProp(EnumType value) { this.nullableEnumProp = value; return this; }
-        public EnumFlags getEnumFlags() { return enumFlags; }
-        public HelloWithEnum setEnumFlags(EnumFlags value) { this.enumFlags = value; return this; }
-    }
-
-    public static class RestrictedAttributes
-    {
-        public Integer id = null;
-        public String name = null;
-        public Hello hello = null;
-
-        public Integer getId() { return id; }
-        public RestrictedAttributes setId(Integer value) { this.id = value; return this; }
-        public String getName() { return name; }
-        public RestrictedAttributes setName(String value) { this.name = value; return this; }
-        public Hello getHello() { return hello; }
-        public RestrictedAttributes setHello(Hello value) { this.hello = value; return this; }
-    }
-
-    /**
-     * AllowedAttributes Description
-     */
-    @Route(Path="/allowed-attributes", Verbs="GET")
-    // @ApiResponse(400, "Your request was not understood")
-    @Api("AllowedAttributes Description")
-    @DataContract
-    public static class AllowedAttributes
-    {
-        @DataMember(Name="Aliased")
-        @ApiMember(Description="Range Description", ParameterType="path", DataType="double", IsRequired=true)
-        public Double range = null;
-
-        public Double getRange() { return range; }
-        public AllowedAttributes setRange(Double value) { this.range = value; return this; }
-    }
-
-    public static class HelloAllTypes implements IReturn<HelloAllTypesResponse>
-    {
-        public String name = null;
-        public AllTypes allTypes = null;
-        public AllCollectionTypes allCollectionTypes = null;
-
-        public String getName() { return name; }
-        public HelloAllTypes setName(String value) { this.name = value; return this; }
-        public AllTypes getAllTypes() { return allTypes; }
-        public HelloAllTypes setAllTypes(AllTypes value) { this.allTypes = value; return this; }
-        public AllCollectionTypes getAllCollectionTypes() { return allCollectionTypes; }
-        public HelloAllTypes setAllCollectionTypes(AllCollectionTypes value) { this.allCollectionTypes = value; return this; }
-        private static Class responseType = HelloAllTypesResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloString
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloString setName(String value) { this.name = value; return this; }
-    }
-
-    public static class HelloVoid implements IReturnVoid
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloVoid setName(String value) { this.name = value; return this; }
-    }
-
-    @DataContract
-    public static class HelloWithDataContract implements IReturn<HelloWithDataContractResponse>
-    {
-        @DataMember(Name="name", Order=1, IsRequired=true, EmitDefaultValue=false)
-        public String name = null;
-
-        @DataMember(Name="id", Order=2, EmitDefaultValue=false)
-        public Integer id = null;
-
-        public String getName() { return name; }
-        public HelloWithDataContract setName(String value) { this.name = value; return this; }
-        public Integer getId() { return id; }
-        public HelloWithDataContract setId(Integer value) { this.id = value; return this; }
-        private static Class responseType = HelloWithDataContractResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    /**
-     * Description on HelloWithDescription type
-     */
-    public static class HelloWithDescription implements IReturn<HelloWithDescriptionResponse>
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloWithDescription setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloWithDescriptionResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloWithInheritance extends HelloBase implements IReturn<HelloWithInheritanceResponse>
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloWithInheritance setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloWithInheritanceResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloWithGenericInheritance extends HelloBase_1<Poco>
-    {
-        public String result = null;
-
-        public String getResult() { return result; }
-        public HelloWithGenericInheritance setResult(String value) { this.result = value; return this; }
-    }
-
-    public static class HelloWithGenericInheritance2 extends HelloBase_1<Hello>
-    {
-        public String result = null;
-
-        public String getResult() { return result; }
-        public HelloWithGenericInheritance2 setResult(String value) { this.result = value; return this; }
-    }
-
-    public static class HelloWithNestedInheritance extends HelloBase_1<Item>
-    {
-
-    }
-
-    public static class HelloWithListInheritance extends ArrayList<InheritedItem>
-    {
-
-    }
-
-    public static class HelloWithReturn implements IReturn<HelloWithAlternateReturnResponse>
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloWithReturn setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloWithAlternateReturnResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    @Route("/helloroute")
-    public static class HelloWithRoute implements IReturn<HelloWithRouteResponse>
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloWithRoute setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloWithRouteResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloWithType implements IReturn<HelloWithTypeResponse>
-    {
-        public String name = null;
-
-        public String getName() { return name; }
-        public HelloWithType setName(String value) { this.name = value; return this; }
-        private static Class responseType = HelloWithTypeResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloSession implements IReturn<HelloSessionResponse>
-    {
-
-        private static Class responseType = HelloSessionResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloInterface
-    {
-        public IPoco poco = null;
-        public IEmptyInterface emptyInterface = null;
-        public EmptyClass emptyClass = null;
-        public String value = null;
-
-        public IPoco getPoco() { return poco; }
-        public HelloInterface setPoco(IPoco value) { this.poco = value; return this; }
-        public IEmptyInterface getEmptyInterface() { return emptyInterface; }
-        public HelloInterface setEmptyInterface(IEmptyInterface value) { this.emptyInterface = value; return this; }
-        public EmptyClass getEmptyClass() { return emptyClass; }
-        public HelloInterface setEmptyClass(EmptyClass value) { this.emptyClass = value; return this; }
-        public String getValue() { return value; }
-        public HelloInterface setValue(String value) { this.value = value; return this; }
-    }
-
-    public static class Request1 implements IReturn<Request1Response>
-    {
-        public TypeA test = null;
-
-        public TypeA getTest() { return test; }
-        public Request1 setTest(TypeA value) { this.test = value; return this; }
-        private static Class responseType = Request1Response.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class Request2 implements IReturn<Request2Response>
-    {
-        public TypeA test = null;
-
-        public TypeA getTest() { return test; }
-        public Request2 setTest(TypeA value) { this.test = value; return this; }
-        private static Class responseType = Request2Response.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class HelloInnerTypes implements IReturn<HelloInnerTypesResponse>
-    {
-
-        private static Class responseType = HelloInnerTypesResponse.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class GetUserSession implements IReturn<CustomUserSession>
-    {
-
-        private static Class responseType = CustomUserSession.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    /**
-     * Echoes a sentence
-     */
-    @Route(Path="/echoes", Verbs="POST")
-    @Api("Echoes a sentence")
-    public static class Echoes implements IReturn<Echo>
-    {
-        @ApiMember(Description="The sentence to echo.", ParameterType="form", DataType="string", IsRequired=true, Name="Sentence")
-        public String sentence = null;
-
-        public String getSentence() { return sentence; }
-        public Echoes setSentence(String value) { this.sentence = value; return this; }
-        private static Class responseType = Echo.class;
-        public Class getResponseType() { return responseType; }
-    }
-
-    public static class CachedEcho
-    {
-        public Boolean reload = null;
-        public String sentence = null;
-
-        public Boolean isReload() { return reload; }
-        public CachedEcho setReload(Boolean value) { this.reload = value; return this; }
-        public String getSentence() { return sentence; }
-        public CachedEcho setSentence(String value) { this.sentence = value; return this; }
-    }
-
-    public static class AsyncTest implements IReturn<Echo>
-    {
-
-        private static Class responseType = Echo.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = CustomHttpErrorResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
     @Route("/throwhttperror/{Status}")
@@ -1879,7 +1025,7 @@ public class dto
     {
         public Integer status = null;
         public String message = null;
-
+        
         public Integer getStatus() { return status; }
         public ThrowHttpError setStatus(Integer value) { this.status = value; return this; }
         public String getMessage() { return message; }
@@ -1891,7 +1037,7 @@ public class dto
     public static class Throw404
     {
         public String message = null;
-
+        
         public String getMessage() { return message; }
         public Throw404 setMessage(String value) { this.message = value; return this; }
     }
@@ -1901,337 +1047,761 @@ public class dto
     {
         public String type = null;
         public String message = null;
-
+        
         public String getType() { return type; }
         public ThrowType setType(String value) { this.type = value; return this; }
         public String getMessage() { return message; }
         public ThrowType setMessage(String value) { this.message = value; return this; }
-        private static Class responseType = ThrowTypeResponse.class;
-        public Class getResponseType() { return responseType; }
+        private static Object responseType = ThrowTypeResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    @Route("/api/acsprofiles/{profileId}")
-    // @Route(Path="/api/acsprofiles", Verbs="POST,PUT,PATCH,DELETE")
-    public static class ACSProfile implements IReturn<acsprofileResponse>
+    @Route("/throwvalidation")
+    public static class ThrowValidation implements IReturn<ThrowValidationResponse>
     {
-        public String profileId = null;
+        public Integer age = null;
+        public String required = null;
+        public String email = null;
+        
+        public Integer getAge() { return age; }
+        public ThrowValidation setAge(Integer value) { this.age = value; return this; }
+        public String getRequired() { return required; }
+        public ThrowValidation setRequired(String value) { this.required = value; return this; }
+        public String getEmail() { return email; }
+        public ThrowValidation setEmail(String value) { this.email = value; return this; }
+        private static Object responseType = ThrowValidationResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class ExternalOperation implements IReturn<ExternalOperationResponse>
+    {
+        public Integer id = null;
+        public String name = null;
+        public ExternalEnum externalEnum = null;
+        
+        public Integer getId() { return id; }
+        public ExternalOperation setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public ExternalOperation setName(String value) { this.name = value; return this; }
+        public ExternalEnum getExternalEnum() { return externalEnum; }
+        public ExternalOperation setExternalEnum(ExternalEnum value) { this.externalEnum = value; return this; }
+        private static Object responseType = ExternalOperationResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class ExternalOperation2 implements IReturn<ExternalOperation2Response>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public ExternalOperation2 setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = ExternalOperation2Response.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class ExternalOperation3 implements IReturn<ExternalReturnTypeResponse>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public ExternalOperation3 setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = ExternalReturnTypeResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class ExternalOperation4
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public ExternalOperation4 setId(Integer value) { this.id = value; return this; }
+    }
+
+    @Route("/{Path*}")
+    public static class RootPathRoutes
+    {
+        public String path = null;
+        
+        public String getPath() { return path; }
+        public RootPathRoutes setPath(String value) { this.path = value; return this; }
+    }
+
+    public static class GetAccount implements IReturn<Account>
+    {
+        public String account = null;
+        
+        public String getAccount() { return account; }
+        public GetAccount setAccount(String value) { this.account = value; return this; }
+        private static Object responseType = Account.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class GetProject implements IReturn<Project>
+    {
+        public String account = null;
+        public String project = null;
+        
+        public String getAccount() { return account; }
+        public GetProject setAccount(String value) { this.account = value; return this; }
+        public String getProject() { return project; }
+        public GetProject setProject(String value) { this.project = value; return this; }
+        private static Object responseType = Project.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/image-stream")
+    public static class ImageAsStream
+    {
+        public String format = null;
+        
+        public String getFormat() { return format; }
+        public ImageAsStream setFormat(String value) { this.format = value; return this; }
+    }
+
+    @Route("/image-bytes")
+    public static class ImageAsBytes
+    {
+        public String format = null;
+        
+        public String getFormat() { return format; }
+        public ImageAsBytes setFormat(String value) { this.format = value; return this; }
+    }
+
+    @Route("/image-custom")
+    public static class ImageAsCustomResult
+    {
+        public String format = null;
+        
+        public String getFormat() { return format; }
+        public ImageAsCustomResult setFormat(String value) { this.format = value; return this; }
+    }
+
+    @Route("/image-response")
+    public static class ImageWriteToResponse
+    {
+        public String format = null;
+        
+        public String getFormat() { return format; }
+        public ImageWriteToResponse setFormat(String value) { this.format = value; return this; }
+    }
+
+    @Route("/image-file")
+    public static class ImageAsFile
+    {
+        public String format = null;
+        
+        public String getFormat() { return format; }
+        public ImageAsFile setFormat(String value) { this.format = value; return this; }
+    }
+
+    @Route("/image-redirect")
+    public static class ImageAsRedirect
+    {
+        public String format = null;
+        
+        public String getFormat() { return format; }
+        public ImageAsRedirect setFormat(String value) { this.format = value; return this; }
+    }
+
+    @Route("/image-draw/{Name}")
+    public static class DrawImage
+    {
+        public String name = null;
+        public String format = null;
+        public Integer width = null;
+        public Integer height = null;
+        public Integer fontSize = null;
+        public String foreground = null;
+        public String background = null;
+        
+        public String getName() { return name; }
+        public DrawImage setName(String value) { this.name = value; return this; }
+        public String getFormat() { return format; }
+        public DrawImage setFormat(String value) { this.format = value; return this; }
+        public Integer getWidth() { return width; }
+        public DrawImage setWidth(Integer value) { this.width = value; return this; }
+        public Integer getHeight() { return height; }
+        public DrawImage setHeight(Integer value) { this.height = value; return this; }
+        public Integer getFontSize() { return fontSize; }
+        public DrawImage setFontSize(Integer value) { this.fontSize = value; return this; }
+        public String getForeground() { return foreground; }
+        public DrawImage setForeground(String value) { this.foreground = value; return this; }
+        public String getBackground() { return background; }
+        public DrawImage setBackground(String value) { this.background = value; return this; }
+    }
+
+    @Route("/metadatatest")
+    public static class MetadataTest implements IReturn<MetadataTestResponse>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public MetadataTest setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = MetadataTestResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/metadatatest-array")
+    public static class MetadataTestArray implements IReturn<ArrayList<MetadataTestChild>>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public MetadataTestArray setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = new TypeToken<ArrayList<MetadataTestChild>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route(Path="/example", Verbs="GET")
+    @DataContract
+    public static class GetExample implements IReturn<GetExampleResponse>
+    {
+        
+        private static Object responseType = GetExampleResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/randomids")
+    public static class GetRandomIds implements IReturn<GetRandomIdsResponse>
+    {
+        public Integer take = null;
+        
+        public Integer getTake() { return take; }
+        public GetRandomIds setTake(Integer value) { this.take = value; return this; }
+        private static Object responseType = GetRandomIdsResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/textfile-test")
+    public static class TextFileTest
+    {
+        public Boolean asAttachment = null;
+        
+        public Boolean isAsAttachment() { return asAttachment; }
+        public TextFileTest setAsAttachment(Boolean value) { this.asAttachment = value; return this; }
+    }
+
+    @Route("/hello/{Name}")
+    // @Route("/hello")
+    public static class Hello implements IReturn<HelloResponse>
+    {
         @Required()
-        @StringLength(20)
-        public String shortName = null;
+        public String name = null;
 
-        @StringLength(60)
-        public String longName = null;
-
-        @StringLength(20)
-        public String regionId = null;
-
-        @StringLength(20)
-        public String groupId = null;
-
-        @StringLength(12)
-        public String deviceID = null;
-
-        public Date lastUpdated = null;
-        public Boolean enabled = null;
-
-        public String getProfileId() { return profileId; }
-        public ACSProfile setProfileId(String value) { this.profileId = value; return this; }
-        public String getShortName() { return shortName; }
-        public ACSProfile setShortName(String value) { this.shortName = value; return this; }
-        public String getLongName() { return longName; }
-        public ACSProfile setLongName(String value) { this.longName = value; return this; }
-        public String getRegionId() { return regionId; }
-        public ACSProfile setRegionId(String value) { this.regionId = value; return this; }
-        public String getGroupId() { return groupId; }
-        public ACSProfile setGroupId(String value) { this.groupId = value; return this; }
-        public String getDeviceID() { return deviceID; }
-        public ACSProfile setDeviceID(String value) { this.deviceID = value; return this; }
-        public Date getLastUpdated() { return lastUpdated; }
-        public ACSProfile setLastUpdated(Date value) { this.lastUpdated = value; return this; }
-        public Boolean isEnabled() { return enabled; }
-        public ACSProfile setEnabled(Boolean value) { this.enabled = value; return this; }
-        private static Class responseType = acsprofileResponse.class;
-        public Class getResponseType() { return responseType; }
+        public String title = null;
+        
+        public String getName() { return name; }
+        public Hello setName(String value) { this.name = value; return this; }
+        public String getTitle() { return title; }
+        public Hello setTitle(String value) { this.title = value; return this; }
+        private static Object responseType = HelloResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class TestMiniverView
+    public static class HelloWithNestedClass implements IReturn<HelloResponse>
     {
-
+        public String name = null;
+        public NestedClass nestedClassProp = null;
+        
+        public String getName() { return name; }
+        public HelloWithNestedClass setName(String value) { this.name = value; return this; }
+        public NestedClass getNestedClassProp() { return nestedClassProp; }
+        public HelloWithNestedClass setNestedClassProp(NestedClass value) { this.nestedClassProp = value; return this; }
+        private static Object responseType = HelloResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class QueryRockstarsConventions extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloList implements IReturn<ArrayList<ListResult>>
     {
-        public ArrayList<Integer> ids = null;
-        public Integer ageOlderThan = null;
-        public Integer ageGreaterThanOrEqualTo = null;
-        public Integer ageGreaterThan = null;
-        public Integer greaterThanAge = null;
-        public String firstNameStartsWith = null;
-        public String lastNameEndsWith = null;
-        public String lastNameContains = null;
-        public String rockstarAlbumNameContains = null;
-        public Integer rockstarIdAfter = null;
-        public Integer rockstarIdOnOrAfter = null;
-
-        public ArrayList<Integer> getIds() { return ids; }
-        public QueryRockstarsConventions setIds(ArrayList<Integer> value) { this.ids = value; return this; }
-        public Integer getAgeOlderThan() { return ageOlderThan; }
-        public QueryRockstarsConventions setAgeOlderThan(Integer value) { this.ageOlderThan = value; return this; }
-        public Integer getAgeGreaterThanOrEqualTo() { return ageGreaterThanOrEqualTo; }
-        public QueryRockstarsConventions setAgeGreaterThanOrEqualTo(Integer value) { this.ageGreaterThanOrEqualTo = value; return this; }
-        public Integer getAgeGreaterThan() { return ageGreaterThan; }
-        public QueryRockstarsConventions setAgeGreaterThan(Integer value) { this.ageGreaterThan = value; return this; }
-        public Integer getGreaterThanAge() { return greaterThanAge; }
-        public QueryRockstarsConventions setGreaterThanAge(Integer value) { this.greaterThanAge = value; return this; }
-        public String getFirstNameStartsWith() { return firstNameStartsWith; }
-        public QueryRockstarsConventions setFirstNameStartsWith(String value) { this.firstNameStartsWith = value; return this; }
-        public String getLastNameEndsWith() { return lastNameEndsWith; }
-        public QueryRockstarsConventions setLastNameEndsWith(String value) { this.lastNameEndsWith = value; return this; }
-        public String getLastNameContains() { return lastNameContains; }
-        public QueryRockstarsConventions setLastNameContains(String value) { this.lastNameContains = value; return this; }
-        public String getRockstarAlbumNameContains() { return rockstarAlbumNameContains; }
-        public QueryRockstarsConventions setRockstarAlbumNameContains(String value) { this.rockstarAlbumNameContains = value; return this; }
-        public Integer getRockstarIdAfter() { return rockstarIdAfter; }
-        public QueryRockstarsConventions setRockstarIdAfter(Integer value) { this.rockstarIdAfter = value; return this; }
-        public Integer getRockstarIdOnOrAfter() { return rockstarIdOnOrAfter; }
-        public QueryRockstarsConventions setRockstarIdOnOrAfter(Integer value) { this.rockstarIdOnOrAfter = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public ArrayList<String> names = null;
+        
+        public ArrayList<String> getNames() { return names; }
+        public HelloList setNames(ArrayList<String> value) { this.names = value; return this; }
+        private static Object responseType = new TypeToken<ArrayList<ListResult>>(){}.getType();
+        public Object getResponseType() { return responseType; }
     }
 
-    @AutoQueryViewer(Title="Search for Rockstars", Description="Use this option to search for Rockstars!")
-    public static class QueryCustomRockstars extends QueryBase_2<Rockstar, CustomRockstar> implements IReturn<QueryResponse<CustomRockstar>>
+    public static class HelloArray implements IReturn<ArrayList<ArrayResult>>
     {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryCustomRockstars setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<CustomRockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public ArrayList<String> names = null;
+        
+        public ArrayList<String> getNames() { return names; }
+        public HelloArray setNames(ArrayList<String> value) { this.names = value; return this; }
+        private static Object responseType = new TypeToken<ArrayList<ArrayResult>>(){}.getType();
+        public Object getResponseType() { return responseType; }
     }
 
-    @Route("/customrockstars")
-    public static class QueryRockstarAlbums extends QueryBase_2<Rockstar, CustomRockstar> implements IReturn<QueryResponse<CustomRockstar>>
+    public static class HelloWithEnum
     {
-        public Integer age = null;
-        public String rockstarAlbumName = null;
-
-        public Integer getAge() { return age; }
-        public QueryRockstarAlbums setAge(Integer value) { this.age = value; return this; }
-        public String getRockstarAlbumName() { return rockstarAlbumName; }
-        public QueryRockstarAlbums setRockstarAlbumName(String value) { this.rockstarAlbumName = value; return this; }
-        private static Class responseType = new QueryResponse<CustomRockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public EnumType enumProp = null;
+        public EnumType nullableEnumProp = null;
+        public EnumFlags enumFlags = null;
+        
+        public EnumType getEnumProp() { return enumProp; }
+        public HelloWithEnum setEnumProp(EnumType value) { this.enumProp = value; return this; }
+        public EnumType getNullableEnumProp() { return nullableEnumProp; }
+        public HelloWithEnum setNullableEnumProp(EnumType value) { this.nullableEnumProp = value; return this; }
+        public EnumFlags getEnumFlags() { return enumFlags; }
+        public HelloWithEnum setEnumFlags(EnumFlags value) { this.enumFlags = value; return this; }
     }
 
-    public static class QueryRockstarAlbumsImplicit extends QueryBase_2<Rockstar, CustomRockstar> implements IReturn<QueryResponse<CustomRockstar>>
+    public static class HelloExternal
     {
-
-        private static Class responseType = new QueryResponse<CustomRockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloExternal setName(String value) { this.name = value; return this; }
     }
 
-    public static class QueryRockstarAlbumsLeftJoin extends QueryBase_2<Rockstar, CustomRockstar> implements IReturn<QueryResponse<CustomRockstar>>
+    /**
+    * AllowedAttributes Description
+    */
+    @Route(Path="/allowed-attributes", Verbs="GET")
+    @Api("AllowedAttributes Description")
+    // @ApiResponse(400, "Your request was not understood")
+    @DataContract
+    public static class AllowedAttributes
     {
-        public Integer age = null;
-        public String albumName = null;
-
-        public Integer getAge() { return age; }
-        public QueryRockstarAlbumsLeftJoin setAge(Integer value) { this.age = value; return this; }
-        public String getAlbumName() { return albumName; }
-        public QueryRockstarAlbumsLeftJoin setAlbumName(String value) { this.albumName = value; return this; }
-        private static Class responseType = new QueryResponse<CustomRockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        @DataMember(Name="Aliased")
+        @SerializedName("Aliased")
+        @ApiMember(ParameterType="path", Description="Range Description", DataType="double", IsRequired=true)
+        public Double range = null;
+        
+        public Double getRange() { return range; }
+        public AllowedAttributes setRange(Double value) { this.range = value; return this; }
     }
 
-    public static class QueryOverridedRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloAllTypes implements IReturn<HelloAllTypesResponse>
     {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryOverridedRockstars setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        public AllTypes allTypes = null;
+        public AllCollectionTypes allCollectionTypes = null;
+        
+        public String getName() { return name; }
+        public HelloAllTypes setName(String value) { this.name = value; return this; }
+        public AllTypes getAllTypes() { return allTypes; }
+        public HelloAllTypes setAllTypes(AllTypes value) { this.allTypes = value; return this; }
+        public AllCollectionTypes getAllCollectionTypes() { return allCollectionTypes; }
+        public HelloAllTypes setAllCollectionTypes(AllCollectionTypes value) { this.allCollectionTypes = value; return this; }
+        private static Object responseType = HelloAllTypesResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class QueryOverridedCustomRockstars extends QueryBase_2<Rockstar, CustomRockstar> implements IReturn<QueryResponse<CustomRockstar>>
+    public static class HelloString
     {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryOverridedCustomRockstars setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<CustomRockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloString setName(String value) { this.name = value; return this; }
     }
 
-    public static class QueryFieldRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloVoid
     {
-        public String firstName = null;
-        public ArrayList<String> firstNames = null;
-        public Integer age = null;
-        public String firstNameCaseInsensitive = null;
-        public String firstNameStartsWith = null;
-        public String lastNameEndsWith = null;
-        public ArrayList<String> firstNameBetween = null;
-        public String orLastName = null;
-
-        public String getFirstName() { return firstName; }
-        public QueryFieldRockstars setFirstName(String value) { this.firstName = value; return this; }
-        public ArrayList<String> getFirstNames() { return firstNames; }
-        public QueryFieldRockstars setFirstNames(ArrayList<String> value) { this.firstNames = value; return this; }
-        public Integer getAge() { return age; }
-        public QueryFieldRockstars setAge(Integer value) { this.age = value; return this; }
-        public String getFirstNameCaseInsensitive() { return firstNameCaseInsensitive; }
-        public QueryFieldRockstars setFirstNameCaseInsensitive(String value) { this.firstNameCaseInsensitive = value; return this; }
-        public String getFirstNameStartsWith() { return firstNameStartsWith; }
-        public QueryFieldRockstars setFirstNameStartsWith(String value) { this.firstNameStartsWith = value; return this; }
-        public String getLastNameEndsWith() { return lastNameEndsWith; }
-        public QueryFieldRockstars setLastNameEndsWith(String value) { this.lastNameEndsWith = value; return this; }
-        public ArrayList<String> getFirstNameBetween() { return firstNameBetween; }
-        public QueryFieldRockstars setFirstNameBetween(ArrayList<String> value) { this.firstNameBetween = value; return this; }
-        public String getOrLastName() { return orLastName; }
-        public QueryFieldRockstars setOrLastName(String value) { this.orLastName = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloVoid setName(String value) { this.name = value; return this; }
     }
 
-    public static class QueryFieldRockstarsDynamic extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    @DataContract
+    public static class HelloWithDataContract implements IReturn<HelloWithDataContractResponse>
     {
-        public Integer age = null;
+        @DataMember(Name="name", Order=1, IsRequired=true, EmitDefaultValue=false)
+        @SerializedName("name")
+        public String name = null;
 
-        public Integer getAge() { return age; }
-        public QueryFieldRockstarsDynamic setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        @DataMember(Name="id", Order=2, EmitDefaultValue=false)
+        @SerializedName("id")
+        public Integer id = null;
+        
+        public String getName() { return name; }
+        public HelloWithDataContract setName(String value) { this.name = value; return this; }
+        public Integer getId() { return id; }
+        public HelloWithDataContract setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = HelloWithDataContractResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class QueryRockstarsFilter extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    /**
+    * Description on HelloWithDescription type
+    */
+    public static class HelloWithDescription implements IReturn<HelloWithDescriptionResponse>
     {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryRockstarsFilter setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloWithDescription setName(String value) { this.name = value; return this; }
+        private static Object responseType = HelloWithDescriptionResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class QueryCustomRockstarsFilter extends QueryBase_2<Rockstar, CustomRockstar> implements IReturn<QueryResponse<CustomRockstar>>
+    public static class HelloWithInheritance extends HelloBase implements IReturn<HelloWithInheritanceResponse>
     {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryCustomRockstarsFilter setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<CustomRockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloWithInheritance setName(String value) { this.name = value; return this; }
+        private static Object responseType = HelloWithInheritanceResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class QueryRockstarsIFilter extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloWithGenericInheritance extends HelloBase_1<Poco>
     {
-        public Integer age = null;
-
-        public Integer getAge() { return age; }
-        public QueryRockstarsIFilter setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String result = null;
+        
+        public String getResult() { return result; }
+        public HelloWithGenericInheritance setResult(String value) { this.result = value; return this; }
     }
 
-    @Route("/OrRockstars")
-    public static class QueryOrRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloWithGenericInheritance2 extends HelloBase_1<Hello>
     {
-        public Integer age = null;
-        public String firstName = null;
-
-        public Integer getAge() { return age; }
-        public QueryOrRockstars setAge(Integer value) { this.age = value; return this; }
-        public String getFirstName() { return firstName; }
-        public QueryOrRockstars setFirstName(String value) { this.firstName = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String result = null;
+        
+        public String getResult() { return result; }
+        public HelloWithGenericInheritance2 setResult(String value) { this.result = value; return this; }
     }
 
-    public static class QueryGetRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloWithNestedInheritance extends HelloBase_1<Item>
     {
-        public ArrayList<Integer> ids = null;
-        public ArrayList<Integer> ages = null;
-        public ArrayList<String> firstNames = null;
-        public ArrayList<Integer> idsBetween = null;
-
-        public ArrayList<Integer> getIds() { return ids; }
-        public QueryGetRockstars setIds(ArrayList<Integer> value) { this.ids = value; return this; }
-        public ArrayList<Integer> getAges() { return ages; }
-        public QueryGetRockstars setAges(ArrayList<Integer> value) { this.ages = value; return this; }
-        public ArrayList<String> getFirstNames() { return firstNames; }
-        public QueryGetRockstars setFirstNames(ArrayList<String> value) { this.firstNames = value; return this; }
-        public ArrayList<Integer> getIdsBetween() { return idsBetween; }
-        public QueryGetRockstars setIdsBetween(ArrayList<Integer> value) { this.idsBetween = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        
     }
 
-    public static class QueryGetRockstarsDynamic extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloWithListInheritance extends ArrayList<InheritedItem>
     {
-
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        
     }
 
-    @Route("/movies/search")
-    public static class SearchMovies extends QueryBase_1<Movie> implements IReturn<QueryResponse<Movie>>
+    public static class HelloWithReturn implements IReturn<HelloWithAlternateReturnResponse>
     {
-
-        private static Class responseType = new QueryResponse<Movie>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloWithReturn setName(String value) { this.name = value; return this; }
+        private static Object responseType = HelloWithAlternateReturnResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    @Route("/movies")
-    public static class QueryMovies extends QueryBase_1<Movie> implements IReturn<QueryResponse<Movie>>
+    @Route("/helloroute")
+    public static class HelloWithRoute implements IReturn<HelloWithRouteResponse>
     {
-        public ArrayList<Integer> ids = null;
-        public ArrayList<String> imdbIds = null;
-        public ArrayList<String> ratings = null;
-
-        public ArrayList<Integer> getIds() { return ids; }
-        public QueryMovies setIds(ArrayList<Integer> value) { this.ids = value; return this; }
-        public ArrayList<String> getImdbIds() { return imdbIds; }
-        public QueryMovies setImdbIds(ArrayList<String> value) { this.imdbIds = value; return this; }
-        public ArrayList<String> getRatings() { return ratings; }
-        public QueryMovies setRatings(ArrayList<String> value) { this.ratings = value; return this; }
-        private static Class responseType = new QueryResponse<Movie>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloWithRoute setName(String value) { this.name = value; return this; }
+        private static Object responseType = HelloWithRouteResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class StreamMovies extends QueryBase_1<Movie> implements IReturn<QueryResponse<Movie>>
+    public static class HelloWithType implements IReturn<HelloWithTypeResponse>
     {
-        public ArrayList<String> ratings = null;
-
-        public ArrayList<String> getRatings() { return ratings; }
-        public StreamMovies setRatings(ArrayList<String> value) { this.ratings = value; return this; }
-        private static Class responseType = new QueryResponse<Movie>().getClass();
-        public Class getResponseType() { return responseType; }
+        public String name = null;
+        
+        public String getName() { return name; }
+        public HelloWithType setName(String value) { this.name = value; return this; }
+        private static Object responseType = HelloWithTypeResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
-    public static class QueryUnknownRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    public static class HelloInterface
     {
-        public Integer unknownInt = null;
-        public String unknownProperty = null;
-
-        public Integer getUnknownInt() { return unknownInt; }
-        public QueryUnknownRockstars setUnknownInt(Integer value) { this.unknownInt = value; return this; }
-        public String getUnknownProperty() { return unknownProperty; }
-        public QueryUnknownRockstars setUnknownProperty(String value) { this.unknownProperty = value; return this; }
-        private static Class responseType = new QueryResponse<Rockstar>().getClass();
-        public Class getResponseType() { return responseType; }
+        public IPoco poco = null;
+        public IEmptyInterface emptyInterface = null;
+        public EmptyClass emptyClass = null;
+        
+        public IPoco getPoco() { return poco; }
+        public HelloInterface setPoco(IPoco value) { this.poco = value; return this; }
+        public IEmptyInterface getEmptyInterface() { return emptyInterface; }
+        public HelloInterface setEmptyInterface(IEmptyInterface value) { this.emptyInterface = value; return this; }
+        public EmptyClass getEmptyClass() { return emptyClass; }
+        public HelloInterface setEmptyClass(EmptyClass value) { this.emptyClass = value; return this; }
     }
 
-    @Route("/query/rockstar-references")
-    public static class QueryRockstarsWithReferences extends QueryBase_1<RockstarReference> implements IReturn<QueryResponse<RockstarReference>>
+    public static class HelloInnerTypes implements IReturn<HelloInnerTypesResponse>
     {
-        public Integer age = null;
+        
+        private static Object responseType = HelloInnerTypesResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
 
-        public Integer getAge() { return age; }
-        public QueryRockstarsWithReferences setAge(Integer value) { this.age = value; return this; }
-        private static Class responseType = new QueryResponse<RockstarReference>().getClass();
-        public Class getResponseType() { return responseType; }
+    @Route("/ping")
+    public static class Ping implements IReturn<PingResponse>
+    {
+        
+        private static Object responseType = PingResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/reset-connections")
+    public static class ResetConnections
+    {
+        
+    }
+
+    @Route("/requires-role")
+    public static class RequiresRole implements IReturn<RequiresRoleResponse>
+    {
+        
+        private static Object responseType = RequiresRoleResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/session")
+    public static class GetSession implements IReturn<GetSessionResponse>
+    {
+        
+        private static Object responseType = GetSessionResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/session/edit/{CustomName}")
+    public static class UpdateSession implements IReturn<GetSessionResponse>
+    {
+        public String customName = null;
+        
+        public String getCustomName() { return customName; }
+        public UpdateSession setCustomName(String value) { this.customName = value; return this; }
+        private static Object responseType = GetSessionResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/void-response")
+    public static class TestVoidResponse
+    {
+        
+    }
+
+    @Route("/null-response")
+    public static class TestNullResponse
+    {
+        
+    }
+
+    @Route("/requestlogs")
+    @DataContract
+    public static class RequestLogs implements IReturn<RequestLogsResponse>
+    {
+        @DataMember(Order=1)
+        public Integer beforeSecs = null;
+
+        @DataMember(Order=2)
+        public Integer afterSecs = null;
+
+        @DataMember(Order=3)
+        public String ipAddress = null;
+
+        @DataMember(Order=4)
+        public String forwardedFor = null;
+
+        @DataMember(Order=5)
+        public String userAuthId = null;
+
+        @DataMember(Order=6)
+        public String sessionId = null;
+
+        @DataMember(Order=7)
+        public String referer = null;
+
+        @DataMember(Order=8)
+        public String pathInfo = null;
+
+        @DataMember(Order=9)
+        public ArrayList<Long> ids = null;
+
+        @DataMember(Order=10)
+        public Integer beforeId = null;
+
+        @DataMember(Order=11)
+        public Integer afterId = null;
+
+        @DataMember(Order=12)
+        public Boolean hasResponse = null;
+
+        @DataMember(Order=13)
+        public Boolean withErrors = null;
+
+        @DataMember(Order=14)
+        public Integer skip = null;
+
+        @DataMember(Order=15)
+        public Integer take = null;
+
+        @DataMember(Order=16)
+        public Boolean enableSessionTracking = null;
+
+        @DataMember(Order=17)
+        public Boolean enableResponseTracking = null;
+
+        @DataMember(Order=18)
+        public Boolean enableErrorTracking = null;
+
+        @DataMember(Order=19)
+        public TimeSpan durationLongerThan = null;
+
+        @DataMember(Order=20)
+        public TimeSpan durationLessThan = null;
+        
+        public Integer getBeforeSecs() { return beforeSecs; }
+        public RequestLogs setBeforeSecs(Integer value) { this.beforeSecs = value; return this; }
+        public Integer getAfterSecs() { return afterSecs; }
+        public RequestLogs setAfterSecs(Integer value) { this.afterSecs = value; return this; }
+        public String getIpAddress() { return ipAddress; }
+        public RequestLogs setIpAddress(String value) { this.ipAddress = value; return this; }
+        public String getForwardedFor() { return forwardedFor; }
+        public RequestLogs setForwardedFor(String value) { this.forwardedFor = value; return this; }
+        public String getUserAuthId() { return userAuthId; }
+        public RequestLogs setUserAuthId(String value) { this.userAuthId = value; return this; }
+        public String getSessionId() { return sessionId; }
+        public RequestLogs setSessionId(String value) { this.sessionId = value; return this; }
+        public String getReferer() { return referer; }
+        public RequestLogs setReferer(String value) { this.referer = value; return this; }
+        public String getPathInfo() { return pathInfo; }
+        public RequestLogs setPathInfo(String value) { this.pathInfo = value; return this; }
+        public ArrayList<Long> getIds() { return ids; }
+        public RequestLogs setIds(ArrayList<Long> value) { this.ids = value; return this; }
+        public Integer getBeforeId() { return beforeId; }
+        public RequestLogs setBeforeId(Integer value) { this.beforeId = value; return this; }
+        public Integer getAfterId() { return afterId; }
+        public RequestLogs setAfterId(Integer value) { this.afterId = value; return this; }
+        public Boolean isHasResponse() { return hasResponse; }
+        public RequestLogs setHasResponse(Boolean value) { this.hasResponse = value; return this; }
+        public Boolean isWithErrors() { return withErrors; }
+        public RequestLogs setWithErrors(Boolean value) { this.withErrors = value; return this; }
+        public Integer getSkip() { return skip; }
+        public RequestLogs setSkip(Integer value) { this.skip = value; return this; }
+        public Integer getTake() { return take; }
+        public RequestLogs setTake(Integer value) { this.take = value; return this; }
+        public Boolean isEnableSessionTracking() { return enableSessionTracking; }
+        public RequestLogs setEnableSessionTracking(Boolean value) { this.enableSessionTracking = value; return this; }
+        public Boolean isEnableResponseTracking() { return enableResponseTracking; }
+        public RequestLogs setEnableResponseTracking(Boolean value) { this.enableResponseTracking = value; return this; }
+        public Boolean isEnableErrorTracking() { return enableErrorTracking; }
+        public RequestLogs setEnableErrorTracking(Boolean value) { this.enableErrorTracking = value; return this; }
+        public TimeSpan getDurationLongerThan() { return durationLongerThan; }
+        public RequestLogs setDurationLongerThan(TimeSpan value) { this.durationLongerThan = value; return this; }
+        public TimeSpan getDurationLessThan() { return durationLessThan; }
+        public RequestLogs setDurationLessThan(TimeSpan value) { this.durationLessThan = value; return this; }
+        private static Object responseType = RequestLogsResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/auth")
+    // @Route("/auth/{provider}")
+    // @Route("/authenticate")
+    // @Route("/authenticate/{provider}")
+    @DataContract
+    public static class Authenticate implements IReturn<AuthenticateResponse>
+    {
+        @DataMember(Order=1)
+        public String provider = null;
+
+        @DataMember(Order=2)
+        public String state = null;
+
+        @DataMember(Order=3)
+        public String oauth_token = null;
+
+        @DataMember(Order=4)
+        public String oauth_verifier = null;
+
+        @DataMember(Order=5)
+        public String userName = null;
+
+        @DataMember(Order=6)
+        public String password = null;
+
+        @DataMember(Order=7)
+        public Boolean rememberMe = null;
+
+        @DataMember(Order=8)
+        @SerializedName("continue") public String Continue = null;
+
+        @DataMember(Order=9)
+        public String nonce = null;
+
+        @DataMember(Order=10)
+        public String uri = null;
+
+        @DataMember(Order=11)
+        public String response = null;
+
+        @DataMember(Order=12)
+        public String qop = null;
+
+        @DataMember(Order=13)
+        public String nc = null;
+
+        @DataMember(Order=14)
+        public String cnonce = null;
+
+        @DataMember(Order=15)
+        public HashMap<String,String> meta = null;
+        
+        public String getProvider() { return provider; }
+        public Authenticate setProvider(String value) { this.provider = value; return this; }
+        public String getState() { return state; }
+        public Authenticate setState(String value) { this.state = value; return this; }
+        public String getOauthToken() { return oauth_token; }
+        public Authenticate setOauthToken(String value) { this.oauth_token = value; return this; }
+        public String getOauthVerifier() { return oauth_verifier; }
+        public Authenticate setOauthVerifier(String value) { this.oauth_verifier = value; return this; }
+        public String getUserName() { return userName; }
+        public Authenticate setUserName(String value) { this.userName = value; return this; }
+        public String getPassword() { return password; }
+        public Authenticate setPassword(String value) { this.password = value; return this; }
+        public Boolean isRememberMe() { return rememberMe; }
+        public Authenticate setRememberMe(Boolean value) { this.rememberMe = value; return this; }
+        public String getContinue() { return Continue; }
+        public Authenticate setContinue(String value) { this.Continue = value; return this; }
+        public String getNonce() { return nonce; }
+        public Authenticate setNonce(String value) { this.nonce = value; return this; }
+        public String getUri() { return uri; }
+        public Authenticate setUri(String value) { this.uri = value; return this; }
+        public String getResponse() { return response; }
+        public Authenticate setResponse(String value) { this.response = value; return this; }
+        public String getQop() { return qop; }
+        public Authenticate setQop(String value) { this.qop = value; return this; }
+        public String getNc() { return nc; }
+        public Authenticate setNc(String value) { this.nc = value; return this; }
+        public String getCnonce() { return cnonce; }
+        public Authenticate setCnonce(String value) { this.cnonce = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public Authenticate setMeta(HashMap<String,String> value) { this.meta = value; return this; }
+        private static Object responseType = AuthenticateResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/assignroles")
+    public static class AssignRoles implements IReturn<AssignRolesResponse>
+    {
+        public String userName = null;
+        public ArrayList<String> permissions = null;
+        public ArrayList<String> roles = null;
+        
+        public String getUserName() { return userName; }
+        public AssignRoles setUserName(String value) { this.userName = value; return this; }
+        public ArrayList<String> getPermissions() { return permissions; }
+        public AssignRoles setPermissions(ArrayList<String> value) { this.permissions = value; return this; }
+        public ArrayList<String> getRoles() { return roles; }
+        public AssignRoles setRoles(ArrayList<String> value) { this.roles = value; return this; }
+        private static Object responseType = AssignRolesResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/unassignroles")
+    public static class UnAssignRoles implements IReturn<UnAssignRolesResponse>
+    {
+        public String userName = null;
+        public ArrayList<String> permissions = null;
+        public ArrayList<String> roles = null;
+        
+        public String getUserName() { return userName; }
+        public UnAssignRoles setUserName(String value) { this.userName = value; return this; }
+        public ArrayList<String> getPermissions() { return permissions; }
+        public UnAssignRoles setPermissions(ArrayList<String> value) { this.permissions = value; return this; }
+        public ArrayList<String> getRoles() { return roles; }
+        public UnAssignRoles setRoles(ArrayList<String> value) { this.roles = value; return this; }
+        private static Object responseType = UnAssignRolesResponse.class;
+        public Object getResponseType() { return responseType; }
     }
 
 }
