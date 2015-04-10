@@ -1,5 +1,8 @@
+import com.google.common.collect.Lists;
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetManager;
+import com.intellij.ide.util.DirectoryUtil;
+import com.intellij.ide.util.PackageUtil;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -11,10 +14,17 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.PackageChooser;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.*;
+import com.intellij.psi.codeStyle.PackageEntry;
+import com.intellij.psi.impl.file.PsiJavaDirectoryImpl;
+import com.intellij.psi.search.PackageScope;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AddServiceStackReference extends AnAction {
@@ -48,6 +58,26 @@ public class AddServiceStackReference extends AnAction {
                 PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(firstJavaFile.getPackageName());
                 if(mainPackage != null) {
                     dialog.setSelectedPackage(mainPackage);
+                }
+            } else {
+                try {
+                    PsiDirectory selectedDir = (PsiDirectory)element;
+                    String packageName = "";
+                    String moduleDirectoryName = module.getModuleFile().getParent().getName();
+                    List<String> packageArray = new ArrayList<>();
+                    while(selectedDir != null && !(Objects.equals(selectedDir.getName(), moduleDirectoryName))) {
+                        packageArray.add(selectedDir.getName());
+                        selectedDir = selectedDir.getParent();
+                        PsiPackage mainPackage = testPackage(module, packageName, packageArray);
+                        if(mainPackage != null) {
+                            dialog.setSelectedPackage(mainPackage);
+                            break;
+                        }
+                    }
+
+
+                }catch (Exception ex) {
+                    //do nothing, can't get package name.
                 }
             }
             dialog.setVisible(true);
@@ -96,6 +126,18 @@ public class AddServiceStackReference extends AnAction {
         }
 
         dialog.setVisible(true);
+    }
+
+    private PsiPackage testPackage(Module module, String packageName, List<String> packageArray) {
+        List<String> packageNameOrderedList = Lists.reverse(packageArray);
+        for(int i = 0; i < packageNameOrderedList.size(); i++) {
+            if(i < packageNameOrderedList.size() - 1) {
+                packageName += packageNameOrderedList.get(i) + ".";
+            } else {
+                packageName += packageNameOrderedList.get(i);
+            }
+        }
+        return JavaPsiFacade.getInstance(module.getProject()).findPackage(packageName);
     }
 
     @Override

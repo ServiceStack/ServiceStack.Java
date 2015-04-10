@@ -6,7 +6,7 @@
       <xy x="48" y="102" width="650" height="302"/>
     </constraints>
     <properties>
-      <maximumSize width="550" height="220"/>
+      <maximumSize width="550" height="320"/>
       <minimumSize width="400" height="220"/>
       <opaque value="true"/>
       <preferredSize width="550" height="220"/>
