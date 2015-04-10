@@ -9,6 +9,7 @@ import net.servicestack.client.AsyncServiceClient;
 import net.servicestack.client.IReturn;
 import net.servicestack.client.JsonServiceClient;
 
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
@@ -68,6 +69,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     public <T> void getAsync(String path, final Class responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.get(params[0], responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
+    }
+
+    @Override
+    public <T> void getAsync(String path, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
             @Override
@@ -156,7 +179,51 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void postAsync(String path, final Object request, final Type responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.post(params[0], request, responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
+    }
+
+    @Override
     public <T> void postAsync(String path, final byte[] requestBody, final String contentType, final Class responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.post(params[0], requestBody, contentType, responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
+    }
+
+    @Override
+    public <T> void postAsync(String path, final byte[] requestBody, final String contentType, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
             @Override
@@ -246,7 +313,51 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void putAsync(String path, final Object request, final Type responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.put(params[0], request, responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
+    }
+
+    @Override
     public <T> void putAsync(String path, final byte[] requestBody, final String contentType, final Class responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.put(params[0], requestBody, contentType, responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
+    }
+
+    @Override
+    public <T> void putAsync(String path, final byte[] requestBody, final String contentType, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
             @Override
@@ -334,6 +445,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     public <T> void deleteAsync(String path, final Class responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.delete(params[0], responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
+    }
+
+    @Override
+    public <T> void deleteAsync(String path, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
             @Override
