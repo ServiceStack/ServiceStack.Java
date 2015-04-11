@@ -1,12 +1,17 @@
 package servicestack.net.techstacks;
 
+import android.graphics.Bitmap;
+
 import net.servicestack.android.AndroidServiceClient;
+import net.servicestack.android.AndroidUtils;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Utils;
 
 import servicestack.net.techstacks.dto.*;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class App {
 
@@ -125,6 +130,44 @@ public class App {
         public QueryResponse<Technology> getSearchTechnologiesResponse() {
             return technologiesResponse;
         }
+
+        GetTechnologyResponse technology = null;
+        public GetTechnologyResponse getTechnology() {
+            return technology;
+        }
+
+        public void loadTechnology(String slug) {
+            if (technology != null){
+                onUpdate(DataType.Technology);
+            }
+
+            client.getAsync(new GetTechnology().setSlug(slug),
+                new AsyncResult<GetTechnologyResponse>() {
+                    @Override
+                    public void success(GetTechnologyResponse response) {
+                        technology = response;
+                        onUpdate(DataType.Technology);
+                    }
+                });
+        }
+
+        HashMap<String,Bitmap> imgCache = new HashMap<>();
+        public void loadImage(final String imgUrl, final ImageResult callback) {
+            Bitmap img = imgCache.get(imgUrl);
+            if (img != null){
+                callback.success(img);
+                return;
+            }
+
+            client.getAsync(imgUrl, new AsyncResult<byte[]>() {
+                @Override
+                public void success(byte[] imgBytes) {
+                    Bitmap img = AndroidUtils.readBitmap(imgBytes);
+                    imgCache.put(imgUrl, img);
+                    callback.success(img);
+                }
+            });
+        }
     }
 
     public static interface AppDataListener
@@ -132,11 +175,18 @@ public class App {
         public void onUpdate(AppData data, DataType dataType);
     }
 
+    public static class ImageResult
+    {
+        public void success(Bitmap img){}
+    }
+
     public static enum DataType
     {
         AppOverview,
         SearchTechStacks,
         SearchTechnologies,
+        Technology,
+        TechStack,
     }
 
 
