@@ -1,5 +1,7 @@
 package servicestack.net.techstacks;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -18,8 +20,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.internal.util.Predicate;
 
@@ -193,7 +197,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             final View rootView = inflater.inflate(R.layout.fragment_top_rated, container, false);
 
-            Spinner spinner = (Spinner)rootView.findViewById(R.id.spinnerCategory);
+            Spinner spinner = (Spinner) rootView.findViewById(R.id.spinnerCategory);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -206,17 +210,29 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     selectedCategory = null;
                 }
             });
+            ListView list = (ListView) rootView.findViewById(R.id.listTopRated);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TechnologyInfo result = getTopTechnologies(App.getData()).get(position);
+                    Intent intent = new Intent(getActivity(), TechnologyActivity.class);
+                    intent.putExtra("slug", result.getSlug());
+                    startActivity(intent);
+//                    getActivity().getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.pager, TechnologyFragment.create(result.getSlug())).commit();
+                }
+            });
 
             return rootView;
         }
 
-        Spinner getCategorySpinner(){
+        Spinner getCategorySpinner() {
             if (getActivity() == null)
                 return null;
             return (Spinner) getActivity().findViewById(R.id.spinnerCategory);
         }
 
-        ListView getTopRatedListView(){
+        ListView getTopRatedListView() {
             if (getActivity() == null)
                 return null;
             return (ListView) getActivity().findViewById(R.id.listTopRated);
@@ -224,7 +240,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public void onUpdate(App.AppData data, App.DataType dataType) {
-            switch (dataType){
+            switch (dataType) {
                 case AppOverview:
                     Spinner spinner = getCategorySpinner();
                     if (spinner != null) {
@@ -246,8 +262,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
 
         private void refreshTopTechnologies(App.AppData data, ListView list) {
+            ArrayList<String> topTechnologyNames = map(getTopTechnologies(data), new Function<TechnologyInfo, String>() {
+                @Override
+                public String apply(TechnologyInfo technologyInfo) {
+                    return technologyInfo.getName() + " (" + technologyInfo.getStacksCount() + ")";
+                }
+            });
+            list.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, topTechnologyNames));
+        }
+
+        private ArrayList<TechnologyInfo> getTopTechnologies(App.AppData data) {
             ArrayList<TechnologyInfo> topTechnologies = data.getAppOverviewResponse().getTopTechnologies();
-            if (selectedCategory != null && selectedCategory.getValue() != null){
+            if (selectedCategory != null && selectedCategory.getValue() != null) {
                 topTechnologies = filter(topTechnologies, new Predicate<TechnologyInfo>() {
                     @Override
                     public boolean apply(TechnologyInfo tech) {
@@ -255,13 +281,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     }
                 });
             }
-            ArrayList<String> topTechnologyNames = map(topTechnologies, new Function<TechnologyInfo, String>() {
-                @Override
-                public String apply(TechnologyInfo technologyInfo) {
-                    return technologyInfo.getName() + " (" + technologyInfo.getStacksCount() + ")";
-                }
-            });
-            list.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, topTechnologyNames));
+            return topTechnologies;
         }
     }
 
@@ -285,21 +305,26 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tech_stacks, container, false);
 
-            EditText txtSearch = (EditText)rootView.findViewById(R.id.searchTechStacks);
+            EditText txtSearch = (EditText) rootView.findViewById(R.id.searchTechStacks);
             txtSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     App.getData().searchTechStacks(s.toString());
                 }
 
-                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                @Override public void afterTextChanged(Editable s) {}
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
             });
 
             return rootView;
         }
 
-        ListView getListViewResults(){
+        ListView getListViewResults() {
             if (getActivity() == null)
                 return null;
             return (ListView) getActivity().findViewById(R.id.listTechStacks);
@@ -310,7 +335,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (dataType) {
                 case SearchTechStacks:
                     ListView list = getListViewResults();
-                    if (list != null){
+                    if (list != null) {
                         ArrayList<String> results = map(data.getSearchTechStacksResponse().getResults(), new Function<TechnologyStack, String>() {
                             @Override
                             public String apply(TechnologyStack o) {
@@ -344,21 +369,26 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_technologies, container, false);
 
-            EditText txtSearch = (EditText)rootView.findViewById(R.id.searchTechnologies);
+            EditText txtSearch = (EditText) rootView.findViewById(R.id.searchTechnologies);
             txtSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     App.getData().searchTechnologies(s.toString());
                 }
 
-                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-                @Override public void afterTextChanged(Editable s) {}
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
             });
 
             return rootView;
         }
 
-        ListView getListViewResults(){
+        ListView getListViewResults() {
             if (getActivity() == null)
                 return null;
             return (ListView) getActivity().findViewById(R.id.listTechnologies);
@@ -369,7 +399,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (dataType) {
                 case SearchTechnologies:
                     ListView list = getListViewResults();
-                    if (list != null){
+                    if (list != null) {
                         ArrayList<String> results = map(data.getSearchTechnologiesResponse().getResults(), new Function<Technology, String>() {
                             @Override
                             public String apply(Technology o) {
@@ -383,4 +413,67 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    public static class TechnologyFragment extends Fragment implements App.AppDataListener {
+        String slug;
+
+        public static TechnologyFragment create(String slug) {
+            TechnologyFragment fragment = new TechnologyFragment();
+            Bundle args = new Bundle();
+            args.putString("slug", slug);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            App.getData().addListener(this);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            App.getData().loadTechnology(getArguments().getString("slug"));
+
+            View rootView = inflater.inflate(R.layout.fragment_technology, container, false);
+
+            return rootView;
+        }
+
+        @Override
+        public void onUpdate(App.AppData data, App.DataType dataType) {
+            switch (dataType){
+                case Technology:
+
+                    GetTechnologyResponse result = data.getTechnology();
+                    TextView lblName = (TextView) getActivity().findViewById(R.id.lblTechnologyName);
+                    if (lblName == null) return;
+                    lblName.setText(result.getTechnology().getName());
+
+                    TextView lblVendor = (TextView) getActivity().findViewById(R.id.lblTechnologyVendor);
+                    if (lblVendor == null) return;
+                    lblVendor.setText(result.getTechnology().getVendorName());
+
+                    TextView lblVendorUrl = (TextView) getActivity().findViewById(R.id.lblTechnologyVendorUrl);
+                    if (lblVendorUrl == null) return;
+                    lblVendorUrl.setText(result.getTechnology().getVendorUrl());
+
+                    String logoUrl = result.getTechnology().getLogoUrl();
+                    if (logoUrl == null) return;
+                    final ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgTechnologyLogo);
+                    if (imgLogo == null) return;
+
+                    data.loadImage(logoUrl, new App.ImageResult() {
+                        @Override
+                        public void success(Bitmap img) {
+                            imgLogo.setImageBitmap(img);
+                        }
+                    });
+
+                    break;
+            }
+        }
+
+    }
 }
