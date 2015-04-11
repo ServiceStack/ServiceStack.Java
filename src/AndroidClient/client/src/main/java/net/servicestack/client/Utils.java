@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import static net.servicestack.client.Func.last;
+
 // Generic Utils
 public class Utils {
 
@@ -369,12 +371,28 @@ public class Utils {
                 : new String[] { strVal.substring(0, pos), strVal.substring(pos + 1) };
     }
 
+    public static String[] splitOnFirst(String strVal, String needle) {
+        if (strVal == null) return new String[0];
+        int pos = strVal.indexOf(needle);
+        return pos == -1
+                ? new String[] { strVal }
+                : new String[] { strVal.substring(0, pos), strVal.substring(pos + needle.length()) };
+    }
+
     public static String[] splitOnLast(String strVal, char needle) {
         if (strVal == null) return new String[0];
         int pos = strVal.lastIndexOf(needle);
         return pos == -1
                 ? new String[] { strVal }
                 : new String[] { strVal.substring(0, pos), strVal.substring(pos + 1) };
+    }
+
+    public static String[] splitOnLast(String strVal, String needle) {
+        if (strVal == null) return new String[0];
+        int pos = strVal.lastIndexOf(needle);
+        return pos == -1
+                ? new String[] { strVal }
+                : new String[] { strVal.substring(0, pos), strVal.substring(pos + needle.length()) };
     }
 
     public static String combinePath(String basePath, String withPath){
@@ -563,5 +581,34 @@ public class Utils {
         if (s2 == null)
             return s1 == null;
         return s1.equals(s2);
+    }
+
+    public static String trimStart(String text, char character) {
+        if (text == null || text.length() == 0) return "";
+
+        int i = 0;
+        while (text.charAt(i) == character) {
+            i++;
+        }
+        return text.substring(i).trim();
+    }
+
+    public static String trimEnd(String text, char character) {
+        if (text == null || text.length() == 0) return "";
+
+        int i = text.length() - 1;
+        while (text.charAt(i) == character){
+            if (--i < 0) {
+                return "";
+            }
+        }
+        return text.substring(0, i + 1).trim();
+    }
+
+    public static String toHumanFriendlyUrl(String url){
+        if (url == null) return null;
+
+        url = trimEnd(last(splitOnFirst(url, "://")), '/');
+        return url;
     }
 }
