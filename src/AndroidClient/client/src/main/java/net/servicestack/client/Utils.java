@@ -2,10 +2,12 @@
 
 package net.servicestack.client;
 
+import org.apache.http.util.ByteArrayBuffer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -428,6 +430,31 @@ public class Utils {
         String text = sb.toString();
         reader.close();
         return text;
+    }
+
+    public static byte[] readBytesToEnd(HttpURLConnection response){
+        try {
+            return readBytesToEnd(response.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static byte[] readBytesToEnd(InputStream stream) throws IOException {
+
+        ByteArrayBuffer bytes = new ByteArrayBuffer(1024);
+
+        final BufferedInputStream bufferedStream = new BufferedInputStream(stream, 8192);
+        try {
+            final byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            while ((bytesRead = bufferedStream.read(buffer)) > 0) {
+                bytes.append(buffer, 0, bytesRead);
+            }
+            return bytes.toByteArray();
+        } finally {
+            bufferedStream.close();
+        }
     }
 
     public static String getUnderlyingContentType(String contentType) {
