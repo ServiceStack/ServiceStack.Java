@@ -218,8 +218,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     Intent intent = new Intent(getActivity(), TechnologyActivity.class);
                     intent.putExtra("slug", result.getSlug());
                     startActivity(intent);
-//                    getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.pager, TechnologyFragment.create(result.getSlug())).commit();
                 }
             });
 
@@ -298,6 +296,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             App.getData().addListener(this);
+            App.getData().searchTechStacks("");
         }
 
         @Override
@@ -312,13 +311,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     App.getData().searchTechStacks(s.toString());
                 }
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void afterTextChanged(Editable s) {}
             });
 
             return rootView;
@@ -362,6 +356,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             App.getData().addListener(this);
+            App.getData().searchTechnologies("");
         }
 
         @Override
@@ -376,12 +371,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     App.getData().searchTechnologies(s.toString());
                 }
 
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void afterTextChanged(Editable s) {}
+            });
 
+            ListView list = (ListView) rootView.findViewById(R.id.listTechnologies);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void afterTextChanged(Editable s) {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Technology result = App.getData().getSearchTechnologiesResponse().getResults().get(position);
+                    Intent intent = new Intent(getActivity(), TechnologyActivity.class);
+                    intent.putExtra("slug", result.getSlug());
+                    startActivity(intent);
                 }
             });
 
@@ -411,69 +412,5 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     break;
             }
         }
-    }
-
-    public static class TechnologyFragment extends Fragment implements App.AppDataListener {
-        String slug;
-
-        public static TechnologyFragment create(String slug) {
-            TechnologyFragment fragment = new TechnologyFragment();
-            Bundle args = new Bundle();
-            args.putString("slug", slug);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            App.getData().addListener(this);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-
-            App.getData().loadTechnology(getArguments().getString("slug"));
-
-            View rootView = inflater.inflate(R.layout.fragment_technology, container, false);
-
-            return rootView;
-        }
-
-        @Override
-        public void onUpdate(App.AppData data, App.DataType dataType) {
-            switch (dataType){
-                case Technology:
-
-                    GetTechnologyResponse result = data.getTechnology();
-                    TextView lblName = (TextView) getActivity().findViewById(R.id.lblTechnologyName);
-                    if (lblName == null) return;
-                    lblName.setText(result.getTechnology().getName());
-
-                    TextView lblVendor = (TextView) getActivity().findViewById(R.id.lblTechnologyVendor);
-                    if (lblVendor == null) return;
-                    lblVendor.setText(result.getTechnology().getVendorName());
-
-                    TextView lblVendorUrl = (TextView) getActivity().findViewById(R.id.lblTechnologyVendorUrl);
-                    if (lblVendorUrl == null) return;
-                    lblVendorUrl.setText(result.getTechnology().getVendorUrl());
-
-                    String logoUrl = result.getTechnology().getLogoUrl();
-                    if (logoUrl == null) return;
-                    final ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgTechnologyLogo);
-                    if (imgLogo == null) return;
-
-                    data.loadImage(logoUrl, new App.ImageResult() {
-                        @Override
-                        public void success(Bitmap img) {
-                            imgLogo.setImageBitmap(img);
-                        }
-                    });
-
-                    break;
-            }
-        }
-
     }
 }
