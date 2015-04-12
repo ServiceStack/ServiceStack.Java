@@ -3,7 +3,6 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileEditor.TextEditor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -276,7 +275,7 @@ public class AddRef extends JDialog {
 
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
         boolean showDto = false;
-        if(gradleBuildFileHelper.addDependency("net.servicestack", "android", "0.0.1")) {
+        if(gradleBuildFileHelper.addDependency("net.servicestack", "android", "0.0.2")) {
             refreshBuildFile();
         } else {
             showDto = true;
