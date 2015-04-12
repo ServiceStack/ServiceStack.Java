@@ -109,23 +109,25 @@ public class TechStackActivity extends Activity implements App.AppDataListener {
             if (results.size() == 0)
                 continue;
 
-            LinearLayout layoutCategories = new LinearLayout(this);
-            layoutCategories.setOrientation(LinearLayout.HORIZONTAL);
-
             TextView lblCategory = new TextView(this);
             lblCategory.setText(o.getTitle());
             lblCategory.setPadding(0, 20, 0, 0);
             layout.addView(lblCategory,
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
+            LinearLayout layoutCategories = null;
 
             final Activity activity = this;
-            for (final TechnologyInStack x : results){
+            for (int i = 0; i < results.size(); i++) {
+                final TechnologyInStack x = results.get(i);
+
                 final ImageView img = new ImageView(this);
                 img.setMaxHeight(120);
                 img.setAdjustViewBounds(true);
-                img.setPadding(20, 0, 0, 20);
+                img.setPadding(30, 10, 0, 30);
                 img.setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
+                    @Override
+                    public void onClick(View v) {
                         App.openTechnology(activity, x.getSlug());
                     }
                 });
@@ -135,12 +137,19 @@ public class TechStackActivity extends Activity implements App.AppDataListener {
                         img.setImageBitmap(response);
                     }
                 });
+
+                if (i % 3 == 0){
+                    layoutCategories = new LinearLayout(this);
+                    layoutCategories.setOrientation(LinearLayout.HORIZONTAL);
+                    layout.addView(layoutCategories,
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                }
+
                 layoutCategories.addView(img,
-                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             }
 
-            layout.addView(layoutCategories,
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
         }
     }
 

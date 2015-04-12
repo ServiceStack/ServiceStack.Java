@@ -42,6 +42,9 @@ public class TechnologyActivity extends Activity implements App.AppDataListener 
         ImageView img = (ImageView) findViewById(R.id.imgTechnologyLogo);
         img.setImageBitmap(null);
 
+        ListView list = (ListView) findViewById(R.id.listTechnologyTechStacks);
+        list.setAdapter(null);
+
         TextView txtUrl = (TextView)findViewById(R.id.lblTechnologyVendorUrl);
         final Activity activity = this;
         txtUrl.setOnClickListener(new View.OnClickListener() {

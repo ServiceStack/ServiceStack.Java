@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="actionbar_background">#FF1976D2</color>
+    <color name="tab_background">#FF2196F3</color>
+    <color name="tab_highlight">#FFFFEB3B</color>
+</resources>
