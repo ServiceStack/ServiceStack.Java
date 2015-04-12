@@ -45,6 +45,10 @@ public class AddRef extends JDialog {
     private PsiPackage selectedPackage;
     private String selectedDirectory;
 
+    private static final String dependencyGroupId = "net.servicestack";
+    private static final String dependencyPackageId = "android";
+    private static final String dependencyVersion = "0.0.3";
+
     public AddRef(@NotNull Module module) {
         this.module = module;
         setContentPane(contentPane);
@@ -275,7 +279,7 @@ public class AddRef extends JDialog {
 
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
         boolean showDto = false;
-        if(gradleBuildFileHelper.addDependency("net.servicestack", "android", "0.0.2")) {
+        if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
             refreshBuildFile();
         } else {
             showDto = true;
