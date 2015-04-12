@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,10 +27,11 @@ public class TechnologyActivity extends Activity implements App.AppDataListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_technology);
-        App.getData().addListener(this);
-
         Bundle extras = getIntent().getExtras();
-        App.getData().loadTechnology(extras.getString("slug"));
+
+        App.getData()
+                .addListener(this)
+                .loadTechnology(extras.getString("slug"));
 
         setLoadingTextViews(
             R.id.lblTechnologyName,
@@ -37,19 +39,17 @@ public class TechnologyActivity extends Activity implements App.AppDataListener 
             R.id.lblTechnologyVendorUrl,
             R.id.lblTechnologyDescription);
 
-        ImageView imgLogo = (ImageView) findViewById(R.id.imgTechnologyLogo);
-        imgLogo.setImageBitmap(null);
+        ImageView img = (ImageView) findViewById(R.id.imgTechnologyLogo);
+        img.setImageBitmap(null);
 
-        TextView url = (TextView)findViewById(R.id.lblTechnologyVendorUrl);
-        url.setOnClickListener(new View.OnClickListener() {
+        TextView txtUrl = (TextView)findViewById(R.id.lblTechnologyVendorUrl);
+        final Activity activity = this;
+        txtUrl.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 GetTechnologyResponse result = App.getData().getTechnology();
                 if (result == null) return;
-                String url = result.getTechnology().getVendorUrl();
-                if (url == null) return;
-
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                App.openUrl(activity, result.getTechnology().getVendorUrl());
             }
         });
     }
@@ -61,53 +61,49 @@ public class TechnologyActivity extends Activity implements App.AppDataListener 
         }
     }
 
-    public Activity getActivity(){
-        return this;
-    }
-
     @Override
     public void onUpdate(App.AppData data, App.DataType dataType) {
         switch (dataType){
             case Technology:
-
-                GetTechnologyResponse result = data.getTechnology();
-                TextView lblName = (TextView) getActivity().findViewById(R.id.lblTechnologyName);
-                if (lblName == null) return;
+                final GetTechnologyResponse result = data.getTechnology();
+                TextView lblName = (TextView) findViewById(R.id.lblTechnologyName);
                 lblName.setText(result.getTechnology().getName());
 
-                TextView lblVendor = (TextView) getActivity().findViewById(R.id.lblTechnologyVendor);
-                if (lblVendor == null) return;
+                TextView lblVendor = (TextView) findViewById(R.id.lblTechnologyVendor);
                 lblVendor.setText(result.getTechnology().getVendorName());
 
-                TextView lblVendorUrl = (TextView) getActivity().findViewById(R.id.lblTechnologyVendorUrl);
-                if (lblVendorUrl == null) return;
+                TextView lblVendorUrl = (TextView) findViewById(R.id.lblTechnologyVendorUrl);
                 lblVendorUrl.setText(Utils.toHumanFriendlyUrl(result.getTechnology().getVendorUrl()));
 
-                TextView lblDescription = (TextView) getActivity().findViewById(R.id.lblTechnologyDescription);
-                if (lblDescription == null) return;
+                TextView lblDescription = (TextView) findViewById(R.id.lblTechnologyDescription);
                 lblDescription.setText(result.getTechnology().getDescription());
 
-                String logoUrl = result.getTechnology().getLogoUrl();
-                if (logoUrl != null){
-                    final ImageView imgLogo = (ImageView) getActivity().findViewById(R.id.imgTechnologyLogo);
-                    if (imgLogo == null) return;
-
-                    data.loadImage(logoUrl, new App.ImageResult() {
+                String imgUrl = result.getTechnology().getLogoUrl();
+                if (imgUrl != null){
+                    final ImageView img = (ImageView) findViewById(R.id.imgTechnologyLogo);
+                    data.loadImage(imgUrl, new App.ImageResult() {
                         @Override
-                        public void success(Bitmap img) {
-                            imgLogo.setImageBitmap(img);
+                        public void success(Bitmap response) {
+                            img.setImageBitmap(response);
                         }
                     });
                 }
 
-                ListView list = (ListView)getActivity().findViewById(R.id.listTechnologyTechStacks);
+                ListView list = (ListView) findViewById(R.id.listTechnologyTechStacks);
                 ArrayList<String> stackNames = map(result.getTechnologyStacks(), new Function<TechnologyStack,String>(){
                     @Override
                     public String apply(TechnologyStack x) {
                         return x.getName();
                     }
                 });
-                list.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, stackNames));
+
+                final Activity activity = this;
+                list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, stackNames));
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        App.openTechStack(activity, result.getTechnologyStacks().get(position).getSlug());
+                    }
+                });
 
                 break;
         }

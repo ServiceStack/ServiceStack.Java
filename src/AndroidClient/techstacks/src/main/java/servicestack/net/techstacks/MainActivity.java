@@ -1,15 +1,13 @@
 package servicestack.net.techstacks;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,20 +18,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.android.internal.util.Predicate;
 
-import static net.servicestack.client.Func.*;
-
 import java.util.ArrayList;
 
-import static net.servicestack.client.Func.map;
+import servicestack.net.techstacks.dto.Option;
+import servicestack.net.techstacks.dto.Technology;
+import servicestack.net.techstacks.dto.TechnologyInfo;
+import servicestack.net.techstacks.dto.TechnologyStack;
 
-import servicestack.net.techstacks.dto.*;
+import static net.servicestack.client.Func.Function;
+import static net.servicestack.client.Func.filter;
+import static net.servicestack.client.Func.map;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -177,11 +176,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         Option selectedCategory;
 
         public static TopRatedFragment create(int sectionNumber) {
-            TopRatedFragment fragment = new TopRatedFragment();
-            Bundle args = new Bundle();
-            args.putInt("sectionNumber", sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
+            return new TopRatedFragment();
         }
 
         @Override
@@ -215,9 +210,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     TechnologyInfo result = getTopTechnologies(App.getData()).get(position);
-                    Intent intent = new Intent(getActivity(), TechnologyActivity.class);
-                    intent.putExtra("slug", result.getSlug());
-                    startActivity(intent);
+                    App.openTechnology(getActivity(), result.getSlug());
                 }
             });
 
@@ -285,18 +278,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     public static class TechStacksFragment extends Fragment implements App.AppDataListener {
         public static TechStacksFragment create(int sectionNumber) {
-            TechStacksFragment fragment = new TechStacksFragment();
-            Bundle args = new Bundle();
-            args.putInt("sectionNumber", sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
+            return new TechStacksFragment();
         }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            App.getData().addListener(this);
-            App.getData().searchTechStacks("");
+            App.getData()
+                .addListener(this)
+                .searchTechStacks("");
         }
 
         @Override
@@ -313,6 +303,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
                 @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                 @Override public void afterTextChanged(Editable s) {}
+            });
+
+            ListView list = (ListView) rootView.findViewById(R.id.listTechStacks);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    TechnologyStack result = App.getData().getSearchTechStacksResponse().getResults().get(position);
+                    App.openTechStack(getActivity(), result.getSlug());
+                }
             });
 
             return rootView;
@@ -345,18 +344,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     public static class TechnologiesFragment extends Fragment implements App.AppDataListener {
         public static TechnologiesFragment create(int sectionNumber) {
-            TechnologiesFragment fragment = new TechnologiesFragment();
-            Bundle args = new Bundle();
-            args.putInt("sectionNumber", sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
+            return new TechnologiesFragment();
         }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            App.getData().addListener(this);
-            App.getData().searchTechnologies("");
+            App.getData()
+                .addListener(this)
+                .searchTechnologies("");
         }
 
         @Override
@@ -380,9 +376,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Technology result = App.getData().getSearchTechnologiesResponse().getResults().get(position);
-                    Intent intent = new Intent(getActivity(), TechnologyActivity.class);
-                    intent.putExtra("slug", result.getSlug());
-                    startActivity(intent);
+                    App.openTechnology(getActivity(), result.getSlug());
                 }
             });
 

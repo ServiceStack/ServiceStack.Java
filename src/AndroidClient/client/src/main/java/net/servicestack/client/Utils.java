@@ -27,7 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import static net.servicestack.client.Func.last;
+import static net.servicestack.client.Func.*;
 
 // Generic Utils
 public class Utils {
@@ -610,5 +610,22 @@ public class Utils {
 
         url = trimEnd(last(splitOnFirst(url, "://")), '/');
         return url;
+    }
+
+    public static <K,V> HashMap<K,ArrayList<V>> createMap(ArrayList<V> xs, Function<V,K> f){
+        HashMap<K,ArrayList<V>> to = new HashMap<>();
+        if (xs == null) return to;
+
+        for (V val : xs){
+            K key = f.apply(val);
+
+            ArrayList<V> list = to.get(key);
+            if (list == null)
+                to.put(key, list = new ArrayList<V>());
+
+            list.add(val);
+        }
+
+        return to;
     }
 }

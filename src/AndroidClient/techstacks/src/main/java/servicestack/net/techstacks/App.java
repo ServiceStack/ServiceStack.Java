@@ -1,17 +1,19 @@
 package servicestack.net.techstacks;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.android.AndroidUtils;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Utils;
 
-import servicestack.net.techstacks.dto.*;
-
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import servicestack.net.techstacks.dto.*;
 
 public class App {
 
@@ -151,6 +153,26 @@ public class App {
                 });
         }
 
+        GetTechnologyStackResponse techStack = null;
+        public GetTechnologyStackResponse getTechStack() {
+            return techStack;
+        }
+
+        public void loadTechStack(String slug) {
+            if (techStack != null){
+                onUpdate(DataType.TechStack);
+            }
+
+            client.getAsync(new GetTechnologyStack().setSlug(slug),
+                    new AsyncResult<GetTechnologyStackResponse>() {
+                        @Override
+                        public void success(GetTechnologyStackResponse response) {
+                            techStack = response;
+                            onUpdate(DataType.TechStack);
+                        }
+                    });
+        }
+
         HashMap<String,Bitmap> imgCache = new HashMap<>();
         public void loadImage(final String imgUrl, final ImageResult callback) {
             Bitmap img = imgCache.get(imgUrl);
@@ -170,14 +192,33 @@ public class App {
         }
     }
 
+    public static void openTechStack(Activity activity, String slug){
+        if (slug == null) return;
+        Intent openTechStack = new Intent(activity, TechStackActivity.class);
+        openTechStack.putExtra("slug", slug);
+        activity.startActivity(openTechStack);
+    }
+
+    public static void openTechnology(Activity activity, String slug){
+        if (slug == null) return;
+        Intent openTechnology = new Intent(activity, TechnologyActivity.class);
+        openTechnology.putExtra("slug", slug);
+        activity.startActivity(openTechnology);
+    }
+
+    public static void openUrl(Activity activity, String url){
+        if (url == null) return;
+        activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
+
     public static interface AppDataListener
     {
         public void onUpdate(AppData data, DataType dataType);
     }
 
-    public static class ImageResult
+    public static interface ImageResult
     {
-        public void success(Bitmap img){}
+        public void success(Bitmap img);
     }
 
     public static enum DataType
@@ -188,6 +229,5 @@ public class App {
         Technology,
         TechStack,
     }
-
 
 }
