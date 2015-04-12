@@ -8,6 +8,7 @@ import net.servicestack.client.AsyncResult;
 import net.servicestack.client.AsyncServiceClient;
 import net.servicestack.client.IReturn;
 import net.servicestack.client.JsonServiceClient;
+import net.servicestack.client.Utils;
 
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -111,13 +112,14 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, path);
     }
 
-    public void getAsync(String path, final AsyncResult<HttpURLConnection> asyncResult) {
+    public void getAsync(String path, final AsyncResult<byte[]> asyncResult) {
         final AndroidServiceClient client = this;
-        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
+        execTask(new AsyncTask<String, Void, byte[]>() {
             @Override
-            protected HttpURLConnection doInBackground(String... params) {
+            protected byte[] doInBackground(String... params) {
                 try {
-                    return client.get(params[0]);
+                    HttpURLConnection httpRes = client.get(params[0]);
+                    return Utils.readBytesToEnd(httpRes);
                 } catch (Exception e) {
                     asyncResult.setError(e);
                     return null;
@@ -125,10 +127,9 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
             @Override
-            protected void onPostExecute(HttpURLConnection response) {
-                asyncResult.completeResult(response);
+            protected void onPostExecute(byte[] bytes) {
+                asyncResult.completeResult(bytes);
             }
-
         }, path);
     }
 
@@ -245,13 +246,14 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
-    public void postAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<HttpURLConnection> asyncResult) {
+    public void postAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<byte[]> asyncResult) {
         final AndroidServiceClient client = this;
-        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
+        execTask(new AsyncTask<String, Void, byte[]>() {
             @Override
-            protected HttpURLConnection doInBackground(String... params) {
+            protected byte[] doInBackground(String... params) {
                 try {
-                    return client.post(params[0], requestBody, contentType);
+                    HttpURLConnection httpRes = client.post(params[0], requestBody, contentType);
+                    return Utils.readBytesToEnd(httpRes);
                 } catch (Exception e) {
                     asyncResult.setError(e);
                     return null;
@@ -259,8 +261,8 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
             @Override
-            protected void onPostExecute(HttpURLConnection response) {
-                asyncResult.completeResult(response);
+            protected void onPostExecute(byte[] bytes) {
+                asyncResult.completeResult(bytes);
             }
 
         }, path);
@@ -379,13 +381,14 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
-    public void putAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<HttpURLConnection> asyncResult) {
+    public void putAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<byte[]> asyncResult) {
         final AndroidServiceClient client = this;
-        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
+        execTask(new AsyncTask<String, Void, byte[]>() {
             @Override
-            protected HttpURLConnection doInBackground(String... params) {
+            protected byte[] doInBackground(String... params) {
                 try {
-                    return client.put(params[0], requestBody, contentType);
+                    HttpURLConnection httpRes = client.put(params[0], requestBody, contentType);
+                    return Utils.readBytesToEnd(httpRes);
                 } catch (Exception e) {
                     asyncResult.setError(e);
                     return null;
@@ -393,8 +396,8 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
             @Override
-            protected void onPostExecute(HttpURLConnection response) {
-                asyncResult.completeResult(response);
+            protected void onPostExecute(byte[] bytes) {
+                asyncResult.completeResult(bytes);
             }
 
         }, path);
@@ -487,13 +490,14 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, path);
     }
 
-    public void deleteAsync(String path, final AsyncResult<HttpURLConnection> asyncResult) {
+    public void deleteAsync(String path, final AsyncResult<byte[]> asyncResult) {
         final AndroidServiceClient client = this;
-        execTask(new AsyncTask<String, Void, HttpURLConnection>() {
+        execTask(new AsyncTask<String, Void, byte[]>() {
             @Override
-            protected HttpURLConnection doInBackground(String... params) {
+            protected byte[] doInBackground(String... params) {
                 try {
-                    return client.delete(params[0]);
+                    HttpURLConnection httpRes = client.delete(params[0]);
+                    return Utils.readBytesToEnd(httpRes);
                 } catch (Exception e) {
                     asyncResult.setError(e);
                     return null;
@@ -501,8 +505,8 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
             @Override
-            protected void onPostExecute(HttpURLConnection response) {
-                asyncResult.completeResult(response);
+            protected void onPostExecute(byte[] bytes) {
+                asyncResult.completeResult(bytes);
             }
 
         }, path);
