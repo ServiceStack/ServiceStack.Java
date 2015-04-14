@@ -47,7 +47,7 @@ public class AddRef extends JDialog {
 
     private static final String dependencyGroupId = "net.servicestack";
     private static final String dependencyPackageId = "android";
-    private static final String dependencyVersion = "0.0.3";
+    private static final String dependencyVersion = "1.0.0";
 
     public AddRef(@NotNull Module module) {
         this.module = module;
