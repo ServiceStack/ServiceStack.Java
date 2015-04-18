@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>net.servicestack.ideaplugin</id>
   <name>ServiceStack</name>
-  <version>1.0</version>
+  <version>1.0.1</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
@@ -22,6 +22,7 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
+  <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
