@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.test.ApplicationTestCase;
 
+import com.google.gson.annotations.SerializedName;
+
 import net.servicestack.client.AsyncResult;
+import net.servicestack.client.Flags;
 import net.servicestack.client.Utils;
 
 import java.net.HttpURLConnection;
@@ -51,4 +54,31 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
+
+    public void test_Can_deserialize_enum_flags(){
+        EnumTest o = client.getGson().fromJson("{\"Flags\":2}", EnumTest.class);
+
+        assertEquals(o.Flags, EnumFlags.Value2);
+
+        o = client.getGson().fromJson("{\"Flags\":4}", EnumTest.class);
+        assertEquals(o.Flags, EnumFlags.Value3);
+    }
+
+    public static class EnumTest
+    {
+        public EnumFlags Flags;
+    }
+
+    @Flags()
+    public static enum EnumFlags
+    {
+        @SerializedName("1") Value1(1),
+        @SerializedName("2") Value2(2),
+        @SerializedName("4") Value3(4);
+
+        private final int value;
+        EnumFlags(final int intValue) { value = intValue; }
+        public int getValue() { return value; }
+    }
+
 }
