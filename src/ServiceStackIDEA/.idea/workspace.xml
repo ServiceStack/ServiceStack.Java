@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a954d2f0-e4a1-4dc5-be04-5257d763afa5" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\AndroidClient\.idea\workspace.xml___jb_bak___" afterPath="" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\AddRef.form" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.form" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\AddRef.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.java" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\AddServiceStackReference.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/AddServiceStackReference.java" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\GradleBuildFileHelper.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/GradleBuildFileHelper.java" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\UpdateServiceStackReference.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/UpdateServiceStackReference.java" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\UpdateServiceStackReferenceIntention.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/UpdateServiceStackReferenceIntention.java" />
-      <change type="MOVED" beforePath="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\UpdateServiceStackUtils.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/UpdateServiceStackUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ServiceStackIDEA.zip" afterPath="$PROJECT_DIR$/ServiceStackIDEA.zip" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.MD" afterPath="$PROJECT_DIR$/README.MD" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/android/android.iml" afterPath="$PROJECT_DIR$/../AndroidClient/android/android.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/app/app.iml" afterPath="$PROJECT_DIR$/../AndroidClient/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/techstacks/build.gradle" afterPath="$PROJECT_DIR$/../AndroidClient/techstacks/build.gradle" />
@@ -51,11 +44,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5646853">
-              <caret line="19" column="77" selection-start-line="19" selection-start-column="77" selection-end-line="19" selection-end-column="77" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -103,16 +96,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AnActionEvent.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$APPLICATION_HOME_DIR$/lib/openapi.jar!/com/intellij/openapi/actionSystem/AnActionEvent.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="169" column="9" selection-start-line="169" selection-start-column="9" selection-end-line="169" selection-end-column="9" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="AddRef.form" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/servicestack/idea/AddRef.form">
           <provider selected="true" editor-type-id="text-editor">
@@ -123,21 +106,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UpdateServiceStackUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/net/servicestack/idea/UpdateServiceStackUtils.java">
+      <file leaf-file-name="README.MD" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.MD">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="13" column="33" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.7027972">
+              <caret line="33" column="36" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.MD" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.MD">
+      <file leaf-file-name="description.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReferenceIntention/description.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+            <state vertical-scroll-proportion="-3.9230769">
+              <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -178,11 +161,11 @@
         <option value="$PROJECT_DIR$/src/UpdateServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/UpdateServiceStackReferenceIntention.java" />
         <option value="$PROJECT_DIR$/src/UpdateServiceStackUtils.java" />
-        <option value="$PROJECT_DIR$/README.MD" />
         <option value="$PROJECT_DIR$/src/AddRef.java" />
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/UpdateServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.form" />
         <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/README.MD" />
       </list>
     </option>
   </component>
@@ -276,6 +259,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="UpdateServiceStackReferenceIntention" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ServiceStackIDEA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ServiceStackIDEA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="icons" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -514,12 +519,18 @@
       <option name="project" value="LOCAL" />
       <updated>1429338027175</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Updated version with files in package name space to see if it fixes the upload issue.">
+      <created>1429528261006</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1429528261006</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -559,7 +570,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Updated version to try and resolve problem with search." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated version to try and resolve problem with search." />
+    <MESSAGE value="Updated version." />
+    <MESSAGE value="Updated version with files in package name space to see if it fixes the upload issue." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated version with files in package name space to see if it fixes the upload issue." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -857,27 +870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReferenceIntention/description.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6153846">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReferenceIntention/before.java.template">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReferenceIntention/after.java.template">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.3.1/gson-2.3.1.jar!/com/google/gson/GsonBuilder.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -903,14 +895,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="169" column="9" selection-start-line="169" selection-start-column="9" selection-end-line="169" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.MD">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -980,8 +964,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5646853">
-          <caret line="19" column="77" selection-start-line="19" selection-start-column="77" selection-end-line="19" selection-end-column="77" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/intentionDescriptions/UpdateServiceStackReferenceIntention/description.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9230769">
+          <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.MD">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7027972">
+          <caret line="33" column="36" selection-start-line="33" selection-start-column="36" selection-end-line="33" selection-end-column="36" />
           <folding />
         </state>
       </provider>

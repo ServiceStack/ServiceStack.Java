@@ -10,7 +10,6 @@
 
   <change-notes><![CDATA[
       1.0 - Initial release.<br>
-      <em></em>
     ]]>
   </change-notes>
 
@@ -19,27 +18,14 @@
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
     <intentionAction>
       <className>net.servicestack.idea.UpdateServiceStackReferenceIntention</className>
-      <category>ServiceStack</category>
-      <descriptionDirectoryName>ServiceStack</descriptionDirectoryName>
     </intentionAction>
   </extensions>
-
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
-
-  <project-components>
-    <!-- Add your project components here -->
-  </project-components>
 
   <actions>
     <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackReference" text="ServiceStack Reference..." icon="/icons/logo-16.png"

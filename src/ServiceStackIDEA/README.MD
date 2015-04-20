@@ -23,6 +23,18 @@ This reduces the amount of code required when interacting with ServiceStack web 
 
 ![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackidea/android-client-example.gif)
 
+## Installing the ServiceStack Plugin for Android Studio
+
+To install the ServiceStack plugin..
+
+1. [download it here](https://plugins.jetbrains.com/plugin/download?pr=androidstudio&updateId=19465) and save it locally.
+2. In Android Studio Go File -> Settings
+3. Search for "Install Plugin"
+4. Select "Install Plugin From Disk"
+5. Locate the downloaded plugin and 
+
+![](https://github.com/ServiceStack/Assets/raw/34925d1b1b1b1856c451b0373139c939801d96ec/img/servicestackidea/android-plugin-install.gif)
+
 #### Add a ServiceStack Reference
 
 To add a ServiceStack reference, right click on a file or folder inside your project module.
@@ -48,4 +60,5 @@ Once you have added a ServiceStack reference, it can be easily updated by using 
 
 This will read all of the used options in the commented file header to generate a new request. This can be handy if the server has been updated and you need to update your client side POJOs, or if you want to include get/set methods by default.
 
-For documentation on all options for both server and client, see the Java Add ServiceStack Reference wiki page. 
+For documentation on all options for both server and client, see the Java Add ServiceStack Reference wiki page.
+
