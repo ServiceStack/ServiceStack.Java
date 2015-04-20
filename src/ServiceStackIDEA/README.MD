@@ -31,7 +31,8 @@ To install the ServiceStack plugin..
 2. In Android Studio Go File -> Settings
 3. Search for "Install Plugin"
 4. Select "Install Plugin From Disk"
-5. Locate the downloaded plugin and 
+5. Locate the downloaded plugin and Install
+6. Restart Android Studio.
 
 ![](https://github.com/ServiceStack/Assets/raw/34925d1b1b1b1856c451b0373139c939801d96ec/img/servicestackidea/android-plugin-install.gif)
 
