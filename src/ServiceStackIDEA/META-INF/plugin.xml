@@ -1,7 +1,7 @@
 <idea-plugin version="2">
-  <id>net.servicestack.ideaplugin</id>
-  <name>ServiceStack</name>
-  <version>1.0.1</version>
+  <id>net.servicestack.idea</id>
+  <name>ServiceStackIDEA</name>
+  <version>1.0.0</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
@@ -27,7 +27,7 @@
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
     <intentionAction>
-      <className>UpdateServiceStackReferenceIntention</className>
+      <className>net.servicestack.idea.UpdateServiceStackReferenceIntention</className>
       <category>ServiceStack</category>
       <descriptionDirectoryName>ServiceStack</descriptionDirectoryName>
     </intentionAction>
@@ -42,12 +42,12 @@
   </project-components>
 
   <actions>
-    <action id="AddServiceStackReference" class="AddServiceStackReference" text="ServiceStack Reference..." icon="/icons/logo-16.png"
+    <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackReference" text="ServiceStack Reference..." icon="/icons/logo-16.png"
             description="Adds a ServiceStack reference to the selected module">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
     </action>
-    <action id="UpdateServiceStackReference" class="UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/icons/logo-16.png"
+    <action id="UpdateServiceStackReference" class="net.servicestack.idea.UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/icons/logo-16.png"
             description="Updates the selected ServiceStack reference.">
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
     </action>

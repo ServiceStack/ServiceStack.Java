@@ -1,3 +1,5 @@
+package net.servicestack.idea;
+
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetManager;
 import com.intellij.openapi.actionSystem.AnAction;

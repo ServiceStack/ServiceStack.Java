@@ -1,3 +1,5 @@
+package net.servicestack.idea;
+
 import com.google.common.collect.Lists;
 import com.intellij.facet.Facet;
 import com.intellij.facet.FacetManager;

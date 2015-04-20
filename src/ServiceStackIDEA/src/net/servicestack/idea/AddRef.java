@@ -1,3 +1,5 @@
+package net.servicestack.idea;
+
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;

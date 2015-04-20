@@ -1,3 +1,5 @@
+package net.servicestack.idea;
+
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFile;
 
