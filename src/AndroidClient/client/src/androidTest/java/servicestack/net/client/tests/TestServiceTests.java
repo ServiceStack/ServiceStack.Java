@@ -147,7 +147,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
             assertEquals(status.getErrors().get(0).getErrorCode(), status.getErrorCode());
             assertEquals(status.getErrors().get(0).getMessage(), status.getMessage());
 
-            assertEquals("InclusiveBetween", status.getErrors().get(0).errorCode);
+            assertEquals("InclusiveBetween", status.getErrors().get(0).getErrorCode());
             assertEquals("'Age' must be between 1 and 120. You entered 0.", status.getErrors().get(0).getMessage());
             assertEquals("Age", status.getErrors().get(0).getFieldName());
 
