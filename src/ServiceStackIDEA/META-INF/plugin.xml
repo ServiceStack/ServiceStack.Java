@@ -1,7 +1,7 @@
 <idea-plugin version="2">
-  <id>net.servicestack.idea</id>
-  <name>ServiceStackIDEA</name>
-  <version>1.0.0</version>
+  <id>net.servicestack.ideaplugin</id>
+  <name>ServiceStack</name>
+  <version>1.0.2</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
@@ -9,12 +9,13 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      1.0.2 - Fix plugin.xml template bug to enable search from IDE.<br>
       1.0 - Initial release.<br>
     ]]>
   </change-notes>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-  <idea-version since-build="131"/>
+  <idea-version since-build="131.0"/>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
