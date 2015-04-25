@@ -14,13 +14,10 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.xml.XmlFile;
 import com.intellij.ui.JBColor;
-import com.intellij.util.PlatformUtils;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.Profile;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -293,49 +290,11 @@ public class AddRef extends JDialog {
 
         boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(module);
         if(isMavenModule) {
-            PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
-            File pomLibFile = new File(pomLibFiles[0].getVirtualFile().getPath());
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model pomModel;
-            try {
-                pomModel = reader.read(new FileReader(pomLibFile));
-                final List<Dependency> dependencies= pomModel.getDependencies();
-                boolean requiresPomDependency = true;
-                for (Dependency dep : dependencies) {
-                    if(Objects.equals(dep.getGroupId(), dependencyGroupId) && Objects.equals(dep.getArtifactId(), "client")) {
-                        requiresPomDependency = false;
-                    }
-                }
-
-                if(requiresPomDependency) {
-                    Dependency dependency = new Dependency();
-                    dependency.setGroupId(dependencyGroupId);
-                    dependency.setArtifactId("client");
-                    dependency.setVersion(dependencyVersion);
-                    FileWriter writer = new FileWriter(pomLibFile.getAbsolutePath());
-                    pomModel.addDependency(dependency);
-                    new MavenXpp3Writer().write(writer, pomModel);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + "client" + ":" + dependencyVersion;
-            } catch (XmlPullParserException e) {
-                errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + "client" + ":" + dependencyVersion;
-                e.printStackTrace();
-            }
-
-
+            showDto = addMavenDependencyIfRequired();
         } else {
-            //Android studio
-            if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
-                refreshBuildFile();
-            } else {
-                showDto = true;
-            }
+            //Gradle
+            showDto = addGradleDependencyIfRequired(gradleBuildFileHelper);
         }
-
-
 
         String dtoPath;
         try {
@@ -350,6 +309,52 @@ public class AddRef extends JDialog {
         refreshFile(dtoPath, showDto);
         VirtualFileManager.getInstance().syncRefresh();
         dispose();
+    }
+
+    private boolean addGradleDependencyIfRequired(GradleBuildFileHelper gradleBuildFileHelper) {
+        boolean result = true;
+        if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
+            result = false;
+            refreshBuildFile();
+        }
+        return result;
+    }
+
+    private boolean addMavenDependencyIfRequired() {
+        boolean noDependencyAdded = true;
+        PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
+        File pomLibFile = new File(pomLibFiles[0].getVirtualFile().getPath());
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model pomModel;
+        try {
+            pomModel = reader.read(new FileReader(pomLibFile));
+            final List<Dependency> dependencies= pomModel.getDependencies();
+            boolean requiresPomDependency = true;
+            for (Dependency dep : dependencies) {
+                if(Objects.equals(dep.getGroupId(), dependencyGroupId) && Objects.equals(dep.getArtifactId(), "client")) {
+                    requiresPomDependency = false;
+                }
+            }
+
+            if(requiresPomDependency) {
+                Dependency dependency = new Dependency();
+                dependency.setGroupId(dependencyGroupId);
+                dependency.setArtifactId("client");
+                dependency.setVersion(dependencyVersion);
+                FileWriter writer = new FileWriter(pomLibFile.getAbsolutePath());
+                pomModel.addDependency(dependency);
+                new MavenXpp3Writer().write(writer, pomModel);
+                noDependencyAdded = false;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + "client" + ":" + dependencyVersion;
+        } catch (XmlPullParserException e) {
+            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + "client" + ":" + dependencyVersion;
+            e.printStackTrace();
+        }
+        return noDependencyAdded;
     }
 
     private boolean writeDtoFile(List<String> javaCode, String path) {
