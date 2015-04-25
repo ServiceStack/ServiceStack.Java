@@ -10,5 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="com.google.code.gson:gson:2.3.1" level="project" />
     <orderEntry type="library" exported="" name="org.apache.httpcomponents:com.springsource.org.apache.httpcomponents.httpclient:4.2" level="project" />
+    <orderEntry type="library" exported="" name="plexus-utils-3.0.20" level="project" />
+    <orderEntry type="library" exported="" name="maven-model-3.3.1" level="project" />
   </component>
 </module>

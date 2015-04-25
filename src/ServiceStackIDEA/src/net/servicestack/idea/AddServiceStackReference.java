@@ -16,6 +16,7 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -133,11 +134,22 @@ public class AddServiceStackReference extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         Module m = getModule(e);
-        if (m == null || !isAndroidProject(m)) {
+        if(m == null) {
             e.getPresentation().setEnabled(false);
             return;
         }
-        e.getPresentation().setEnabled(true);
+
+        final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(m.getProject());
+
+        boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(m);
+
+        if (isAndroidProject(m) || isMavenModule) {
+            e.getPresentation().setEnabled(true);
+        } else {
+            e.getPresentation().setEnabled(false);
+            return;
+        }
+
         super.update(e);
     }
 

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
-  <id>net.servicestack.ideaplugin</id>
+  <id>net.servicestack.idea.plugin</id>
   <name>ServiceStack</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
@@ -9,6 +9,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
+      1.0.3 - Added support to detect Maven pom.xml and inject net.servicestack:client dependency for IntelliJ + Maven modules.
       1.0.2 - Fix plugin.xml template bug to enable search from IDE.<br>
       1.0 - Initial release.<br>
     ]]>
@@ -20,6 +21,7 @@
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
   <depends>com.intellij.modules.lang</depends>
+  <depends>org.jetbrains.idea.maven</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
