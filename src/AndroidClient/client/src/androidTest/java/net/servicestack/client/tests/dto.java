@@ -15,7 +15,7 @@ Package: servicestack.net.client.tests
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
 */
 
-package servicestack.net.client.tests;
+package net.servicestack.client.tests;
 
 import java.math.*;
 import java.util.*;

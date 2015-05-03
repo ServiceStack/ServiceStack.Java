@@ -1,4 +1,4 @@
-package servicestack.net.client.tests;
+package net.servicestack.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -10,7 +10,7 @@ import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import servicestack.net.client.tests.testdtos.*;
+import net.servicestack.client.tests.testdtos.*;
 
 public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
     public TestServiceTestsAsync() {

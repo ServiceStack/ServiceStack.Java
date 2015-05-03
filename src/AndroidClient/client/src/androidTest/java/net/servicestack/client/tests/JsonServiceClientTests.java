@@ -1,13 +1,13 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package servicestack.net.client.tests;
+package net.servicestack.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import net.servicestack.client.JsonServiceClient;
 
-import servicestack.net.client.tests.dto.*;
+import net.servicestack.client.tests.dto.*;
 
 public class JsonServiceClientTests extends ApplicationTestCase<Application> {
 

@@ -2,7 +2,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.0.1"
+version = "1.0.5"
+group = "net.servicestack"                                        // Maven Group ID for the artifact
+String packageId = "client"
 
 android {
     compileSdkVersion 21
@@ -27,7 +29,6 @@ properties.load(project.file('./local.properties').newDataInputStream())
 
 def siteUrl = 'https://github.com/ServiceStack/ServiceStack.Java'      // Homepage URL of the library
 def gitUrl = 'https://github.com/ServiceStack/ServiceStack.Java.git'   // Git repository URL
-group = "net.servicestack"                                        // Maven Group ID for the artifact
 
 bintray {
     user = properties.getProperty("bintray.user")
@@ -45,12 +46,19 @@ bintray {
     }
 }
 
+task makeJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', packageId + '-' + version + '.jar')
+}
+
 install {
     repositories.mavenInstaller {
         // This generates POM.xml with proper parameters
         pom {
             project {
-                packaging 'aar'
+                packaging 'jar'
 
                 // Add your description here
                 name 'ServiceStack.Client'
@@ -85,11 +93,39 @@ install {
             }
         }
     }
-}
-
+}.dependsOn makeJar
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.google.code.gson:gson:2.3.1'
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task clearJar(type: Delete) {
+    delete ("build/libs/" + packageId + '-' + version + '.jar')
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+    archives file: new File('build/libs/' + packageId + '-' + version + '.jar'), name: packageId, type: 'jar'
+}
+
+task findConventions << {
+    println project.getConvention()
 }

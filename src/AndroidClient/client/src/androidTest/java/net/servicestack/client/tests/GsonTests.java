@@ -1,6 +1,6 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package servicestack.net.client.tests;
+package net.servicestack.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
-import servicestack.net.client.tests.dto.*;
+import net.servicestack.client.tests.dto.*;
 
 public class GsonTests extends ApplicationTestCase<Application> {
 

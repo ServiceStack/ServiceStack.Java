@@ -1,4 +1,4 @@
-package servicestack.net.client.tests;
+package net.servicestack.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -10,7 +10,6 @@ import net.servicestack.client.Utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.techstacks.dto.*;
 

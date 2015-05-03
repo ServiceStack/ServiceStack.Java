@@ -1,6 +1,6 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package servicestack.net.client.tests;
+package net.servicestack.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -15,13 +15,12 @@ import net.servicestack.client.TimeSpan;
 import net.servicestack.client.Utils;
 import net.servicestack.client.WebServiceException;
 
-import servicestack.net.client.tests.testdtos.*;
+import net.servicestack.client.tests.testdtos.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
