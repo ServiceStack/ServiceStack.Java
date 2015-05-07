@@ -54,7 +54,8 @@ public class AddRef extends JDialog {
 
     private static final String dependencyGroupId = "net.servicestack";
     private static final String dependencyPackageId = "android";
-    private static final String dependencyVersion = "1.0.0";
+    private static final String dependencyVersion = "1.0.9";
+    private static final String clientPackageId = "client";
 
     public AddRef(@NotNull Module module) {
         this.module = module;
@@ -331,7 +332,7 @@ public class AddRef extends JDialog {
             final List<Dependency> dependencies= pomModel.getDependencies();
             boolean requiresPomDependency = true;
             for (Dependency dep : dependencies) {
-                if(Objects.equals(dep.getGroupId(), dependencyGroupId) && Objects.equals(dep.getArtifactId(), "client")) {
+                if(Objects.equals(dep.getGroupId(), dependencyGroupId) && Objects.equals(dep.getArtifactId(), clientPackageId)) {
                     requiresPomDependency = false;
                 }
             }
@@ -339,7 +340,7 @@ public class AddRef extends JDialog {
             if(requiresPomDependency) {
                 Dependency dependency = new Dependency();
                 dependency.setGroupId(dependencyGroupId);
-                dependency.setArtifactId("client");
+                dependency.setArtifactId(clientPackageId);
                 dependency.setVersion(dependencyVersion);
                 FileWriter writer = new FileWriter(pomLibFile.getAbsolutePath());
                 pomModel.addDependency(dependency);
@@ -349,9 +350,9 @@ public class AddRef extends JDialog {
 
         } catch (IOException e) {
             e.printStackTrace();
-            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + "client" + ":" + dependencyVersion;
+            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion;
         } catch (XmlPullParserException e) {
-            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + "client" + ":" + dependencyVersion;
+            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion;
             e.printStackTrace();
         }
         return noDependencyAdded;
