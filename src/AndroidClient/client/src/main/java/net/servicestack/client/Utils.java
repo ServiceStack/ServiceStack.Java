@@ -10,7 +10,6 @@ import com.google.gson.JsonParseException;
 
 import org.apache.http.util.ByteArrayBuffer;
 
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,12 +26,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static net.servicestack.client.Func.*;
+import static net.servicestack.client.Func.Function;
+import static net.servicestack.client.Func.last;
 
 // Generic Utils
 public class Utils {

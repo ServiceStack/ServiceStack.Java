@@ -178,16 +178,17 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
     public void test_does_handle_auth_failure() {
         JsonServiceClient techStacksClient = new JsonServiceClient("http://techstacks.io/");
-        String errorCode = "";
+        int errorCode = 0;
         try {
             dto.LockTechStack request = new dto.LockTechStack();
             request.setTechnologyStackId((long)6);
             dto.LockStackResponse res = techStacksClient.post(request);
+            fail("Should throw");
         } catch(WebServiceException ex) {
             //private StatusCode has correct code, response status is null due to empty response body.
-            errorCode = ex.getResponseStatus().errorCode;
+            errorCode = ex.getStatusCode();
         }
-        assertEquals(errorCode,"401");
+        assertEquals(errorCode,401);
     }
 
     /* TEST HELPERS */
