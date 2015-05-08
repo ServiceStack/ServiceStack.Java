@@ -1,4 +1,4 @@
-package net.servicestack.client.tests;
+package net.servicestack.android;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -8,6 +8,7 @@ import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
+import net.servicestack.client.tests.TechStacksServiceTests;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

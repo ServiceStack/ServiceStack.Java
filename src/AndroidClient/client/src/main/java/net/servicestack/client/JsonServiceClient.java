@@ -5,10 +5,9 @@ package net.servicestack.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -23,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -190,15 +190,14 @@ public class JsonServiceClient implements ServiceClient {
             String responseBody = Utils.readToEnd(res.getErrorStream(), UTF8.name());
             webEx = new WebServiceException(responseCode, res.getResponseMessage(), responseBody);
 
-            if (Utils.matchesContentType(res.getHeaderField(HttpHeaders.ContentType), MimeTypes.Json)){
-                JSONObject jResponse = new JSONObject(responseBody);
+            if (res.getHeaderFields().containsKey(HttpHeaders.ContentType) && Utils.matchesContentType(res.getHeaderField(HttpHeaders.ContentType), MimeTypes.Json)){
+                Gson gson = new Gson();
+                JsonElement element = gson.fromJson(responseBody, JsonElement.class);
+                JsonObject jsonObj = element.getAsJsonObject();
 
-                Iterator<?> keys = jResponse.keys();
-                while (keys.hasNext()) {
-                    String key = (String)keys.next();
-                    String varName = Utils.sanitizeVarName(key);
-                    if (varName.equals("responsestatus")) {
-                        webEx.setResponseStatus(Utils.createResponseStatus(jResponse.get(key)));
+                for (Map.Entry<String,JsonElement> jsonElementEntry : jsonObj.entrySet()) {
+                    if(jsonElementEntry.getKey().toLowerCase().equals("responsestatus")) {
+                        webEx.setResponseStatus(Utils.createResponseStatus(jsonObj.get(jsonElementEntry.getKey())));
                         break;
                     }
                 }
@@ -206,7 +205,7 @@ public class JsonServiceClient implements ServiceClient {
 
             return webEx;
 
-        } catch (IOException | JSONException e) {
+        } catch (IOException e) {
             if (webEx != null)
                 return webEx;
             return new RuntimeException(e);

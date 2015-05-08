@@ -5,7 +5,6 @@ package net.servicestack.client.tests;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import net.servicestack.android.AndroidLogProvider;
 import net.servicestack.client.ExceptionFilter;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Log;
@@ -26,10 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import io.techstacks.*;
+import io.techstacks.dto;
+
 public class TestServiceTests extends ApplicationTestCase<Application> {
     public TestServiceTests() {
         super(Application.class);
-        Log.Instance = new AndroidLogProvider("ZZZ");
+        //Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
     JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
@@ -172,6 +174,20 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         assertEquals(request.getAge(), response.getAge());
         assertEquals(request.getRequired(), response.getRequired());
         assertEquals(request.getEmail(), response.getEmail());
+    }
+
+    public void test_does_handle_auth_failure() {
+        JsonServiceClient techStacksClient = new JsonServiceClient("http://techstacks.io/");
+        String errorCode = "";
+        try {
+            dto.LockTechStack request = new dto.LockTechStack();
+            request.setTechnologyStackId((long)6);
+            dto.LockStackResponse res = techStacksClient.post(request);
+        } catch(WebServiceException ex) {
+            //private StatusCode has correct code, response status is null due to empty response body.
+            errorCode = ex.getResponseStatus().errorCode;
+        }
+        assertEquals(errorCode,"401");
     }
 
     /* TEST HELPERS */

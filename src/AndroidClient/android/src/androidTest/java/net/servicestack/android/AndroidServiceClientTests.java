@@ -1,4 +1,4 @@
-package net.servicestack.client.tests;
+package net.servicestack.android;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
