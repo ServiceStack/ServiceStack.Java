@@ -39,6 +39,14 @@ public class WebServiceException extends RuntimeException {
         return ResponseStatus != null ? ResponseStatus.stackTrace : null;
     }
 
+    public int getStatusCode() {
+        return this.StatusCode;
+    }
+
+    public String getStatusDescription() {
+        return this.StatusDescription;
+    }
+
     public ArrayList<ResponseError> getFieldErrors(){
         ArrayList<ResponseError> fieldErrors = ResponseStatus != null
             ? ResponseStatus.getErrors()
