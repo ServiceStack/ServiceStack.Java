@@ -8,7 +8,6 @@ import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
-import net.servicestack.client.tests.TechStacksServiceTests;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         client.getAsync(new Overview(), new AsyncResult<OverviewResponse>(){
             @Override
             public void success(OverviewResponse response) {
-                TechStacksServiceTests.assertOverviewResponse(response);
+                assertOverviewResponse(response);
             }
 
             @Override
@@ -44,7 +43,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
     public void test_Can_GET_TechStacks_AppOverview_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync(new AppOverview(), new AsyncResult<AppOverviewResponse>(){
+        client.getAsync(new AppOverview(), new AsyncResult<AppOverviewResponse>() {
             @Override
             public void success(AppOverviewResponse r) {
                 assertNotNull(r);
@@ -67,7 +66,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         client.getAsync("/overview", OverviewResponse.class, new AsyncResult<OverviewResponse>() {
             @Override
             public void success(OverviewResponse response) {
-                TechStacksServiceTests.assertOverviewResponse(response);
+                assertOverviewResponse(response);
             }
 
             @Override
@@ -85,7 +84,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         client.getAsync("http://techstacks.io/overview", OverviewResponse.class, new AsyncResult<OverviewResponse>() {
             @Override
             public void success(OverviewResponse response) {
-                TechStacksServiceTests.assertOverviewResponse(response);
+                assertOverviewResponse(response);
             }
 
             @Override
@@ -106,7 +105,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         client.getAsync(requestDto, new AsyncResult<GetTechnologyResponse>() {
             @Override
             public void success(GetTechnologyResponse response) {
-                TechStacksServiceTests.assertGetTechnologyResponse(response);
+                assertGetTechnologyResponse(response);
             }
 
             @Override
@@ -124,7 +123,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         client.getAsync("/technology/servicestack", GetTechnologyResponse.class, new AsyncResult<GetTechnologyResponse>() {
             @Override
             public void success(GetTechnologyResponse response) {
-                TechStacksServiceTests.assertGetTechnologyResponse(response);
+                assertGetTechnologyResponse(response);
             }
 
             @Override
@@ -178,5 +177,20 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
             });
 
         assertTrue(signal.await(5, TimeUnit.SECONDS));
+    }
+
+    public static void assertOverviewResponse(OverviewResponse r) {
+        assertNotNull(r);
+        assertTrue(r.getTopUsers().size() > 0);
+        assertTrue(r.getTopTechnologies().size() > 0);
+        assertTrue(r.getLatestTechStacks().size() > 0);
+        assertTrue(r.getLatestTechStacks().get(0).getTechnologyChoices().size() > 0);
+        assertTrue(r.getTopTechnologiesByTier().size() > 0);
+    }
+
+    public static void assertGetTechnologyResponse(GetTechnologyResponse r) {
+        assertNotNull(r);
+        assertEquals("ServiceStack", r.getTechnology().getName());
+        assertTrue(r.getTechnologyStacks().size() > 0);
     }
 }
