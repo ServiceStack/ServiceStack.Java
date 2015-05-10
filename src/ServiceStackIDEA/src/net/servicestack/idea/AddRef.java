@@ -1,12 +1,17 @@
 package net.servicestack.idea;
 
 import com.intellij.ide.util.PackageChooserDialog;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.fileChooser.ex.FileTextFieldImpl;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -51,11 +56,14 @@ public class AddRef extends JDialog {
     private String errorMessage;
     private PsiPackage selectedPackage;
     private String selectedDirectory;
+    private boolean packageIsDirectory = false;
 
     private static final String dependencyGroupId = "net.servicestack";
     private static final String dependencyPackageId = "android";
-    private static final String dependencyVersion = "1.0.9";
+    private static final String dependencyVersion = "1.0.10";
     private static final String clientPackageId = "client";
+
+    public IPomFileHelper pomFileHelper;
 
     public AddRef(@NotNull Module module) {
         this.module = module;
@@ -286,12 +294,12 @@ public class AddRef extends JDialog {
 
 
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
-        boolean showDto = false;
+        boolean showDto;
         final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
 
         boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(module);
         if(isMavenModule) {
-            showDto = addMavenDependencyIfRequired();
+            showDto = tryAddMavenDependency();
         } else {
             //Gradle
             showDto = addGradleDependencyIfRequired(gradleBuildFileHelper);
@@ -312,6 +320,37 @@ public class AddRef extends JDialog {
         dispose();
     }
 
+    private boolean tryAddMavenDependency() {
+        boolean showDto;
+        String message = "Unable to locate module pom.xml file. Can't add required dependency '" +
+                dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion +
+                "'.";
+        Notification notification = new Notification(
+                "ServiceStackIDEA",
+                "Warning Add ServiceStack Reference",
+                message,
+                NotificationType.WARNING);
+        try {
+            PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
+            String pomFilePath = null;
+            for(PsiFile psiPom : pomLibFiles) {
+                if(Objects.equals(psiPom.getParent().getVirtualFile().getPath(), module.getModuleFile().getParent().getPath())) {
+                    pomFilePath = psiPom.getVirtualFile().getPath();
+                }
+            }
+            if(pomFilePath == null) {
+                Notifications.Bus.notify(notification);
+                return false;
+            }
+            File pomLibFile = new File(pomFilePath);
+            showDto = pomFileHelper.addMavenDependencyIfRequired(pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
+        } catch(Exception e) {
+            showDto = false;
+            Notifications.Bus.notify(notification);
+        }
+        return showDto;
+    }
+
     private boolean addGradleDependencyIfRequired(GradleBuildFileHelper gradleBuildFileHelper) {
         boolean result = true;
         if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
@@ -319,43 +358,6 @@ public class AddRef extends JDialog {
             refreshBuildFile();
         }
         return result;
-    }
-
-    private boolean addMavenDependencyIfRequired() {
-        boolean noDependencyAdded = true;
-        PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
-        File pomLibFile = new File(pomLibFiles[0].getVirtualFile().getPath());
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model pomModel;
-        try {
-            pomModel = reader.read(new FileReader(pomLibFile));
-            final List<Dependency> dependencies= pomModel.getDependencies();
-            boolean requiresPomDependency = true;
-            for (Dependency dep : dependencies) {
-                if(Objects.equals(dep.getGroupId(), dependencyGroupId) && Objects.equals(dep.getArtifactId(), clientPackageId)) {
-                    requiresPomDependency = false;
-                }
-            }
-
-            if(requiresPomDependency) {
-                Dependency dependency = new Dependency();
-                dependency.setGroupId(dependencyGroupId);
-                dependency.setArtifactId(clientPackageId);
-                dependency.setVersion(dependencyVersion);
-                FileWriter writer = new FileWriter(pomLibFile.getAbsolutePath());
-                pomModel.addDependency(dependency);
-                new MavenXpp3Writer().write(writer, pomModel);
-                noDependencyAdded = false;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion;
-        } catch (XmlPullParserException e) {
-            errorMessage = "Unable to process pom.xml to add " + dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion;
-            e.printStackTrace();
-        }
-        return noDependencyAdded;
     }
 
     private boolean writeDtoFile(List<String> javaCode, String path) {

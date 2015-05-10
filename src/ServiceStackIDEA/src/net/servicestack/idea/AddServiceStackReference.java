@@ -33,6 +33,7 @@ public class AddServiceStackReference extends AnAction {
         dialog.setSize(dialog.getPreferredSize());
         dialog.setResizable(true);
         dialog.setTitle("Add ServiceStack Reference");
+        dialog.pomFileHelper = new IDEAPomFileHelper();
 
         //Check if a package was selected in the left hand menu, populate package name
         PsiElement element = DataKeys.PSI_ELEMENT.getData(e.getDataContext());
@@ -57,13 +58,17 @@ public class AddServiceStackReference extends AnAction {
                 try {
                     PsiDirectory selectedDir = (PsiDirectory) element;
                     String packageName = "";
-                    String moduleDirectoryName = module.getModuleFile().getParent().getName();
+                    String moduleDirectoryPath = module.getModuleFile().getParent().getPath();
                     List<String> packageArray = new ArrayList<>();
-                    while (selectedDir != null && !(Objects.equals(selectedDir.getName(), moduleDirectoryName))) {
+                    while (selectedDir != null && !(Objects.equals(moduleDirectoryPath, selectedDir.getVirtualFile().getPath()))) {
                         packageArray.add(selectedDir.getName());
                         selectedDir = selectedDir.getParent();
                         PsiPackage mainPackage = testPackage(module, packageName, packageArray);
                         if (mainPackage != null) {
+                            //"java" is a valid package name in an empty project according to openapi so we have to ignore it and no pre-populate package name....
+                            if(Objects.equals(mainPackage.getQualifiedName(), "java")) {
+                                break;
+                            }
                             dialog.setSelectedPackage(mainPackage);
                             break;
                         }
