@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a954d2f0-e4a1-4dc5-be04-5257d763afa5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/IDEAPomFileHelper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/IGradleFileHelper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/IPomFileHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/servicestack/idea/AddServiceStackReference.java" afterPath="$PROJECT_DIR$/src/net/servicestack/idea/AddServiceStackReference.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/AndroidClient.iml" afterPath="$PROJECT_DIR$/../AndroidClient/AndroidClient.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/android/android.iml" afterPath="$PROJECT_DIR$/../AndroidClient/android/android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/app/app.iml" afterPath="$PROJECT_DIR$/../AndroidClient/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/client/client.iml" afterPath="$PROJECT_DIR$/../AndroidClient/client/client.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../AndroidClient/techstacks/techstacks.iml" afterPath="$PROJECT_DIR$/../AndroidClient/techstacks/techstacks.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ServiceStackIDEA.zip" afterPath="$PROJECT_DIR$/ServiceStackIDEA.zip" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ServiceStackIDEA.iws" />
@@ -34,17 +26,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AddRef.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AddRef.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/servicestack/idea/AddRef.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0838852">
+            <state vertical-scroll-proportion="0.0">
               <caret line="259" column="13" selection-start-line="259" selection-start-column="13" selection-end-line="259" selection-end-column="13" />
-              <folding>
-                <element signature="e#7478#7479#0" expanded="true" />
-                <element signature="e#7536#7537#0" expanded="true" />
-                <element signature="e#8461#8462#0" expanded="true" />
-                <element signature="e#8511#8512#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -93,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.21568628">
+              <caret line="11" column="93" selection-start-line="11" selection-start-column="93" selection-end-line="11" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -106,7 +93,7 @@
       <file leaf-file-name="AddServiceStackReference.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/net/servicestack/idea/AddServiceStackReference.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.6551723">
+            <state vertical-scroll-proportion="0.0">
               <caret line="98" column="9" selection-start-line="98" selection-start-column="9" selection-end-line="98" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -119,13 +106,8 @@
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="437" column="16" selection-start-line="437" selection-start-column="16" selection-end-line="437" selection-end-column="16" />
-              <folding>
-                <marker date="1431220762071" expanded="true" signature="60038:60055" placeholder="..." />
-                <marker date="1431220762071" expanded="true" signature="60038:60073" placeholder="..." />
-                <marker date="1431220762071" expanded="true" signature="60038:60086" placeholder="..." />
-                <marker date="1431220762071" expanded="true" signature="60038:60101" placeholder="..." />
-              </folding>
+              <caret line="419" column="16" selection-start-line="419" selection-start-column="16" selection-end-line="419" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -191,7 +173,6 @@
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.form" />
         <option value="$PROJECT_DIR$/README.MD" />
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/GradleBuildFileHelper.java" />
-        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
         <option value="$PROJECT_DIR$/.idea/misc.xml" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/IPomFileHelper.java" />
@@ -199,6 +180,7 @@
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/IDEAPomFileHelper.java" />
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/AddServiceStackReference.java" />
         <option value="$PROJECT_DIR$/src/net/servicestack/idea/AddRef.java" />
+        <option value="$PROJECT_DIR$/META-INF/plugin.xml" />
       </list>
     </option>
   </component>
@@ -244,6 +226,20 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ServiceStackIDEA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ServiceStackIDEA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -370,20 +366,6 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ServiceStackIDEA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ServiceStackIDEA" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -607,7 +589,6 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -615,13 +596,14 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4301676" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4301676" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -695,12 +677,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-          <folding>
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7536#7537#0" expanded="true" />
-            <element signature="e#8461#8462#0" expanded="true" />
-            <element signature="e#8511#8512#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -747,12 +724,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-          <folding>
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7536#7537#0" expanded="true" />
-            <element signature="e#8461#8462#0" expanded="true" />
-            <element signature="e#8511#8512#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -797,12 +769,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-          <folding>
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7536#7537#0" expanded="true" />
-            <element signature="e#8461#8462#0" expanded="true" />
-            <element signature="e#8511#8512#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -968,7 +935,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="6" column="7" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -976,7 +942,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1004,14 +969,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1023,13 +980,8 @@
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="437" column="16" selection-start-line="437" selection-start-column="16" selection-end-line="437" selection-end-column="16" />
-          <folding>
-            <marker date="1431220762071" expanded="true" signature="60038:60055" placeholder="..." />
-            <marker date="1431220762071" expanded="true" signature="60038:60073" placeholder="..." />
-            <marker date="1431220762071" expanded="true" signature="60038:60086" placeholder="..." />
-            <marker date="1431220762071" expanded="true" signature="60038:60101" placeholder="..." />
-          </folding>
+          <caret line="419" column="16" selection-start-line="419" selection-start-column="16" selection-end-line="419" selection-end-column="16" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1063,7 +1015,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/servicestack/idea/AddServiceStackReference.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.6551723">
+        <state vertical-scroll-proportion="0.0">
           <caret line="98" column="9" selection-start-line="98" selection-start-column="9" selection-end-line="98" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1073,14 +1025,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/net/servicestack/idea/AddRef.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0838852">
+        <state vertical-scroll-proportion="0.0">
           <caret line="259" column="13" selection-start-line="259" selection-start-column="13" selection-end-line="259" selection-end-column="13" />
-          <folding>
-            <element signature="e#7478#7479#0" expanded="true" />
-            <element signature="e#7536#7537#0" expanded="true" />
-            <element signature="e#8461#8462#0" expanded="true" />
-            <element signature="e#8511#8512#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/META-INF/plugin.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21568628">
+          <caret line="11" column="93" selection-start-line="11" selection-start-column="93" selection-end-line="11" selection-end-column="93" />
+          <folding />
         </state>
       </provider>
     </entry>
