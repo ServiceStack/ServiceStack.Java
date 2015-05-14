@@ -1,5 +1,7 @@
 package net.servicestack.idea;
 
+import com.intellij.openapi.module.Module;
+
 import java.io.File;
 
 /**
@@ -7,5 +9,5 @@ import java.io.File;
  */
 public interface IPomFileHelper {
     boolean addMavenDependencyIfRequired(File pomFile, String groupId, String packageId, String version) throws Exception;
-    File findNearestModulePomFile(File javaFile);
+    String findNearestModulePomFile(Module module);
 }

@@ -1,46 +1,22 @@
 package net.servicestack.idea;
 
 import com.intellij.ide.util.PackageChooserDialog;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileChooser.ex.FileTextFieldImpl;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.*;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.PsiPackage;
 import com.intellij.ui.JBColor;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class AddRef extends JDialog {
     private JPanel contentPane;
@@ -54,16 +30,7 @@ public class AddRef extends JDialog {
     private Module module;
 
     private String errorMessage;
-    private PsiPackage selectedPackage;
     private String selectedDirectory;
-    private boolean packageIsDirectory = false;
-
-    private static final String dependencyGroupId = "net.servicestack";
-    private static final String dependencyPackageId = "android";
-    private static final String dependencyVersion = "1.0.10";
-    private static final String clientPackageId = "client";
-
-    public IPomFileHelper pomFileHelper;
 
     public AddRef(@NotNull Module module) {
         this.module = module;
@@ -206,7 +173,6 @@ public class AddRef extends JDialog {
     }
 
     public void setSelectedPackage(@NotNull PsiPackage selectedPackage) {
-        this.selectedPackage = selectedPackage;
         setPackageBrowseText(selectedPackage.getQualifiedName());
     }
 
@@ -245,7 +211,7 @@ public class AddRef extends JDialog {
     }
 
     private ImageIcon createImageIcon(String path, String description) {
-        java.net.URL imgURL = getClass().getResource(path);
+        URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL, description);
         } else {
@@ -255,203 +221,21 @@ public class AddRef extends JDialog {
     }
 
     private void onOK() {
-        String url;
-        List<String> javaCodeLines = new ArrayList<>();
-        try {
-            URIBuilder urlBuilder = createUrl(addressUrlTextField.getText());
-            urlBuilder.addParameter("Package", packageBrowse.getText());
-            String name = getDtpNameWithoutExtension().replaceAll("\\.", "_");
-            urlBuilder.addParameter("GlobalNamespace", name);
-            url = urlBuilder.build().toString();
+        StringBuilder errorMessage = new StringBuilder();
+        AddServiceStackRefHandler.handleOk(
+                addressUrlTextField.getText(),
+                packageBrowse.getText(),
+                nameTextField.getText(),
+                selectedDirectory,
+                module,
+                errorMessage);
 
-            URL serviceUrl = new URL(url);
-            URLConnection javaResponseConnection = serviceUrl.openConnection();
-            BufferedReader javaResponseReader = new BufferedReader(
-                    new InputStreamReader(
-                            javaResponseConnection.getInputStream()));
-            String metadataInputLine;
-
-            while ((metadataInputLine = javaResponseReader.readLine()) != null)
-                javaCodeLines.add(metadataInputLine);
-
-            javaResponseReader.close();
-
-            if(!javaCodeLines.get(0).startsWith("/* Options:")) {
-                //Invalid endpoint
-                errorMessage = "The address url is not a valid ServiceStack endpoint.";
-                return;
-            }
-
-        } catch (URISyntaxException | MalformedURLException e) {
-            e.printStackTrace();
-            errorMessage = e.getClass().getName() + " - Invalid ServiceStack endpoint provided - " + addressUrlTextField.getText();
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorMessage = e.getClass().getName() + " - Failed to read response - " + addressUrlTextField.getText();
-            return;
-        }
-
-
-        GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(this.module);
-        boolean showDto;
-        final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
-
-        boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(module);
-        if(isMavenModule) {
-            showDto = tryAddMavenDependency();
+        if (errorMessage.toString().length() > 0) {
+            errorTextPane.setText(errorMessage.toString());
+            errorTextPane.setVisible(true);
         } else {
-            //Gradle
-            showDto = addGradleDependencyIfRequired(gradleBuildFileHelper);
+            dispose();
         }
-
-        String dtoPath;
-        try {
-            dtoPath = getDtoPath();
-        } catch (Exception e) {
-            return;
-        }
-
-        if (!writeDtoFile(javaCodeLines, dtoPath)) {
-            return;
-        }
-        refreshFile(dtoPath, showDto);
-        VirtualFileManager.getInstance().syncRefresh();
-        dispose();
-    }
-
-    private boolean tryAddMavenDependency() {
-        boolean showDto;
-        String message = "Unable to locate module pom.xml file. Can't add required dependency '" +
-                dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion +
-                "'.";
-        Notification notification = new Notification(
-                "ServiceStackIDEA",
-                "Warning Add ServiceStack Reference",
-                message,
-                NotificationType.WARNING);
-        try {
-            PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
-            String pomFilePath = null;
-            for(PsiFile psiPom : pomLibFiles) {
-                if(Objects.equals(psiPom.getParent().getVirtualFile().getPath(), module.getModuleFile().getParent().getPath())) {
-                    pomFilePath = psiPom.getVirtualFile().getPath();
-                }
-            }
-            if(pomFilePath == null) {
-                Notifications.Bus.notify(notification);
-                return false;
-            }
-            File pomLibFile = new File(pomFilePath);
-            showDto = pomFileHelper.addMavenDependencyIfRequired(pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
-        } catch(Exception e) {
-            showDto = false;
-            Notifications.Bus.notify(notification);
-        }
-        return showDto;
-    }
-
-    private boolean addGradleDependencyIfRequired(GradleBuildFileHelper gradleBuildFileHelper) {
-        boolean result = true;
-        if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
-            result = false;
-            refreshBuildFile();
-        }
-        return result;
-    }
-
-    private boolean writeDtoFile(List<String> javaCode, String path) {
-        BufferedWriter writer = null;
-        boolean result = true;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(path), "utf-8"));
-            for (String item : javaCode) {
-                writer.write(item);
-                writer.newLine();
-            }
-        } catch (IOException ex) {
-            result = false;
-            errorMessage = "Error writing DTOs to file - " + ex.getMessage();
-        } finally {
-            try {
-                assert writer != null;
-                writer.close();
-            } catch (Exception ignored) {
-            }
-        }
-
-        return result;
-    }
-
-    private String getDtoPath() throws FileNotFoundException {
-        VirtualFile moduleFile = module.getModuleFile();
-        if(moduleFile == null) {
-            throw new FileNotFoundException("Module file not found. Unable to add DTO to project.");
-        }
-        String fullDtoPath;
-
-        PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(packageBrowse.getText());
-        if(mainPackage != null && mainPackage.isValid() && mainPackage.getDirectories().length > 0) {
-            File foo = new File(selectedDirectory);
-            VirtualFile selectedFolder = LocalFileSystem.getInstance().findFileByIoFile(foo);
-            if(selectedFolder == null) {
-                errorMessage = "Unable to determine path for DTO file.";
-                throw new FileNotFoundException();
-            }
-            PsiDirectory rootPackageDir = PsiManager.getInstance(module.getProject()).findDirectory(selectedFolder);
-            if(rootPackageDir == null) {
-                errorMessage = "Unable to determine path for DTO file.";
-                throw new FileNotFoundException();
-            }
-            fullDtoPath = rootPackageDir.getVirtualFile().getPath() + "/" + getDtoFileName();
-        } else {
-            String moduleSourcePath;
-            if(moduleFile.getParent() == null) {
-                moduleSourcePath = moduleFile.getPath() + "/main/java";
-            } else {
-                moduleSourcePath = moduleFile.getParent().getPath() + "/src/main/java";
-            }
-            fullDtoPath = moduleSourcePath + "/" + getDtoFileName();
-        }
-        return fullDtoPath;
-    }
-
-    private void refreshBuildFile() {
-        VirtualFileManager.getInstance().syncRefresh();
-        if(module.getModuleFile() == null) { return; }
-
-        VirtualFile fileByUrl = VirtualFileManager.getInstance().findFileByUrl(module.getModuleFile().getParent().getUrl() + "/build.gradle");
-
-        if(fileByUrl == null) { return; }
-
-        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl, false);
-        Editor currentEditor = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor();
-        if(currentEditor == null) { return; }
-        Document document = currentEditor.getDocument();
-
-        FileDocumentManager.getInstance().reloadFromDisk(document);
-        VirtualFileManager.getInstance().syncRefresh();
-    }
-
-    private void refreshFile(String filePath, boolean openFile) {
-        VirtualFileManager.getInstance().syncRefresh();
-        File file = new File(filePath);
-        VirtualFile fileByUrl = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
-
-        if (fileByUrl == null) {
-            return;
-        }
-
-        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl, false);
-        Editor currentEditor = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor();
-        if(currentEditor == null) { return; }
-        Document document = currentEditor.getDocument();
-
-        if (!openFile) FileEditorManager.getInstance(module.getProject()).closeFile(fileByUrl);
-
-        FileDocumentManager.getInstance().reloadFromDisk(document);
-        VirtualFileManager.getInstance().syncRefresh();
     }
 
     private class BrowsePackageListener implements ActionListener {
@@ -473,60 +257,11 @@ public class AddRef extends JDialog {
             if (dialog.getExitCode() == PackageChooserDialog.CANCEL_EXIT_CODE) {
                 return;
             }
-            selectedPackage = dialog.getSelectedPackage();
             _textField.setText(dialog.getSelectedPackage().getQualifiedName());
         }
     }
 
-    private URIBuilder createUrl(String text) throws MalformedURLException, URISyntaxException {
-        String serverUrl = text.endsWith("/") ? text : (text + "/");
-        serverUrl = (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) ? serverUrl : ("http://" + serverUrl);
-        URL url = new URL(serverUrl);
-        String path = url.getPath().contains("?") ? url.getPath().split("\\?", 2)[0] : url.getPath();
-        if (!path.endsWith("types/java/")) {
-            serverUrl += "types/java/";
-        }
-        URIBuilder builder;
-
-        try {
-            builder = new URIBuilder(serverUrl);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-
-        return builder;
-    }
-
-    private String getDtoFileName() {
-        String name = nameTextField.getText();
-        int p = name.lastIndexOf(".");
-        String e = name.substring(p + 1);
-        if (p == -1 || !Objects.equals(e, "java")) {
-            /* file has no extension */
-            return name + ".java";
-        } else {
-            /* file has extension e */
-            return name;
-        }
-    }
-
-    private String getDtpNameWithoutExtension() {
-        String name = nameTextField.getText();
-        int p = name.lastIndexOf(".");
-        String e = name.substring(p + 1);
-        if (p == -1 || !Objects.equals(e, "java")) {
-            /* file has no extension */
-            return name;
-        } else {
-            /* file has extension e */
-            return name.substring(0, p);
-        }
-    }
-
     private void onCancel() {
-// add your code here if necessary
         dispose();
     }
 }

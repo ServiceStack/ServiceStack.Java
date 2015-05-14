@@ -55,7 +55,14 @@ public class IDEAPomFileHelper implements IPomFileHelper {
     }
 
     @Override
-    public File findNearestModulePomFile(File javaFile) {
-        return null;
+    public String findNearestModulePomFile(Module module) {
+        PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
+        String pomFilePath = null;
+        for(PsiFile psiPom : pomLibFiles) {
+            if(Objects.equals(psiPom.getParent().getVirtualFile().getPath(), module.getModuleFile().getParent().getPath())) {
+                pomFilePath = psiPom.getVirtualFile().getPath();
+            }
+        }
+        return pomFilePath;
     }
 }

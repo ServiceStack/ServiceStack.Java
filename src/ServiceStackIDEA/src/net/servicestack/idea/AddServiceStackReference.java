@@ -33,7 +33,6 @@ public class AddServiceStackReference extends AnAction {
         dialog.setSize(dialog.getPreferredSize());
         dialog.setResizable(true);
         dialog.setTitle("Add ServiceStack Reference");
-        dialog.pomFileHelper = new IDEAPomFileHelper();
 
         //Check if a package was selected in the left hand menu, populate package name
         PsiElement element = DataKeys.PSI_ELEMENT.getData(e.getDataContext());
