@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+      		adaptable="true"
+            objectClass="org.eclipse.core.resources.IFile"
+            id="net.servicestack.eclipse.contribution1">
+         <action
+               label="Add ServiceStack Reference..."
+               class="net.servicestack.eclipse.popup.actions.AddReferenceAction"
+               menubarPath="additions"
+               enablesFor="1"
+               icon="icons/logo-16.png"
+               id="net.servicestack.eclipse.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>
