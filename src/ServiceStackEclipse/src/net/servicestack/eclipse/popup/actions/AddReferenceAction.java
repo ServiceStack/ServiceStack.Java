@@ -29,12 +29,13 @@ public class AddReferenceAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		AddRef dialog = new AddRef();
+		AddRefDialog dialog = new AddRefDialog();
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setSize(dialog.getPreferredSize());
         dialog.setResizable(true);
         dialog.setTitle("Add ServiceStack Reference");
+        dialog.setVisible(true);
 	}
 
 	/**
