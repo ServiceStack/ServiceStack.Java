@@ -7,3 +7,4 @@ Bundle-Vendor: ServiceStack
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.eclipse.core.runtime

@@ -6,7 +6,7 @@
          point="org.eclipse.ui.popupMenus">
       <objectContribution
       		adaptable="true"
-            objectClass="org.eclipse.core.resources.IFile"
+            objectClass="org.eclipse.core.resources.IFolder"
             id="net.servicestack.eclipse.contribution1">
          <action
                label="Add ServiceStack Reference..."
