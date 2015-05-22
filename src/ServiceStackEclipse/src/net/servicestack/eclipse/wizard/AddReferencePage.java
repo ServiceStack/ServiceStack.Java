@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Text;
 public class AddReferencePage extends WizardPage {
 
 	Button _enabled;
-	private boolean _enabledValue = true;
+	private boolean _enabledValue = true; 
 	private String _applicationFolder;
 	
     private Text addressUrlTextField;
@@ -78,6 +78,14 @@ public class AddReferencePage extends WizardPage {
 
 		setControl(composite);
 		dialogChanged();
+	}
+	
+	public String getAddressUrl() {
+		return addressUrlTextField.getText();
+	}
+	
+	public String getFileName() {
+		return nameTextField.getText();
 	}
 	
 	private void dialogChanged() {
