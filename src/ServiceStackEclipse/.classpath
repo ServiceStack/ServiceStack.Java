@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="libs/maven-core-3.0.5.jar"/>
 	<classpathentry kind="lib" path="libs/maven-model-3.0.5.jar"/>
 	<classpathentry kind="lib" path="libs/plexus-utils-2.0.6.jar"/>
+	<classpathentry kind="lib" path="libs/httpclient-4.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

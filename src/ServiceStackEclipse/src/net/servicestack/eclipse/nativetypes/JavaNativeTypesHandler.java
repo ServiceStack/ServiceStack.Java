@@ -1,6 +1,6 @@
 package net.servicestack.eclipse.nativetypes;
 
-//import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.client.utils.URIBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,33 +38,32 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
-    	return null; 
         
-//        URIBuilder builder;
-//        try {
-//            builder = new URIBuilder(baseUrl);
-//        } catch (URISyntaxException e) {
-//            //Log error to IDEA warning bubble/window.
-//            return null;
-//        }
-//
-//        String existingPath = builder.getPath();
-//        if (existingPath == null || existingPath.equals("/")) {
-//            builder.setPath("/types/java");
-//        } else {
-//            builder.setPath(existingPath + "/types/java");
-//        }
-//        if(options != null) {
-//            for (Map.Entry<String, String> item : options.entrySet()) {
-//                builder.addParameter(item.getKey(), item.getValue().trim());
-//            }
-//        }
-//        try {
-//            return builder.build().toString();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
+        URIBuilder builder;
+        try {
+            builder = new URIBuilder(baseUrl);
+        } catch (URISyntaxException e) {
+            //Log error to IDEA warning bubble/window.
+            return null;
+        }
+
+        String existingPath = builder.getPath();
+        if (existingPath == null || existingPath.equals("/")) {
+            builder.setPath("/types/java");
+        } else {
+            builder.setPath(existingPath + "/types/java");
+        }
+        if(options != null) {
+            for (Map.Entry<String, String> item : options.entrySet()) {
+                builder.addParameter(item.getKey(), item.getValue().trim());
+            }
+        }
+        try {
+            return builder.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

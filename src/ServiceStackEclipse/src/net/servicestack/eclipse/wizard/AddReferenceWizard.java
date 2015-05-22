@@ -26,6 +26,8 @@ public class AddReferenceWizard extends Wizard {
 	private boolean _hasPomFile;
 	private File _pomFile;
 	
+	private String errorMessage;
+	
     private static final String dependencyGroupId = "net.servicestack";
     private static final String dependencyPackageId = "android";
     private static final String dependencyVersion = "1.0.10";
@@ -65,17 +67,17 @@ public class AddReferenceWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
+		final String addressUrl = _page.getAddressUrl();
+		final String fileName = _page.getFileName();
 		try {
-			getContainer().run(true, true, new IRunnableWithProgress() {
-			      public void run(IProgressMonitor monitor) throws InterruptedException {
-			         monitor.beginTask("Adding ServiceStack Reference: ", 5);
-			         monitor.worked(1);
-			         monitor.subTask("Validating endpoint...");
+			getShell().getDisplay().asyncExec(new Runnable() {
+			      public void run(){
+			         
 			         INativeTypesHandler nativeTypesHandler = new JavaNativeTypesHandler();
 			         try {
-						boolean validUrl = nativeTypesHandler.validateServiceStackEndpoint(_page.getAddressUrl());
+						boolean validUrl = nativeTypesHandler.validateServiceStackEndpoint(addressUrl);
 		         		if(!validUrl) {
-			         		_page.setErrorMessage("Invalid ServiceStack endpoint.");
+		         			_page.setErrorMessage(errorMessage = "Invalid ServiceStack endpoint.");
 				         }
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -83,11 +85,10 @@ public class AddReferenceWizard extends Wizard {
 						e1.printStackTrace();
 						return;
 					}
-			         monitor.worked(1);
-			         monitor.subTask("Fetching DTOs...");
+			       
 			         String code = null;
 			         try {
-			        	 code = nativeTypesHandler.getUpdatedCode(_page.getAddressUrl(), null);
+			        	 code = nativeTypesHandler.getUpdatedCode(addressUrl, null);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						_page.setErrorMessage("Error occurred trying to fetch ServiceStack DTOs - " + e1.getMessage());
@@ -95,8 +96,7 @@ public class AddReferenceWizard extends Wizard {
 						return;
 					}
 			         if(_hasPomFile) {
-			        	 monitor.worked(1);
-				         monitor.subTask("Adding Maven dependency...");
+			        	
 			        	 EclipseMavenHelper mavenHelper = new EclipseMavenHelper();
 							try {
 //								if(mavenHelper.addMavenDependencyIfRequired(_pomFile, dependencyGroupId, clientPackageId, dependencyVersion)) {
@@ -107,20 +107,13 @@ public class AddReferenceWizard extends Wizard {
 								e.printStackTrace();
 							} 
 			         }
-			         
-			         monitor.done();
+			        
 			      }
 			   });
 			
 			
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			
+			_page.setErrorMessage("Failed " + e.getMessage());
 		}
 		
 		return false;

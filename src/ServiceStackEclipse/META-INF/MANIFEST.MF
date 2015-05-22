@@ -10,3 +10,8 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.runtime,
  org.eclipse.jdt.core
+Bundle-ClassPath: .,
+ libs/httpclient-4.3.3.jar,
+ libs/maven-core-3.0.5.jar,
+ libs/maven-model-3.0.5.jar,
+ libs/plexus-utils-2.0.6.jar
