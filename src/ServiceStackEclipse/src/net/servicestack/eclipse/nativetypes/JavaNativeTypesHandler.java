@@ -39,11 +39,20 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
             baseUrl += "/";
         }
         
+        baseUrl = (baseUrl.startsWith("http://") || baseUrl.startsWith("https://")) ? baseUrl : ("http://" + baseUrl);
+        URL url;
+		try {
+			url = new URL(baseUrl);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return null;
+		}
+        
         URIBuilder builder;
         try {
             builder = new URIBuilder(baseUrl);
         } catch (URISyntaxException e) {
-            //Log error to IDEA warning bubble/window.
             return null;
         }
 

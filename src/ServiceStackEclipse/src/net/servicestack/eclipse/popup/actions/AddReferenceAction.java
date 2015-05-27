@@ -14,6 +14,7 @@ import org.eclipse.ui.PlatformUI;
 import net.servicestack.eclipse.wizard.AddReferenceWizard;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
 
 public class AddReferenceAction implements IObjectActionDelegate {
@@ -45,12 +46,10 @@ public class AddReferenceAction implements IObjectActionDelegate {
 		if (_selection != null) {
 			IStructuredSelection packageSelection = (IStructuredSelection) selectionService
 					.getSelection("org.eclipse.jdt.ui.PackageExplorer");
-			Object firstElement = packageSelection.getFirstElement();
-			if(firstElement instanceof IPackageFragment) {
-				_packageFragment = (IPackageFragment)firstElement;
-			}
-			AddReferenceWizard generationWizard = new AddReferenceWizard(_selection, _packageFragment);
+			
+			AddReferenceWizard generationWizard = new AddReferenceWizard(_selection, packageSelection);
 			WizardDialog dialog = new WizardDialog(shell, generationWizard);
+			
 			if (dialog.open() == WizardDialog.OK){
 //				MessageDialog.openInformation(shell, "CTE tree generation", "CTE trees are being generated, checking the process view for details!");
 			}

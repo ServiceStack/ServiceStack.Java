@@ -1,6 +1,15 @@
 package net.servicestack.eclipse.wizard;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+
+import net.servicestack.eclipse.maven.EclipseMavenHelper;
+import net.servicestack.eclipse.nativetypes.INativeTypesHandler;
+import net.servicestack.eclipse.nativetypes.JavaNativeTypesHandler;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -12,6 +21,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbench;
@@ -19,16 +30,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
-
-import net.servicestack.eclipse.maven.EclipseMavenHelper;
-import net.servicestack.eclipse.nativetypes.INativeTypesHandler;
-import net.servicestack.eclipse.nativetypes.JavaNativeTypesHandler;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class AddReferenceWizard extends Wizard {
 	private AddReferencePage _page;
@@ -42,17 +43,19 @@ public class AddReferenceWizard extends Wizard {
 	private String errorMessage;
 
 	private static final String dependencyGroupId = "net.servicestack";
-	private static final String dependencyPackageId = "android";
 	private static final String dependencyVersion = "1.0.10";
 	private static final String clientPackageId = "client";
 
 	public AddReferenceWizard(IFolder selection,
-			IPackageFragment packageFragment) {
+			IStructuredSelection packageSelection) {
 		_selection = selection;
-		_packageFragment = packageFragment;
-		_projectPath = packageFragment.getJavaProject().getPath();
-		_packagePath = packageFragment.getPath();
-
+		Object firstElement = packageSelection.getFirstElement();
+		if(firstElement instanceof IPackageFragment) {
+			_packageFragment = (IPackageFragment)firstElement;
+		}
+		_projectPath = _packageFragment.getJavaProject().getPath();
+		_packagePath = _packageFragment.getPath();
+		
 		File lastPath = new File(_packagePath.toString());
 		File projectPath = new File(_projectPath.toString());
 		if (!lastPath.isDirectory() || !projectPath.isDirectory()) {
@@ -91,11 +94,12 @@ public class AddReferenceWizard extends Wizard {
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
 
+					String code = null;
 					INativeTypesHandler nativeTypesHandler = new JavaNativeTypesHandler();
 					try {
-						String generatedCode = nativeTypesHandler
+						code = nativeTypesHandler
 								.getUpdatedCode(addressUrl, null);
-						if (generatedCode == null) {
+						if (code == null) {
 							_page.setErrorMessage(errorMessage = "Invalid ServiceStack endpoint.");
 						}
 					} catch (IOException e1) {
@@ -106,25 +110,22 @@ public class AddReferenceWizard extends Wizard {
 						return;
 					}
 
-					String code = null;
+					
 					try {
-						code = nativeTypesHandler.getUpdatedCode(addressUrl,
-								null);
-						IProject project = _packageFragment.getJavaProject()
-								.getProject();
-						IFile dtoFile = project.getFile(new Path(
-								_packageFragment.getPath().makeAbsolute().toString() + "/"
-										+ fileName));
-						String contents = "Whatever";
+						String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getFullPath().toString();
+						String constructedPath = "";
+						//Skip first segment of project path as we want path relative to project.
+						for(int i = 1; i < _packageFragment.getPath().segmentCount(); i++) {
+							constructedPath += "/" + _packageFragment.getPath().segment(i);
+						}
+						String currentPackagePath = constructedPath;
+						Path filePath = new Path(currentPackagePath + "/" + fileName);
+						IProject project = _packageFragment.getResource().getProject();
+						IFile dtoFile = project.getFile(filePath);
+						String contents = code;
 						InputStream source = new ByteArrayInputStream(contents
 								.getBytes());
 						dtoFile.create(source, false, null);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						_page.setErrorMessage("Error occurred trying to fetch ServiceStack DTOs - "
-								+ e1.getMessage());
-						e1.printStackTrace();
-						return;
 					} catch (CoreException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -158,7 +159,11 @@ public class AddReferenceWizard extends Wizard {
 					+ e2.getMessage());
 		}
 
-		return false;
+		return true;
+	}
+	
+	public boolean canFinish() {
+		return _page.canFinish;
 	}
 
 	protected void openEditor(IFile file, String editorID)
