@@ -7,7 +7,7 @@
       <objectContribution
       		adaptable="true"
             objectClass="org.eclipse.core.resources.IFolder"
-            id="net.servicestack.eclipse.contribution1">
+            id="net.servicestack.eclipse.addReference">
          <action
                label="Add ServiceStack Reference..."
                class="net.servicestack.eclipse.popup.actions.AddReferenceAction"
@@ -17,6 +17,53 @@
                id="net.servicestack.eclipse.newAction">
          </action>
       </objectContribution>
+      <objectContribution
+      		adaptable="true"
+            objectClass="org.eclipse.core.resources.IFile"
+            id="net.servicestack.eclipse.updateReference">
+         <action
+               label="Update ServiceStack Reference"
+               class="net.servicestack.eclipse.popup.actions.UpdateReference"
+               menubarPath="additions"
+               enablesFor="1"
+               icon="icons/logo-16.png"
+               id="net.servicestack.eclipse.updateAction">
+         </action>
+      </objectContribution>
    </extension>
+   <!--<extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="net.servicestack.eclipse.commands.sampleCommand"
+            name="Add ServiceStack Reference...">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="net.servicestack.eclipse.handlers.SampleHandler"
+            commandId="net.servicestack.eclipse.commands.sampleCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="net.servicestack.eclipse.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         	<command
+                  commandId="net.servicestack.eclipse.commands.sampleCommand"
+                  id="net.servicestack.eclipse.menus.sampleCommand"
+                  mnemonic="S">
+            </command>
+      </menuContribution>
+   </extension>-->
 
 </plugin>
