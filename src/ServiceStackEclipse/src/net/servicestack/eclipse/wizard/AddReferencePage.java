@@ -34,6 +34,7 @@ public class AddReferencePage extends WizardPage {
 
 	private String errorMessage;
 	private String selectedDirectory;
+	private String _tempPackageName;
 
 	protected AddReferencePage() {
 		super("Add ServiceStack Reference");
@@ -48,10 +49,6 @@ public class AddReferencePage extends WizardPage {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public boolean canFlipToNextPage() {
-		return canFinish;
-	}
-
 	@Override
 	public void createControl(Composite parent) {
 		// TODO Auto-generated method stub
@@ -92,6 +89,7 @@ public class AddReferencePage extends WizardPage {
 		packageLabel.setText("Package");
 		packageTextField = new Text(composite, SWT.BORDER | SWT.SINGLE);
 		packageTextField.setLayoutData(gd);
+		packageTextField.setText(_tempPackageName == null ? "" : _tempPackageName);
 		
 		Label nameLabel = new Label(composite, SWT.NONE);
 		nameLabel.setText("Name");
@@ -129,9 +127,25 @@ public class AddReferencePage extends WizardPage {
 	public String getFileName() {
 		return nameTextField.getText();
 	}
+	
+	public void setPackageName(String packageName) { 
+		_tempPackageName = packageName;
+		if(packageTextField != null) {
+			packageTextField.setText(_tempPackageName);
+		}
+	}
+	
+	public String getPackageName() {
+		return packageTextField.getText();
+	}
 
 	private void dialogChanged() {
 		updateStatus(null);
+	}
+	
+	@Override
+	public boolean canFlipToNextPage() {
+		return canFinish;
 	}
 
 	private void updateStatus(String message) {

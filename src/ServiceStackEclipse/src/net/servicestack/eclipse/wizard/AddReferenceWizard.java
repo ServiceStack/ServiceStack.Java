@@ -23,13 +23,19 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -37,6 +43,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.progress.UIJob;
 
 public class AddReferenceWizard extends Wizard {
 	private AddReferencePage _page;
@@ -60,23 +67,26 @@ public class AddReferenceWizard extends Wizard {
 		IResource selectedResource = extractSelection(packageSelection);
 		currentProject = selectedResource.getProject();
 		_selection = selection;
-		if(packageSelection != null) {
+		if (packageSelection != null) {
 			Object firstElement = packageSelection.getFirstElement();
 			if (firstElement instanceof IPackageFragment) {
 				_packageFragment = (IPackageFragment) firstElement;
-				packageName = _packageFragment.toString().substring(0,_packageFragment.toString().indexOf("[")).trim();
+				packageName = _packageFragment.toString()
+						.substring(0, _packageFragment.toString().indexOf("["))
+						.trim();
+				
 			}
 		}
-		
-		
-		if(_packageFragment == null) {
+
+		if (_packageFragment == null) {
 			_projectPath = currentProject.getFullPath();
-			discoverPom(selection.getProjectRelativePath().toString(),_projectPath.toString());
+			discoverPom(selection.getProjectRelativePath().toString(),
+					_projectPath.toString());
 		} else {
 			_projectPath = _packageFragment.getJavaProject().getPath();
 			_packagePath = _packageFragment.getPath();
 			packageSelected = true;
-			discoverPom(_packagePath.toString(),_projectPath.toString());
+			discoverPom(_packagePath.toString(), _projectPath.toString());
 		}
 	}
 
@@ -90,47 +100,51 @@ public class AddReferenceWizard extends Wizard {
 			if (hasChildPomFile(lastPath.toString())) {
 				// POM found
 				_hasPomFile = true;
-				String pomPath = stripFirstDirectoryFromPath(new Path(lastPath.toString() + File.separator + "pom.xml")).toString();
+				String pomPath = stripFirstDirectoryFromPath(
+						new Path(lastPath.toString() + File.separator
+								+ "pom.xml")).toString();
 				_pomFile = new File(pomPath);
 				break;
 			}
 			lastPath = lastPath.getParentFile();
 		}
 	}
-	
+
 	IResource extractSelection(ISelection sel) {
-	      if (!(sel instanceof IStructuredSelection))
-	         return null;
-	      IStructuredSelection ss = (IStructuredSelection) sel;
-	      Object element = ss.getFirstElement();
-	      if (element instanceof IResource)
-	         return (IResource) element;
-	      if (!(element instanceof IAdaptable))
-	         return null;
-	      IAdaptable adaptable = (IAdaptable)element;
-	      Object adapter = adaptable.getAdapter(IResource.class);
-	      return (IResource) adapter;
-	   }
+		if (!(sel instanceof IStructuredSelection))
+			return null;
+		IStructuredSelection ss = (IStructuredSelection) sel;
+		Object element = ss.getFirstElement();
+		if (element instanceof IResource)
+			return (IResource) element;
+		if (!(element instanceof IAdaptable))
+			return null;
+		IAdaptable adaptable = (IAdaptable) element;
+		Object adapter = adaptable.getAdapter(IResource.class);
+		return (IResource) adapter;
+	}
 
 	private boolean hasChildPomFile(String filePath) {
 		IProject project = currentProject;
-		IPath pomPath = stripFirstDirectoryFromPath(new Path(filePath + File.separator + "pom.xml"));
+		IPath pomPath = stripFirstDirectoryFromPath(new Path(filePath
+				+ File.separator + "pom.xml"));
 		IFile file = project.getFile(pomPath);
 		return file.exists();
 	}
 
 	@Override
 	public boolean performFinish() {
+		_page.canFinish = false;
+		success = false;
 		final String addressUrl = _page.getAddressUrl();
 		final String fileName = _page.getFileName();
-		success = false;
+		packageName = _page.getPackageName();
 		try {
-			getContainer().run(false, false, new IRunnableWithProgress() {
+			getContainer().run(true, false, new IRunnableWithProgress() {
 
 				@Override
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
-
 					monitor.beginTask("Fetching ServiceStack Reference", 10);
 					monitor.worked(2);
 					String code = null;
@@ -138,23 +152,48 @@ public class AddReferenceWizard extends Wizard {
 
 						code = fetchDto(addressUrl);
 						if (code == null) {
-							_page.setErrorMessage("Invalid ServiceStack endpoint.");
+							UIJob uiJob = new UIJob("set error") {
+								@Override
+								public IStatus runInUIThread(
+										IProgressMonitor monitor) {
+									_page.setErrorMessage("Invalid ServiceStack endpoint.");
+									return Status.OK_STATUS;
+								}
+							};
+							uiJob.schedule();
 							return;
 						}
-					} catch (IOException e1) {
-						_page.setErrorMessage("Error occurred trying to validate the ServiceStack endpoint - "
-								+ e1.getMessage());
-						e1.printStackTrace();
+					} catch (final IOException e1) {
+						UIJob uiJob = new UIJob("set error") {
+							@Override
+							public IStatus runInUIThread(
+									IProgressMonitor monitor) {
+								_page.setErrorMessage(
+										"Error occurred trying to validate the ServiceStack endpoint. Check the address provided. - "
+										+ e1.getMessage());
+								e1.printStackTrace();
+								return Status.OK_STATUS;
+							}
+						};
+						uiJob.schedule();
 						return;
 					}
 
 					monitor.worked(2);
 					try {
 						addDtoFileWithCode(fileName, code);
-					} catch (CoreException e) {
+					} catch (final CoreException e) {
 						e.printStackTrace();
-						_page.setErrorMessage("Error occurred when trying to create DTO file - "
-								+ e.getMessage());
+						UIJob uiJob = new UIJob("set error") {
+							@Override
+							public IStatus runInUIThread(
+									IProgressMonitor monitor) {
+								_page.setErrorMessage("Error occurred when trying to create DTO file - "
+										+ e.getMessage());
+								return Status.OK_STATUS;
+							}
+						};
+						uiJob.schedule();
 						monitor.done();
 						return;
 					}
@@ -180,21 +219,20 @@ public class AddReferenceWizard extends Wizard {
 			_page.setErrorMessage("Failed get ServiceStack reference - "
 					+ e2.getMessage());
 		}
-
+		_page.canFinish = true;
+		getContainer().updateButtons();
 		return success;
 	}
-	
+
 	private void updatePomFile() throws Exception {
 		EclipseMavenHelper mavenHelper = new EclipseMavenHelper();
 		IProject project = currentProject;
 		IPath pomPath = new Path(_pomFile.getPath());
 		IFile file = project.getFile(pomPath);
-		if (mavenHelper.addMavenDependencyIfRequired(file,
-				dependencyGroupId, clientPackageId,
-				dependencyVersion)) {
-			// TODO Show pom file/prompt to import changes
-			// of pom file/perform maven task to download
-			// dependencies
+		if (mavenHelper.addMavenDependencyIfRequired(file, dependencyGroupId,
+				clientPackageId, dependencyVersion)) {
+			file.refreshLocal(IResource.DEPTH_ZERO, null);
+			openEditor(file, null);
 		}
 	}
 
@@ -202,46 +240,18 @@ public class AddReferenceWizard extends Wizard {
 		String code = null;
 		INativeTypesHandler nativeTypesHandler = new JavaNativeTypesHandler();
 		Map<String, String> options = null;
-		if(packageSelected) {
-			options = new HashMap<String,String>();
+		if (packageSelected) {
+			options = new HashMap<String, String>();
 			options.put("Package", packageName);
 		}
 		code = nativeTypesHandler.getUpdatedCode(addressUrl, options);
 		return code;
 	}
-	
-	/**
-     * The method returns the current Path information as List<String>.
-     * <ol>
-     * <li>0 - Project name</li>
-     * <li>1 - SRC Folder name</li>
-     * <li>2 - Package name</li>
-     * </ol>
-     *
-     * @return List<Object>
-     */
-    public static List<Object> getSelectedObjectPath() {
-        // the current selection in the entire page
-        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        final IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection("org.eclipse.jdt.ui.PackageExplorer");
-        final Object o = selection.getFirstElement();
-        final List<Object> a = new ArrayList<Object>(4);
-        IJavaElement obj = (IJavaElement) o;
-        if (o == null) {
-            return null;
-        }
-        while (obj != null) {
-            a.add(0, obj);
-            obj = obj.getParent();
-        }
-        // remove JavaModel
-        a.remove(0);
-        return a;
-    }
 
 	private void addDtoFileWithCode(final String fileName, String code)
 			throws CoreException {
-		String constructedPath = stripFirstDirectoryFromPath(_selection.getFullPath()).toString();
+		String constructedPath = stripFirstDirectoryFromPath(
+				_selection.getFullPath()).toString();
 		String currentPackagePath = constructedPath;
 		Path filePath = new Path(currentPackagePath + File.separator + fileName);
 		IProject project = currentProject;
@@ -250,7 +260,7 @@ public class AddReferenceWizard extends Wizard {
 		InputStream source = new ByteArrayInputStream(contents.getBytes());
 		dtoFile.create(source, true, null);
 	}
-	
+
 	private IPath stripFirstDirectoryFromPath(IPath path) {
 		String constructedPath = "";
 		// Skip first segment of project path as we want path relative to
@@ -258,7 +268,7 @@ public class AddReferenceWizard extends Wizard {
 		for (int i = 1; i < path.segmentCount(); i++) {
 			constructedPath += "/" + path.segment(i);
 		}
-		if(constructedPath.equals("")) {
+		if (constructedPath.equals("")) {
 			constructedPath = "/";
 		}
 		Path result = new Path(constructedPath);
@@ -293,6 +303,15 @@ public class AddReferenceWizard extends Wizard {
 
 		_page = new AddReferencePage();
 		addPage(_page);
+		_page.setPackageName(packageName);
+		Shell shell = getContainer().getShell();
+		Display display = shell.getDisplay();
+		Monitor primaryMonitor = display.getPrimaryMonitor ();
+		Rectangle bounds = primaryMonitor.getBounds ();
+		Rectangle rect = shell.getBounds ();
+		int x = bounds.x + (bounds.width - rect.width) / 2 ;
+		int y = bounds.y + (bounds.height - rect.height) / 2 ;
+		shell.setLocation (x, y);
 	}
 
 	@Override
