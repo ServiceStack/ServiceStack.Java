@@ -12,14 +12,15 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.core.resources.IFile;
 
 public class EclipseMavenHelper {
-	public boolean addMavenDependencyIfRequired(File pomFile, String groupId, String packageId, String version) throws Exception {
+	public boolean addMavenDependencyIfRequired(IFile pomFile, String groupId, String packageId, String version) throws Exception {
         boolean noDependencyAdded = true;
         MavenXpp3Reader reader = new MavenXpp3Reader();
         Model pomModel;
         try {
-            pomModel = reader.read(new FileReader(pomFile));
+            pomModel = reader.read(new FileReader(new File(pomFile.getLocationURI())));
             final List<Dependency> dependencies= pomModel.getDependencies();
             boolean requiresPomDependency = true;
             for (Dependency dep : dependencies) {
@@ -33,7 +34,7 @@ public class EclipseMavenHelper {
                 dependency.setGroupId(groupId);
                 dependency.setArtifactId(packageId);
                 dependency.setVersion(version);
-                FileWriter writer = new FileWriter(pomFile.getAbsolutePath());
+                FileWriter writer = new FileWriter(pomFile.getLocationURI().getPath());
                 pomModel.addDependency(dependency);
                 new MavenXpp3Writer().write(writer, pomModel);
                 noDependencyAdded = false;
