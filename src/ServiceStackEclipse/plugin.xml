@@ -17,25 +17,12 @@
                id="net.servicestack.eclipse.newAction">
          </action>
       </objectContribution>
-      <objectContribution
-      		adaptable="true"
-            objectClass="org.eclipse.core.resources.IFile"
-            id="net.servicestack.eclipse.updateReference">
-         <action
-               label="Update ServiceStack Reference"
-               class="net.servicestack.eclipse.popup.actions.UpdateReference"
-               menubarPath="additions"
-               enablesFor="1"
-               icon="icons/logo-16.png"
-               id="net.servicestack.eclipse.updateAction">
-         </action>
-      </objectContribution>
    </extension>
-   <!--<extension
+   <extension
          point="org.eclipse.ui.commands">
       <command
             id="net.servicestack.eclipse.commands.sampleCommand"
-            name="Add ServiceStack Reference...">
+            name="Update ServiceStack Reference">
       </command>
    </extension>
    <extension
@@ -59,11 +46,37 @@
       <menuContribution
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          	<command
-                  commandId="net.servicestack.eclipse.commands.sampleCommand"
-                  id="net.servicestack.eclipse.menus.sampleCommand"
-                  mnemonic="S">
+                commandId="net.servicestack.eclipse.commands.sampleCommand"
+                icon="icons/logo-16.png"
+                id="net.servicestack.eclipse.menus.sampleCommand"
+                mnemonic="M">
+                <visibleWhen
+                  checkEnabled="true">
+               <with
+                     variable="net.servicestack.eclipse.sourceprovider.active">
+                  <equals
+                        value="ENABLED">
+                  </equals>
+               </with>
+            </visibleWhen>
             </command>
       </menuContribution>
-   </extension>-->
-
+   </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="net.servicestack.eclipse.handlers.UpdateCommandState">
+         <variable
+               name="net.servicestack.eclipse.handlers.active"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+   </extension>
+   <extension
+         id="net.servicetack.eclipse.startup"
+         point="org.eclipse.ui.startup">
+      <startup
+            class="net.servicestack.eclipse.startup.PluginStartup">
+      </startup>
+   </extension>
 </plugin>

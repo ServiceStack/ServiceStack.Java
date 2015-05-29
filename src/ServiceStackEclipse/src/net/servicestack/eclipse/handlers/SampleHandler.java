@@ -5,6 +5,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.ui.services.ISourceProviderService;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 /**
@@ -24,12 +25,14 @@ public class SampleHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		MessageDialog.openInformation(
-				window.getShell(),
-				"Eclipse",
-				"Hello, Eclipse world");
-		return null;
+		// Get the source provider service
+	    ISourceProviderService sourceProviderService = (ISourceProviderService) HandlerUtil
+	        .getActiveWorkbenchWindow(event).getService(ISourceProviderService.class);
+	    // now get my service
+	    UpdateCommandState commandStateService = (UpdateCommandState) sourceProviderService
+	        .getSourceProvider(UpdateCommandState.MY_STATE);
+	    commandStateService.enabled = false;
+	    return null;
 	}
 	
 	
