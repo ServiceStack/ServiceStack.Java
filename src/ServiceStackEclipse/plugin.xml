@@ -21,14 +21,14 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            id="net.servicestack.eclipse.commands.sampleCommand"
+            id="net.servicestack.eclipse.commands.updateReferenceCommand"
             name="Update ServiceStack Reference">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="net.servicestack.eclipse.commands.sampleCommand"
+            commandId="net.servicestack.eclipse.commands.updateReferenceCommand"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M1+6">
@@ -39,9 +39,9 @@
       <menuContribution
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          	<command
-                commandId="net.servicestack.eclipse.commands.sampleCommand"
+                commandId="net.servicestack.eclipse.commands.updateReferenceCommand"
                 icon="icons/logo-16.png"
-                id="net.servicestack.eclipse.menus.sampleCommand"
+                id="net.servicestack.eclipse.menus.updateReferenceMenu"
                 mnemonic="M">
                 <visibleWhen>
 				   <with
@@ -59,7 +59,7 @@
    <extension point="org.eclipse.ui.handlers">
       <handler
             class="net.servicestack.eclipse.handlers.UpdateReferenceHandler"
-            commandId="net.servicestack.eclipse.commands.sampleCommand">
+            commandId="net.servicestack.eclipse.commands.updateReferenceCommand">
             <visibleWhen>
 				   <with
 				     variable="selection">

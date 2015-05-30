@@ -37,7 +37,6 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 /**
- * Our sample handler extends AbstractHandler, an IHandler base class.
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
@@ -80,9 +79,25 @@ public class UpdateReferenceHandler extends AbstractHandler {
 					showErrorDialogOnUIThread(shell,"Unable to read ServiceStack reference from project.");
 					return Status.CANCEL_STATUS;
 				}
-				
 				INativeTypesHandler nativeTypesHandler = new JavaNativeTypesHandler();
-				Map<String,String> options = nativeTypesHandler.parseComments(fileContents);
+				if(!nativeTypesHandler.isFileAServiceStackReference(fileContents)) {
+					showErrorDialogOnUIThread(shell,"Unable to read ServiceStack reference file Options. Have you deleted the Options header?");
+					return Status.CANCEL_STATUS;
+				}
+				
+				
+				Map<String,String> options = null;
+				try {
+					options = nativeTypesHandler.parseComments(fileContents);
+				} 
+				catch(IllegalArgumentException e) {
+					showErrorDialogOnUIThread(shell,"Unable to read BaseUrl option from ServiceStack reference file. Check BaseUrl in the Options header.");
+					return Status.CANCEL_STATUS;
+				}
+				catch(Exception e) {
+					showErrorDialogOnUIThread(shell,"Unable to read reference options. Check Options comment.");
+					return Status.CANCEL_STATUS;
+				}
 				String baseUrl = options.get("BaseUrl");
 				options.remove("BaseUrl");
 				String updatedCode = "";

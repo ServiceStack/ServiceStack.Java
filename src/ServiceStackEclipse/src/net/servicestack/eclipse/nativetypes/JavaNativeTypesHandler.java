@@ -34,6 +34,9 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
             }
         }
 
+        if(baseUrl == null) {
+        	throw new IllegalArgumentException("Missing BaseURL value");
+        }
         if(!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
