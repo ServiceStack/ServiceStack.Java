@@ -30,8 +30,8 @@ public class SampleHandler extends AbstractHandler {
 	        .getActiveWorkbenchWindow(event).getService(ISourceProviderService.class);
 	    // now get my service
 	    UpdateCommandState commandStateService = (UpdateCommandState) sourceProviderService
-	        .getSourceProvider(UpdateCommandState.MY_STATE);
-	    commandStateService.enabled = false;
+	        .getSourceProvider(UpdateCommandState.SHOW_UPDATE_CONTEXT_STATE);
+	    commandStateService.setUpdateEnabled();
 	    return null;
 	}
 	
