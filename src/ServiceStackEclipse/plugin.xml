@@ -58,7 +58,7 @@
    </extension>
    <extension point="org.eclipse.ui.handlers">
       <handler
-            class="net.servicestack.eclipse.handlers.SampleHandler"
+            class="net.servicestack.eclipse.handlers.UpdateReferenceHandler"
             commandId="net.servicestack.eclipse.commands.sampleCommand">
             <visibleWhen>
 				   <with

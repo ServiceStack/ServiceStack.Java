@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import net.servicestack.eclipse.handlers.UpdateReferenceCurrentSelection;
+
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -55,6 +57,7 @@ public class SelectionTester extends PropertyTester {
 					for(int i = 0; i < 10; i++) {
 						String line = br.readLine();
 						if(line.startsWith("/* Options:")) {
+							UpdateReferenceCurrentSelection.getInstance().UpdateReferenceFile = file;
 							    return true;
 						}
 					}

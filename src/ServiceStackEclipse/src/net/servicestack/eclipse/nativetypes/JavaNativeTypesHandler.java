@@ -17,19 +17,37 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
         Map<String, String> result = new HashMap<>();
         Scanner scanner = new Scanner(codeOutput);
         List<String> linesOfCode = new ArrayList<>();
-        Integer i = 0;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             linesOfCode.add(line);
-            String configLine = linesOfCode.get(i);
-            if (!configLine.startsWith("//") && configLine.contains(":")) {
-                String[] keyVal = configLine.split(":");
-                result.put(keyVal[0].substring(2).trim(), keyVal[1].trim());
-            }
-            if (line.startsWith("*/")) break;
-            i++;
+            if(line.startsWith("*/")) break;
         }
         scanner.close();
+
+        int startParamsIndex = 0;
+        String baseUrl = null;
+        for(String item : linesOfCode) {
+            startParamsIndex++;
+            if(item.startsWith("BaseUrl:")) {
+                baseUrl = item.split(":",2)[1].trim();
+                break;
+            }
+        }
+
+        if(!baseUrl.endsWith("/")) {
+            baseUrl += "/";
+        }
+
+        result.put("BaseUrl", baseUrl);
+        for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
+            String configLine = linesOfCode.get(i);
+            if(!configLine.startsWith("//") && configLine.contains(":")) {
+                String[] keyVal = configLine.split(":");
+                result.put(keyVal[0],keyVal[1].trim());
+            }
+        }
+
+        
         return result;
     }
 
