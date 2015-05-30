@@ -37,7 +37,7 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
          	<command
                 commandId="net.servicestack.eclipse.commands.updateReferenceCommand"
                 icon="icons/logo-16.png"

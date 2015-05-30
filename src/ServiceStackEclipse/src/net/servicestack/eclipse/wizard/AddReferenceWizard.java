@@ -304,7 +304,7 @@ public class AddReferenceWizard extends Wizard {
 		_page = new AddReferencePage();
 		addPage(_page);
 		_page.setPackageName(packageName);
-		Shell shell = getContainer().getShell();
+		Shell shell = this.getShell();
 		Display display = shell.getDisplay();
 		Monitor primaryMonitor = display.getPrimaryMonitor ();
 		Rectangle bounds = primaryMonitor.getBounds ();

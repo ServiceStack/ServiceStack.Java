@@ -4,6 +4,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.ISelectionService;
@@ -49,10 +52,15 @@ public class AddReferenceAction implements IObjectActionDelegate {
 			
 			AddReferenceWizard generationWizard = new AddReferenceWizard(_selection, packageSelection);
 			WizardDialog dialog = new WizardDialog(shell, generationWizard);
-			
-			if (dialog.open() == WizardDialog.OK){
-//				MessageDialog.openInformation(shell, "CTE tree generation", "CTE trees are being generated, checking the process view for details!");
-			}
+			dialog.setBlockOnOpen(false);
+			Display display = shell.getDisplay();
+			Monitor primaryMonitor = display.getPrimaryMonitor ();
+			Rectangle bounds = primaryMonitor.getBounds ();
+			dialog.open();
+			Rectangle rect = dialog.getShell().getBounds ();
+			int x = bounds.x + (bounds.width - rect.width) / 2 ;
+			int y = bounds.y + (bounds.height - rect.height) / 2 ;
+			dialog.getShell().setLocation (x, y);
 		}
 	}
 
