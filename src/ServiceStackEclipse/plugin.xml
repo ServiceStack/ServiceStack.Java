@@ -80,5 +80,17 @@
             properties="hasNonEmptyTextSelection"
             type="java.lang.Object">
       </propertyTester>
-	</extension>>
+	</extension>
+   <extension
+         id="ServiceStackEclipse"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="ServiceStackEclipse">
+         <property
+               name="appName"
+               value="ServiceStackEclipse">
+         </property>
+      </product>
+   </extension>>
 </plugin>
