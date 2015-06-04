@@ -3,8 +3,7 @@
       id="net.servicestack.eclipse.feature"
       label="ServiceStackEclipse"
       version="1.0.0.qualifier"
-      provider-name="ServiceStack"
-      ws="win32">
+      provider-name="ServiceStack">
 
    <description url="http://github.com/ServiceStack/ServiceStack.Java">
       ServiceStackEclipse is a plugin for Eclipse to stream line building Java clients with ServiceStack servers.
