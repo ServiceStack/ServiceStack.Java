@@ -116,7 +116,7 @@ public class AddReferencePage extends WizardPage {
 		});
 
 		setControl(composite);
-		composite.getShell().setSize(550, 370);
+		composite.getShell().setSize(550, 395);
 		dialogChanged();
 	}
 
