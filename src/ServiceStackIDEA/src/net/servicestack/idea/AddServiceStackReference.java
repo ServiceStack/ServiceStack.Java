@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class AddServiceStackReference extends AnAction {
 
@@ -59,13 +58,13 @@ public class AddServiceStackReference extends AnAction {
                     String packageName = "";
                     String moduleDirectoryPath = module.getModuleFile().getParent().getPath();
                     List<String> packageArray = new ArrayList<String>();
-                    while (selectedDir != null && !(Objects.equals(moduleDirectoryPath, selectedDir.getVirtualFile().getPath()))) {
+                    while (selectedDir != null && !(moduleDirectoryPath.equals(selectedDir.getVirtualFile().getPath()))) {
                         packageArray.add(selectedDir.getName());
                         selectedDir = selectedDir.getParent();
                         PsiPackage mainPackage = testPackage(module, packageName, packageArray);
                         if (mainPackage != null) {
                             //"java" is a valid package name in an empty project according to openapi so we have to ignore it and no pre-populate package name....
-                            if(Objects.equals(mainPackage.getQualifiedName(), "java")) {
+                            if(mainPackage.getQualifiedName().equals("java")) {
                                 break;
                             }
                             dialog.setSelectedPackage(mainPackage);
@@ -112,7 +111,7 @@ public class AddServiceStackReference extends AnAction {
         }
 
         //Finally check if a Java file and populate package name with class package name.
-        if (Objects.equals(psiFile.getFileType().getName(), "JAVA")) {
+        if (psiFile.getFileType().getName().equals("JAVA")) {
             PsiJavaFile javaFile = (PsiJavaFile) psiFile;
             PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(javaFile.getPackageName());
             if (mainPackage != null) {
@@ -170,7 +169,7 @@ public class AddServiceStackReference extends AnAction {
     private static boolean isAndroidProject(@NotNull Module module) {
         Facet[] facetsByType = FacetManager.getInstance(module).getAllFacets();
         for (Facet facet : facetsByType) {
-            if (Objects.equals(facet.getTypeId().toString(), "android")) {
+            if (facet.getTypeId().toString().equals("android")) {
                 return true;
             }
         }

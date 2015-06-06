@@ -1,6 +1,5 @@
 package net.servicestack.idea;
 
-import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -9,8 +8,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -28,7 +25,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Layoric on 14/05/2015.
@@ -143,6 +139,12 @@ public class AddServiceStackRefHandler {
             showDto = pomFileHelper.addMavenDependencyIfRequired(pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
         } catch(Exception e) {
             showDto = false;
+            e.printStackTrace();
+            notification = new Notification(
+                    "ServiceStackIDEA",
+                    "Warning Add ServiceStack Reference",
+                    "Unable to add maven dependency. " + e.getLocalizedMessage(),
+                    NotificationType.WARNING);
             Notifications.Bus.notify(notification);
         }
         return showDto;
@@ -275,7 +277,7 @@ public class AddServiceStackRefHandler {
     private static String getDtoFileName(String name) {
         int p = name.lastIndexOf(".");
         String e = name.substring(p + 1);
-        if (p == -1 || !Objects.equals(e, "java")) {
+        if (p == -1 || !e.equals("java")) {
             /* file has no extension */
             return name + ".java";
         } else {
@@ -287,7 +289,7 @@ public class AddServiceStackRefHandler {
     private static String getDtoNameWithoutExtension(String name) {
         int p = name.lastIndexOf(".");
         String e = name.substring(p + 1);
-        if (p == -1 || !Objects.equals(e, "java")) {
+        if (p == -1 || !e.equals("java")) {
             /* file has no extension */
             return name;
         } else {

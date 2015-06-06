@@ -18,8 +18,6 @@ import com.intellij.psi.PsiJavaFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 /**
  * Created by Layoric on 9/04/2015.
  * Update ServiceStack Reference Project menu context action
@@ -69,7 +67,7 @@ public class UpdateServiceStackReference extends AnAction {
     private static boolean isAndroidProject(@NotNull Module module) {
         Facet[] facetsByType = FacetManager.getInstance(module).getAllFacets();
         for (Facet facet :facetsByType) {
-            if(Objects.equals(facet.getTypeId().toString(), "android")) {
+            if(facet.getTypeId().toString().equals("android")) {
                 return true;
             }
         }

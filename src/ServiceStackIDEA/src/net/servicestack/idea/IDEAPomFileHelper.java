@@ -15,7 +15,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Layoric on 10/05/2015.
@@ -31,7 +30,7 @@ public class IDEAPomFileHelper implements IPomFileHelper {
             final List<Dependency> dependencies= pomModel.getDependencies();
             boolean requiresPomDependency = true;
             for (Dependency dep : dependencies) {
-                if(Objects.equals(dep.getGroupId(), groupId) && Objects.equals(dep.getArtifactId(), packageId)) {
+                if(dep.getGroupId().equals(groupId) && dep.getArtifactId().equals(packageId)) {
                     requiresPomDependency = false;
                 }
             }
@@ -62,7 +61,7 @@ public class IDEAPomFileHelper implements IPomFileHelper {
         PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
         String pomFilePath = null;
         for(PsiFile psiPom : pomLibFiles) {
-            if(Objects.equals(psiPom.getParent().getVirtualFile().getPath(), module.getModuleFile().getParent().getPath())) {
+            if(psiPom.getParent().getVirtualFile().getPath().equals(module.getModuleFile().getParent().getPath())) {
                 pomFilePath = psiPom.getVirtualFile().getPath();
             }
         }
