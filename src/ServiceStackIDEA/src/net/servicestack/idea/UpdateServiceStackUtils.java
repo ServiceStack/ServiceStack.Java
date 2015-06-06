@@ -28,7 +28,7 @@ public class UpdateServiceStackUtils {
     public static void updateServiceStackReference(PsiFile psiFile) {
         String code = psiFile.getText();
         Scanner scanner = new Scanner(code);
-        List<String> linesOfCode = new ArrayList<>();
+        List<String> linesOfCode = new ArrayList<String>();
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             linesOfCode.add(line);

@@ -19,7 +19,7 @@ public class GradleBuildFileHelper {
         this.module = module;
     }
 
-    public boolean addDependency(String groupId, String packageName, String version) {
+    public boolean addDependency(String groupId, String packageName, String version) throws FileNotFoundException {
         VirtualFile moduleFile = module.getModuleFile();
         if(moduleFile == null) {
             return false;
@@ -39,8 +39,9 @@ public class GradleBuildFileHelper {
         File gradleFile = matchingFiles[0];
         Integer dependenciesStartIndex = -1;
         Integer dependenciesEndIndex = -1;
-        List<String> list = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(gradleFile))) {
+        List<String> list = new ArrayList<String>();
+        BufferedReader br = new BufferedReader(new FileReader(gradleFile));
+        try {
             int count = 0;
             for(String line; (line = br.readLine()) != null; ) {
                 list.add(line);

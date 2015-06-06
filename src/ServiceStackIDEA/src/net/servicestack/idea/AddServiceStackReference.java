@@ -58,7 +58,7 @@ public class AddServiceStackReference extends AnAction {
                     PsiDirectory selectedDir = (PsiDirectory) element;
                     String packageName = "";
                     String moduleDirectoryPath = module.getModuleFile().getParent().getPath();
-                    List<String> packageArray = new ArrayList<>();
+                    List<String> packageArray = new ArrayList<String>();
                     while (selectedDir != null && !(Objects.equals(moduleDirectoryPath, selectedDir.getVirtualFile().getPath()))) {
                         packageArray.add(selectedDir.getName());
                         selectedDir = selectedDir.getParent();

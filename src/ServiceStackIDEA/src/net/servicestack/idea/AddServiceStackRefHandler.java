@@ -42,7 +42,7 @@ public class AddServiceStackRefHandler {
 
     public static void handleOk(String addressUrl, String qualifiedPackageName, String fileName, String selectedDirectory, Module module, StringBuilder errorMessage) {
         String url;
-        List<String> javaCodeLines = new ArrayList<>();
+        List<String> javaCodeLines = new ArrayList<String>();
         try {
             URIBuilder urlBuilder = createUrl(addressUrl);
             urlBuilder.addParameter("Package", qualifiedPackageName);
@@ -68,7 +68,11 @@ public class AddServiceStackRefHandler {
                 return;
             }
 
-        } catch (URISyntaxException | MalformedURLException e) {
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
+            return;
+        } catch (MalformedURLException e) {
             e.printStackTrace();
             errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
             return;
@@ -80,7 +84,7 @@ public class AddServiceStackRefHandler {
 
 
         GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(module);
-        boolean showDto;
+        boolean showDto = true;
         final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
 
         boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(module);
@@ -88,7 +92,20 @@ public class AddServiceStackRefHandler {
             showDto = tryAddMavenDependency(module);
         } else {
             //Gradle
-            showDto = addGradleDependencyIfRequired(module,gradleBuildFileHelper);
+            try {
+                showDto = addGradleDependencyIfRequired(module,gradleBuildFileHelper);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                String message = "Failed to update build.gradle with '" +
+                        dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion +
+                        "'. " + e.getLocalizedMessage();
+                Notification notification = new Notification(
+                        "ServiceStackIDEA",
+                        "Warning Add ServiceStack Reference",
+                        message,
+                        NotificationType.WARNING);
+                Notifications.Bus.notify(notification);
+            }
         }
 
         String dtoPath;
@@ -131,7 +148,7 @@ public class AddServiceStackRefHandler {
         return showDto;
     }
 
-    private static boolean addGradleDependencyIfRequired(Module module, GradleBuildFileHelper gradleBuildFileHelper) {
+    private static boolean addGradleDependencyIfRequired(Module module, GradleBuildFileHelper gradleBuildFileHelper) throws FileNotFoundException {
         boolean result = true;
         if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
             result = false;

@@ -9,7 +9,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      1.0.4 - Bug fixes for Maven project support and new versions of net.servicestack:client
+      1.0.4 - Bug fixes for Maven project support and new versions of net.servicestack:client.<br />
       1.0.3 - Added support to detect Maven pom.xml and inject net.servicestack:client dependency for IntelliJ + Maven modules.<br />
       1.0.2 - Fix plugin.xml template bug to enable search from IDE.<br>
       1.0 - Initial release.<br />

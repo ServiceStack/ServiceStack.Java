@@ -47,7 +47,10 @@ public class IDEAPomFileHelper implements IPomFileHelper {
                 noDependencyAdded = false;
             }
 
-        } catch (IOException | XmlPullParserException e) {
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new Exception("Unable to process pom.xml to add " + groupId + ":" + packageId + ":" + version);
+        } catch (XmlPullParserException e) {
             e.printStackTrace();
             throw new Exception("Unable to process pom.xml to add " + groupId + ":" + packageId + ":" + version);
         }
