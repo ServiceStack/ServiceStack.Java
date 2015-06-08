@@ -1,5 +1,5 @@
 <idea-plugin version="2">
-  <id>net.servicestack.idea.plugin</id>
+  <id>net.servicestack.ideaplugin</id>
   <name>ServiceStack</name>
   <version>1.0.4</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
