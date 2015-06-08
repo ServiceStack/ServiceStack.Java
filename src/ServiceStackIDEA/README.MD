@@ -1,3 +1,9 @@
+## ServiceStackIDEA now for IntelliJ and Maven
+
+The ServiceStackIDEA plugin as been expanded to support IntelliJ and Maven projects as well as Android Studio and Gradle. This gives Java developers a familar experience when writing clients for ServiceStack in Android and any other Java client.
+
+![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackidea/ss-addref-maven-intellij-osx.gif)
+
 ## AndroidStudio ServiceStack Plugin
 
 ServiceStackIDEA is a plugin for AndroidStudio to make working with ServiceStack services easier when building Android apps. 
