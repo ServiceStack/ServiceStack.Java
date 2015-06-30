@@ -232,15 +232,14 @@ public class JsonServiceClient implements ServiceClient {
                 throw ex;
             }
 
-            if (RequestFilter != null) {
-                RequestFilter.exec(req);
-            }
-
-            if (GlobalRequestFilter != null) {
-                GlobalRequestFilter.exec(req);
-            }
-
             InputStream is = req.getInputStream();
+
+            if (ResponseFilter != null) {
+                ResponseFilter.exec(req);
+            }
+            if (GlobalResponseFilter != null) {
+                GlobalResponseFilter.exec(req);
+            }
 
             if (Log.isDebugEnabled()) {
                 String json = Utils.readToEnd(is, UTF8.name());
