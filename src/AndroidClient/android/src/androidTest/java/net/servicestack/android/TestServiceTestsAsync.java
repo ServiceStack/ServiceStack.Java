@@ -2,9 +2,12 @@ package net.servicestack.android;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
+import android.text.TextUtils;
 
 import net.servicestack.client.AsyncResult;
+import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.ExceptionFilter;
+import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Log;
 import net.servicestack.client.ResponseStatus;
 import net.servicestack.client.TimeSpan;
@@ -32,6 +35,61 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
     }
 
     AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
+
+    public void test_does_fire_Request_and_Response_Filters_Async() throws InterruptedException {
+
+        AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
+
+        final ArrayList<String> events = new ArrayList<>();
+
+        AndroidServiceClient.GlobalRequestFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("GlobalRequestFilter");
+            }
+        };
+        AndroidServiceClient.GlobalResponseFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("GlobalResponseFilter");
+            }
+        };
+
+        client.RequestFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("RequestFilter");
+            }
+        };
+        client.ResponseFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("ResponseFilter");
+            }
+        };
+
+        Hello request = new Hello()
+                .setName("World");
+
+        final CountDownLatch signal = new CountDownLatch(1);
+
+        client.getAsync(request, new AsyncResult<HelloResponse>() {
+            @Override public void success(HelloResponse response) {
+
+                assertEquals("Hello, World!", response.getResult());
+
+                String results = TextUtils.join(", ", events);
+
+                assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results);
+
+                AndroidServiceClient.GlobalRequestFilter = null;
+                AndroidServiceClient.GlobalResponseFilter = null;
+            }
+
+            @Override
+            public void complete() {
+                signal.countDown();
+            }
+        });
+
+        assertTrue(signal.await(5, TimeUnit.SECONDS));
+    }
 
     public void test_Can_POST_Test_HelloAllTypes_async() throws InterruptedException {
         final HelloAllTypes request = createHelloAllTypes();

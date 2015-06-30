@@ -4,7 +4,9 @@ package net.servicestack.client.tests;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
+import android.text.TextUtils;
 
+import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.ExceptionFilter;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Log;
@@ -44,6 +46,46 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         HelloResponse response = client.get(request);
 
         assertEquals("Hello, World!", response.getResult());
+    }
+
+    public void test_does_fire_Request_and_Response_Filters(){
+
+        JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+
+        final ArrayList<String> events = new ArrayList<>();
+
+        JsonServiceClient.GlobalRequestFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("GlobalRequestFilter");
+            }
+        };
+        JsonServiceClient.GlobalResponseFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("GlobalResponseFilter");
+            }
+        };
+
+        client.RequestFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("RequestFilter");
+            }
+        };
+        client.ResponseFilter = new ConnectionFilter() {
+            @Override public void exec(HttpURLConnection conn) {
+                events.add("ResponseFilter");
+            }
+        };
+
+        Hello request = new Hello()
+                .setName("World");
+
+        HelloResponse response = client.get(request);
+
+        assertEquals("Hello, World!", response.getResult());
+
+        String results = TextUtils.join(", ", events);
+
+        assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results);
     }
 
     public void test_Can_GET_Hello_with_CustomPath(){
