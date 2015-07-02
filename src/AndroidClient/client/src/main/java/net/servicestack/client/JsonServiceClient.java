@@ -160,20 +160,20 @@ public class JsonServiceClient implements ServiceClient {
                 req.setRequestProperty(HttpHeaders.ContentType, requestType);
             }
 
-            if (requestBody != null) {
-                req.setRequestProperty(HttpHeaders.ContentLength, Integer.toString(requestBody.length));
-                DataOutputStream wr = new DataOutputStream(req.getOutputStream());
-                wr.write(requestBody);
-                wr.flush();
-                wr.close();
-            }
-
             if (RequestFilter != null) {
                 RequestFilter.exec(req);
             }
 
             if (GlobalRequestFilter != null) {
                 GlobalRequestFilter.exec(req);
+            }
+
+            if (requestBody != null) {
+                req.setRequestProperty(HttpHeaders.ContentLength, Integer.toString(requestBody.length));
+                DataOutputStream wr = new DataOutputStream(req.getOutputStream());
+                wr.write(requestBody);
+                wr.flush();
+                wr.close();
             }
 
             return req;

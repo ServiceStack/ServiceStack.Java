@@ -24,6 +24,11 @@ android {
     }
 }
 
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.code.gson:gson:2.3.1'
+}
+
 Properties properties = new Properties()
 properties.load(project.file('./local.properties').newDataInputStream())
 
@@ -94,11 +99,6 @@ install {
         }
     }
 }.dependsOn makeJar
-
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.code.gson:gson:2.3.1'
-}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
