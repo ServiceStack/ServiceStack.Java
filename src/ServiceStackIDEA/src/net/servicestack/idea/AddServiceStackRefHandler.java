@@ -33,7 +33,7 @@ public class AddServiceStackRefHandler {
 
     private static final String dependencyGroupId = "net.servicestack";
     private static final String dependencyPackageId = "android";
-    private static final String dependencyVersion = "1.0.10";
+    private static final String dependencyVersion = "1.0.12";
     private static final String clientPackageId = "client";
 
     public static void handleOk(String addressUrl, String qualifiedPackageName, String fileName, String selectedDirectory, Module module, StringBuilder errorMessage) {
