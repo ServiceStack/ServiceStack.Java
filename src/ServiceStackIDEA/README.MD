@@ -31,16 +31,26 @@ This reduces the amount of code required when interacting with ServiceStack web 
 
 ## Installing the ServiceStack Plugin for Android Studio
 
-To install the ServiceStack plugin..
+ServiceStackIDEA is available to install straight from IntelliJ/Android Studio. To browse for the ServiceStack plugin:
 
-1. [download it here](https://plugins.jetbrains.com/plugin/download?pr=androidstudio&updateId=19465) and save it locally.
-2. In Android Studio Go File -> Settings
-3. Search for "Install Plugin"
-4. Select "Install Plugin From Disk"
-5. Locate the downloaded plugin and Install
-6. Restart Android Studio.
+1. Goto the `File` menu and select `Settings...`
+2. Select `Plugins` from the left hand side
+3. Click the `Browse repositories...` button at the bottom
+4. Search for `ServiceStack` and click `Install plugin`
+5. Click `Restart <IDE>`
 
-![](https://github.com/ServiceStack/Assets/raw/34925d1b1b1b1856c451b0373139c939801d96ec/img/servicestackidea/android-plugin-install.gif)
+![Demo of installing from IDE](https://github.com/ServiceStack/Assets/raw/master/img/servicestackidea/android-plugin-download.gif)
+
+If you are having trouble installing it directly from the IDE, you can also install it from the plugin zip file with the instructions below.
+>
+>1. [download it here](https://plugins.jetbrains.com/plugin/download?pr=androidstudio&updateId=20019) and save it locally.
+>2. In Android Studio Go File -> Settings
+>3. Search for "Install Plugin"
+>4. Select "Install Plugin From Disk"
+>5. Locate the downloaded plugin and Install
+>6. Restart Android Studio.
+
+>![](https://github.com/ServiceStack/Assets/raw/34925d1b1b1b1856c451b0373139c939801d96ec/img/servicestackidea/android-plugin-install.gif)
 
 #### Add a ServiceStack Reference
 
