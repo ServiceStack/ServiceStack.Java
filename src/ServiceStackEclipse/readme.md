@@ -1,23 +1,31 @@
-## ServiceStackEclipse
+### Eclipse Integration with ServiceStack
 
-To add to our client side support for Java clients, we have expanded our "Add ServiceStack Reference" functionality to the Eclipse IDE running on Windows, OSX and Linux.
+The **ServiceStackEclipse** plugin enables cross-platform [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) integration with Eclipse on Windows, OSX and Linux.
 
-This workflow works best when used in conjunction with a Maven project as it will add the ServiceStack.Java client library to your Maven dependencies. If you are using `Build Automatically` in Eclipse, these dependencies will automatically get pulled down after being added to the project and your new ServiceStack reference will build and be ready to use with the Java `JsonServiceClient`.
+### Install from Eclipse Marketplace
 
-#### Installation from the Eclipse Marketplace
+To install, search for **ServiceStack** in the Eclipse Marketplace at `Help -> Eclipse Marketplace`:
 
-To help make this plugin discoverable, easy to install and keep upto date, this plugin has been published to the Eclipse Marketplace.
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackeclipse/ss-eclipse-install-win.gif)
 
-![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackeclipse/ss-eclipse-install-win.gif)
+Find the **ServiceStackEclipse** plugin, click **Install** and follow the wizard to the end, restarting to launch Eclipse with the plugin loaded!
 
-#### Add/Update ServiceStack Reference
+> **ServiceStackEclipse** is best used with Java Maven Projects where it automatically adds the **ServiceStack.Java** client library to your Maven Dependencies and when your project is set to **Build Automatically**, are then downloaded and registered, so you're ready to start consuming ServiceStack Services with the new `JsonServiceClient`
 
-ServiceStackEclipse plugin introduces the similar workflow as the other supported IDEs by providing a simple dialog to add your server side DTOs to your client project.
+### Add ServiceStack Reference
 
-![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackeclipse/add-reference-demo.gif)
+Just like the [support in Android Studio](https://github.com/ServiceStack/ServiceStack/wiki/Java-Add-ServiceStack-Reference) you can right-click on a Java Package to open the **Add ServiceStack Reference...** dialog from the Context Menu:
 
-Like Android Studio, if the reference is added in a Maven project, the `net.servicestack.client` Maven dependency is automatically added.
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackeclipse/add-reference-demo.gif)
 
-The `Update ServiceStack Reference` menu is visible when you right click on the reference file in the package explorer. This will process and pass the requested options to the ServiceStack server and update the file in place.
+Complete the dialog to add the remote Servers generated Java DTO's to your selected Java package and the `net.servicestack.client` dependency to your Maven dependencies.
 
-![](https://github.com/ServiceStack/Assets/raw/master/img/servicestackeclipse/update-reference-demo.gif)
+### Update ServiceStack Reference
+
+Updating a ServiceStack Reference works as normal where you can change any of the available options in the header comments, save, then right-click on the file in the File Explorer and click on **Update ServiceStack Reference** in the Context Menu:
+ 
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackeclipse/update-reference-demo.gif)
+
+## [ServiceStack Java Documentation](https://github.com/ServiceStack/ServiceStack/wiki/Java-Add-ServiceStack-Reference#update-servicestack-reference)
+
+For further information on the different code-generation configuration options available and examples of using the `JsonServiceClient` refer to the [Java ServiceStack Reference Documentation](https://github.com/ServiceStack/ServiceStack/wiki/Java-Add-ServiceStack-Reference#update-servicestack-reference).
