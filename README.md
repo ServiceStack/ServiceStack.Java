@@ -1,6 +1,6 @@
 # ServiceStack.Java
 
-This repository contains the source for ServiceStack plugins for the leading Android Studio, IntelliJ and Eclipse Java IDE's providing Java developers a highly productive development experience for consuming Typed ServiceStack Services using integration of [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) directly within their IDE! 
+This repository contains the source for ServiceStack plugins for the leading Android Studio, IntelliJ and Eclipse Java IDE's providing Java developers a highly productive development experience for consuming Typed ServiceStack Services by leveraging [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) directly within their IDE! 
 
 ## Install
 
