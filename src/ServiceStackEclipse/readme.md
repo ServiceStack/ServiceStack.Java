@@ -1,5 +1,7 @@
 ### Eclipse Integration with ServiceStack
 
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/wikis/eclipse-header.png)
+
 The **ServiceStackEclipse** plugin enables cross-platform [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) integration with Eclipse on Windows, OSX and Linux.
 
 ### Install from Eclipse Marketplace
