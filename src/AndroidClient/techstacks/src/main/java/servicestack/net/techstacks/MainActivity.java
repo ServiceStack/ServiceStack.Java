@@ -1,7 +1,5 @@
 package servicestack.net.techstacks;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,21 +19,20 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.android.internal.util.Predicate;
-
 import java.util.ArrayList;
+
+import net.servicestack.func.Function;
+import net.servicestack.func.Predicate;
 
 import servicestack.net.techstacks.dto.*;
 import servicestack.net.techstacks.dto.Technology;
 import servicestack.net.techstacks.dto.TechnologyInfo;
 import servicestack.net.techstacks.dto.TechnologyStack;
 
-import static net.servicestack.client.Func.Function;
-import static net.servicestack.client.Func.filter;
-import static net.servicestack.client.Func.map;
+import static net.servicestack.func.Func.filter;
+import static net.servicestack.func.Func.map;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 

@@ -10,9 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.internal.util.Predicate;
-
 import net.servicestack.client.Utils;
+import net.servicestack.func.Predicate;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ import servicestack.net.techstacks.dto.Option;
 import servicestack.net.techstacks.dto.TechStackDetails;
 import servicestack.net.techstacks.dto.TechnologyInStack;
 
-import static net.servicestack.client.Func.*;
+import static net.servicestack.func.Func.*;
 
 public class TechStackActivity extends Activity implements App.AppDataListener {
 

@@ -1,9 +1,7 @@
 package servicestack.net.techstacks;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,10 +14,11 @@ import net.servicestack.client.Utils;
 
 import java.util.ArrayList;
 
+import net.servicestack.func.Function;
 import servicestack.net.techstacks.dto.GetTechnologyResponse;
 import servicestack.net.techstacks.dto.TechnologyStack;
 
-import static net.servicestack.client.Func.*;
+import static net.servicestack.func.Func.*;
 
 public class TechnologyActivity extends Activity implements App.AppDataListener {
 

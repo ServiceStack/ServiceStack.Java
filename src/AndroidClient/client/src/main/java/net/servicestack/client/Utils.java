@@ -30,8 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static net.servicestack.client.Func.Function;
-import static net.servicestack.client.Func.last;
+import net.servicestack.func.Function;
+
+import static net.servicestack.func.Func.last;
 
 // Generic Utils
 public class Utils {
