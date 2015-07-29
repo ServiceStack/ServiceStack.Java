@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ServiceStackEclipse" uid="net.servicestack.eclipse.product" id="net.servicestack.eclipse.ServiceStackEclipse" application="org.eclipse.ui.ide.workbench" version="1.0.0" useFeatures="false" includeLaunchers="true">
+<product name="ServiceStackEclipse" uid="net.servicestack.eclipse.product" id="net.servicestack.eclipse.ServiceStackEclipse" application="org.eclipse.ui.ide.workbench" version="1.0.1" useFeatures="false" includeLaunchers="true">
+
 
    <configIni use="default">
    </configIni>
@@ -10,6 +11,13 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
+
+   <windowImages/>
+
+
+   <license>
+        <url>http://opensource.org/licenses/BSD-3-Clause</url>
+   </license>
 
    <plugins>
       <plugin id="net.servicestack.eclipse"/>

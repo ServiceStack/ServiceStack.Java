@@ -1,6 +1,5 @@
 package net.servicestack.eclipse.handlers;
 
-import java.awt.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public class UpdateCommandState extends AbstractSourceProvider {
 	}
 
 	@Override
-	public Map getCurrentState() {
+	public Map<String, Object> getCurrentState() {
 		HashMap<String, Object> hashMap = new HashMap<String, Object>();
 		hashMap.put(ID, ID);
 		String value = enabled ? "true" : "false";
