@@ -19,3 +19,4 @@ If there is a problem with BinTray's 'Sync to Maven Central' functionality which
 6. Upload .jar, javadoc and sources including their associated asc.
 7. Wait for staging repository to be dropped
 
+Clients that have tried to use a version that was missing the required JAR on Maven Central via ServiceStackEclipse will need to clear out their .m2 cache in /home/{UserName}/.m2 directory under net/servicestack/client
