@@ -8,3 +8,14 @@
 6. Select the newly added product and click Build.
 7. Commit chnages, including out JARs in feature and update site.
 8. Push changes, Eclipse marketplace looks at GitHub directly to new versions.
+
+If there is a problem with BinTray's 'Sync to Maven Central' functionality which happens, manually release new version for ServiceStackEclipse. This can happen if the Sync decides to use the AAR instead of the JAR file. 
+
+1. Download artifacts from BinTray's release that goes to JCentre
+2. Goto https://oss.sonatype.org/ and login
+3. Click `Staging Upload`
+4. Select Upload POM and Artifacts. 
+5. Upload the POM at the top
+6. Upload .jar, javadoc and sources including their associated asc.
+7. Wait for staging repository to be dropped
+
