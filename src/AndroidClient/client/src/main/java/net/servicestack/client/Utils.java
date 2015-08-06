@@ -210,7 +210,7 @@ public class Utils {
 
         if (str.startsWith(wcfJsonPrefix)) {
             String body = splitOnLast(splitOnFirst(str, '(')[1], ')')[0];
-            String unixTimeStr = splitOnLast(body.replace('+', '-'), '-')[0];
+            String unixTimeStr = splitOnFirst(body.replace('+', '-'), '-', 1)[0];
             long unixTime = Long.parseLong(unixTimeStr);
             return new Date(unixTime);
         }
@@ -369,32 +369,48 @@ public class Utils {
 
     /*String Utils*/
     public static String[] splitOnFirst(String strVal, char needle) {
+        return splitOnFirst(strVal, needle, 0);
+    }
+
+    public static String[] splitOnFirst(String strVal, char needle, int start) {
         if (strVal == null) return new String[0];
-        int pos = strVal.indexOf(needle);
+        int pos = strVal.indexOf(needle, start);
         return pos == -1
                 ? new String[] { strVal }
                 : new String[] { strVal.substring(0, pos), strVal.substring(pos + 1) };
     }
 
     public static String[] splitOnFirst(String strVal, String needle) {
+        return splitOnFirst(strVal, needle, 0);
+    }
+
+    public static String[] splitOnFirst(String strVal, String needle, int start) {
         if (strVal == null) return new String[0];
-        int pos = strVal.indexOf(needle);
+        int pos = strVal.indexOf(needle, start);
         return pos == -1
                 ? new String[] { strVal }
                 : new String[] { strVal.substring(0, pos), strVal.substring(pos + needle.length()) };
     }
 
     public static String[] splitOnLast(String strVal, char needle) {
+        return splitOnLast(strVal, needle, strVal.length());
+    }
+
+    public static String[] splitOnLast(String strVal, char needle, int start) {
         if (strVal == null) return new String[0];
-        int pos = strVal.lastIndexOf(needle);
+        int pos = strVal.lastIndexOf(needle, start);
         return pos == -1
                 ? new String[] { strVal }
                 : new String[] { strVal.substring(0, pos), strVal.substring(pos + 1) };
     }
 
     public static String[] splitOnLast(String strVal, String needle) {
+        return splitOnLast(strVal, needle, strVal.length());
+    }
+
+    public static String[] splitOnLast(String strVal, String needle, int start) {
         if (strVal == null) return new String[0];
-        int pos = strVal.lastIndexOf(needle);
+        int pos = strVal.lastIndexOf(needle, start);
         return pos == -1
                 ? new String[] { strVal }
                 : new String[] { strVal.substring(0, pos), strVal.substring(pos + needle.length()) };

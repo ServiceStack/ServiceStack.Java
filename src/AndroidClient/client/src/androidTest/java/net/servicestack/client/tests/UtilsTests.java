@@ -39,4 +39,9 @@ public class UtilsTests extends ApplicationTestCase<Application> {
 
         assertEquals(guidStr.replaceAll("-",""), Utils.toGuidString(uuid).toUpperCase());
     }
+
+    public void test_Can_parse_pre_UnixTime(){
+        Date date = Utils.parseDate("\\/Date(-30610224000)\\/");
+        assertEquals(new Date(-30610224000L), date);
+    }
 }
