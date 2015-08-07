@@ -3,6 +3,9 @@ package net.servicestack.idea;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.intellij.ide.util.PackageChooserDialog;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -218,8 +221,15 @@ public class AddRef extends JDialog {
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            Notification notification = new Notification(
+                    "ServiceStackIDEA",
+                    "Warning Add ServiceStack Reference",
+                    "Unable to get latest version of required dependencies, falling back to known available version.\n" +
+                            "Please check the JCenter/Maven Central for the latest published versions of the ServiceStack java clients and update your dependencies.",
+                    NotificationType.WARNING);
+            Notifications.Bus.notify(notification);
         }
 
 
