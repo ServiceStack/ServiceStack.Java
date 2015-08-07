@@ -210,7 +210,8 @@ public class Utils {
 
         if (str.startsWith(wcfJsonPrefix)) {
             String body = splitOnLast(splitOnFirst(str, '(')[1], ')')[0];
-            String unixTimeStr = splitOnFirst(body.replace('+', '-'), '-', 1)[0];
+            String unixTimeStr = splitOnFirst(body,'-', 1)[0];
+            unixTimeStr = splitOnFirst(unixTimeStr,'+', 1)[0];
             long unixTime = Long.parseLong(unixTimeStr);
             return new Date(unixTime);
         }
