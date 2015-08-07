@@ -1,5 +1,7 @@
 package net.servicestack.idea;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
@@ -16,7 +18,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.*;
 
 public class AddRef extends JDialog {
     private JPanel contentPane;
@@ -44,6 +52,8 @@ public class AddRef extends JDialog {
         errorTextPane.setForeground(JBColor.RED);
 
         buttonOK.setEnabled(false);
+
+
 
         addressUrlTextField.setInputVerifier(new InputVerifier() {
             @Override
@@ -185,6 +195,33 @@ public class AddRef extends JDialog {
         buttonCancel.setEnabled(false);
         errorMessage = null;
         errorTextPane.setVisible(false);
+
+        URL serviceUrl;
+        try {
+            serviceUrl = new URL("https://api.github.com/repos/ServiceStack/ServiceStack.Java/tags");
+            URLConnection javaResponseConnection = serviceUrl.openConnection();
+            StringBuilder builder = new StringBuilder();
+            BufferedReader javaResponseReader = new BufferedReader(
+                    new InputStreamReader(
+                            javaResponseConnection.getInputStream()));
+            String metadataInputLine;
+
+            while ((metadataInputLine = javaResponseReader.readLine()) != null)
+                builder.append(metadataInputLine);
+
+
+            JsonElement jElement = new JsonParser().parse(builder.toString());
+            if(jElement.getAsJsonArray().size() > 0) {
+                String latestTag = jElement.getAsJsonArray().get(0).getAsJsonObject().get("name").getAsJsonPrimitive().getAsString();
+                AddServiceStackRefHandler.setDependencyVersion(latestTag.substring(1));
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         Runnable r = new Runnable() {
             public void run() {

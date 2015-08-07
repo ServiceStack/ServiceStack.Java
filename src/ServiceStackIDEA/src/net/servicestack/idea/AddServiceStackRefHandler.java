@@ -33,8 +33,12 @@ public class AddServiceStackRefHandler {
 
     private static final String dependencyGroupId = "net.servicestack";
     private static final String dependencyPackageId = "android";
-    private static final String dependencyVersion = "1.0.13";
+    private static String dependencyVersion = "1.0.13";
     private static final String clientPackageId = "client";
+
+    public static void setDependencyVersion(String version) {
+        dependencyVersion = version;
+    }
 
     public static void handleOk(String addressUrl, String qualifiedPackageName, String fileName, String selectedDirectory, Module module, StringBuilder errorMessage) {
         String url;
