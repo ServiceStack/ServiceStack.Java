@@ -4,6 +4,9 @@
 package net.servicestack.client;
 
 public class TimeSpan {
+
+    public static final double TicksPerSecond = 10000000;
+
     double durationSecs = 0;
 
     public TimeSpan(){}
@@ -90,6 +93,44 @@ public class TimeSpan {
         return (int)((durationSecs - (int)durationSecs) * 1000);
     }
 
+    public String toXsdDuration() {
+        StringBuilder sb = new StringBuilder("P");
+
+        double totalSeconds = getTotalSeconds();
+        int wholeSeconds = (int)totalSeconds;
+        int seconds = wholeSeconds;
+        int sec = (seconds >= 60 ? seconds % 60 : seconds);
+        int min = (seconds = (seconds / 60)) >= 60 ? seconds % 60 : seconds;
+        int hours = (seconds = (seconds / 60)) >= 24 ? seconds % 24 : seconds;
+        int days = seconds / 24;
+        double remainingSecs = sec + (totalSeconds - wholeSeconds);
+
+        if (days > 0)
+            sb.append(days + "D");
+
+        if (days == 0 || hours + min + sec + remainingSecs > 0) {
+
+            sb.append("T");
+            if (hours > 0)
+                sb.append(hours + "H");
+
+            if (min > 0)
+                sb.append(min + "M");
+
+            if (remainingSecs > 0) {
+                String secFmt = String.format("%.7f", remainingSecs);
+                secFmt = Utils.trimEnd(secFmt, '0');
+                secFmt = Utils.trimEnd(secFmt, '.');
+                sb.append(secFmt).append("S");
+            } else if (sb.length() == 2) {//PT
+                sb.append("0S");
+            }
+        }
+
+        String xsdDuration = sb.toString();
+        return xsdDuration;
+    }
+
     public static TimeSpan fromXsdDuration(String xsdDuration){
         return parse(xsdDuration);
     }
@@ -151,43 +192,6 @@ public class TimeSpan {
         double interval = totalSecs + ms;
 
         return new TimeSpan(interval);
-    }
-
-    public String toXsdDuration() {
-        StringBuilder sb = new StringBuilder("P");
-
-        double d = getTotalSeconds();
-
-        int totalSeconds = (int) (d);
-        int remainingMs = (int)((d - totalSeconds) * 1000);
-        int sec = (totalSeconds >= 60 ? totalSeconds % 60 : totalSeconds);
-        int min = (totalSeconds = (totalSeconds / 60)) >= 60 ? totalSeconds % 60 : totalSeconds;
-        int hours = (totalSeconds = (totalSeconds / 60)) >= 24 ? totalSeconds % 24 : totalSeconds;
-        int days = (totalSeconds = (totalSeconds / 24)) >= 30 ? totalSeconds % 30 : totalSeconds;
-
-        if (days > 0) {
-            sb.append(days + "D");
-        }
-
-        if (hours + min + sec + remainingMs > 0) {
-            sb.append("T");
-            if (hours > 0) {
-                sb.append(hours + "H");
-            }
-            if (min > 0) {
-                sb.append(min + "M");
-            }
-
-            if (remainingMs > 0) {
-                sb.append(sec + "." + String.format("%03d", remainingMs) + "S");
-            }
-            else if (sec > 0) {
-                sb.append(sec + "S");
-            }
-        }
-
-        String xsdDuration = sb.toString();
-        return xsdDuration;
     }
 
     @Override
