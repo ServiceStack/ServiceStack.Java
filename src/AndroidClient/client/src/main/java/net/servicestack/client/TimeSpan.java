@@ -90,6 +90,10 @@ public class TimeSpan {
         return (int)((durationSecs - (int)durationSecs) * 1000);
     }
 
+    public static TimeSpan fromXsdDuration(String xsdDuration){
+        return parse(xsdDuration);
+    }
+
     public static TimeSpan parse(String xsdDuration){
         int days = 0;
         int hours = 0;

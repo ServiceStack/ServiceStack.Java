@@ -18,6 +18,15 @@ public class JsonTests extends ApplicationTestCase<Application> {
         assertEquals("PT1M", new TimeSpan(0,1,0).toXsdDuration());
         assertEquals("PT1S", new TimeSpan(0,0,1).toXsdDuration());
         assertEquals("PT0.001S", new TimeSpan(0,0,0,0,1).toXsdDuration());
+        assertEquals("P1DT1H1M1.001S", new TimeSpan(1, 1, 1, 1, 1).toXsdDuration());
+    }
+
+    public void test_Does_deserialize_TimeSpan(){
+        assertEquals("P1D", new TimeSpan(1,0,0,0).toXsdDuration());
+        assertEquals("PT1H", new TimeSpan(1,0,0).toXsdDuration());
+        assertEquals("PT1M", new TimeSpan(0,1,0).toXsdDuration());
+        assertEquals("PT1S", new TimeSpan(0,0,1).toXsdDuration());
+        assertEquals("PT0.001S", new TimeSpan(0,0,0,0,1).toXsdDuration());
         assertEquals("P1DT1H1M1.001S", new TimeSpan(1,1,1,1,1).toXsdDuration());
     }
 
