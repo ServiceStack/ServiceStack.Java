@@ -8,6 +8,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.BufferedReader;
@@ -15,9 +16,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by Layoric on 9/04/2015.
@@ -71,16 +70,30 @@ public class UpdateServiceStackUtils {
             builder.setPath(existingPath + "/types/java");
         }
 
+        Map<String,String> options = new HashMap<String,String>();
         for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
             String configLine = linesOfCode.get(i);
             if(!configLine.startsWith("//") && configLine.contains(":")) {
                 String[] keyVal = configLine.split(":");
-                builder.addParameter(keyVal[0],keyVal[1].trim());
+                options.put(keyVal[0], keyVal[1].trim());
             }
         }
 
         try {
             String serverUrl = builder.build().toString();
+            int count = 0;
+            // Using URIBuilder with 'addParameter' URL encodes query values..
+            // Append manually below to avoid issues https://github.com/ServiceStack/ServiceStack.Java/issues/6
+            for(Map.Entry<String,String> option : options.entrySet()) {
+                if(count == 0) {
+                    serverUrl += "?";
+                } else {
+                    serverUrl += "&";
+                }
+                //remove spaces
+                serverUrl += option.getKey() + "=" + option.getValue().trim().replaceAll("\\u0020","");
+                count++;
+            }
             URL javaCodeUrl = new URL(serverUrl);
 
             URLConnection javaCodeConnection = javaCodeUrl.openConnection();
