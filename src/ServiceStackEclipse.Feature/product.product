@@ -14,22 +14,12 @@
 
    <windowImages/>
 
-   <launcher>
-      <solaris/>
-      <win useIco="false">
-         <bmp/>
-      </win>
-   </launcher>
-
-
-   <vm>
-   </vm>
-
    <license>
         <url>http://opensource.org/licenses/BSD-3-Clause</url>
    </license>
 
    <plugins>
+      <plugin id="net.servicestack.eclipse"/>
    </plugins>
 
 
