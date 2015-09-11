@@ -2,7 +2,7 @@
 <feature
       id="net.servicestack.eclipse.feature"
       label="ServiceStackEclipse"
-      version="1.0.1.qualifier"
+      version="1.0.2.qualifier"
       provider-name="ServiceStack">
 
    <description url="http://github.com/ServiceStack/ServiceStack.Java">
@@ -32,7 +32,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
          id="net.servicestack.eclipse"
          download-size="0"
          install-size="0"
-         version="1.0.1.qualifier"
+         version="1.0.2.qualifier"
          unpack="false"/>
 
 </feature>

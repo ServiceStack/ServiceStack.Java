@@ -13,6 +13,7 @@ import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.Workbench;
 
 import net.servicestack.eclipse.wizard.AddReferenceWizard;
 
@@ -49,6 +50,12 @@ public class AddReferenceAction implements IObjectActionDelegate {
 		if (_selection != null) {
 			IStructuredSelection packageSelection = (IStructuredSelection) selectionService
 					.getSelection("org.eclipse.jdt.ui.PackageExplorer");
+			if(packageSelection == null) {
+				ISelectionService selectionService =     
+			            Workbench.getInstance().getActiveWorkbenchWindow().getSelectionService();    
+
+				packageSelection = (IStructuredSelection)selectionService.getSelection(); 
+			}
 			
 			AddReferenceWizard generationWizard = new AddReferenceWizard(_selection, packageSelection);
 			WizardDialog dialog = new WizardDialog(shell, generationWizard);

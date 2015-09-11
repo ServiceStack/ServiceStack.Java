@@ -138,6 +138,9 @@ public class AddReferenceWizard extends Wizard {
 		success = false;
 		final String addressUrl = _page.getAddressUrl();
 		final String fileName = _page.getFileName();
+		boolean fileNameContainsDot = fileName.indexOf('.') > 0;
+		int endSubString = fileNameContainsDot ? fileName.indexOf('.') : fileName.length();
+		final String globalNamespace = fileName.substring(0, endSubString);
 		packageName = _page.getPackageName();
 		try {
 			getContainer().run(true, false, new IRunnableWithProgress() {
@@ -150,7 +153,7 @@ public class AddReferenceWizard extends Wizard {
 					String code = null;
 					try {
 
-						code = fetchDto(addressUrl);
+						code = fetchDto(addressUrl,globalNamespace);
 						if (code == null) {
 							UIJob uiJob = new UIJob("set error") {
 								@Override
@@ -236,14 +239,15 @@ public class AddReferenceWizard extends Wizard {
 		}
 	}
 
-	private String fetchDto(final String addressUrl) throws IOException {
+	private String fetchDto(final String addressUrl, final String globalNamespace) throws IOException {
 		String code = null;
 		INativeTypesHandler nativeTypesHandler = new JavaNativeTypesHandler();
-		Map<String, String> options = null;
+		Map<String, String> options = new HashMap<String, String>();
+		options.put("GlobalNamespace",globalNamespace);
 		if (packageSelected) {
-			options = new HashMap<String, String>();
 			options.put("Package", packageName);
 		}
+		
 		code = nativeTypesHandler.getUpdatedCode(addressUrl, options);
 		return code;
 	}

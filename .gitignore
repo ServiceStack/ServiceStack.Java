@@ -30,5 +30,7 @@ linux.gtk.x86_64/
 macosx.cocoa.x86/
 macosx.cocoa.x86_64
 src/ServiceStackEclipse.UpdateSite/repository/
+src/ServiceStackEclipse.UpdateSite/eclipse/
 win32.win32.x86/
 win32.win32.x86_64/
+
