@@ -2,4 +2,5 @@
 <site>
    <feature url="features/net.servicestack.eclipse.feature_1.0.0.201506041950.jar" id="net.servicestack.eclipse.feature" version="1.0.0.201506041950"/>
    <feature url="features/net.servicestack.eclipse.feature_1.0.1.201507300911.jar" id="net.servicestack.eclipse.feature" version="1.0.1.201507300911"/>
+   <feature url="features/net.servicestack.eclipse.feature_1.0.2.201509111725.jar" id="net.servicestack.eclipse.feature" version="1.0.2.201509111725"/>
 </site>
