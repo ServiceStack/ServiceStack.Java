@@ -188,7 +188,12 @@ public class JsonServiceClient implements ServiceClient {
 
         WebServiceException webEx = null;
         try {
-            String responseBody = Utils.readToEnd(res.getErrorStream(), UTF8.name());
+            InputStream errorStream = res.getErrorStream();
+
+            String responseBody = errorStream != null
+                ? Utils.readToEnd(errorStream, UTF8.name())
+                : null;
+
             webEx = new WebServiceException(responseCode, res.getResponseMessage(), responseBody);
 
             if (res.getHeaderFields().containsKey(HttpHeaders.ContentType) && Utils.matchesContentType(res.getHeaderField(HttpHeaders.ContentType), MimeTypes.Json)){
