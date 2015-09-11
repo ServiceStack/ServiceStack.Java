@@ -3,4 +3,5 @@
    <feature url="features/net.servicestack.eclipse.feature_1.0.0.201506041950.jar" id="net.servicestack.eclipse.feature" version="1.0.0.201506041950"/>
    <feature url="features/net.servicestack.eclipse.feature_1.0.1.201507300911.jar" id="net.servicestack.eclipse.feature" version="1.0.1.201507300911"/>
    <feature url="features/net.servicestack.eclipse.feature_1.0.2.201509111824.jar" id="net.servicestack.eclipse.feature" version="1.0.2.201509111824"/>
+   <feature url="features/net.servicestack.eclipse.feature_1.0.3.201509111919.jar" id="net.servicestack.eclipse.feature" version="1.0.3.201509111919"/>
 </site>
