@@ -169,6 +169,7 @@ public class JsonServiceClient implements ServiceClient {
             }
 
             if (requestBody != null) {
+                req.setDoOutput(true);
                 req.setRequestProperty(HttpHeaders.ContentLength, Integer.toString(requestBody.length));
                 DataOutputStream wr = new DataOutputStream(req.getOutputStream());
                 wr.write(requestBody);
