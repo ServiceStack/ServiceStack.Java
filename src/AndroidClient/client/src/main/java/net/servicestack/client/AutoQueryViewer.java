@@ -3,6 +3,10 @@
 
 package net.servicestack.client;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
 public @interface AutoQueryViewer {
     public String Title() default "";
     public String Description() default "";

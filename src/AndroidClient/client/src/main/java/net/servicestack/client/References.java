@@ -3,6 +3,10 @@
 
 package net.servicestack.client;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
 public @interface References {
 
     public Class value() default Object.class;
