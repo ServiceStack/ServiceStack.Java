@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 public interface ServiceClient {
+    <TResponse> TResponse send(IReturn<TResponse> request);
+
     public <TResponse> TResponse get(IReturn<TResponse> request);
     public <TResponse> TResponse get(IReturn<TResponse> request, Map<String,String> queryParams);
     public <TResponse> TResponse get(String path, Class responseType);

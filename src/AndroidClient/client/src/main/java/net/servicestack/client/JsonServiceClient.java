@@ -126,6 +126,7 @@ public class JsonServiceClient implements ServiceClient {
     public HttpURLConnection createRequest(String url, String httpMethod) {
         return createRequest(url, httpMethod, null, null);
     }
+
     public HttpURLConnection createRequest(String url, String httpMethod, Object request) {
         String contentType = null;
         byte[] requestBody = null;
@@ -216,6 +217,51 @@ public class JsonServiceClient implements ServiceClient {
                 return webEx;
             return new RuntimeException(e);
         }
+    }
+
+    public static String GetSendMethod(Object request)
+    {
+        return request instanceof IGet ?
+              HttpMethods.Get
+            : request instanceof IPost ?
+              HttpMethods.Post
+            : request instanceof IPut ?
+              HttpMethods.Put
+            : request instanceof IDelete ?
+              HttpMethods.Delete
+            : request instanceof IPatch ?
+              HttpMethods.Patch :
+              HttpMethods.Post;
+    }
+
+    public static boolean hasRequestBody(String httpMethod)
+    {
+        switch (httpMethod)
+        {
+            case HttpMethods.Get:
+            case HttpMethods.Delete:
+            case HttpMethods.Head:
+            case HttpMethods.Options:
+                return false;
+        }
+        return true;
+    }
+
+    public HttpURLConnection createSendRequest(Object request) {
+        String httpMethod = GetSendMethod(request);
+        if (hasRequestBody(httpMethod)){
+            return createRequest(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request);
+        } else {
+            String url = createUrl(request);
+            return createRequest(url, httpMethod, null, null);
+        }
+    }
+
+    @Override
+    public <TResponse> TResponse send(IReturn<TResponse> request) {
+        return send(
+            createSendRequest(request),
+            request.getResponseType());
     }
 
     public <TResponse> TResponse send(HttpURLConnection req, Object responseClass) {

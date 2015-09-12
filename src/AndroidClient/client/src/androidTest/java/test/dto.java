@@ -1,6 +1,6 @@
 /* Options:
-Date: 2015-04-10 12:48:39
-Version: 1
+Date: 2015-09-12 01:34:46
+Version: 4.00
 BaseUrl: http://test.servicestack.net
 
 Package: test
@@ -12,6 +12,7 @@ GlobalNamespace: dto
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
+//TreatTypesAsStrings: 
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
@@ -103,9 +104,9 @@ public class dto
     @Flags()
     public static enum EnumFlags
     {
-        Value1(1),
-        Value2(2),
-        Value3(4);
+        @SerializedName("1") Value1(1),
+        @SerializedName("2") Value2(2),
+        @SerializedName("4") Value3(4);
 
         private final int value;
         EnumFlags(final int intValue) { value = intValue; }
@@ -320,6 +321,17 @@ public class dto
         Baz;
     }
 
+    public static enum DayOfWeek
+    {
+        Sunday,
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday;
+    }
+
     public static class PingService
     {
         
@@ -407,6 +419,66 @@ public class dto
         public RequestLogEntry setErrorResponse(Object value) { this.errorResponse = value; return this; }
         public TimeSpan getRequestDuration() { return requestDuration; }
         public RequestLogEntry setRequestDuration(TimeSpan value) { this.requestDuration = value; return this; }
+    }
+
+    public static class QueryBase_1<T> extends QueryBase
+    {
+        
+    }
+
+    public static class OnlyDefinedInGenericType
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public OnlyDefinedInGenericType setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public OnlyDefinedInGenericType setName(String value) { this.name = value; return this; }
+    }
+
+    public static class QueryBase_2<From, Into> extends QueryBase
+    {
+        
+    }
+
+    public static class OnlyDefinedInGenericTypeFrom
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public OnlyDefinedInGenericTypeFrom setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public OnlyDefinedInGenericTypeFrom setName(String value) { this.name = value; return this; }
+    }
+
+    public static class OnlyDefinedInGenericTypeInto
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public OnlyDefinedInGenericTypeInto setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public OnlyDefinedInGenericTypeInto setName(String value) { this.name = value; return this; }
+    }
+
+    public static class Rockstar
+    {
+        public Integer id = null;
+        public String firstName = null;
+        public String lastName = null;
+        public Integer age = null;
+        
+        public Integer getId() { return id; }
+        public Rockstar setId(Integer value) { this.id = value; return this; }
+        public String getFirstName() { return firstName; }
+        public Rockstar setFirstName(String value) { this.firstName = value; return this; }
+        public String getLastName() { return lastName; }
+        public Rockstar setLastName(String value) { this.lastName = value; return this; }
+        public Integer getAge() { return age; }
+        public Rockstar setAge(Integer value) { this.age = value; return this; }
     }
 
     public static enum ExternalEnum2
@@ -672,6 +744,40 @@ public class dto
         public AuthUserSession setProviderOAuthAccess(ArrayList<IAuthTokens> value) { this.providerOAuthAccess = value; return this; }
     }
 
+    public static class QueryBase
+    {
+        @DataMember(Order=1)
+        public Integer skip = null;
+
+        @DataMember(Order=2)
+        public Integer take = null;
+
+        @DataMember(Order=3)
+        public String orderBy = null;
+
+        @DataMember(Order=4)
+        public String orderByDesc = null;
+
+        @DataMember(Order=5)
+        public String include = null;
+
+        @DataMember(Order=6)
+        public HashMap<String,String> meta = null;
+        
+        public Integer getSkip() { return skip; }
+        public QueryBase setSkip(Integer value) { this.skip = value; return this; }
+        public Integer getTake() { return take; }
+        public QueryBase setTake(Integer value) { this.take = value; return this; }
+        public String getOrderBy() { return orderBy; }
+        public QueryBase setOrderBy(String value) { this.orderBy = value; return this; }
+        public String getOrderByDesc() { return orderByDesc; }
+        public QueryBase setOrderByDesc(String value) { this.orderByDesc = value; return this; }
+        public String getInclude() { return include; }
+        public QueryBase setInclude(String value) { this.include = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public QueryBase setMeta(HashMap<String,String> value) { this.meta = value; return this; }
+    }
+
     public static class MenuItemExampleItem
     {
         @DataMember(Order=1)
@@ -883,6 +989,14 @@ public class dto
         public HelloInnerTypesResponse setInnerEnum(InnerEnum value) { this.innerEnum = value; return this; }
     }
 
+    public static class HelloVerbResponse
+    {
+        public String result = null;
+        
+        public String getResult() { return result; }
+        public HelloVerbResponse setResult(String value) { this.result = value; return this; }
+    }
+
     public static class PingResponse
     {
         public HashMap<String,ResponseStatus> responses = null;
@@ -905,6 +1019,20 @@ public class dto
         public RequiresRoleResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
+    public static class SendVerbResponse
+    {
+        public Integer id = null;
+        public String pathInfo = null;
+        public String requestMethod = null;
+        
+        public Integer getId() { return id; }
+        public SendVerbResponse setId(Integer value) { this.id = value; return this; }
+        public String getPathInfo() { return pathInfo; }
+        public SendVerbResponse setPathInfo(String value) { this.pathInfo = value; return this; }
+        public String getRequestMethod() { return requestMethod; }
+        public SendVerbResponse setRequestMethod(String value) { this.requestMethod = value; return this; }
+    }
+
     public static class GetSessionResponse
     {
         public CustomUserSession result = null;
@@ -917,6 +1045,15 @@ public class dto
         public GetSessionResponse setUnAuthInfo(UnAuthInfo value) { this.unAuthInfo = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public GetSessionResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    @Route("/wait/{ForMs}")
+    public static class Wait
+    {
+        public Integer forMs = null;
+        
+        public Integer getForMs() { return forMs; }
+        public Wait setForMs(Integer value) { this.forMs = value; return this; }
     }
 
     @DataContract
@@ -979,10 +1116,16 @@ public class dto
         public AuthenticateResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
     }
 
+    @DataContract
     public static class AssignRolesResponse
     {
+        @DataMember(Order=1)
         public ArrayList<String> allRoles = null;
+
+        @DataMember(Order=2)
         public ArrayList<String> allPermissions = null;
+
+        @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
         
         public ArrayList<String> getAllRoles() { return allRoles; }
@@ -993,10 +1136,16 @@ public class dto
         public AssignRolesResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
+    @DataContract
     public static class UnAssignRolesResponse
     {
+        @DataMember(Order=1)
         public ArrayList<String> allRoles = null;
+
+        @DataMember(Order=2)
         public ArrayList<String> allPermissions = null;
+
+        @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
         
         public ArrayList<String> getAllRoles() { return allRoles; }
@@ -1005,6 +1154,36 @@ public class dto
         public UnAssignRolesResponse setAllPermissions(ArrayList<String> value) { this.allPermissions = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UnAssignRolesResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    @DataContract
+    public static class QueryResponse<T>
+    {
+        @DataMember(Order=1)
+        public Integer offset = null;
+
+        @DataMember(Order=2)
+        public Integer total = null;
+
+        @DataMember(Order=3)
+        public ArrayList<T> results = null;
+
+        @DataMember(Order=4)
+        public HashMap<String,String> meta = null;
+
+        @DataMember(Order=5)
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getOffset() { return offset; }
+        public QueryResponse<T> setOffset(Integer value) { this.offset = value; return this; }
+        public Integer getTotal() { return total; }
+        public QueryResponse<T> setTotal(Integer value) { this.total = value; return this; }
+        public ArrayList<T> getResults() { return results; }
+        public QueryResponse<T> setResults(ArrayList<T> value) { this.results = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public QueryResponse<T> setMeta(HashMap<String,String> value) { this.meta = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public QueryResponse<T> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
     public static class CustomHttpError implements IReturn<CustomHttpErrorResponse>
@@ -1281,8 +1460,8 @@ public class dto
         public TextFileTest setAsAttachment(Boolean value) { this.asAttachment = value; return this; }
     }
 
-    @Route("/hello/{Name}")
-    // @Route("/hello")
+    @Route("/hello")
+    // @Route("/hello/{Name}")
     public static class Hello implements IReturn<HelloResponse>
     {
         @Required()
@@ -1371,6 +1550,7 @@ public class dto
         public AllowedAttributes setRange(Double value) { this.range = value; return this; }
     }
 
+    @Route("/all-types")
     public static class HelloAllTypes implements IReturn<HelloAllTypesResponse>
     {
         public String name = null;
@@ -1387,12 +1567,14 @@ public class dto
         public Object getResponseType() { return responseType; }
     }
 
-    public static class HelloString
+    public static class HelloString implements IReturn<String>
     {
         public String name = null;
         
         public String getName() { return name; }
         public HelloString setName(String value) { this.name = value; return this; }
+        private static Object responseType = String.class;
+        public Object getResponseType() { return responseType; }
     }
 
     public static class HelloVoid
@@ -1523,6 +1705,61 @@ public class dto
         public Object getResponseType() { return responseType; }
     }
 
+    public static class HelloBuiltin
+    {
+        public DayOfWeek dayOfWeek = null;
+        
+        public DayOfWeek getDayOfWeek() { return dayOfWeek; }
+        public HelloBuiltin setDayOfWeek(DayOfWeek value) { this.dayOfWeek = value; return this; }
+    }
+
+    public static class HelloGet implements IReturn<HelloVerbResponse>, IGet
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public HelloGet setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = HelloVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class HelloPost extends HelloBase implements IReturn<HelloVerbResponse>, IPost
+    {
+        
+        private static Object responseType = HelloVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class HelloPut implements IReturn<HelloVerbResponse>, IPut
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public HelloPut setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = HelloVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class HelloDelete implements IReturn<HelloVerbResponse>, IDelete
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public HelloDelete setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = HelloVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class HelloPatch implements IReturn<HelloVerbResponse>, IPatch
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public HelloPatch setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = HelloVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
     @Route("/ping")
     public static class Ping implements IReturn<PingResponse>
     {
@@ -1542,6 +1779,57 @@ public class dto
     {
         
         private static Object responseType = RequiresRoleResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class SendDefault implements IReturn<SendVerbResponse>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public SendDefault setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = SendVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route(Path="/sendrestget/{Id}", Verbs="GET")
+    public static class SendRestGet implements IReturn<SendVerbResponse>, IGet
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public SendRestGet setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = SendVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class SendGet implements IReturn<SendVerbResponse>, IGet
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public SendGet setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = SendVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class SendPost implements IReturn<SendVerbResponse>, IPost
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public SendPost setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = SendVerbResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class SendPut implements IReturn<SendVerbResponse>, IPut
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public SendPut setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = SendVerbResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
@@ -1771,10 +2059,16 @@ public class dto
     }
 
     @Route("/assignroles")
+    @DataContract
     public static class AssignRoles implements IReturn<AssignRolesResponse>
     {
+        @DataMember(Order=1)
         public String userName = null;
+
+        @DataMember(Order=2)
         public ArrayList<String> permissions = null;
+
+        @DataMember(Order=3)
         public ArrayList<String> roles = null;
         
         public String getUserName() { return userName; }
@@ -1788,10 +2082,16 @@ public class dto
     }
 
     @Route("/unassignroles")
+    @DataContract
     public static class UnAssignRoles implements IReturn<UnAssignRolesResponse>
     {
+        @DataMember(Order=1)
         public String userName = null;
+
+        @DataMember(Order=2)
         public ArrayList<String> permissions = null;
+
+        @DataMember(Order=3)
         public ArrayList<String> roles = null;
         
         public String getUserName() { return userName; }
@@ -1801,6 +2101,34 @@ public class dto
         public ArrayList<String> getRoles() { return roles; }
         public UnAssignRoles setRoles(ArrayList<String> value) { this.roles = value; return this; }
         private static Object responseType = UnAssignRolesResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class QueryPocoBase extends QueryBase_1<OnlyDefinedInGenericType> implements IReturn<QueryResponse<OnlyDefinedInGenericType>>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public QueryPocoBase setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = new TypeToken<QueryResponse<OnlyDefinedInGenericType>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class QueryPocoIntoBase extends QueryBase_2<OnlyDefinedInGenericTypeFrom, OnlyDefinedInGenericTypeInto> implements IReturn<QueryResponse<OnlyDefinedInGenericTypeInto>>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public QueryPocoIntoBase setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = new TypeToken<QueryResponse<OnlyDefinedInGenericTypeInto>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/rockstars")
+    public static class QueryRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
+    {
+        
+        private static Object responseType = new TypeToken<QueryResponse<Rockstar>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 

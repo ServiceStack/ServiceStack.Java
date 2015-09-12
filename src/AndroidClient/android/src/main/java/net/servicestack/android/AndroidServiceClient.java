@@ -26,8 +26,31 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         asyncTask.execute(request);
     }
 
-    /* GET */
+    /* SEND */
 
+    @Override
+    public <T> void sendAsync(IReturn<T> request, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<IReturn<T>, Void, T>() {
+            @Override
+            protected T doInBackground(IReturn<T>... params) {
+                try {
+                    return client.send(params[0]);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, request);
+    }
+
+    /* GET */
     public <T> void getAsync(IReturn<T> request, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturn<T>, Void, T>(){

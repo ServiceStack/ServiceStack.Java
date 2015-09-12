@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 public interface AsyncServiceClient {
+    public <T> void sendAsync(IReturn<T> request, final AsyncResult<T> asyncResult);
+
     public <T> void getAsync(IReturn<T> request, final AsyncResult<T> asyncResult);
     public <T> void getAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult);
     public <T> void getAsync(String path, final Class responseType, final AsyncResult<T> asyncResult);
