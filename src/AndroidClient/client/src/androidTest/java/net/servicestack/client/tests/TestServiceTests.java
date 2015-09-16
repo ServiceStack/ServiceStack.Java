@@ -19,9 +19,11 @@ import net.servicestack.client.WebServiceException;
 
 import net.servicestack.client.tests.testdtos.*;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -250,6 +252,17 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         client.put(new HelloReturnVoid().setId(2));
         assertEquals(HttpMethods.Put, sentMethods.get(sentMethods.size() - 1));
     }
+
+    public void test_Can_get_response_as_Raw_String(){
+        String response = client.get(new HelloString().setName("World"));
+        assertEquals("World", response);
+    }
+
+    public void test_Can_get_response_as_Raw_Bytes() {
+        byte[] response = client.get("/json/reply/HelloString?Name=World", byte[].class);
+        assertEquals("World", Utils.fromUtf8Bytes(response));
+    }
+
     /* TEST HELPERS */
 
     public static HelloAllTypes createHelloAllTypes(){
