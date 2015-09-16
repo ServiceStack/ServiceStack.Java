@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-09-12 01:34:46
+Date: 2015-09-15 23:26:23
 Version: 4.00
 BaseUrl: http://test.servicestack.net
 
@@ -1758,6 +1758,14 @@ public class dto
         public HelloPatch setId(Integer value) { this.id = value; return this; }
         private static Object responseType = HelloVerbResponse.class;
         public Object getResponseType() { return responseType; }
+    }
+
+    public static class HelloReturnVoid implements IReturnVoid
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public HelloReturnVoid setId(Integer value) { this.id = value; return this; }
     }
 
     @Route("/ping")
