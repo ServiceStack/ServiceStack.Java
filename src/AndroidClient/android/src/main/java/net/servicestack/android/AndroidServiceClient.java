@@ -6,8 +6,10 @@ package net.servicestack.android;
 import android.os.AsyncTask;
 
 import net.servicestack.client.AsyncResult;
+import net.servicestack.client.AsyncResultVoid;
 import net.servicestack.client.AsyncServiceClient;
 import net.servicestack.client.IReturn;
+import net.servicestack.client.IReturnVoid;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Utils;
 
@@ -45,6 +47,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             @Override
             protected void onPostExecute(T response) {
                 asyncResult.completeResult(response);
+            }
+
+        }, request);
+    }
+
+    @Override
+    public void sendAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<IReturnVoid, Void, Void>() {
+            @Override
+            protected Void doInBackground(IReturnVoid... params) {
+                try {
+                    client.send(params[0]);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void noResponse) {
+                asyncResult.completeResult();
             }
 
         }, request);
@@ -182,6 +206,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public void postAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<IReturnVoid, Void, Void>() {
+            @Override
+            protected Void doInBackground(IReturnVoid... params) {
+                try {
+                    client.post(params[0]);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void noResponse) {
+                asyncResult.completeResult();
+            }
+
+        }, request);
+    }
+
+    @Override
     public <T> void postAsync(String path, final Object request, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -311,6 +357,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             @Override
             protected void onPostExecute(T response) {
                 asyncResult.completeResult(response);
+            }
+
+        }, request);
+    }
+
+    @Override
+    public void putAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<IReturnVoid, Void, Void>() {
+            @Override
+            protected Void doInBackground(IReturnVoid... params) {
+                try {
+                    client.put(params[0]);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void noResponse) {
+                asyncResult.completeResult();
             }
 
         }, request);

@@ -5,8 +5,10 @@ import android.test.ApplicationTestCase;
 import android.text.TextUtils;
 
 import net.servicestack.client.AsyncResult;
+import net.servicestack.client.AsyncResultVoid;
 import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.ExceptionFilter;
+import net.servicestack.client.HttpMethods;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Log;
 import net.servicestack.client.ResponseStatus;
@@ -228,6 +230,26 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
 
             @Override
             public void complete() {
+                signal.countDown();
+            }
+        });
+    }
+
+    public void test_Can_send_ReturnVoid_Async(){
+        final CountDownLatch signal = new CountDownLatch(1);
+
+        final List<String> sentMethods = new ArrayList<>();
+        client.RequestFilter = new ConnectionFilter() {
+            @Override
+            public void exec(HttpURLConnection conn) {
+                sentMethods.add(conn.getRequestMethod());
+            }
+        };
+
+        client.sendAsync(new HelloReturnVoid().setId(1), new AsyncResultVoid() {
+            @Override
+            public void success() {
+                assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
                 signal.countDown();
             }
         });
