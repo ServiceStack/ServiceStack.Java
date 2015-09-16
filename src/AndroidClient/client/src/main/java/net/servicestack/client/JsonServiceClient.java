@@ -264,6 +264,13 @@ public class JsonServiceClient implements ServiceClient {
             request.getResponseType());
     }
 
+    @Override
+    public void send(IReturnVoid request) {
+        String httpMethod = GetSendMethod(request);
+        send(createRequest(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request),
+            IReturnVoid.class);
+    }
+
     public <TResponse> TResponse send(HttpURLConnection req, Object responseClass) {
         try {
             Class resClass = responseClass instanceof Class ? (Class)responseClass : null;
@@ -286,12 +293,20 @@ public class JsonServiceClient implements ServiceClient {
 
             InputStream is = req.getInputStream();
 
-            if (ResponseFilter != null) {
+            if (resClass == IReturnVoid.class){
+                Utils.readBytesToEnd(is);
+                return null;
+            }
+
+            if (ResponseFilter != null)
                 ResponseFilter.exec(req);
-            }
-            if (GlobalResponseFilter != null) {
+            if (GlobalResponseFilter != null)
                 GlobalResponseFilter.exec(req);
-            }
+
+            if (resClass == byte[].class)
+                return (TResponse)Utils.readBytesToEnd(req);
+            if (resClass == String.class)
+                return (TResponse)Utils.readToEnd(is, UTF8.name());
 
             if (Log.isDebugEnabled()) {
                 String json = Utils.readToEnd(is, UTF8.name());
@@ -372,6 +387,12 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public void post(IReturnVoid request) {
+        send(createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request),
+            IReturnVoid.class);
+    }
+
+    @Override
     public <TResponse> TResponse post(String path, Object request, Class responseType) {
         return send(
                 createRequest(resolveUrl(path), HttpMethods.Post, request),
@@ -409,6 +430,12 @@ public class JsonServiceClient implements ServiceClient {
         return send(
             createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request),
             request.getResponseType());
+    }
+
+    @Override
+    public void put(IReturnVoid request) {
+        send(createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request),
+            IReturnVoid.class);
     }
 
     @Override

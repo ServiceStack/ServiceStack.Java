@@ -9,30 +9,33 @@ import java.util.Map;
 
 public interface ServiceClient {
     <TResponse> TResponse send(IReturn<TResponse> request);
+    void send(IReturnVoid request);
 
-    public <TResponse> TResponse get(IReturn<TResponse> request);
-    public <TResponse> TResponse get(IReturn<TResponse> request, Map<String,String> queryParams);
-    public <TResponse> TResponse get(String path, Class responseType);
-    public <TResponse> TResponse get(String path, Type responseType);
-    public HttpURLConnection get(String path);
+    <TResponse> TResponse get(IReturn<TResponse> request);
+    <TResponse> TResponse get(IReturn<TResponse> request, Map<String,String> queryParams);
+    <TResponse> TResponse get(String path, Class responseType);
+    <TResponse> TResponse get(String path, Type responseType);
+    HttpURLConnection get(String path);
 
-    public <TResponse> TResponse post(IReturn<TResponse> request);
-    public <TResponse> TResponse post(String path, Object request, Class responseType);
-    public <TResponse> TResponse post(String path, Object request, Type responseType);
-    public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Class responseType);
-    public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Type responseType);
-    public HttpURLConnection post(String path, byte[] requestBody, String contentType);
+    <TResponse> TResponse post(IReturn<TResponse> request);
+    void post(IReturnVoid request);
+    <TResponse> TResponse post(String path, Object request, Class responseType);
+    <TResponse> TResponse post(String path, Object request, Type responseType);
+    <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Class responseType);
+    <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Type responseType);
+    HttpURLConnection post(String path, byte[] requestBody, String contentType);
 
-    public <TResponse> TResponse put(IReturn<TResponse> request);
-    public <TResponse> TResponse put(String path, Object request, Class responseType);
-    public <TResponse> TResponse put(String path, Object request, Type responseType);
-    public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Class responseType);
-    public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Type responseType);
-    public HttpURLConnection put(String path, byte[] requestBody, String contentType);
+    <TResponse> TResponse put(IReturn<TResponse> request);
+    void put(IReturnVoid request);
+    <TResponse> TResponse put(String path, Object request, Class responseType);
+    <TResponse> TResponse put(String path, Object request, Type responseType);
+    <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Class responseType);
+    <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Type responseType);
+    HttpURLConnection put(String path, byte[] requestBody, String contentType);
 
-    public <TResponse> TResponse delete(IReturn<TResponse> request);
-    public <TResponse> TResponse delete(IReturn<TResponse> request, Map<String,String> queryParams);
-    public <TResponse> TResponse delete(String path, Class responseType);
-    public <TResponse> TResponse delete(String path, Type responseType);
-    public HttpURLConnection delete(String path);
+    <TResponse> TResponse delete(IReturn<TResponse> request);
+    <TResponse> TResponse delete(IReturn<TResponse> request, Map<String,String> queryParams);
+    <TResponse> TResponse delete(String path, Class responseType);
+    <TResponse> TResponse delete(String path, Type responseType);
+    HttpURLConnection delete(String path);
 }

@@ -8,6 +8,7 @@ import android.text.TextUtils;
 
 import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.ExceptionFilter;
+import net.servicestack.client.HttpMethods;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Log;
 import net.servicestack.client.MimeTypes;
@@ -233,6 +234,22 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
         assertEquals(errorCode,401);
     }
 
+    public void test_Can_send_ReturnVoid(){
+        final List<String> sentMethods = new ArrayList<>();
+        client.RequestFilter = new ConnectionFilter() {
+            @Override
+            public void exec(HttpURLConnection conn) {
+                sentMethods.add(conn.getRequestMethod());
+            }
+        };
+
+        client.send(new HelloReturnVoid().setId(1));
+        assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
+        client.post(new HelloReturnVoid().setId(3));
+        assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
+        client.put(new HelloReturnVoid().setId(2));
+        assertEquals(HttpMethods.Put, sentMethods.get(sentMethods.size() - 1));
+    }
     /* TEST HELPERS */
 
     public static HelloAllTypes createHelloAllTypes(){
