@@ -354,6 +354,11 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public void get(IReturnVoid request) {
+        send(createRequest(createUrl(request), HttpMethods.Get), IReturnVoid.class);
+    }
+
+    @Override
     public <TResponse> TResponse get(IReturn<TResponse> request, Map<String, String> queryParams) {
         return send(
                 createRequest(createUrl(request, queryParams), HttpMethods.Get),
@@ -476,6 +481,11 @@ public class JsonServiceClient implements ServiceClient {
         return send(
             createRequest(createUrl(request), HttpMethods.Delete),
             request.getResponseType());
+    }
+
+    @Override
+    public void delete(IReturnVoid request) {
+        send(createRequest(createUrl(request), HttpMethods.Delete), IReturnVoid.class);
     }
 
     @Override

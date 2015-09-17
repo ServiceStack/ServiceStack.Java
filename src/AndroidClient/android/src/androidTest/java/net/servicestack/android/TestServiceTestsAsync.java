@@ -255,6 +255,26 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         });
     }
 
+    public void test_Can_delete_ReturnVoid_Async(){
+        final CountDownLatch signal = new CountDownLatch(1);
+
+        final List<String> sentMethods = new ArrayList<>();
+        client.RequestFilter = new ConnectionFilter() {
+            @Override
+            public void exec(HttpURLConnection conn) {
+                sentMethods.add(conn.getRequestMethod());
+            }
+        };
+
+        client.deleteAsync(new HelloReturnVoid().setId(1), new AsyncResultVoid() {
+            @Override
+            public void success() {
+                assertEquals(HttpMethods.Delete, sentMethods.get(sentMethods.size() - 1));
+                signal.countDown();
+            }
+        });
+    }
+
 
     /* TEST HELPERS */
     public static HelloAllTypes createHelloAllTypes(){

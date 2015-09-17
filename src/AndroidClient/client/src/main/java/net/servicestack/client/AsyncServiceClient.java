@@ -12,6 +12,7 @@ public interface AsyncServiceClient {
     void sendAsync(IReturnVoid request, final AsyncResultVoid asyncResult);
 
     <T> void getAsync(IReturn<T> request, final AsyncResult<T> asyncResult);
+    void getAsync(IReturnVoid request, final AsyncResultVoid asyncResult);
     <T> void getAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult);
     <T> void getAsync(String path, final Class responseType, final AsyncResult<T> asyncResult);
     <T> void getAsync(String path, final Type responseType, final AsyncResult<T> asyncResult);
@@ -34,6 +35,7 @@ public interface AsyncServiceClient {
     void putAsync(String path, final byte[] requestBody, final String contentType, final AsyncResult<byte[]> asyncResult);
 
     <T> void deleteAsync(IReturn<T> request, final AsyncResult<T> asyncResult);
+    void deleteAsync(IReturnVoid request, final AsyncResultVoid asyncResult);
     <T> void deleteAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult);
     <T> void deleteAsync(String path, final Class responseType, final AsyncResult<T> asyncResult);
     <T> void deleteAsync(String path, final Type responseType, final AsyncResult<T> asyncResult);

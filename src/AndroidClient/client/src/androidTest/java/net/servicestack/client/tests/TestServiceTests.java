@@ -247,10 +247,14 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
         client.send(new HelloReturnVoid().setId(1));
         assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
+        client.get(new HelloReturnVoid().setId(2));
+        assertEquals(HttpMethods.Get, sentMethods.get(sentMethods.size() - 1));
         client.post(new HelloReturnVoid().setId(3));
         assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
-        client.put(new HelloReturnVoid().setId(2));
+        client.put(new HelloReturnVoid().setId(4));
         assertEquals(HttpMethods.Put, sentMethods.get(sentMethods.size() - 1));
+        client.delete(new HelloReturnVoid().setId(5));
+        assertEquals(HttpMethods.Delete, sentMethods.get(sentMethods.size() - 1));
     }
 
     public void test_Can_get_response_as_Raw_String(){
