@@ -58,7 +58,7 @@ public class AddReferenceWizard extends Wizard {
 	boolean packageSelected = false;
 
 	private static final String dependencyGroupId = "net.servicestack";
-	private static final String dependencyVersion = "1.0.17";
+	private static final String dependencyVersion = "1.0.18";
 	private static final String clientPackageId = "client";
 	boolean success = false;
 

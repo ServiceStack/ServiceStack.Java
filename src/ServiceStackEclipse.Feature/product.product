@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ServiceStackEclipse" uid="net.servicestack.eclipse.product" id="net.servicestack.eclipse.ServiceStackEclipse" application="org.eclipse.ui.ide.workbench" version="1.0.3" useFeatures="false" includeLaunchers="true">
+<product name="ServiceStackEclipse" uid="net.servicestack.eclipse.product" id="net.servicestack.eclipse.ServiceStackEclipse" application="org.eclipse.ui.ide.workbench" version="1.0.4" useFeatures="false" includeLaunchers="true">
 
 
    <configIni use="default">
@@ -13,6 +13,18 @@
    </launcherArgs>
 
    <windowImages/>
+
+
+   <launcher>
+      <solaris/>
+      <win useIco="false">
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
 
    <license>
         <url>http://opensource.org/licenses/BSD-3-Clause</url>
