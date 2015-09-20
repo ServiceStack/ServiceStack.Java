@@ -96,6 +96,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, request);
     }
 
+    @Override
+    public void getAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<IReturnVoid, Void, Void>() {
+            @Override
+            protected Void doInBackground(IReturnVoid... params) {
+                try {
+                    client.get(params[0]);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void noResponse) {
+                asyncResult.completeResult();
+            }
+
+        }, request);
+    }
+
     public <T> void getAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturn<T>, Void, T>() {
@@ -513,6 +535,28 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             @Override
             protected void onPostExecute(T response) {
                 asyncResult.completeResult(response);
+            }
+
+        }, request);
+    }
+
+    @Override
+    public void deleteAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<IReturnVoid, Void, Void>() {
+            @Override
+            protected Void doInBackground(IReturnVoid... params) {
+                try {
+                    client.delete(params[0]);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void noResponse) {
+                asyncResult.completeResult();
             }
 
         }, request);

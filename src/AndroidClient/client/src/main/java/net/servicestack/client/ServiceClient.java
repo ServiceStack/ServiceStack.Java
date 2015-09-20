@@ -12,6 +12,7 @@ public interface ServiceClient {
     void send(IReturnVoid request);
 
     <TResponse> TResponse get(IReturn<TResponse> request);
+    void get(IReturnVoid request);
     <TResponse> TResponse get(IReturn<TResponse> request, Map<String,String> queryParams);
     <TResponse> TResponse get(String path, Class responseType);
     <TResponse> TResponse get(String path, Type responseType);
@@ -34,6 +35,7 @@ public interface ServiceClient {
     HttpURLConnection put(String path, byte[] requestBody, String contentType);
 
     <TResponse> TResponse delete(IReturn<TResponse> request);
+    void delete(IReturnVoid request);
     <TResponse> TResponse delete(IReturn<TResponse> request, Map<String,String> queryParams);
     <TResponse> TResponse delete(String path, Class responseType);
     <TResponse> TResponse delete(String path, Type responseType);
