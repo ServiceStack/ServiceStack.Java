@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="org.codehaus.plexus:plexus-utils:2.0.6" type="repository">
+    <properties maven-id="org.codehaus.plexus:plexus-utils:2.0.6" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/plexus-utils-2.0.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/plexus-utils-2.0.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

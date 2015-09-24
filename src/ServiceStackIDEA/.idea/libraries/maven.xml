@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="plexus-utils-2.0.6">
+  <library name="maven">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/plexus-utils-2.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/maven.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="maven:maven-model:3.0.0" type="repository">
+    <properties maven-id="maven:maven-model:3.0.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/maven-model-3.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/plexus-utils-1.0-alpha-3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
