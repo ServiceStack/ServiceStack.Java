@@ -42,8 +42,8 @@ jar {
 
 task extractIdeaSdk(type: Copy) {
     def ideaSdkZipPath;
-    if(System.getProperty('ideaSdkZip')) {
-        ideaSdkZipPath = System.getProperty('ideaSdkZip') as String
+    if(System.getenv('ideaSdkZip')) {
+        ideaSdkZipPath = System.getenv('ideaSdkZip')
     } else {
         ideaSdkZipPath = '/lib/idea-sdk.zip';
     }
@@ -62,6 +62,7 @@ test {
 }
 
 task dist(type: Zip, dependsOn: [jar, test]) {
+    archiveName = archiveName.replace('-' + version,''); //remove version from output plugin
     from configurations.bundle
     from jar.archivePath
     rename { f -> "lib/${f}" }
