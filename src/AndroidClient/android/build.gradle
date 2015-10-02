@@ -22,8 +22,10 @@ android {
     }
 }
 
-Properties properties = new Properties()
-properties.load(project.file('./local.properties').newDataInputStream())
+Properties properties = System.properties;
+if(properties.getProperty("bintray.user", null) == null) {
+    properties.load(project.file('./local.properties').newDataInputStream())
+}
 
 def siteUrl = 'https://github.com/ServiceStack/ServiceStack.Java'      // Homepage URL of the library
 def gitUrl = 'https://github.com/ServiceStack/ServiceStack.Java.git'   // Git repository URL

@@ -258,7 +258,7 @@ public class AddServiceStackRefHandler {
         VirtualFileManager.getInstance().syncRefresh();
     }
 
-    private static URIBuilder createUrl(String text) throws MalformedURLException, URISyntaxException {
+    public static URIBuilder createUrl(String text) throws MalformedURLException, URISyntaxException {
         String serverUrl = text.endsWith("/") ? text : (text + "/");
         serverUrl = (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) ? serverUrl : ("http://" + serverUrl);
         URL url = new URL(serverUrl);
@@ -279,7 +279,7 @@ public class AddServiceStackRefHandler {
         return builder;
     }
 
-    private static String getDtoFileName(String name) {
+    public static String getDtoFileName(String name) {
         int p = name.lastIndexOf(".");
         String e = name.substring(p + 1);
         if (p == -1 || !e.equals("java")) {
@@ -291,7 +291,7 @@ public class AddServiceStackRefHandler {
         }
     }
 
-    private static String getDtoNameWithoutExtension(String name) {
+    public static String getDtoNameWithoutExtension(String name) {
         int p = name.lastIndexOf(".");
         String e = name.substring(p + 1);
         if (p == -1 || !e.equals("java")) {
@@ -302,5 +302,4 @@ public class AddServiceStackRefHandler {
             return name.substring(0, p);
         }
     }
-
 }
