@@ -27,6 +27,7 @@ proguard/
 src/ServiceStackIDEA/.idea/workspace.xml
 src/ServiceStackIDEA/lib/sdk/
 src/ServiceStackIDEA/lib/idea-sdk.zip
+src/ServiceStackIDEA/.idea/libraries
 linux.gtk.x86/
 linux.gtk.x86_64/
 macosx.cocoa.x86/
@@ -35,4 +36,7 @@ src/ServiceStackEclipse.UpdateSite/repository/
 src/ServiceStackEclipse.UpdateSite/eclipse/
 win32.win32.x86/
 win32.win32.x86_64/
+src/ServiceStackEclipse/**/.idea
+src/ServiceStackEclipse/**/target
+src/ServiceStackEclipse/**/.settings
 
