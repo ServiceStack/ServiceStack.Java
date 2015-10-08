@@ -32,6 +32,7 @@ Contributors:
 				<version>${tycho-version}</version>
 				<configuration>
 					<includeAllDependencies>true</includeAllDependencies>
+					<finalName>ServiceStackEclipse-UpdateSite</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
