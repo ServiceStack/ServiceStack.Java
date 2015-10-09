@@ -1,119 +1,32 @@
-group 'net.servicestack'
-version '1.0.8'
-
-apply plugin: 'java'
-
-repositories {
-    mavenCentral()
+plugins {
+    id "org.jetbrains.intellij" version "0.0.23"
 }
 
-def IDEA_SDK_NAME = 'IntelliJ IDEA Community Edition IC-141.1532.4'
-
-configurations {
-    ideaSdk
-    bundle // dependencies bundled with the plugin
-    provided
-    compile.extendsFrom provided
-}
-
+apply plugin: 'org.jetbrains.intellij'
 
 dependencies {
-    ideaSdk fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar','*/plugins/maven/lib/*.jar'])
-    provided fileTree(dir: 'lib/sdk/', include: ['*/lib/*.jar','*/plugins/maven/lib/*.jar'])
-    compile configurations.ideaSdk
-    compile configurations.bundle
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    compile 'org.apache.maven:maven-model:3.0.5'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.intellij:forms_rt:6.0.5'
+    compile fileTree(dir: 'lib', include: ['*.jar'])
 }
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+String jbUser;
+String jbPass;
 
-jar {
-    dependsOn configurations.runtime
-    from {
-        (configurations.compile - configurations.provided).collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
+Properties properties = System.properties;
+if(properties.getProperty("jetbrains.plugins.user", null) == null) {
+    properties.load(project.file('./local.properties').newDataInputStream())
+    jbUser = properties.getProperty("jetbrains.plugins.user");
+    jbPass = properties.getProperty("jetbrains.plugins.password");
+}
+
+intellij {
+    version '14.1.4'
+    plugins 'maven'
+    pluginName 'ServiceStackIDEA'
+
+    publish {
+        username jbUser
+        password jbPass
+        pluginId '7749'
+        channel 'nightly'
     }
-}
-
-task extractIdeaSdk(type: Copy) {
-    def ideaSdkZipPath;
-    if(System.getenv('ideaSdkZip')) {
-        ideaSdkZipPath = System.getenv('ideaSdkZip')
-    } else {
-        ideaSdkZipPath = '/lib/idea-sdk.zip';
-    }
-    def zipFile = file(ideaSdkZipPath)
-    def outputDir = file("lib/sdk/idea-ce-14.0.4")
-
-    if(!outputDir.exists()) {
-        from zipTree(zipFile)
-        into outputDir
-    }
-}
-
-test {
-    // Avoid parallel execution, since the IntelliJ boilerplate is not up to that
-    maxParallelForks = 1
-}
-
-task dist(type: Zip, dependsOn: [jar, test]) {
-    archiveName = archiveName.replace('-' + version,''); //remove version from output plugin
-    from configurations.bundle
-    from jar.archivePath
-    rename { f -> "lib/${f}" }
-    into project.name
-    baseName project.name
-}
-
-compileJava.dependsOn extractIdeaSdk
-build.dependsOn dist
-
-// ========= Workspace setup tasks ========= //
-
-apply plugin: 'idea'
-
-idea {
-    project {
-        languageLevel = '1.6'
-        jdkName = IDEA_SDK_NAME
-
-        ipr {
-            withXml {
-                it.node.find { node ->
-                    node.@name == 'ProjectRootManager'
-                }.'@project-jdk-type' = 'IDEA JDK'
-
-                logger.warn "=" * 71
-                logger.warn " Configured IDEA JDK '${jdkName}'."
-                logger.warn " Make sure you have it configured IntelliJ before opening the project!"
-                logger.warn "=" * 71
-            }
-        }
-    }
-
-    module {
-        scopes.COMPILE.minus = [ configurations.ideaSdk ]
-
-        iml {
-            beforeMerged { module ->
-                module.dependencies.clear()
-            }
-            withXml {
-                it.node.@type = 'PLUGIN_MODULE'
-                //  <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml" />
-                def cmp = it.node.appendNode('component')
-                cmp.@name = 'DevKit.ModuleBuildProperties'
-                cmp.@url = 'file://$MODULE_DIR$/src/main/resources/META-INF/plugin.xml'
-            }
-        }
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
 }
