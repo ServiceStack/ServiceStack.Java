@@ -40,3 +40,4 @@ src/ServiceStackEclipse/**/.idea
 src/ServiceStackEclipse/**/target
 src/ServiceStackEclipse/**/.settings
 
+src/AndroidClient/client/pom.xml
