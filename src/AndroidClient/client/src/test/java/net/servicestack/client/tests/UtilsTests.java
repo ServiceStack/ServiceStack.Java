@@ -16,7 +16,7 @@ public class UtilsTests extends TestCase {
         Date date = Utils.parseDate("2015-03-27T03:41:41.987375+00:00");
 
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        assertEquals("2015-03-26T20:41:41.983", dateFmt.format(date));
+        assertEquals("2015-03-27T03:41:41.987", dateFmt.format(date));
     }
 
     public void test_Can_stripSubMillis(){

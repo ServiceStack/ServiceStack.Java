@@ -2,33 +2,15 @@
 
 package net.servicestack.client.tests;
 
+import io.techstacks.dto;
 import junit.framework.TestCase;
-import net.servicestack.client.ConnectionFilter;
-import net.servicestack.client.ExceptionFilter;
-import net.servicestack.client.HttpMethods;
-import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.Log;
-import net.servicestack.client.MimeTypes;
-import net.servicestack.client.ResponseStatus;
-import net.servicestack.client.TimeSpan;
-import net.servicestack.client.Utils;
-import net.servicestack.client.WebServiceException;
-
+import net.servicestack.client.*;
 import net.servicestack.client.tests.testdtos.*;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import io.techstacks.*;
-import io.techstacks.dto;
+import java.util.*;
 
 public class TestServiceTests extends TestCase {
     public TestServiceTests() {
