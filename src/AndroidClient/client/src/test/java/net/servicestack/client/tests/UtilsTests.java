@@ -1,17 +1,15 @@
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-
+import junit.framework.TestCase;
 import net.servicestack.client.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-public class UtilsTests extends ApplicationTestCase<Application> {
+public class UtilsTests extends TestCase {
     public UtilsTests() {
-        super(Application.class);
+
     }
 
     public void test_Can_parse_Date_with_SubMillis(){

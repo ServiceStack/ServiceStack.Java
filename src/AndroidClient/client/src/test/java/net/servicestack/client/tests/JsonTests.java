@@ -2,14 +2,12 @@
 
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-
+import junit.framework.TestCase;
 import net.servicestack.client.TimeSpan;
 
-public class JsonTests extends ApplicationTestCase<Application> {
+public class JsonTests extends TestCase {
     public JsonTests() {
-        super(Application.class);
+
     }
 
     public void test_Does_serialize_TimeSpan(){

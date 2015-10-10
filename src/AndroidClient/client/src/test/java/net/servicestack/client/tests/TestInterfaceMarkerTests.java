@@ -1,8 +1,6 @@
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-
+import junit.framework.TestCase;
 import net.servicestack.client.HttpMethods;
 import net.servicestack.client.JsonServiceClient;
 
@@ -11,9 +9,9 @@ import static test.dto.*;
 /**
  * Created by mythz on 9/11/2015.
  */
-public class TestInterfaceMarkerTests  extends ApplicationTestCase<Application> {
+public class TestInterfaceMarkerTests  extends TestCase {
     public TestInterfaceMarkerTests() {
-        super(Application.class);
+
     }
 
     JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");

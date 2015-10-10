@@ -187,7 +187,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
 
         ResponseStatus status = thrownError[0].getResponseStatus();
 
-        assertEquals("not here", status.getErrorCode());
+        assertEquals("NotFound", status.getErrorCode());
         assertEquals("not here", status.getMessage());
         assertNotNull(status.getStackTrace());
     }

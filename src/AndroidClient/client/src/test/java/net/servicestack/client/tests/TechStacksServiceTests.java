@@ -1,9 +1,6 @@
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-import android.util.Log;
-
+import junit.framework.TestCase;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Utils;
 
@@ -13,9 +10,9 @@ import java.util.ArrayList;
 
 import io.techstacks.dto.*;
 
-public class TechStacksServiceTests extends ApplicationTestCase<Application> {
+public class TechStacksServiceTests extends TestCase {
     public TechStacksServiceTests() {
-        super(Application.class);
+
     }
 
     JsonServiceClient client = new JsonServiceClient("http://techstacks.io");

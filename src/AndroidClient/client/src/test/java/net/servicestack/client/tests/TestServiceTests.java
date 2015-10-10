@@ -2,10 +2,7 @@
 
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-import android.text.TextUtils;
-
+import junit.framework.TestCase;
 import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.ExceptionFilter;
 import net.servicestack.client.HttpMethods;
@@ -33,9 +30,8 @@ import java.util.UUID;
 import io.techstacks.*;
 import io.techstacks.dto;
 
-public class TestServiceTests extends ApplicationTestCase<Application> {
+public class TestServiceTests extends TestCase {
     public TestServiceTests() {
-        super(Application.class);
         //Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
@@ -86,7 +82,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
         assertEquals("Hello, World!", response.getResult());
 
-        String results = TextUtils.join(", ", events);
+        String results = strJoin(", ", events);
 
         assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results);
     }
@@ -172,7 +168,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
         ResponseStatus status = thrownError.getResponseStatus();
 
-        assertEquals("not here", status.getErrorCode());
+        assertEquals("NotFound", status.getErrorCode());
         assertEquals("not here", status.getMessage());
         assertNotNull(status.getStackTrace());
     }
@@ -404,5 +400,15 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
     public static void assertPocoEquals(Poco expected, Poco actual){
         assertNotNull(actual);
         assertEquals(actual.getName(), expected.getName());
+    }
+
+    public static String strJoin(String sSep,ArrayList<String> aArr) {
+        StringBuilder sbStr = new StringBuilder();
+        for (int i = 0, il = aArr.size(); i < il; i++) {
+            if (i > 0)
+                sbStr.append(sSep);
+            sbStr.append(aArr.get(i));
+        }
+        return sbStr.toString();
     }
 }
