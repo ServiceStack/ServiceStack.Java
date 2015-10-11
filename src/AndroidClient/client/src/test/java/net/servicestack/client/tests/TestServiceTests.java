@@ -2,40 +2,18 @@
 
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-import android.text.TextUtils;
-
-import net.servicestack.client.ConnectionFilter;
-import net.servicestack.client.ExceptionFilter;
-import net.servicestack.client.HttpMethods;
-import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.Log;
-import net.servicestack.client.MimeTypes;
-import net.servicestack.client.ResponseStatus;
-import net.servicestack.client.TimeSpan;
-import net.servicestack.client.Utils;
-import net.servicestack.client.WebServiceException;
-
+import io.techstacks.dto;
+import junit.framework.TestCase;
+import net.servicestack.client.*;
 import net.servicestack.client.tests.testdtos.*;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-import io.techstacks.*;
-import io.techstacks.dto;
-
-public class TestServiceTests extends ApplicationTestCase<Application> {
+public class TestServiceTests extends TestCase {
     public TestServiceTests() {
-        super(Application.class);
         //Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
@@ -86,7 +64,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
         assertEquals("Hello, World!", response.getResult());
 
-        String results = TextUtils.join(", ", events);
+        String results = strJoin(", ", events);
 
         assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results);
     }
@@ -172,7 +150,7 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
 
         ResponseStatus status = thrownError.getResponseStatus();
 
-        assertEquals("not here", status.getErrorCode());
+        assertEquals("NotFound", status.getErrorCode());
         assertEquals("not here", status.getMessage());
         assertNotNull(status.getStackTrace());
     }
@@ -404,5 +382,15 @@ public class TestServiceTests extends ApplicationTestCase<Application> {
     public static void assertPocoEquals(Poco expected, Poco actual){
         assertNotNull(actual);
         assertEquals(actual.getName(), expected.getName());
+    }
+
+    public static String strJoin(String sSep,ArrayList<String> aArr) {
+        StringBuilder sbStr = new StringBuilder();
+        for (int i = 0, il = aArr.size(); i < il; i++) {
+            if (i > 0)
+                sbStr.append(sSep);
+            sbStr.append(aArr.get(i));
+        }
+        return sbStr.toString();
     }
 }

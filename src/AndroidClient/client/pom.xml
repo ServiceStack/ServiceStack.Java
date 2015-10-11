@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.servicestack</groupId>
+  <artifactId>client</artifactId>
+  <version>1.0.20</version>
+  <name>ServiceStack.Client</name>
+  <description>A client library to call your ServiceStack webservices.</description>
+  <url>https://github.com/ServiceStack/ServiceStack.Java</url>
+  <licenses>
+    <license>
+      <name>The BSD 3-Clause License</name>
+      <url>https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>mythz</id>
+      <name>Demis Bellot</name>
+      <email>team@servicestack.net</email>
+    </developer>
+    <developer>
+      <id>layoric</id>
+      <name>Darren Reid</name>
+      <email>team@servicestack.net</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>https://github.com/ServiceStack/ServiceStack.Java</connection>
+    <developerConnection>https://github.com/ServiceStack/ServiceStack.Java</developerConnection>
+    <url>https://github.com/ServiceStack/ServiceStack.Java</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.3.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.2.3</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

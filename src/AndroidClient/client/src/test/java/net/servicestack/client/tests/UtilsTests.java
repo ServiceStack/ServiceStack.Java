@@ -1,24 +1,22 @@
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-
+import junit.framework.TestCase;
 import net.servicestack.client.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-public class UtilsTests extends ApplicationTestCase<Application> {
+public class UtilsTests extends TestCase {
     public UtilsTests() {
-        super(Application.class);
+
     }
 
     public void test_Can_parse_Date_with_SubMillis(){
         Date date = Utils.parseDate("2015-03-27T03:41:41.987375+00:00");
 
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        assertEquals("2015-03-26T20:41:41.983", dateFmt.format(date));
+        assertEquals("2015-03-27T03:41:41.987", dateFmt.format(date));
     }
 
     public void test_Can_stripSubMillis(){

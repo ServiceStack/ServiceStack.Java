@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "1.0.19"
+version = "1.0.20"
 
 android {
     compileSdkVersion 21
@@ -19,6 +19,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
     }
 }
 
@@ -42,7 +49,7 @@ bintray {
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["BSD 3-Clause"]
-        publish = true
+        publish = properties.getProperty('bintray.publish') == 'true'
         userOrg = 'servicestack'
     }
 }
@@ -92,7 +99,11 @@ install {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile project(':client')
+    compile fileTree(dir: 'libs', include: '*.jar')
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-core:1.9.5'
 }
+
+configurations.compile.exclude group: 'org.apache.httpcomponents'

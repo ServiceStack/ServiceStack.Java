@@ -1,41 +1,67 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'maven'
 
-version = "1.0.19"
-group = "net.servicestack"                                        // Maven Group ID for the artifact
-String packageId = "client"
-
-android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
-
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 21
-        versionCode 1
-        versionName version
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
 
 dependencies {
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'org.apache.httpcomponents:httpmime:4.2.3'
+    testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-core:1.9.5'
 }
+
+version = "1.0.20"
+group = "net.servicestack"                                        // Maven Group ID for the artifact
+String packageId = "client"
+
+String siteUrl = 'https://github.com/ServiceStack/ServiceStack.Java'      // Homepage URL of the library
+String gitUrl = 'https://github.com/ServiceStack/ServiceStack.Java.git'   // Git repository URL
 
 Properties properties = System.properties;
 if(properties.getProperty("bintray.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
 
+task createPom {
+    pom {
+        project {
+            packaging 'jar'
 
-def siteUrl = 'https://github.com/ServiceStack/ServiceStack.Java'      // Homepage URL of the library
-def gitUrl = 'https://github.com/ServiceStack/ServiceStack.Java.git'   // Git repository URL
+            // Add your description here
+            name 'ServiceStack.Client'
+            description 'A client library to call your ServiceStack webservices.'
+            url siteUrl
+
+            // Set your license
+            licenses {
+                license {
+                    name 'The BSD 3-Clause License'
+                    url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'mythz'
+                    name 'Demis Bellot'
+                    email 'team@servicestack.net'
+                }
+                developer {
+                    id 'layoric'
+                    name 'Darren Reid'
+                    email 'team@servicestack.net'
+                }
+            }
+            scm {
+                connection 'https://github.com/ServiceStack/ServiceStack.Java'
+                developerConnection 'https://github.com/ServiceStack/ServiceStack.Java'
+                url 'https://github.com/ServiceStack/ServiceStack.Java'
+            }
+        }
+    }.writeTo("pom.xml")
+}
+build.dependsOn createPom
 
 bintray {
     user = properties.getProperty("bintray.user")
@@ -49,67 +75,13 @@ bintray {
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["BSD 3-Clause"]
-        publish = true
+        publish = properties.getProperty('bintray.publish') == 'true'
     }
 }
 
-task makeJar(type: Copy) {
-    from('build/intermediates/bundles/release/')
-    into('build/libs/')
-    include('classes.jar')
-    rename ('classes.jar', packageId + '-' + version + '.jar')
-}
-
-install {
-    repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'jar'
-
-                // Add your description here
-                name 'ServiceStack.Client'
-                description 'A client library to call your ServiceStack webservices.'
-                url siteUrl
-
-                // Set your license
-                licenses {
-                    license {
-                        name 'The BSD 3-Clause License'
-                        url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'mythz'
-                        name 'Demis Bellot'
-                        email 'team@servicestack.net'
-                    }
-                    developer {
-                        id 'layoric'
-                        name 'Darren Reid'
-                        email 'team@servicestack.net'
-                    }
-                }
-                scm {
-                    connection 'https://github.com/ServiceStack/ServiceStack.Java'
-                    developerConnection 'https://github.com/ServiceStack/ServiceStack.Java'
-                    url 'https://github.com/ServiceStack/ServiceStack.Java'
-                }
-            }
-        }
-    }
-}.dependsOn makeJar
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
+task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
-}
-
-task javadoc(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -117,16 +89,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-task clearJar(type: Delete) {
-    delete ("build/libs/" + packageId + '-' + version + '.jar')
-}
-
 artifacts {
-    archives javadocJar
     archives sourcesJar
-    archives file: new File(project.projectDir,'build/libs/' + packageId + '-' + version + '.jar'), name: packageId, type: 'jar'
-}
-
-task findConventions << {
-    println project.getConvention()
+    archives javadocJar
 }

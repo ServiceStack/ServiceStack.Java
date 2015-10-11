@@ -2,24 +2,22 @@
 
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-import android.util.Log;
-
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import junit.framework.TestCase;
 import net.servicestack.client.tests.dto.*;
 
-public class GsonTests extends ApplicationTestCase<Application> {
+public class GsonTests extends TestCase {
 
     public GsonTests() {
-        super(Application.class);
+
     }
 
     public void test_Gson() {
-        Log.i("LOG", "=========== HELLO JSON ============");
+        System.out.println("=========== HELLO JSON ============");
 
         String json = "{\n" +
                 "  \"posts\": [\n" +
@@ -43,7 +41,7 @@ public class GsonTests extends ApplicationTestCase<Application> {
         Gson gson = new Gson();
         PostList list = gson.fromJson(json, PostList.class);
 
-        Log.i("LOG", "JSON: " + gson.toJson(list));
+        System.out.println("JSON: " + gson.toJson(list));
     }
 
     public class PostList {
@@ -111,7 +109,7 @@ public class GsonTests extends ApplicationTestCase<Application> {
         list.add(o);
 
         Gson gson = new Gson();
-        Log.i("LOG", "JSON LIST: " + gson.toJson(list));
+        System.out.println("JSON LIST: " + gson.toJson(list));
 
         Class a = NestedPojo.class;
     }
