@@ -2,9 +2,7 @@
 
 package net.servicestack.client.tests;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
-
+import junit.framework.TestCase;
 import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.JsonServiceClient;
 
@@ -12,10 +10,10 @@ import net.servicestack.client.tests.dto.*;
 
 import java.net.HttpURLConnection;
 
-public class JsonServiceClientTests extends ApplicationTestCase<Application> {
+public class JsonServiceClientTests extends TestCase {
 
     public JsonServiceClientTests() {
-        super(Application.class);
+
     }
     //10.0.2.2 = loopback
     //http://developer.android.com/tools/devices/emulator.html
