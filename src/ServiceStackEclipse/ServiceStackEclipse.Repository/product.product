@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ServiceStackEclipse" uid="net.servicestack.eclipse.product" id="net.servicestack.eclipse.ServiceStackEclipse" application="org.eclipse.ui.ide.workbench" version="1.0.7.qualifier" useFeatures="false" includeLaunchers="true">
+<product name="ServiceStackEclipse" uid="net.servicestack.eclipse.product" id="net.servicestack.eclipse.ServiceStackEclipse" application="org.eclipse.ui.ide.workbench" version="1.0.6" useFeatures="false" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
