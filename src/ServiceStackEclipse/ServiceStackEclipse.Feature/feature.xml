@@ -2,7 +2,7 @@
 <feature
       id="net.servicestack.eclipse.feature"
       label="ServiceStackEclipse"
-      version="1.0.7.qualifier"
+      version="1.0.6.qualifier"
       provider-name="ServiceStack">
 
    <description url="http://github.com/ServiceStack/ServiceStack.Java">

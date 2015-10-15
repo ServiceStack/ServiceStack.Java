@@ -15,7 +15,7 @@
         <dependency>
             <groupId>net.servicestack.eclipse</groupId>
             <artifactId>net.servicestack.eclipse</artifactId>
-            <version>1.0.7-SNAPSHOT</version>
+            <version>1.0.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -61,5 +61,5 @@
         </plugins>
     </build>
 
-<version>1.0.7-SNAPSHOT</version>
+<version>1.0.6-SNAPSHOT</version>
 </project>
