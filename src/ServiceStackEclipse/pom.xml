@@ -83,33 +83,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.eclipse.tycho.extras</groupId>
-                <artifactId>tycho-p2-extras-plugin</artifactId>
-                <version>${tycho-version}</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>mirror</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>
-                        <!--<repository>-->
-                            <!--<url>http://download.eclipse.org/releases/mars</url>-->
-                            <!--<layout>p2</layout>-->
-                        <!--</repository>-->
-                        <!-- source repositories to mirror from -->
-                        <repository>
-                            <url>https://s3.amazonaws.com/ci-dist/sseclipse/repository/</url>
-                            <layout>p2</layout>
-                            <!-- supported layouts are "p2-metadata", "p2-artifacts", and "p2" (for joint repositories; default) -->
-                        </repository>
-                    </source>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>
