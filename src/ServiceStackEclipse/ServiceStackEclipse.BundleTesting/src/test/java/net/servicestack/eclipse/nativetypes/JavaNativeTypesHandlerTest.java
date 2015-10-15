@@ -1,7 +1,5 @@
-package net.servicestack.eclipseTests.nativetypes;
+package net.servicestack.eclipse.nativetypes;
 
-import net.servicestack.eclipse.nativetypes.JavaNativeTypesHandler;
-import net.servicestack.eclipse.nativetypes.NativeTypesLanguage;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -26,6 +26,7 @@
         <module>ServiceStackEclipse.Bundle</module>
         <module>ServiceStackEclipse.Repository</module>
         <module>ServiceStackEclipse.Feature</module>
+        <module>ServiceStackEclipse.BundleTesting</module>
     </modules>
 
     <dependencies>

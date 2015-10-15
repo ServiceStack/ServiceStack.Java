@@ -14,11 +14,4 @@
         <groupId>net.servicestack.eclipse</groupId>
         <artifactId>parent</artifactId>
     </parent>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-        </dependency>
-    </dependencies>
 </project>
