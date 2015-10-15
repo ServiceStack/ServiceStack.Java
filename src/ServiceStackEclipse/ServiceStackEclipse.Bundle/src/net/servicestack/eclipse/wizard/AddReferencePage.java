@@ -56,7 +56,7 @@ public class AddReferencePage extends WizardPage {
 		// composite.setBounds(100, 100, 450, 300);
 
 		GridLayout layout = new GridLayout();
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		GridData gd = new GridData(GridData.FILL_BOTH);
 		composite.setLayout(layout);
 		layout.numColumns = 1;
 		Label addressLabel = new Label(composite, SWT.NONE);
@@ -116,7 +116,6 @@ public class AddReferencePage extends WizardPage {
 		});
 
 		setControl(composite);
-		composite.getShell().setSize(550, 395);
 		dialogChanged();
 	}
 
