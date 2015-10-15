@@ -97,10 +97,10 @@
                 </executions>
                 <configuration>
                     <source>
-                        <repository>
-                            <url>http://download.eclipse.org/releases/mars</url>
-                            <layout>p2</layout>
-                        </repository>
+                        <!--<repository>-->
+                            <!--<url>http://download.eclipse.org/releases/mars</url>-->
+                            <!--<layout>p2</layout>-->
+                        <!--</repository>-->
                         <!-- source repositories to mirror from -->
                         <repository>
                             <url>https://s3.amazonaws.com/ci-dist/sseclipse/repository/</url>
