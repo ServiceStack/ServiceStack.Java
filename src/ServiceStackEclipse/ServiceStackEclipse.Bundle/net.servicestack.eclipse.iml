@@ -3,9 +3,7 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
-    <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/target" />
-    </content>
+    <content url="file://$MODULE_DIR$/../ServiceStackEclipse.Bundle" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
@@ -30,6 +28,51 @@
       <library name="Maven: p2.eclipse-plugin:org.eclipse.osgi:3.10.101.v20150820-1432">
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.osgi/3.10.101.v20150820-1432/org.eclipse.osgi-3.10.101.v20150820-1432.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.servicestack.eclipse:net.servicestack.eclipse:libs/httpcore-4.3.2.jar:1.0.7.qualifier">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/httpcore-4.3.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.servicestack.eclipse:net.servicestack.eclipse:libs/httpclient-4.3.3.jar:1.0.7.qualifier">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/httpclient-4.3.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.servicestack.eclipse:net.servicestack.eclipse:libs/maven-core-3.0.5.jar:1.0.7.qualifier">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/maven-core-3.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.servicestack.eclipse:net.servicestack.eclipse:libs/maven-model-3.0.5.jar:1.0.7.qualifier">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/maven-model-3.0.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.servicestack.eclipse:net.servicestack.eclipse:libs/plexus-utils-2.0.6.jar:1.0.7.qualifier">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/plexus-utils-2.0.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -102,60 +145,6 @@
       <library name="Maven: p2.eclipse-plugin:org.eclipse.equinox.common:3.7.0.v20150402-1709">
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/org.eclipse.equinox.common/3.7.0.v20150402-1709/org.eclipse.equinox.common-3.7.0.v20150402-1709.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:net.servicestack.eclipse:1.0.7.201510150114">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/net/servicestack/eclipse/net.servicestack.eclipse/1.0.7-SNAPSHOT/net.servicestack.eclipse-1.0.7-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:net.servicestack.eclipse:libs/httpcore-4.3.2.jar:1.0.7.201510150114">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/.cache/tycho/net.servicestack.eclipse-1.0.7-SNAPSHOT.jar/libs/httpcore-4.3.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:net.servicestack.eclipse:libs/httpclient-4.3.3.jar:1.0.7.201510150114">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/.cache/tycho/net.servicestack.eclipse-1.0.7-SNAPSHOT.jar/libs/httpclient-4.3.3.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:net.servicestack.eclipse:libs/maven-core-3.0.5.jar:1.0.7.201510150114">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/.cache/tycho/net.servicestack.eclipse-1.0.7-SNAPSHOT.jar/libs/maven-core-3.0.5.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:net.servicestack.eclipse:libs/maven-model-3.0.5.jar:1.0.7.201510150114">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/.cache/tycho/net.servicestack.eclipse-1.0.7-SNAPSHOT.jar/libs/maven-model-3.0.5.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:net.servicestack.eclipse:libs/plexus-utils-2.0.6.jar:1.0.7.201510150114">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/.cache/tycho/net.servicestack.eclipse-1.0.7-SNAPSHOT.jar/libs/plexus-utils-2.0.6.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -279,9 +268,9 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Maven: p2.eclipse-plugin:com.ibm.icu.base:54.1.1.v201501272100">
+      <library name="Maven: p2.eclipse-plugin:com.ibm.icu:54.1.1.v201501272100">
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/com.ibm.icu.base/54.1.1.v201501272100/com.ibm.icu.base-54.1.1.v201501272100.jar!/" />
+          <root url="jar://$MAVEN_REPOSITORY$/p2/osgi/bundle/com.ibm.icu/54.1.1.v201501272100/com.ibm.icu-54.1.1.v201501272100.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
