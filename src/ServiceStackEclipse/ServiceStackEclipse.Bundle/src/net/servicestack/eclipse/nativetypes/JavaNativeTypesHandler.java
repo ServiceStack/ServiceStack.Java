@@ -98,7 +98,7 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
 
 
     public String getUpdatedCode(String baseUrl, Map<String, String> options) throws IOException {
-        String result = null;
+        String result;
         String url = generateUrl(baseUrl, options);
         URL javaCodeUrl = new URL(url);
 

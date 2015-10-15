@@ -1,22 +1,16 @@
 package net.servicestack.eclipse.maven;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
-
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.core.resources.IFile;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
 
 public class EclipseMavenHelper {
 	public boolean addMavenDependencyIfRequired(IFile pomFile, String groupId, String packageId, String version) throws Exception {
@@ -33,7 +27,7 @@ public class EclipseMavenHelper {
                 }
             }
             
-            String content = null;
+            String content;
             if(requiresPomDependency) {
                 Dependency dependency = new Dependency();
                 dependency.setGroupId(groupId);
