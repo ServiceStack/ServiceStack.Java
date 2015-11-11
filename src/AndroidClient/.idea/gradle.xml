@@ -17,6 +17,16 @@
             <option value="$PROJECT_DIR$/techstacks" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/android" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/client" />
+            <option value="$PROJECT_DIR$/client-new" />
+            <option value="$PROJECT_DIR$/techstacks" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>
