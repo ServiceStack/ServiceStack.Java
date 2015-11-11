@@ -56,7 +56,7 @@ public class SelectionTester extends PropertyTester {
 				try {
 					for(int i = 0; i < 10; i++) {
 						String line = br.readLine();
-						if(line.startsWith("/* Options:")) {
+						if(line.trim().startsWith("/* Options:")) {
 							UpdateReferenceCurrentSelection.getInstance().UpdateReferenceFile = file;
 							    return true;
 						}

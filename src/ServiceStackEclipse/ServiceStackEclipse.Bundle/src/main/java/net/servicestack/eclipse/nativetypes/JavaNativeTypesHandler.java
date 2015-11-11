@@ -20,7 +20,7 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             linesOfCode.add(line);
-            if(line.startsWith("*/")) break;
+            if(line.trim().startsWith("*/")) break;
         }
         scanner.close();
 
@@ -65,7 +65,7 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
 		try {
 			url = new URL(baseUrl);
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 			return null;
 		}
@@ -117,7 +117,7 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
         }
 
         String javaCode = javaCodeResponse.toString();
-        if (!javaCode.startsWith("/* Options:")) {
+        if (!javaCode.trim().startsWith("/* Options:")) {
             return null;
         }
         result = javaCode;
@@ -136,7 +136,7 @@ public class JavaNativeTypesHandler implements INativeTypesHandler {
     }
 
     public boolean isFileAServiceStackReference(String fileContents) {
-        return fileContents.startsWith("/* Options:");
+        return fileContents.trim().startsWith("/* Options:");
     }
 
 
