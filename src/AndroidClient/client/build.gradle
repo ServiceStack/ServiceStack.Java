@@ -14,6 +14,8 @@ dependencies {
 version = "1.0.20"
 group = "net.servicestack"                                        // Maven Group ID for the artifact
 String packageId = "client"
+String groupID = group
+String versionNum = version
 
 String siteUrl = 'https://github.com/ServiceStack/ServiceStack.Java'      // Homepage URL of the library
 String gitUrl = 'https://github.com/ServiceStack/ServiceStack.Java.git'   // Git repository URL
@@ -23,45 +25,48 @@ if(properties.getProperty("bintray.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
 
-task createPom {
-    pom {
-        project {
-            packaging 'jar'
+install {
+    repositories.mavenInstaller {
+        pom {
+            project {
+                packaging 'jar'
+                groupId groupID
+                artifactId packageId
+                version versionNum
+                // Add your description here
+                name 'ServiceStack.Client'
+                description 'A client library to call your ServiceStack webservices.'
+                url siteUrl
 
-            // Add your description here
-            name 'ServiceStack.Client'
-            description 'A client library to call your ServiceStack webservices.'
-            url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The BSD 3-Clause License'
+                        url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
+                    }
+                }
 
-            // Set your license
-            licenses {
-                license {
-                    name 'The BSD 3-Clause License'
-                    url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
+                developers {
+                    developer {
+                        id 'mythz'
+                        name 'Demis Bellot'
+                        email 'team@servicestack.net'
+                    }
+                    developer {
+                        id 'layoric'
+                        name 'Darren Reid'
+                        email 'team@servicestack.net'
+                    }
+                }
+                scm {
+                    connection 'https://github.com/ServiceStack/ServiceStack.Java'
+                    developerConnection 'https://github.com/ServiceStack/ServiceStack.Java'
+                    url 'https://github.com/ServiceStack/ServiceStack.Java'
                 }
             }
-
-            developers {
-                developer {
-                    id 'mythz'
-                    name 'Demis Bellot'
-                    email 'team@servicestack.net'
-                }
-                developer {
-                    id 'layoric'
-                    name 'Darren Reid'
-                    email 'team@servicestack.net'
-                }
-            }
-            scm {
-                connection 'https://github.com/ServiceStack/ServiceStack.Java'
-                developerConnection 'https://github.com/ServiceStack/ServiceStack.Java'
-                url 'https://github.com/ServiceStack/ServiceStack.Java'
-            }
-        }
-    }.writeTo("$buildDir/poms/pom-default.xml").writeTo("pom.xml")
+        }.writeTo('pom.xml')
+    }
 }
-build.dependsOn createPom
 
 bintray {
     user = properties.getProperty("bintray.user")
