@@ -59,7 +59,7 @@ task createPom {
                 url 'https://github.com/ServiceStack/ServiceStack.Java'
             }
         }
-    }.writeTo("$buildDir/poms/pom.xml").writeTo("pom.xml")
+    }.writeTo("$buildDir/poms/pom-default.xml").writeTo("pom.xml")
 }
 build.dependsOn createPom
 
