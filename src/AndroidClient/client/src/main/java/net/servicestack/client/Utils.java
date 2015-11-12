@@ -53,6 +53,8 @@ public class Utils {
         }
     }
 
+
+
     public static Field[] getSerializableFields(Class type){
         List<Field> fields = new ArrayList<Field>();
         for (Class<?> c = type; c != null; c = c.getSuperclass()) {
@@ -69,6 +71,14 @@ public class Utils {
             }
         }
         return fields.toArray(new Field[fields.size()]);
+    }
+
+    public static String stripQuotes(String str) {
+        String result = str;
+        if(str.indexOf("\"") == 0 && str.lastIndexOf("\"") == str.length() - 1) {
+            result = str.substring(1,str.length()-1);
+        }
+        return result;
     }
 
     public static void reverse(byte[] bytes) {

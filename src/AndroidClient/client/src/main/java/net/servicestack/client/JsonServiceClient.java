@@ -100,7 +100,7 @@ public class JsonServiceClient implements ServiceClient {
                 sb.append(sb.length() == 0 ? "?" : "&");
                 sb.append(URLEncoder.encode(f.getName(), "UTF-8"));
                 sb.append("=");
-                sb.append(URLEncoder.encode(val.toString(), "UTF-8"));
+                sb.append(URLEncoder.encode(Utils.stripQuotes(val.toString()), "UTF-8"));
             }
 
             if (query != null) {
