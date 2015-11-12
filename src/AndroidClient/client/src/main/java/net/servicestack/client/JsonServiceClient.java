@@ -200,12 +200,14 @@ public class JsonServiceClient implements ServiceClient {
             if (res.getHeaderFields().containsKey(HttpHeaders.ContentType) && Utils.matchesContentType(res.getHeaderField(HttpHeaders.ContentType), MimeTypes.Json)){
                 Gson gson = new Gson();
                 JsonElement element = gson.fromJson(responseBody, JsonElement.class);
-                JsonObject jsonObj = element.getAsJsonObject();
+                if(element != null) {
+                    JsonObject jsonObj = element.getAsJsonObject();
 
-                for (Map.Entry<String,JsonElement> jsonElementEntry : jsonObj.entrySet()) {
-                    if(jsonElementEntry.getKey().toLowerCase().equals("responsestatus")) {
-                        webEx.setResponseStatus(Utils.createResponseStatus(jsonObj.get(jsonElementEntry.getKey())));
-                        break;
+                    for (Map.Entry<String,JsonElement> jsonElementEntry : jsonObj.entrySet()) {
+                        if(jsonElementEntry.getKey().toLowerCase().equals("responsestatus")) {
+                            webEx.setResponseStatus(Utils.createResponseStatus(jsonObj.get(jsonElementEntry.getKey())));
+                            break;
+                        }
                     }
                 }
             }
