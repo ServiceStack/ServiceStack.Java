@@ -10,6 +10,8 @@ import net.servicestack.client.WebServiceException;
 import net.servicestack.client.tests.dto.*;
 
 import java.net.HttpURLConnection;
+import java.util.Calendar;
+import java.util.Date;
 
 public class JsonServiceClientTests extends TestCase {
 
@@ -62,6 +64,23 @@ public class JsonServiceClientTests extends TestCase {
 //        }
 //
 //        assertTrue(passTest);
+//    }
+
+//    public void test_can_serialize_dates_correctly_via_get_request() {
+//        JsonServiceClient client = new JsonServiceClient("http://localhost:65109/");
+//
+//        testDateDtos.MyGetRequest request = new testDateDtos.MyGetRequest();
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.YEAR, 2015);
+//        cal.set(Calendar.MONTH, Calendar.JANUARY);
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        Date dateRepresentation = cal.getTime();
+//        Date date = dateRepresentation;
+//
+//        request.setDate(date);
+//        testDateDtos.MyGetRequestResponse response = client.get(request);
+//        assertTrue(response != null);
+//        assertEquals(request.getDate(),response.getResult());
 //    }
 
 }
