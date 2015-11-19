@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="client.client-1.0.20-javadoc">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/libs/client-1.0.20-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
