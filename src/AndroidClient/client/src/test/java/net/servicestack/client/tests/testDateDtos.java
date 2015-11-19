@@ -63,4 +63,13 @@ public class testDateDtos
         public MyGetRequestResponse setResult(Date value) { this.Result = value; return this; }
     }
 
+    public static class HelloDateTime implements IReturn<HelloDateTime>
+    {
+        public Date dateTime = null;
+
+        public Date getDateTime() { return dateTime; }
+        public HelloDateTime setDateTime(Date value) { this.dateTime = value; return this; }
+        private static Object responseType = HelloDateTime.class;
+        public Object getResponseType() { return responseType; }
+    }
 }

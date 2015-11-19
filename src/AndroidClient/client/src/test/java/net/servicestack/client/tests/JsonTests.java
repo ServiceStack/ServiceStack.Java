@@ -3,7 +3,15 @@
 package net.servicestack.client.tests;
 
 import junit.framework.TestCase;
+
+import net.servicestack.client.JsonServiceClient;
+import net.servicestack.client.Log;
 import net.servicestack.client.TimeSpan;
+import net.servicestack.client.Utils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Date;
 
 public class JsonTests extends TestCase {
     public JsonTests() {
@@ -34,6 +42,16 @@ public class JsonTests extends TestCase {
         assertEquals(new TimeSpan(1 / TimeSpan.TicksPerSecond), TimeSpan.fromXsdDuration("PT0.0000001S"));
         assertEquals(new TimeSpan(0), TimeSpan.fromXsdDuration("PT0S"));
         assertEquals(new TimeSpan(10 * 365 * 24 * 60 * 60), TimeSpan.fromXsdDuration("P3650D"));
+    }
+
+    public void test_Does_serialize_DateTime_in_QueryString() throws UnsupportedEncodingException {
+        JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+        testDateDtos.HelloDateTime request = new testDateDtos.HelloDateTime()
+                .setDateTime(Utils.parseDate("2001-01-01T01:01:01"));
+
+        String url = client.createUrl(request);
+
+        assertEquals("http://test.servicestack.net/json/reply/HelloDateTime?dateTime=" + URLEncoder.encode("2001-01-01 01:01:01", "UTF-8"), url);
     }
 
     public void test_Can_get_time_components(){
