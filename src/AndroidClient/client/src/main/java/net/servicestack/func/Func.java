@@ -181,10 +181,6 @@ public class Func {
         return to;
     }
 
-    public static <T> T first(T[] xs, Predicate<T> predicate) {
-        return first(toList(xs), predicate);
-    }
-
     public static <T> T first(Iterable<T> xs, Predicate<T> predicate) {
         if (xs == null) return null;
 
