@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Utils;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -115,8 +116,10 @@ public class TechStacksServiceTests extends TestCase {
 
     public void test_Can_deserialize_Overview() throws IOException {
 
-        InputStream is = TechStacksServiceTests.class.getResourceAsStream("/overview.json");
-        String json = Utils.readToEnd(is, "UTF-8");
+//Latest Android Update broke test resources
+//InputStream is = TechStacksServiceTests.class.getResourceAsStream("/overview.json");
+//String json = Utils.readToEnd(is, "UTF-8");
+        String json =  Utils.readToEnd(new FileInputStream("C:\\src\\ServiceStack.Java\\src\\AndroidClient\\client\\src\\test\\resources\\overview.json"), "UTF-8");
 
         OverviewResponse dto = (OverviewResponse)client.fromJson(json, OverviewResponse.class);
 
