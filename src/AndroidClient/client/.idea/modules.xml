@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/../android/android.iml" filepath="$PROJECT_DIR$/../android/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/../app/app.iml" filepath="$PROJECT_DIR$/../app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/client.iml" filepath="$PROJECT_DIR$/client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../client-new/client-new.iml" filepath="$PROJECT_DIR$/../client-new/client-new.iml" />
       <module fileurl="file://$PROJECT_DIR$/../techstacks/techstacks.iml" filepath="$PROJECT_DIR$/../techstacks/techstacks.iml" />
     </modules>
   </component>

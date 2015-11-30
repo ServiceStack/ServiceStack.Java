@@ -1,3 +1,2 @@
 include ':app', ':client', ':android', ':techstacks'
-include 'client-new'
 
