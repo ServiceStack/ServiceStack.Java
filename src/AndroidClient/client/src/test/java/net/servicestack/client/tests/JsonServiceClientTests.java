@@ -7,7 +7,7 @@ import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.JsonServiceClient;
 
 import net.servicestack.client.WebServiceException;
-import net.servicestack.client.tests.dto.*;
+import test.dtos.*;
 
 import java.net.HttpURLConnection;
 import java.util.Calendar;
@@ -20,7 +20,7 @@ public class JsonServiceClientTests extends TestCase {
     }
     //10.0.2.2 = loopback
     //http://developer.android.com/tools/devices/emulator.html
-    JsonServiceClient client = new JsonServiceClient("http://servicestackunittests.azurewebsites.net");
+    JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
 
     public void test_can_GET_HelloAll(){
         Hello request = new Hello()
@@ -33,7 +33,7 @@ public class JsonServiceClientTests extends TestCase {
 
     public void test_can_use_request_filter() {
         final Boolean[] passTest = {false};
-        JsonServiceClient localTestClient = new JsonServiceClient("http://servicestackunittests.azurewebsites.net/");
+        JsonServiceClient localTestClient = new JsonServiceClient("http://test.servicestack.net/");
 
         localTestClient.RequestFilter = new ConnectionFilter() {
             @Override
@@ -50,37 +50,32 @@ public class JsonServiceClientTests extends TestCase {
         assertEquals("Hello, World!", response.getResult());
         assertTrue(passTest[0]);
     }
-//TODO Add service accessible via CI server
-//    public void test_can_parse_empty_404_correctly() {
-//        Boolean passTest = false;
-//        JsonServiceClient localTestClient = new JsonServiceClient("http://localhost:65109/");
-//        Hello request = new Hello()
-//                .setName("World");
-//        try {
-//            localTestClient.get(request);
-//        } catch (WebServiceException ex) {
-//            assertEquals(ex.getStatusCode(),404);
-//            passTest = true;
-//        }
-//
-//        assertTrue(passTest);
-//    }
 
-//    public void test_can_serialize_dates_correctly_via_get_request() {
-//        JsonServiceClient client = new JsonServiceClient("http://localhost:65109/");
-//
-//        testDateDtos.MyGetRequest request = new testDateDtos.MyGetRequest();
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.YEAR, 2015);
-//        cal.set(Calendar.MONTH, Calendar.JANUARY);
-//        cal.set(Calendar.DAY_OF_MONTH, 1);
-//        Date dateRepresentation = cal.getTime();
-//        Date date = dateRepresentation;
-//
-//        request.setDate(date);
-//        testDateDtos.MyGetRequestResponse response = client.get(request);
-//        assertTrue(response != null);
-//        assertEquals(request.getDate(),response.getResult());
-//    }
+    public void test_does_process_missing_service_correctly() {
+        JsonServiceClient localTestClient = new JsonServiceClient("https://servicestack.net/");
 
+        try {
+            localTestClient.get(new EchoTypes());
+            fail("Should throw");
+        } catch (WebServiceException ex) {
+            assertEquals(ex.getStatusCode(), 405);
+        }
+    }
+
+    public void test_can_serialize_dates_correctly_via_get_request() {
+        JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net/");
+
+        EchoTypes request = new EchoTypes();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2015);
+        cal.set(Calendar.MONTH, Calendar.JANUARY);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date dateRepresentation = cal.getTime();
+        Date date = dateRepresentation;
+
+        request.setDateTime(date);
+        EchoTypes response = client.get(request);
+        assertTrue(response != null);
+        assertEquals(request.getDateTime(),response.getDateTime());
+    }
 }
