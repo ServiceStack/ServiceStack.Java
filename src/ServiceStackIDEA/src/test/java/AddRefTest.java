@@ -3,8 +3,7 @@ import com.intellij.openapi.extensions.Extensions;
 import com.intellij.openapi.wm.WindowManager;
 import com.intellij.openapi.wm.impl.TestWindowManager;
 import com.intellij.testFramework.PlatformLiteFixture;
-import net.servicestack.idea.AddServiceStackRefHandler;
-import net.servicestack.idea.AddServiceStackReference;
+import net.servicestack.idea.*;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.net.MalformedURLException;
@@ -26,7 +25,12 @@ public class AddRefTest extends PlatformLiteFixture {
     }
 
     public void testCreateUrl() throws MalformedURLException, URISyntaxException {
-        URIBuilder urlBuilder = AddServiceStackRefHandler.createUrl("techstacks.io");
-        assertEquals(urlBuilder.build().toString(),"http://techstacks.io/types/java/");
+        INativeTypesHandler javaNativeTypesHanlder = new JavaNativeTypesHandler();
+        INativeTypesHandler kotlinNativeTypesHandler = new KotlinNativeTypesHandler();
+        URIBuilder javaUriBuilder = javaNativeTypesHanlder.getUrl("techstacks.io", null);
+        assertEquals(javaUriBuilder.build().toString(),"http://techstacks.io/types/java/");
+
+        URIBuilder kotlinUriBuilder = kotlinNativeTypesHandler.getUrl("techstacks.io", null);
+        assertEquals(kotlinUriBuilder.build().toString(),"http://techstacks.io/types/kotlin/");
     }
 }

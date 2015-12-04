@@ -15,20 +15,17 @@ import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiPackage;
-import org.apache.http.client.utils.URIBuilder;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Created by Layoric on 14/05/2015.
- */
+
 public class AddServiceStackRefHandler {
 
     private static final String dependencyGroupId = "net.servicestack";
@@ -42,49 +39,10 @@ public class AddServiceStackRefHandler {
     }
 
     public static void handleOk(String addressUrl, String qualifiedPackageName, String fileName, String selectedDirectory, Module module, StringBuilder errorMessage) {
-        String url;
-        List<String> javaCodeLines = new ArrayList<String>();
-        try {
-            URIBuilder urlBuilder = createUrl(addressUrl);
-            urlBuilder.addParameter("Package", qualifiedPackageName);
-            String name = getDtoNameWithoutExtension(fileName).replaceAll("\\.", "_");
-            urlBuilder.addParameter("GlobalNamespace", name);
-            url = urlBuilder.build().toString();
+        List<String> javaCodeLines = getDtoLines(addressUrl, qualifiedPackageName, fileName, errorMessage);
 
-            URL serviceUrl = new URL(url);
-            URLConnection javaResponseConnection = serviceUrl.openConnection();
-            BufferedReader javaResponseReader = new BufferedReader(
-                    new InputStreamReader(
-                            javaResponseConnection.getInputStream()));
-            String metadataInputLine;
+        if (javaCodeLines == null) return;
 
-            while ((metadataInputLine = javaResponseReader.readLine()) != null)
-                javaCodeLines.add(metadataInputLine);
-
-            javaResponseReader.close();
-
-            if(!javaCodeLines.get(0).startsWith("/* Options:")) {
-                //Invalid endpoint
-                errorMessage.append("The address url is not a valid ServiceStack endpoint.");
-                return;
-            }
-
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
-            return;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
-            return;
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorMessage.append(e.getClass().getName()).append(" - Failed to read response - ").append(addressUrl);
-            return;
-        }
-
-
-        GradleBuildFileHelper gradleBuildFileHelper = new GradleBuildFileHelper(module);
         boolean showDto = true;
         final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
 
@@ -94,7 +52,7 @@ public class AddServiceStackRefHandler {
         } else {
             //Gradle
             try {
-                showDto = addGradleDependencyIfRequired(module,gradleBuildFileHelper);
+                showDto = addGradleDependencyIfRequired(module);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 String message = "Failed to update build.gradle with '" +
@@ -121,6 +79,45 @@ public class AddServiceStackRefHandler {
         }
         refreshFile(module, dtoPath, showDto);
         VirtualFileManager.getInstance().syncRefresh();
+    }
+
+    @Nullable
+    private static List<String> getDtoLines(String addressUrl, String qualifiedPackageName, String fileName, StringBuilder errorMessage) {
+        Map<String,String> options = new HashMap<String,String>();
+        List<String> javaCodeLines;
+        try {
+            options.put("Package", qualifiedPackageName);
+            String name = getDtoNameWithoutExtension(fileName).replaceAll("\\.", "_");
+            options.put("GlobalNamespace", name);
+            javaCodeLines = getNativeTypesHandler(fileName).getUpdatedCode(addressUrl,options);
+
+            if(!javaCodeLines.get(0).startsWith("/* Options:")) {
+                //Invalid endpoint
+                errorMessage.append("The address url is not a valid ServiceStack endpoint.");
+                return null;
+            }
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
+            return null;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorMessage.append(e.getClass().getName()).append(" - Failed to read response - ").append(addressUrl);
+            return null;
+        }
+        return javaCodeLines;
+    }
+
+    private static INativeTypesHandler getNativeTypesHandler(String fileName) {
+        //Default Java
+        INativeTypesHandler result = new JavaNativeTypesHandler();
+        if(fileName.endsWith(".kt")) return new KotlinNativeTypesHandler();
+        return result;
     }
 
     private static boolean tryAddMavenDependency(Module module) {
@@ -155,9 +152,9 @@ public class AddServiceStackRefHandler {
         return showDto;
     }
 
-    private static boolean addGradleDependencyIfRequired(Module module, GradleBuildFileHelper gradleBuildFileHelper) throws FileNotFoundException {
+    private static boolean addGradleDependencyIfRequired(Module module) throws FileNotFoundException {
         boolean result = true;
-        if(gradleBuildFileHelper.addDependency(dependencyGroupId, dependencyPackageId, dependencyVersion)) {
+        if(GradleBuildFileHelper.addDependency(module,dependencyGroupId, dependencyPackageId, dependencyVersion)) {
             result = false;
             refreshBuildFile(module);
         }
@@ -197,8 +194,8 @@ public class AddServiceStackRefHandler {
 
         PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(qualifiedPackageName);
         if(mainPackage != null && mainPackage.isValid() && mainPackage.getDirectories().length > 0) {
-            File foo = new File(selectedDirectory);
-            VirtualFile selectedFolder = LocalFileSystem.getInstance().findFileByIoFile(foo);
+            File file = new File(selectedDirectory);
+            VirtualFile selectedFolder = LocalFileSystem.getInstance().findFileByIoFile(file);
             if(selectedFolder == null) {
                 errorMessage.append("Unable to determine path for DTO file.");
                 throw new FileNotFoundException();
@@ -258,33 +255,13 @@ public class AddServiceStackRefHandler {
         VirtualFileManager.getInstance().syncRefresh();
     }
 
-    public static URIBuilder createUrl(String text) throws MalformedURLException, URISyntaxException {
-        String serverUrl = text.endsWith("/") ? text : (text + "/");
-        serverUrl = (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) ? serverUrl : ("http://" + serverUrl);
-        URL url = new URL(serverUrl);
-        String path = url.getPath().contains("?") ? url.getPath().split("\\?", 2)[0] : url.getPath();
-        if (!path.endsWith("types/java/")) {
-            serverUrl += "types/java/";
-        }
-        URIBuilder builder;
-
-        try {
-            builder = new URIBuilder(serverUrl);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-
-        return builder;
-    }
-
     public static String getDtoFileName(String name) {
+        INativeTypesHandler nativeTypesHandler = getNativeTypesHandler(name);
         int p = name.lastIndexOf(".");
-        String e = name.substring(p + 1);
-        if (p == -1 || !e.equals("java")) {
+        String e = name.substring(p);
+        if (p == -1 || !e.equals(nativeTypesHandler.getFileExtension())) {
             /* file has no extension */
-            return name + ".java";
+            return name + nativeTypesHandler.getFileExtension();
         } else {
             /* file has extension e */
             return name;
@@ -292,9 +269,10 @@ public class AddServiceStackRefHandler {
     }
 
     public static String getDtoNameWithoutExtension(String name) {
+        INativeTypesHandler nativeTypesHandler = getNativeTypesHandler(name);
         int p = name.lastIndexOf(".");
-        String e = name.substring(p + 1);
-        if (p == -1 || !e.equals("java")) {
+        String e = name.substring(p);
+        if (p == -1 || !e.equals(nativeTypesHandler.getFileExtension())) {
             /* file has no extension */
             return name;
         } else {

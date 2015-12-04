@@ -13,30 +13,13 @@ import java.util.List;
  */
 public class GradleBuildFileHelper {
 
-    private Module module;
+    private static final String kotlinGroupName = "org.jetbrains.kotlin";
 
-    public GradleBuildFileHelper(Module module) {
-        this.module = module;
-    }
-
-    public boolean addDependency(String groupId, String packageName, String version) throws FileNotFoundException {
-        VirtualFile moduleFile = module.getModuleFile();
-        if(moduleFile == null) {
+    public static boolean addDependency(Module module,String groupId, String packageName, String version) throws FileNotFoundException {
+        File gradleFile = getGradleBuildFile(module);
+        if(gradleFile == null) {
             return false;
         }
-        String moduleDirectory = moduleFile.getParent().getPath();
-        File file = new File(moduleDirectory);
-        File[] matchingFiles = file.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.startsWith("build.gradle");
-            }
-        });
-        if(matchingFiles == null || matchingFiles.length == 0) {
-            return false;
-        }
-
-        File gradleFile = matchingFiles[0];
         Integer dependenciesStartIndex = -1;
         Integer dependenciesEndIndex = -1;
         List<String> list = new ArrayList<String>();
@@ -86,5 +69,53 @@ public class GradleBuildFileHelper {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public static Boolean isGradleModule(Module module) {
+        return getGradleBuildFile(module) != null;
+    }
+
+    public static Boolean isUsingKotlin(Module module){
+        if(!isGradleModule(module)) {
+            return false;
+        }
+        File buildFile = getGradleBuildFile(module);
+        if(buildFile == null) {
+            return false;
+        }
+        Boolean result = false;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(buildFile));
+            for (String line; (line = br.readLine()) != null; ) {
+                if(line.contains(kotlinGroupName)) {
+                    result = true;
+                    break;
+                }
+            }
+            br.close();
+        }  catch (IOException e) {
+            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public static File getGradleBuildFile(Module module) {
+        VirtualFile moduleFile = module.getModuleFile();
+        if(moduleFile == null) {
+            return null;
+        }
+        String moduleDirectory = moduleFile.getParent().getPath();
+        File file = new File(moduleDirectory);
+        File[] matchingFiles = file.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.startsWith("build.gradle");
+            }
+        });
+        if(matchingFiles == null || matchingFiles.length == 0) {
+            return null;
+        }
+        return matchingFiles[0];
     }
 }

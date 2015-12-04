@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.0.23"
+    id "org.jetbrains.intellij" version "0.0.32"
 }
 
 apply plugin: 'org.jetbrains.intellij'
@@ -19,7 +19,7 @@ if(properties.getProperty("jetbrains.plugins.user", null) == null) {
 }
 
 intellij {
-    version '14.1.4'
+    version 'IC-14.1.4'
     plugins 'maven'
     pluginName 'ServiceStackIDEA'
 

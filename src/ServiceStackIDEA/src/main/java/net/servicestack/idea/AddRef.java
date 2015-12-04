@@ -187,6 +187,10 @@ public class AddRef extends JDialog {
         setPackageBrowseText(selectedPackage.getQualifiedName());
     }
 
+    public void setFileName(@NotNull String fileName) {
+        nameTextField.setText(fileName);
+    }
+
     public void setSelectedDirectory(@NotNull String selectedDirectory) {
         this.selectedDirectory = selectedDirectory;
     }

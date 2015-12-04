@@ -119,6 +119,10 @@ public class AddServiceStackReference extends AnAction {
             }
         }
 
+        if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
+            dialog.setFileName("dto.kt");
+        }
+
         dialog.setVisible(true);
     }
 
