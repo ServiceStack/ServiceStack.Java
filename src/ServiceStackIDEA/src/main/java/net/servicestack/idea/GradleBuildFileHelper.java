@@ -45,14 +45,12 @@ public class GradleBuildFileHelper {
             int count = 0;
             for(String line; (line = br.readLine()) != null; ) {
                 list.add(line);
-                if(dependenciesStartIndex > -1 && line.startsWith("}")) {
+                if(dependenciesStartIndex > -1 && line.startsWith("}") && dependenciesEndIndex == -1) {
                     dependenciesEndIndex = count;
-                    break;
                 }
-                if(line.startsWith("dependencies {")) {
+                if(dependenciesStartIndex == -1 && line.startsWith("dependencies {")) {
                     dependenciesStartIndex = count;
                 }
-
                 count++;
             }
             br.close();
