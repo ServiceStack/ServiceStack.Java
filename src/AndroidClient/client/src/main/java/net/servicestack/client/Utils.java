@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
@@ -53,10 +54,20 @@ public class Utils {
         }
     }
 
+    static final String KotlinAnnotationClass = "kotlin.jvm.internal.KotlinClass";
 
+    public static boolean isKotlinClass(Class type)
+    {
+        for (Annotation attr : type.getAnnotations()){
+            if (KotlinAnnotationClass.equals(attr.annotationType().getName()))
+                return true;
+        }
+        return false;
+    }
 
     public static Field[] getSerializableFields(Class type){
         List<Field> fields = new ArrayList<Field>();
+        boolean isKotlin = isKotlinClass(type);
         for (Class<?> c = type; c != null; c = c.getSuperclass()) {
             if (c == Object.class)
                 break;
@@ -64,8 +75,13 @@ public class Utils {
             for (Field f : c.getDeclaredFields()) {
                 if (Modifier.isStatic(f.getModifiers()))
                     continue;
-                if (!Modifier.isPublic(f.getModifiers()))
-                    continue;
+                if (!Modifier.isPublic(f.getModifiers())){
+                    if (isKotlin){
+                        f.setAccessible(true); //Kotlin class convention has private backing fields
+                    } else {
+                        continue;
+                    }
+                }
 
                 fields.add(f);
             }
