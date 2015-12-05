@@ -1,2 +1,2 @@
-include ':app', ':client', ':android', ':techstacks'
+include ':app', ':client', ':android', ':techstacks', ':kotlin'
 
