@@ -3,7 +3,7 @@ Date: 2015-03-25 04:55:22
 Version: 1
 BaseUrl: http://localhost:2020
 
-Package: servicestack.net.client.tests
+Package: net.servicestack.android.checkweb
 //GlobalNamespace: dto
 //AddPropertyAccessors: True
 //SettersReturnThis: True
@@ -15,15 +15,29 @@ Package: servicestack.net.client.tests
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
 */
 
-package net.servicestack.android;
+package net.servicestack.android.checkweb;
 
-import com.google.gson.annotations.SerializedName;
+import net.servicestack.client.Api;
+import net.servicestack.client.ApiMember;
+import net.servicestack.client.DataContract;
+import net.servicestack.client.DataMember;
+import net.servicestack.client.Flags;
+import net.servicestack.client.IReturn;
+import net.servicestack.client.IReturnVoid;
+import net.servicestack.client.Required;
+import net.servicestack.client.ResponseStatus;
+import net.servicestack.client.Route;
+import net.servicestack.client.StringLength;
+import net.servicestack.client.TimeSpan;
 
-import java.math.*;
-import java.util.*;
-import net.servicestack.client.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.UUID;
 
-public class dto
+public class dtos
 {
 
     public static class QueryBase_1<T> extends QueryBase

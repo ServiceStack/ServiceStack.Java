@@ -1,9 +1,11 @@
-package net.servicestack.android;
+package net.servicestack.android.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
 import android.text.TextUtils;
 
+import net.servicestack.android.AndroidLogProvider;
+import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.AsyncResultVoid;
 import net.servicestack.client.ConnectionFilter;
@@ -28,7 +30,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import net.servicestack.android.tests.dto.*;
+import static net.servicestack.android.test.dtos.*;
 
 public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
     public TestServiceTestsAsync() {
@@ -155,16 +157,16 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
             }
         };
 
-        dto.ThrowType request = new dto.ThrowType()
+        ThrowType request = new ThrowType()
             .setType("NotFound")
             .setMessage("not here");
 
 
         final CountDownLatch signal = new CountDownLatch(1);
 
-        testClient.putAsync(request, new AsyncResult<dto.ThrowTypeResponse>() {
+        testClient.putAsync(request, new AsyncResult<ThrowTypeResponse>() {
             @Override
-            public void success(dto.ThrowTypeResponse response) {
+            public void success(ThrowTypeResponse response) {
                 fail("should not succeed");
             }
 

@@ -1,15 +1,16 @@
-package net.servicestack.android;
+package net.servicestack.android.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.HttpMethods;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import net.servicestack.android.tests.dto.*;
+import static net.servicestack.android.test.dtos.*;
 
 /**
  * Created by mythz on 9/11/2015.

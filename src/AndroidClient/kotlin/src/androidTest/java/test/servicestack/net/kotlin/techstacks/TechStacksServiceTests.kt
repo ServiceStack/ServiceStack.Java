@@ -187,7 +187,7 @@ class TechStacksServiceTests : TestCase() {
         Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/python-logo.png", lang.LogoUrl)
         Assert.assertEquals(25, lang.StacksCount)
 
-        //        let toJson = dto.toJson()
+        //        let toJson = dtos.toJson()
         //        println(toJson)
     }
 

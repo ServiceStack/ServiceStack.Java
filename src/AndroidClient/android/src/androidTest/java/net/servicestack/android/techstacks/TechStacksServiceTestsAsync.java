@@ -1,4 +1,4 @@
-package net.servicestack.android;
+package net.servicestack.android.techstacks;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -12,7 +12,7 @@ import net.servicestack.client.Utils;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import io.techstacks.dto.*;
+import static net.servicestack.android.techstacks.dtos.*;
 
 public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application> {
     public TechStacksServiceTestsAsync() {

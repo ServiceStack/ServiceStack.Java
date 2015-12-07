@@ -20,13 +20,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-    }
 }
 
 Properties properties = System.properties;
@@ -97,13 +90,10 @@ install {
     }
 }
 
-
 dependencies {
+    compile 'com.google.code.gson:gson:2.4'
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile project(':client')
     compile fileTree(include: '*.jar', dir: 'libs')
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
 }
-
-configurations.compile.exclude group: 'org.apache.httpcomponents'

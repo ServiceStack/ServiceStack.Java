@@ -15,7 +15,7 @@ Package: io.techstacks
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
-package io.techstacks;
+package net.servicestack.android.techstacks;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class dto
+public class dtos
 {
 
     public static class Technology extends TechnologyBase
