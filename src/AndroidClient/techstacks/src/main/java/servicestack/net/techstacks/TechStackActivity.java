@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import net.servicestack.client.Utils;
 import net.servicestack.func.Predicate;
 
@@ -81,12 +83,7 @@ public class TechStackActivity extends Activity implements App.AppDataListener {
                 String imgUrl = result.getScreenshotUrl();
                 if (imgUrl != null){
                     final ImageView img = (ImageView) findViewById(R.id.imgTechStackScreenshotUrl);
-                    data.loadImage(imgUrl, new App.ImageResult() {
-                        @Override
-                        public void success(Bitmap response) {
-                            img.setImageBitmap(response);
-                        }
-                    });
+                    Picasso.with(getApplicationContext()).load(imgUrl).into(img);
                 }
 
                 renderCategories(result);
@@ -130,12 +127,7 @@ public class TechStackActivity extends Activity implements App.AppDataListener {
                         App.openTechnology(activity, x.getSlug());
                     }
                 });
-                App.getData().loadImage(x.getLogoUrl(), new App.ImageResult() {
-                    @Override
-                    public void success(Bitmap response) {
-                        img.setImageBitmap(response);
-                    }
-                });
+                Picasso.with(getApplicationContext()).load(x.getLogoUrl()).into(img);
 
                 if (i % 3 == 0){
                     layoutCategories = new LinearLayout(this);
