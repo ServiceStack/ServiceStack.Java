@@ -8,10 +8,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.apache.http.util.ByteArrayBuffer;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -507,15 +506,13 @@ public class Utils {
     }
 
     public static byte[] readBytesToEnd(InputStream stream) throws IOException {
-
-        ByteArrayBuffer bytes = new ByteArrayBuffer(1024);
-
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream(1024);
         final BufferedInputStream bufferedStream = new BufferedInputStream(stream, 8192);
         try {
             final byte[] buffer = new byte[1024];
             int bytesRead = 0;
             while ((bytesRead = bufferedStream.read(buffer)) > 0) {
-                bytes.append(buffer, 0, bytesRead);
+                bytes.write(buffer, 0, bytesRead);
             }
             return bytes.toByteArray();
         } finally {
