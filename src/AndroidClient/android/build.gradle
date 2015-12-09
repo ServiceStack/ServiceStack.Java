@@ -63,7 +63,7 @@ install {
                 licenses {
                     license {
                         name 'The BSD 3-Clause License'
-                        url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
+                        url 'https://servicestack.net/bsd-license.txt'
                     }
                 }
 
