@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-12-04 23:03:42
+Date: 2015-12-09 03:53:30
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
@@ -10,6 +10,7 @@ Package: test.servicestack.net.kotlin.test
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
+//InitializeCollections: True
 //TreatTypesAsStrings: 
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
@@ -235,14 +236,14 @@ open class HelloWithNestedClass : IReturn<HelloResponse>
 
 open class HelloList : IReturn<ArrayList<ListResult>>
 {
-    var names:ArrayList<String>? = null
+    var names:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = object : TypeToken<ArrayList<ListResult>>(){}.type }
     override fun getResponseType(): Any? = responseType
 }
 
 open class HelloArray : IReturn<ArrayList<ArrayResult>>
 {
-    var names:ArrayList<String>? = null
+    var names:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = object : TypeToken<ArrayList<ArrayResult>>(){}.type }
     override fun getResponseType(): Any? = responseType
 }
@@ -306,10 +307,10 @@ open class AllTypes
     @SerializedName("char") var Char:String? = null
     var nullableDateTime:Date? = null
     var nullableTimeSpan:TimeSpan? = null
-    var stringList:ArrayList<String>? = null
+    var stringList:ArrayList<String> = ArrayList<String>()
     var stringArray:ArrayList<String>? = null
-    var stringMap:HashMap<String,String>? = null
-    var intStringMap:HashMap<Int,String>? = null
+    var stringMap:HashMap<String,String> = HashMap<String,String>()
+    var intStringMap:HashMap<Int,String> = HashMap<Int,String>()
     var subType:SubType? = null
 }
 
@@ -577,10 +578,10 @@ open class EchoTypes : IReturn<EchoTypes>
 @Route("/echo/collections")
 open class EchoCollections : IReturn<EchoCollections>
 {
-    var stringList:ArrayList<String>? = null
+    var stringList:ArrayList<String> = ArrayList<String>()
     var stringArray:ArrayList<String>? = null
-    var stringMap:HashMap<String,String>? = null
-    var intStringMap:HashMap<Int,String>? = null
+    var stringMap:HashMap<String,String> = HashMap<String,String>()
+    var intStringMap:HashMap<Int,String> = HashMap<Int,String>()
     companion object { private val responseType = EchoCollections::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -709,7 +710,7 @@ open class Authenticate : IReturn<AuthenticateResponse>
     var cnonce:String? = null
 
     @DataMember(Order=15)
-    var meta:HashMap<String,String>? = null
+    var meta:HashMap<String,String> = HashMap<String,String>()
     companion object { private val responseType = AuthenticateResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -722,10 +723,10 @@ open class AssignRoles : IReturn<AssignRolesResponse>
     var userName:String? = null
 
     @DataMember(Order=2)
-    var permissions:ArrayList<String>? = null
+    var permissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
-    var roles:ArrayList<String>? = null
+    var roles:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = AssignRolesResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -738,10 +739,10 @@ open class UnAssignRoles : IReturn<UnAssignRolesResponse>
     var userName:String? = null
 
     @DataMember(Order=2)
-    var permissions:ArrayList<String>? = null
+    var permissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
-    var roles:ArrayList<String>? = null
+    var roles:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = UnAssignRolesResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -820,7 +821,7 @@ open class Project
 open class MetadataTestResponse
 {
     var id:Int? = null
-    var results:ArrayList<MetadataTestChild>? = null
+    var results:ArrayList<MetadataTestChild> = ArrayList<MetadataTestChild>()
 }
 
 @DataContract
@@ -836,7 +837,7 @@ open class GetExampleResponse
 
 open class GetRandomIdsResponse
 {
-    var results:ArrayList<String>? = null
+    var results:ArrayList<String> = ArrayList<String>()
 }
 
 open class HelloResponse
@@ -905,7 +906,7 @@ open class EnumResponse
 
 open class PingResponse
 {
-    var responses:HashMap<String,ResponseStatus>? = null
+    var responses:HashMap<String,ResponseStatus> = HashMap<String,ResponseStatus>()
     var responseStatus:ResponseStatus? = null
 }
 
@@ -933,10 +934,10 @@ open class GetSessionResponse
 open class RequestLogsResponse
 {
     @DataMember(Order=1)
-    var results:ArrayList<RequestLogEntry>? = null
+    var results:ArrayList<RequestLogEntry> = ArrayList<RequestLogEntry>()
 
     @DataMember(Order=2)
-    var usage:HashMap<String,String>? = null
+    var usage:HashMap<String,String> = HashMap<String,String>()
 
     @DataMember(Order=3)
     var responseStatus:ResponseStatus? = null
@@ -964,17 +965,17 @@ open class AuthenticateResponse
     var responseStatus:ResponseStatus? = null
 
     @DataMember(Order=7)
-    var meta:HashMap<String,String>? = null
+    var meta:HashMap<String,String> = HashMap<String,String>()
 }
 
 @DataContract
 open class AssignRolesResponse
 {
     @DataMember(Order=1)
-    var allRoles:ArrayList<String>? = null
+    var allRoles:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=2)
-    var allPermissions:ArrayList<String>? = null
+    var allPermissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
     var responseStatus:ResponseStatus? = null
@@ -984,10 +985,10 @@ open class AssignRolesResponse
 open class UnAssignRolesResponse
 {
     @DataMember(Order=1)
-    var allRoles:ArrayList<String>? = null
+    var allRoles:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=2)
-    var allPermissions:ArrayList<String>? = null
+    var allPermissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
     var responseStatus:ResponseStatus? = null
@@ -1003,10 +1004,10 @@ open class QueryResponse<T>
     var total:Int? = null
 
     @DataMember(Order=3)
-    var results:ArrayList<T>? = null
+    var results:ArrayList<T> = ArrayList<T>()
 
     @DataMember(Order=4)
-    var meta:HashMap<String,String>? = null
+    var meta:HashMap<String,String> = HashMap<String,String>()
 
     @DataMember(Order=5)
     var responseStatus:ResponseStatus? = null
@@ -1034,7 +1035,7 @@ enum class ExternalEnum3
 open class MetadataTestChild
 {
     var name:String? = null
-    var results:ArrayList<MetadataTestNestedChild>? = null
+    var results:ArrayList<MetadataTestNestedChild> = ArrayList<MetadataTestNestedChild>()
 }
 
 @DataContract
@@ -1077,13 +1078,13 @@ enum class EnumFlags(val value:Int)
 open class AllCollectionTypes
 {
     var intArray:ArrayList<Int>? = null
-    var intList:ArrayList<Int>? = null
+    var intList:ArrayList<Int> = ArrayList<Int>()
     var stringArray:ArrayList<String>? = null
-    var stringList:ArrayList<String>? = null
+    var stringList:ArrayList<String> = ArrayList<String>()
     var pocoArray:ArrayList<Poco>? = null
-    var pocoList:ArrayList<Poco>? = null
-    var pocoLookup:HashMap<String,ArrayList<Poco>>? = null
-    var pocoLookupMap:HashMap<String,ArrayList<HashMap<String,Poco>>>? = null
+    var pocoList:ArrayList<Poco> = ArrayList<Poco>()
+    var pocoLookup:HashMap<String,ArrayList<Poco>> = HashMap<String,ArrayList<Poco>>()
+    var pocoLookupMap:HashMap<String,ArrayList<HashMap<String,Poco>>> = HashMap<String,ArrayList<HashMap<String,Poco>>>()
 }
 
 open class SubType
@@ -1109,8 +1110,8 @@ open class Poco
 
 open class HelloBase_1<T>
 {
-    var items:ArrayList<T>? = null
-    var counts:ArrayList<Int>? = null
+    var items:ArrayList<T> = ArrayList<T>()
+    var counts:ArrayList<Int> = ArrayList<Int>()
 }
 
 open class Item
@@ -1204,9 +1205,9 @@ open class RequestLogEntry
     var ipAddress:String? = null
     var forwardedFor:String? = null
     var referer:String? = null
-    var headers:HashMap<String,String>? = null
-    var formData:HashMap<String,String>? = null
-    var items:HashMap<String,String>? = null
+    var headers:HashMap<String,String> = HashMap<String,String>()
+    var formData:HashMap<String,String> = HashMap<String,String>()
+    var items:HashMap<String,String> = HashMap<String,String>()
     var session:Object? = null
     var responseDto:Object? = null
     var errorResponse:Object? = null
@@ -1391,10 +1392,10 @@ open class AuthUserSession
     var lastModified:Date? = null
 
     @DataMember(Order=35)
-    var roles:ArrayList<String>? = null
+    var roles:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=36)
-    var permissions:ArrayList<String>? = null
+    var permissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=37)
     var isAuthenticated:Boolean? = null
@@ -1406,7 +1407,7 @@ open class AuthUserSession
     var tag:Long? = null
 
     @DataMember(Order=40)
-    var providerOAuthAccess:ArrayList<IAuthTokens>? = null
+    var providerOAuthAccess:ArrayList<IAuthTokens> = ArrayList<IAuthTokens>()
 }
 
 open class QueryBase
@@ -1427,7 +1428,7 @@ open class QueryBase
     var include:String? = null
 
     @DataMember(Order=6)
-    var meta:HashMap<String,String>? = null
+    var meta:HashMap<String,String> = HashMap<String,String>()
 }
 
 open class MenuItemExampleItem

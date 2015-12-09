@@ -9,9 +9,9 @@ Package: net.servicestack.android.checkweb
 //SettersReturnThis: True
 //AddServiceStackTypes: True
 //AddResponseStatus: False
-//AddImplicitVersion: 
-//IncludeTypes: 
-//ExcludeTypes: 
+//AddImplicitVersion:
+//IncludeTypes:
+//ExcludeTypes:
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
 */
 
