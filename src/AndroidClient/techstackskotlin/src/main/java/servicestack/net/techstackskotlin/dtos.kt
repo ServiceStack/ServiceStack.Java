@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-12-09 01:45:37
+Date: 2015-12-09 04:03:26
 Version: 4.050
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://techstacks.io
@@ -10,6 +10,7 @@ Package: servicestack.net.techstackskotlin
 //AddImplicitVersion: 
 //IncludeTypes: 
 //ExcludeTypes: 
+//InitializeCollections: True
 //TreatTypesAsStrings: 
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
@@ -180,7 +181,7 @@ open class CreateTechnologyStack : IReturn<CreateTechnologyStackResponse>
     var Description:String? = null
     var Details:String? = null
     var IsLocked:Boolean? = null
-    var TechnologyIds:ArrayList<Long>? = null
+    var TechnologyIds:ArrayList<Long> = ArrayList<Long>()
     companion object { private val responseType = CreateTechnologyStackResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -196,7 +197,7 @@ open class UpdateTechnologyStack : IReturn<UpdateTechnologyStackResponse>
     var Description:String? = null
     var Details:String? = null
     var IsLocked:Boolean? = null
-    var TechnologyIds:ArrayList<Long>? = null
+    var TechnologyIds:ArrayList<Long> = ArrayList<Long>()
     companion object { private val responseType = UpdateTechnologyStackResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -388,7 +389,7 @@ open class Authenticate : IReturn<AuthenticateResponse>
     var cnonce:String? = null
 
     @DataMember(Order=15)
-    var Meta:HashMap<String,String>? = null
+    var Meta:HashMap<String,String> = HashMap<String,String>()
     companion object { private val responseType = AuthenticateResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -401,10 +402,10 @@ open class AssignRoles : IReturn<AssignRolesResponse>
     var UserName:String? = null
 
     @DataMember(Order=2)
-    var Permissions:ArrayList<String>? = null
+    var Permissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
-    var Roles:ArrayList<String>? = null
+    var Roles:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = AssignRolesResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -417,10 +418,10 @@ open class UnAssignRoles : IReturn<UnAssignRolesResponse>
     var UserName:String? = null
 
     @DataMember(Order=2)
-    var Permissions:ArrayList<String>? = null
+    var Permissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
-    var Roles:ArrayList<String>? = null
+    var Roles:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = UnAssignRolesResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
@@ -456,24 +457,24 @@ open class GetTechnologyResponse
 {
     var Created:Date? = null
     var Technology:Technology? = null
-    var TechnologyStacks:ArrayList<TechnologyStack>? = null
+    var TechnologyStacks:ArrayList<TechnologyStack> = ArrayList<TechnologyStack>()
     var ResponseStatus:ResponseStatus? = null
 }
 
 open class GetTechnologyPreviousVersionsResponse
 {
-    var Results:ArrayList<TechnologyHistory>? = null
+    var Results:ArrayList<TechnologyHistory> = ArrayList<TechnologyHistory>()
 }
 
 open class GetTechnologyFavoriteDetailsResponse
 {
-    var Users:ArrayList<String>? = null
+    var Users:ArrayList<String> = ArrayList<String>()
     var FavoriteCount:Int? = null
 }
 
 open class GetAllTechnologiesResponse
 {
-    var Results:ArrayList<Technology>? = null
+    var Results:ArrayList<Technology> = ArrayList<Technology>()
 }
 
 @DataContract
@@ -486,10 +487,10 @@ open class QueryResponse<T>
     var Total:Int? = null
 
     @DataMember(Order=3)
-    var Results:ArrayList<T>? = null
+    var Results:ArrayList<T> = ArrayList<T>()
 
     @DataMember(Order=4)
-    var Meta:HashMap<String,String>? = null
+    var Meta:HashMap<String,String> = HashMap<String,String>()
 
     @DataMember(Order=5)
     var ResponseStatus:ResponseStatus? = null
@@ -515,7 +516,7 @@ open class DeleteTechnologyStackResponse
 
 open class GetAllTechnologyStacksResponse
 {
-    var Results:ArrayList<TechnologyStack>? = null
+    var Results:ArrayList<TechnologyStack> = ArrayList<TechnologyStack>()
 }
 
 open class GetTechnologyStackResponse
@@ -527,41 +528,41 @@ open class GetTechnologyStackResponse
 
 open class GetTechnologyStackPreviousVersionsResponse
 {
-    var Results:ArrayList<TechnologyStackHistory>? = null
+    var Results:ArrayList<TechnologyStackHistory> = ArrayList<TechnologyStackHistory>()
 }
 
 open class GetTechnologyStackFavoriteDetailsResponse
 {
-    var Users:ArrayList<String>? = null
+    var Users:ArrayList<String> = ArrayList<String>()
     var FavoriteCount:Int? = null
 }
 
 open class GetConfigResponse
 {
-    var AllTiers:ArrayList<Option>? = null
+    var AllTiers:ArrayList<Option> = ArrayList<Option>()
 }
 
 open class OverviewResponse
 {
     var Created:Date? = null
-    var TopUsers:ArrayList<UserInfo>? = null
-    var TopTechnologies:ArrayList<TechnologyInfo>? = null
-    var LatestTechStacks:ArrayList<TechStackDetails>? = null
-    var TopTechnologiesByTier:HashMap<TechnologyTier,ArrayList<TechnologyInfo>>? = null
+    var TopUsers:ArrayList<UserInfo> = ArrayList<UserInfo>()
+    var TopTechnologies:ArrayList<TechnologyInfo> = ArrayList<TechnologyInfo>()
+    var LatestTechStacks:ArrayList<TechStackDetails> = ArrayList<TechStackDetails>()
+    var TopTechnologiesByTier:HashMap<TechnologyTier,ArrayList<TechnologyInfo>> = HashMap<TechnologyTier,ArrayList<TechnologyInfo>>()
     var ResponseStatus:ResponseStatus? = null
 }
 
 open class AppOverviewResponse
 {
     var Created:Date? = null
-    var AllTiers:ArrayList<Option>? = null
-    var TopTechnologies:ArrayList<TechnologyInfo>? = null
+    var AllTiers:ArrayList<Option> = ArrayList<Option>()
+    var TopTechnologies:ArrayList<TechnologyInfo> = ArrayList<TechnologyInfo>()
     var ResponseStatus:ResponseStatus? = null
 }
 
 open class GetFavoriteTechStackResponse
 {
-    var Results:ArrayList<TechnologyStack>? = null
+    var Results:ArrayList<TechnologyStack> = ArrayList<TechnologyStack>()
 }
 
 open class FavoriteTechStackResponse
@@ -571,7 +572,7 @@ open class FavoriteTechStackResponse
 
 open class GetFavoriteTechnologiesResponse
 {
-    var Results:ArrayList<Technology>? = null
+    var Results:ArrayList<Technology> = ArrayList<Technology>()
 }
 
 open class FavoriteTechnologyResponse
@@ -581,7 +582,7 @@ open class FavoriteTechnologyResponse
 
 open class GetUserFeedResponse
 {
-    var Results:ArrayList<TechStackDetails>? = null
+    var Results:ArrayList<TechStackDetails> = ArrayList<TechStackDetails>()
 }
 
 open class GetUserInfoResponse
@@ -589,9 +590,9 @@ open class GetUserInfoResponse
     var UserName:String? = null
     var Created:Date? = null
     var AvatarUrl:String? = null
-    var TechStacks:ArrayList<TechnologyStack>? = null
-    var FavoriteTechStacks:ArrayList<TechnologyStack>? = null
-    var FavoriteTechnologies:ArrayList<Technology>? = null
+    var TechStacks:ArrayList<TechnologyStack> = ArrayList<TechnologyStack>()
+    var FavoriteTechStacks:ArrayList<TechnologyStack> = ArrayList<TechnologyStack>()
+    var FavoriteTechnologies:ArrayList<Technology> = ArrayList<Technology>()
 }
 
 @DataContract
@@ -616,17 +617,17 @@ open class AuthenticateResponse
     var ResponseStatus:ResponseStatus? = null
 
     @DataMember(Order=7)
-    var Meta:HashMap<String,String>? = null
+    var Meta:HashMap<String,String> = HashMap<String,String>()
 }
 
 @DataContract
 open class AssignRolesResponse
 {
     @DataMember(Order=1)
-    var AllRoles:ArrayList<String>? = null
+    var AllRoles:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=2)
-    var AllPermissions:ArrayList<String>? = null
+    var AllPermissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
     var ResponseStatus:ResponseStatus? = null
@@ -636,10 +637,10 @@ open class AssignRolesResponse
 open class UnAssignRolesResponse
 {
     @DataMember(Order=1)
-    var AllRoles:ArrayList<String>? = null
+    var AllRoles:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=2)
-    var AllPermissions:ArrayList<String>? = null
+    var AllPermissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
     var ResponseStatus:ResponseStatus? = null
@@ -679,14 +680,14 @@ open class QueryBase_1<T> : QueryBase()
 open class TechStackDetails : TechnologyStackBase()
 {
     var DetailsHtml:String? = null
-    var TechnologyChoices:ArrayList<TechnologyInStack>? = null
+    var TechnologyChoices:ArrayList<TechnologyInStack> = ArrayList<TechnologyInStack>()
 }
 
 open class TechnologyStackHistory : TechnologyStackBase()
 {
     var TechnologyStackId:Long? = null
     var Operation:String? = null
-    var TechnologyIds:ArrayList<Long>? = null
+    var TechnologyIds:ArrayList<Long> = ArrayList<Long>()
 }
 
 @DataContract
@@ -779,7 +780,7 @@ open class QueryBase
     var Include:String? = null
 
     @DataMember(Order=6)
-    var Meta:HashMap<String,String>? = null
+    var Meta:HashMap<String,String> = HashMap<String,String>()
 }
 
 open class TechnologyInStack : TechnologyBase()

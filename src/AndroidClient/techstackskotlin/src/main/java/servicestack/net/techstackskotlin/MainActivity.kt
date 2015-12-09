@@ -187,7 +187,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 App.DataType.AppOverview -> {
                     val spinner = categorySpinner
                     if (spinner != null) {
-                        val categories = data.appOverviewResponse?.AllTiers?.map { it.Title } ?: listOf<Option>()
+                        val categories = data.appOverviewResponse!!.AllTiers.map { it.Title }
                         spinner.adapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, categories)
                     }
 
@@ -205,7 +205,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
         }
 
         private fun getTopTechnologies(data: App.AppData): ArrayList<TechnologyInfo> {
-            var topTechnologies = data.appOverviewResponse!!.TopTechnologies!!
+            var topTechnologies = data.appOverviewResponse!!.TopTechnologies
             if (selectedCategory != null && selectedCategory!!.Value != null) {
                 topTechnologies = topTechnologies.filter { it.Tier == selectedCategory?.Value }.toArrayList()
             }
@@ -246,7 +246,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
 
             val list = rootView.findViewById(R.id.listTechStacks) as ListView
             list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val result = App.data.searchTechStacksResponse?.Results!![position]
+                val result = App.data.searchTechStacksResponse!!.Results[position]
                 App.openTechStack(activity, result.Slug)
             }
 
@@ -265,7 +265,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 App.DataType.SearchTechStacks -> {
                     val list = listViewResults
                     if (list != null) {
-                        val results = data.searchTechStacksResponse?.Results?.map { it.Name } ?: listOf<TechnologyStack>()
+                        val results = data.searchTechStacksResponse!!.Results.map { it.Name }
                         list.adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, results)
                     }
                 }
@@ -305,7 +305,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
 
             val list = rootView.findViewById(R.id.listTechnologies) as ListView
             list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val result = App.data.searchTechnologiesResponse?.Results!![position]
+                val result = App.data.searchTechnologiesResponse!!.Results[position]
                 App.openTechnology(activity, result.Slug)
             }
             return rootView
@@ -323,7 +323,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 App.DataType.SearchTechnologies -> {
                     val list = listViewResults
                     if (list != null) {
-                        val results = data.searchTechnologiesResponse?.Results?.map { it.Name } ?: listOf<Technology>()
+                        val results = data.searchTechnologiesResponse!!.Results.map { it.Name }
                         list.adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, results)
                     }
                 }

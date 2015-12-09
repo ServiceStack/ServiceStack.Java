@@ -66,12 +66,12 @@ class TechnologyActivity : Activity(), App.AppDataListener {
                 }
 
                 val list = findViewById(R.id.listTechnologyTechStacks) as ListView
-                val stackNames = result.TechnologyStacks?.map { it.Name } ?: listOf<TechnologyStack>()
+                val stackNames = result.TechnologyStacks.map { it.Name }
 
                 val activity = this
                 list.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, stackNames)
                 list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                    App.openTechStack(activity, result.TechnologyStacks!![position].Slug)
+                    App.openTechStack(activity, result.TechnologyStacks[position].Slug)
                 }
             }
         }

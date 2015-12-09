@@ -74,8 +74,8 @@ class TechStackActivity : Activity(), App.AppDataListener {
 
         val layout = findViewById(R.id.layoutTechStackCategories) as LinearLayout
         layout.removeAllViews()
-        for (o in App.data.appOverviewResponse?.AllTiers ?: ArrayList<Option>()) {
-            val results = result.TechnologyChoices?.filter { it.Tier === o.Value  } ?: listOf<TechnologyInStack>()
+        for (o in App.data.appOverviewResponse!!.AllTiers) {
+            val results = result.TechnologyChoices.filter { it.Tier === o.Value }
 
             if (results.size == 0)
                 continue
