@@ -1,24 +1,17 @@
 package net.servicestack.idea;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.Result;
-import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.DocumentRunnable;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.psi.impl.source.codeStyle.CodeEditUtil;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.xml.GenericDomValue;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -43,7 +36,7 @@ public class IDEAPomFileHelper {
         boolean dependencyAdded = false;
 
         try {
-            if(!pomHasMavenDependency(pomFile,groupId,packageId,version)) {
+            if(!pomHasMavenDependency(pomFile,groupId,packageId)) {
                 PomAppendDependency(module, pomFile,groupId,packageId,version);
                 dependencyAdded = true;
             }
@@ -59,7 +52,7 @@ public class IDEAPomFileHelper {
     }
 
 
-    public String findNearestModulePomFile(Module module) {
+    public static String findNearestModulePomFile(Module module) {
         PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
         String pomFilePath = null;
         for(PsiFile psiPom : pomLibFiles) {
@@ -104,7 +97,6 @@ public class IDEAPomFileHelper {
         final Project project = module.getProject();
         final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByIoFile(pomFile);
         final com.intellij.openapi.editor.Document document = FileDocumentManager.getInstance().getDocument(virtualFile);
-        final PsiFile psiPomFile = PsiDocumentManager.getInstance(project).getPsiFile(document);
         final FileDocumentManager fileDocumentManager = FileDocumentManager.getInstance();
         fileDocumentManager.saveDocument(document); //when file is edited and editor is closed, it is needed to save the text
         PsiDocumentManager.getInstance(project).commitDocument(document);
@@ -120,11 +112,11 @@ public class IDEAPomFileHelper {
         });
     }
 
-    private boolean pomHasDependenciesNode(Document document) {
+    private static boolean pomHasDependenciesNode(Document document) {
         return getMavenDependenciesNode(document) != null;
     }
 
-    private Node getMavenDependenciesNode(Document document) {
+    private static Node getMavenDependenciesNode(Document document) {
         Node rootNode = document.getFirstChild();
         NodeList firstChildern = rootNode.getChildNodes();
         Node result = null;
@@ -141,7 +133,7 @@ public class IDEAPomFileHelper {
         return result;
     }
 
-    private boolean pomHasMavenDependency(File pomFile, String groupId, String packageId, String version) throws ParserConfigurationException, IOException, SAXException {
+    public static boolean pomHasMavenDependency(File pomFile, String groupId, String packageId) throws ParserConfigurationException, IOException, SAXException {
         boolean hasDependency = false;
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -155,7 +147,7 @@ public class IDEAPomFileHelper {
         NodeList depElements = dependencies.getChildNodes();
         for(int i = 0; i < depElements.getLength(); i++) {
             Node dependencyElement = depElements.item(i);
-            if(pomDependencyElementMatch(dependencyElement, groupId,packageId,version)) {
+            if(pomDependencyElementMatch(dependencyElement, groupId,packageId)) {
                 hasDependency = true;
                 break;
             }
@@ -163,23 +155,46 @@ public class IDEAPomFileHelper {
         return hasDependency;
     }
 
-    private boolean pomDependencyElementMatch(Node dependencyElement, String groupId, String packageId, String version) {
+    public static boolean pomHasKotlinDependency(Module module) {
+        String pomFilePath = findNearestModulePomFile(module);
+        if(pomFilePath == null) {
+            return false;
+        }
+        File pomFile = new File(pomFilePath);
+        if(!pomFile.exists()) {
+            return false;
+        }
+
+        try {
+            return pomHasMavenDependency(pomFile,"org.jetbrains.kotlin","kotlin-stdlib");
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static boolean pomDependencyElementMatch(Node dependencyElement, String groupId, String packageId) {
         boolean groupIdMatch = false;
         boolean artifactIdMatch = false;
-        boolean versionMatch = false;
         NodeList dependencyProperties = dependencyElement.getChildNodes();
         for(int j = 0; j < dependencyProperties.getLength(); j++) {
             Node depProp = dependencyProperties.item(j);
-            if(depProp.getNodeName().equals("groupId") && depProp.getNodeValue().equals(groupId)) {
+            if(depProp.getNodeName().equals("groupId") && depProp.getTextContent() != null && depProp.getTextContent().equals(groupId)) {
                 groupIdMatch = true;
             }
-            if(depProp.getNodeName().equals("artifactId") && depProp.getNodeValue().equals(packageId)) {
+            if(depProp.getNodeName().equals("artifactId") && depProp.getTextContent() != null && depProp.getTextContent().equals(packageId)) {
                 artifactIdMatch = true;
             }
-            if(depProp.getNodeName().equals("version") && depProp.getNodeValue().equals(version)) {
-                versionMatch = true;
-            }
         }
-        return groupIdMatch && artifactIdMatch && versionMatch;
+        return groupIdMatch && artifactIdMatch;
+    }
+
+    public static boolean isMavenProjectWithKotlin(Module module) {
+        final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
+        return mavenProjectsManager.isMavenizedModule(module) && pomHasKotlinDependency(module);
     }
 }

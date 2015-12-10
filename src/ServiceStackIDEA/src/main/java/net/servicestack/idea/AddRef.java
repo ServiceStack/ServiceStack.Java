@@ -43,6 +43,8 @@ public class AddRef extends JDialog {
     private String errorMessage;
     private String selectedDirectory;
 
+    private INativeTypesHandler defaultNativeTypesHandler;
+
     public AddRef(@NotNull Module module) {
         this.module = module;
         setContentPane(contentPane);
@@ -185,6 +187,14 @@ public class AddRef extends JDialog {
 
     public void setSelectedPackage(@NotNull PsiPackage selectedPackage) {
         setPackageBrowseText(selectedPackage.getQualifiedName());
+    }
+
+    public void setFileName(@NotNull String fileName) {
+        nameTextField.setText(fileName);
+    }
+
+    public void setDefaultNativeTypesHandler(INativeTypesHandler nativeTypesHandler) {
+        defaultNativeTypesHandler = nativeTypesHandler;
     }
 
     public void setSelectedDirectory(@NotNull String selectedDirectory) {
@@ -358,7 +368,7 @@ public class AddRef extends JDialog {
         label3.setText("Name");
         panel4.add(label3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         nameTextField = new JTextField();
-        nameTextField.setText("dto.java");
+        nameTextField.setText("dtos.java");
         panel4.add(nameTextField, new GridConstraints(2, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         label1.setLabelFor(addressUrlTextField);
         label3.setLabelFor(nameTextField);

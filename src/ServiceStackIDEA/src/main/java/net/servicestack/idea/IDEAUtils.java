@@ -61,4 +61,21 @@ public class IDEAUtils {
         }
         FileEditorManager.getInstance(module.getProject()).closeFile(fileByUrl);
     }
+
+    public static INativeTypesHandler getDefaultNativeTypesHandler(Module module) {
+        if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
+            return new KotlinNativeTypesHandler();
+        }
+
+        if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
+            return new KotlinNativeTypesHandler();
+        }
+        return new JavaNativeTypesHandler();
+    }
+
+    public static INativeTypesHandler getNativeTypesHandler(Module module,String fileName) {
+        if(fileName.endsWith(".kt")) return new KotlinNativeTypesHandler();
+        if(fileName.endsWith(".java")) return new JavaNativeTypesHandler();
+        return getDefaultNativeTypesHandler(module);
+    }
 }
