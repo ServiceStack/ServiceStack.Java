@@ -157,7 +157,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="dto.java"/>
+              <text value="dtos.java"/>
             </properties>
           </component>
         </children>

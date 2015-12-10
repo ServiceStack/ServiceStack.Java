@@ -75,7 +75,7 @@ public class AddServiceStackReference extends AnAction {
                     //do nothing, can't get package name.
                 }
             }
-            dialog.setVisible(true);
+            ShowDialog(module, dialog);
             return;
         }
 
@@ -99,14 +99,14 @@ public class AddServiceStackReference extends AnAction {
         //Check for document, display without a package name if no document.
         Document document = FileDocumentManager.getInstance().getDocument(selectedFile);
         if (document == null) {
-            dialog.setVisible(true);
+            ShowDialog(module, dialog);
             return;
         }
 
         //Check if a 'PsiFile', display without a package name if no PsiFile.
         PsiFile psiFile = PsiDocumentManager.getInstance(module.getProject()).getPsiFile(document);
         if (psiFile == null) {
-            dialog.setVisible(true);
+            ShowDialog(module, dialog);
             return;
         }
 
@@ -118,11 +118,17 @@ public class AddServiceStackReference extends AnAction {
                 dialog.setSelectedPackage(mainPackage);
             }
         }
+        ShowDialog(module, dialog);
+    }
 
+    private void ShowDialog(Module module, AddRef dialog) {
         if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
-            dialog.setFileName("dto.kt");
+            dialog.setFileName("dtos.kt");
         }
 
+        if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
+            dialog.setFileName("dtos.kt");
+        }
         dialog.setVisible(true);
     }
 

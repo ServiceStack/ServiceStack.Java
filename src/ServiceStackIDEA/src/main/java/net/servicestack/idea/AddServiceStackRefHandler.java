@@ -4,7 +4,6 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -30,16 +29,19 @@ public class AddServiceStackRefHandler {
     //Fallback version of dependencies if GitHub tags can't be checked.
     private static String dependencyVersion = "1.0.15";
     private static final String clientPackageId = "client";
+    private static INativeTypesHandler defaultNativeTypesHandler;
 
     public static void setDependencyVersion(String version) {
         dependencyVersion = version;
     }
 
-    public static void handleOk(String addressUrl, String qualifiedPackageName, String fileName, String selectedDirectory, Module module, StringBuilder errorMessage) {
+
+    public static void handleOk(String addressUrl, String qualifiedPackageName,
+                                String fileName, String selectedDirectory,
+                                Module module, StringBuilder errorMessage) {
         List<String> javaCodeLines = getDtoLines(addressUrl, qualifiedPackageName, fileName, errorMessage);
-
         if (javaCodeLines == null) return;
-
+        defaultNativeTypesHandler = getDefaultNativeTypesHandler(module);
         boolean showDto = true;
         final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
 
@@ -112,10 +114,9 @@ public class AddServiceStackRefHandler {
     }
 
     private static INativeTypesHandler getNativeTypesHandler(String fileName) {
-        //Default Java
-        INativeTypesHandler result = new JavaNativeTypesHandler();
         if(fileName.endsWith(".kt")) return new KotlinNativeTypesHandler();
-        return result;
+        if(fileName.endsWith(".java")) return new JavaNativeTypesHandler();
+        return defaultNativeTypesHandler;
     }
 
     private static boolean tryAddMavenDependency(Module module) {
@@ -130,7 +131,7 @@ public class AddServiceStackRefHandler {
                 NotificationType.WARNING);
         try {
             IDEAPomFileHelper pomFileHelper = new IDEAPomFileHelper();
-            String pomFilePath = pomFileHelper.findNearestModulePomFile(module);
+            String pomFilePath = IDEAPomFileHelper.findNearestModulePomFile(module);
             if(pomFilePath == null) {
                 Notifications.Bus.notify(notification);
                 return false;
@@ -241,5 +242,16 @@ public class AddServiceStackRefHandler {
             /* file has extension e */
             return name.substring(0, p);
         }
+    }
+
+    public static INativeTypesHandler getDefaultNativeTypesHandler(Module module) {
+        if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
+            return new KotlinNativeTypesHandler();
+        }
+
+        if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
+            return new KotlinNativeTypesHandler();
+        }
+        return new JavaNativeTypesHandler();
     }
 }
