@@ -5,6 +5,8 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
@@ -63,11 +65,14 @@ public class UpdateServiceStackUtils {
             return;
         }
 
+        Module module = ModuleUtil.findModuleForPsiElement(psiFile);
+        INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(module,psiFile.getName());
+
         String existingPath = builder.getPath();
         if(existingPath == null || existingPath.equals("/")) {
-            builder.setPath("/types/java");
+            builder.setPath("/" + nativeTypesHandler.getRelativeTypesUrl());
         } else {
-            builder.setPath(existingPath + "/types/java");
+            builder.setPath(existingPath + "/" + nativeTypesHandler.getRelativeTypesUrl());
         }
 
         Map<String,String> options = new HashMap<String,String>();
@@ -131,7 +136,7 @@ public class UpdateServiceStackUtils {
         }
     }
 
-    public static boolean containsOptionsHeader(PsiJavaFile psiJavaFile) {
+    public static boolean containsOptionsHeader(PsiFile psiJavaFile) {
         Document dtoDocument = FileDocumentManager.getInstance().getDocument(psiJavaFile.getVirtualFile());
         if(dtoDocument == null) {
             return false;

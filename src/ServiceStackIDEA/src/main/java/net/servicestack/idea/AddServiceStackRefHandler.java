@@ -41,7 +41,7 @@ public class AddServiceStackRefHandler {
                                 Module module, StringBuilder errorMessage) {
         List<String> javaCodeLines = getDtoLines(addressUrl, qualifiedPackageName, fileName, errorMessage);
         if (javaCodeLines == null) return;
-        defaultNativeTypesHandler = getDefaultNativeTypesHandler(module);
+        defaultNativeTypesHandler = IDEAUtils.getDefaultNativeTypesHandler(module);
         boolean showDto = true;
         final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
 
@@ -242,16 +242,5 @@ public class AddServiceStackRefHandler {
             /* file has extension e */
             return name.substring(0, p);
         }
-    }
-
-    public static INativeTypesHandler getDefaultNativeTypesHandler(Module module) {
-        if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
-            return new KotlinNativeTypesHandler();
-        }
-
-        if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
-            return new KotlinNativeTypesHandler();
-        }
-        return new JavaNativeTypesHandler();
     }
 }
