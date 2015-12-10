@@ -3,11 +3,8 @@ package net.servicestack.idea;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
@@ -77,7 +74,8 @@ public class AddServiceStackRefHandler {
         if (!writeDtoFile(javaCodeLines, dtoPath, errorMessage)) {
             return;
         }
-        refreshFile(module, dtoPath, showDto);
+
+        IDEAUtils.refreshFile(module, dtoPath, showDto);
         VirtualFileManager.getInstance().syncRefresh();
     }
 
@@ -131,14 +129,15 @@ public class AddServiceStackRefHandler {
                 message,
                 NotificationType.WARNING);
         try {
-            IPomFileHelper pomFileHelper = new IDEAPomFileHelper();
+            IDEAPomFileHelper pomFileHelper = new IDEAPomFileHelper();
             String pomFilePath = pomFileHelper.findNearestModulePomFile(module);
             if(pomFilePath == null) {
                 Notifications.Bus.notify(notification);
                 return false;
             }
             File pomLibFile = new File(pomFilePath);
-            showDto = pomFileHelper.addMavenDependencyIfRequired(pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
+            showDto = pomFileHelper.addMavenDependency(module,pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
+            IDEAUtils.refreshFile(module,pomFilePath,!showDto);
         } catch(Exception e) {
             showDto = false;
             e.printStackTrace();
@@ -156,7 +155,7 @@ public class AddServiceStackRefHandler {
         boolean result = true;
         if(GradleBuildFileHelper.addDependency(module,dependencyGroupId, dependencyPackageId, dependencyVersion)) {
             result = false;
-            refreshBuildFile(module);
+            IDEAUtils.refreshBuildFile(module);
         }
         return result;
     }
@@ -216,43 +215,6 @@ public class AddServiceStackRefHandler {
             fullDtoPath = moduleSourcePath + "/" + getDtoFileName(fileName);
         }
         return fullDtoPath;
-    }
-
-    private static void refreshBuildFile(Module module) {
-        VirtualFileManager.getInstance().syncRefresh();
-        if(module.getModuleFile() == null) { return; }
-
-        VirtualFile fileByUrl = VirtualFileManager.getInstance().findFileByUrl(module.getModuleFile().getParent().getUrl() + "/build.gradle");
-
-        if(fileByUrl == null) { return; }
-
-        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl, false);
-        Editor currentEditor = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor();
-        if(currentEditor == null) { return; }
-        Document document = currentEditor.getDocument();
-
-        FileDocumentManager.getInstance().reloadFromDisk(document);
-        VirtualFileManager.getInstance().syncRefresh();
-    }
-
-    private static void refreshFile(Module module, String filePath, boolean openFile) {
-        VirtualFileManager.getInstance().syncRefresh();
-        File file = new File(filePath);
-        VirtualFile fileByUrl = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
-
-        if (fileByUrl == null) {
-            return;
-        }
-
-        FileEditorManager.getInstance(module.getProject()).openFile(fileByUrl, false);
-        Editor currentEditor = FileEditorManager.getInstance(module.getProject()).getSelectedTextEditor();
-        if(currentEditor == null) { return; }
-        Document document = currentEditor.getDocument();
-
-        if (!openFile) FileEditorManager.getInstance(module.getProject()).closeFile(fileByUrl);
-
-        FileDocumentManager.getInstance().reloadFromDisk(document);
-        VirtualFileManager.getInstance().syncRefresh();
     }
 
     public static String getDtoFileName(String name) {

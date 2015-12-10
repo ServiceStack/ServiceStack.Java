@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Layoric on 4/12/2015.
- */
 public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
 
     @Override

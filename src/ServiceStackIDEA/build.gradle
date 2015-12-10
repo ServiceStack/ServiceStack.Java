@@ -5,8 +5,10 @@ plugins {
 apply plugin: 'org.jetbrains.intellij'
 
 dependencies {
-    compile fileTree(dir: 'lib', include: ['*.jar'])
+
 }
+
+
 
 String jbUser;
 String jbPass;
@@ -22,6 +24,7 @@ intellij {
     version 'IC-14.1.4'
     plugins 'maven'
     pluginName 'ServiceStackIDEA'
+    updateSinceUntilBuild false
 
     publish {
         username jbUser

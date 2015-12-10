@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import net.servicestack.client.Utils;
 
 import java.util.ArrayList;
@@ -83,12 +85,7 @@ public class TechnologyActivity extends Activity implements App.AppDataListener 
                 String imgUrl = result.getTechnology().getLogoUrl();
                 if (imgUrl != null){
                     final ImageView img = (ImageView) findViewById(R.id.imgTechnologyLogo);
-                    data.loadImage(imgUrl, new App.ImageResult() {
-                        @Override
-                        public void success(Bitmap response) {
-                            img.setImageBitmap(response);
-                        }
-                    });
+                    Picasso.with(getApplicationContext()).load(imgUrl).into(img);
                 }
 
                 ListView list = (ListView) findViewById(R.id.listTechnologyTechStacks);

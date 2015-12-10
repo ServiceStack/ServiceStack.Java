@@ -5,7 +5,7 @@ apply plugin: 'maven'
 
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'org.apache.httpcomponents:httpmime:4.2.3'
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
@@ -42,7 +42,7 @@ install {
                 licenses {
                     license {
                         name 'The BSD 3-Clause License'
-                        url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
+                        url 'https://servicestack.net/bsd-license.txt'
                     }
                 }
 

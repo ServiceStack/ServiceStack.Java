@@ -115,11 +115,11 @@ public class TechStacksServiceTests extends TestCase {
     }
 
     public void test_Can_deserialize_Overview() throws IOException {
-
 //Latest Android Update broke test resources
-//InputStream is = TechStacksServiceTests.class.getResourceAsStream("/overview.json");
-//String json = Utils.readToEnd(is, "UTF-8");
-        String json =  Utils.readToEnd(new FileInputStream("C:\\src\\ServiceStack.Java\\src\\AndroidClient\\client\\src\\test\\resources\\overview.json"), "UTF-8");
+//        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("overview.json");
+//        String json = Utils.readToEnd(stream, "UTF-8");
+
+        String json =  Utils.readToEnd(new FileInputStream("src\\test\\res\\overview.json"), "UTF-8");
 
         OverviewResponse dto = (OverviewResponse)client.fromJson(json, OverviewResponse.class);
 

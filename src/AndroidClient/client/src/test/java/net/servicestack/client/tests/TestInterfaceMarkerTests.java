@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import net.servicestack.client.HttpMethods;
 import net.servicestack.client.JsonServiceClient;
 
-import static test.dto.*;
+import static test.dtos.*;
 
 /**
  * Created by mythz on 9/11/2015.

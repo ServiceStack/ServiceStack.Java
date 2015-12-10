@@ -8,14 +8,16 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.apache.http.util.ByteArrayBuffer;
+import net.servicestack.func.Function;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
@@ -29,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import net.servicestack.func.Function;
 
 import static net.servicestack.func.Func.last;
 
@@ -53,10 +53,20 @@ public class Utils {
         }
     }
 
+    static final String KotlinAnnotationClass = "kotlin.jvm.internal.KotlinClass";
 
+    public static boolean isKotlinClass(Class type)
+    {
+        for (Annotation attr : type.getAnnotations()){
+            if (KotlinAnnotationClass.equals(attr.annotationType().getName()))
+                return true;
+        }
+        return false;
+    }
 
     public static Field[] getSerializableFields(Class type){
         List<Field> fields = new ArrayList<Field>();
+        boolean isKotlin = isKotlinClass(type);
         for (Class<?> c = type; c != null; c = c.getSuperclass()) {
             if (c == Object.class)
                 break;
@@ -64,8 +74,13 @@ public class Utils {
             for (Field f : c.getDeclaredFields()) {
                 if (Modifier.isStatic(f.getModifiers()))
                     continue;
-                if (!Modifier.isPublic(f.getModifiers()))
-                    continue;
+                if (!Modifier.isPublic(f.getModifiers())){
+                    if (isKotlin){ //Kotlin class convention has private backing fields
+                        f.setAccessible(true); //Needed to access private fields
+                    } else {
+                        continue;
+                    }
+                }
 
                 fields.add(f);
             }
@@ -491,15 +506,13 @@ public class Utils {
     }
 
     public static byte[] readBytesToEnd(InputStream stream) throws IOException {
-
-        ByteArrayBuffer bytes = new ByteArrayBuffer(1024);
-
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream(1024);
         final BufferedInputStream bufferedStream = new BufferedInputStream(stream, 8192);
         try {
             final byte[] buffer = new byte[1024];
             int bytesRead = 0;
             while ((bytesRead = bufferedStream.read(buffer)) > 0) {
-                bytes.append(buffer, 0, bytesRead);
+                bytes.write(buffer, 0, bytesRead);
             }
             return bytes.toByteArray();
         } finally {

@@ -11,7 +11,7 @@
   <licenses>
     <license>
       <name>The BSD 3-Clause License</name>
-      <url>https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt</url>
+      <url>https://servicestack.net/bsd-license.txt</url>
     </license>
   </licenses>
   <developers>
@@ -33,9 +33,9 @@
   </scm>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -47,13 +47,13 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.3.1</version>
+      <version>2.4</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.9.5</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

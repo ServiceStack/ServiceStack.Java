@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="android:actionBarTabStyle">@style/CustomBarTab</item>
+        <item name="actionBarTabStyle">@style/CustomBarTab</item>
+    </style>
+
+    <style name="CustomBarTab">
+        <!--<item name="android:background">#FFEB3B</item>-->
+        <item name="android:background">@drawable/tab_bar_background</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>

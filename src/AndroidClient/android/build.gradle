@@ -5,12 +5,12 @@ apply plugin: 'com.jfrog.bintray'
 version = "1.0.20"
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName version
     }
@@ -19,13 +19,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
     }
 }
 
@@ -70,7 +63,7 @@ install {
                 licenses {
                     license {
                         name 'The BSD 3-Clause License'
-                        url 'https://raw.githubusercontent.com/ServiceStack/Assets/master/docs/license/LICENSE-BSD3.txt'
+                        url 'https://servicestack.net/bsd-license.txt'
                     }
                 }
 
@@ -97,13 +90,10 @@ install {
     }
 }
 
-
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile project(':client')
-    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile fileTree(include: '*.jar', dir: 'libs')
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
 }
-
-configurations.compile.exclude group: 'org.apache.httpcomponents'
