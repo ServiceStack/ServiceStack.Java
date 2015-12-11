@@ -1,7 +1,5 @@
 package net.servicestack.idea;
 
-import com.intellij.facet.Facet;
-import com.intellij.facet.FacetManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -14,9 +12,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiJavaFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Layoric on 9/04/2015.
@@ -39,9 +34,8 @@ public class UpdateServiceStackReference extends AnAction {
 
     @Override
     public void update(AnActionEvent e) {
-        Module module = getModule(e);
         PsiFile psiFile = getPsiFile(e);
-        if (psiFile == null || !isAndroidProject(module)) {
+        if (psiFile == null) {
             e.getPresentation().setVisible(false);
             return;
         }
@@ -56,6 +50,7 @@ public class UpdateServiceStackReference extends AnAction {
             e.getPresentation().setVisible(false);
             return;
         }
+
         e.getPresentation().setVisible(true);
         super.update(e);
     }
@@ -68,16 +63,6 @@ public class UpdateServiceStackReference extends AnAction {
             return modules[0];
         }
         return null;
-    }
-
-    private static boolean isAndroidProject(@NotNull Module module) {
-        Facet[] facetsByType = FacetManager.getInstance(module).getAllFacets();
-        for (Facet facet :facetsByType) {
-            if(facet.getTypeId().toString().equals("android")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static PsiFile getPsiFile(AnActionEvent e) {
