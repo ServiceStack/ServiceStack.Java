@@ -118,8 +118,8 @@ public class TechStacksServiceTests extends TestCase {
 //Latest Android Update broke test resources
 //        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("overview.json");
 //        String json = Utils.readToEnd(stream, "UTF-8");
-
-        String json =  Utils.readToEnd(new FileInputStream("src\\test\\res\\overview.json"), "UTF-8");
+        // Works from gradle -> test or check as they run 'processTestResources' that copy resources into build directory
+        String json =  Utils.readToEnd(getClass().getResourceAsStream("/overview.json"), "UTF-8");
 
         OverviewResponse dto = (OverviewResponse)client.fromJson(json, OverviewResponse.class);
 
