@@ -183,10 +183,10 @@ public class IDEAPomFileHelper {
         NodeList dependencyProperties = dependencyElement.getChildNodes();
         for(int j = 0; j < dependencyProperties.getLength(); j++) {
             Node depProp = dependencyProperties.item(j);
-            if(depProp.getNodeName().equals("groupId") && depProp.getTextContent() != null && depProp.getTextContent().equals(groupId)) {
+            if(depProp.getNodeName().equals("groupId") && depProp.getTextContent() != null && depProp.getTextContent().trim().equals(groupId)) {
                 groupIdMatch = true;
             }
-            if(depProp.getNodeName().equals("artifactId") && depProp.getTextContent() != null && depProp.getTextContent().equals(packageId)) {
+            if(depProp.getNodeName().equals("artifactId") && depProp.getTextContent() != null && depProp.getTextContent().trim().equals(packageId)) {
                 artifactIdMatch = true;
             }
         }

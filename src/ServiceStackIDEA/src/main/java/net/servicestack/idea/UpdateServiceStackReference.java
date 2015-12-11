@@ -26,12 +26,12 @@ public class UpdateServiceStackReference extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        final PsiJavaFile psiJavaFile = getPsiFile(anActionEvent);
-        if(UpdateServiceStackUtils.containsOptionsHeader(psiJavaFile)) {
+        final PsiFile psiFile = getPsiFile(anActionEvent);
+        if(UpdateServiceStackUtils.containsOptionsHeader(psiFile)) {
             ApplicationManager.getApplication().runWriteAction(new Runnable() {
                 @Override
                 public void run() {
-                    UpdateServiceStackUtils.updateServiceStackReference(psiJavaFile);
+                    UpdateServiceStackUtils.updateServiceStackReference(psiFile);
                 }
             });
         }
@@ -40,13 +40,19 @@ public class UpdateServiceStackReference extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         Module module = getModule(e);
-        PsiJavaFile psiJavaFile = getPsiFile(e);
-        if (psiJavaFile == null || !isAndroidProject(module)) {
+        PsiFile psiFile = getPsiFile(e);
+        if (psiFile == null || !isAndroidProject(module)) {
             e.getPresentation().setVisible(false);
             return;
         }
 
-        if(!UpdateServiceStackUtils.containsOptionsHeader(psiJavaFile)) {
+        if(!psiFile.getFileType().getDefaultExtension().equals("java") &&
+                !psiFile.getFileType().getDefaultExtension().equals("kt")) {
+            e.getPresentation().setVisible(false);
+            return;
+        }
+
+        if(!UpdateServiceStackUtils.containsOptionsHeader(psiFile)) {
             e.getPresentation().setVisible(false);
             return;
         }
@@ -74,7 +80,7 @@ public class UpdateServiceStackReference extends AnAction {
         return false;
     }
 
-    private static PsiJavaFile getPsiFile(AnActionEvent e) {
+    private static PsiFile getPsiFile(AnActionEvent e) {
 
         Module module = getModule(e);
         if(module == null) {
@@ -95,14 +101,7 @@ public class UpdateServiceStackReference extends AnAction {
             return null;
         }
 
-        if(!isJavaFile(psiFile)) {
-            return null;
-        }
-        return (PsiJavaFile)psiFile;
-    }
-
-    private static boolean isJavaFile(@Nullable PsiFile psiFile) {
-        return psiFile != null && psiFile instanceof PsiJavaFile;
+        return psiFile;
     }
 
     static Module getModule(AnActionEvent e) {
