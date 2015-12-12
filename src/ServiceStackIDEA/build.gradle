@@ -16,9 +16,9 @@ String jbPass;
 Properties properties = System.properties;
 if(properties.getProperty("jetbrains.plugins.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
-    jbUser = properties.getProperty("jetbrains.plugins.user");
-    jbPass = properties.getProperty("jetbrains.plugins.password");
 }
+jbUser = properties.getProperty("jetbrains.plugins.user");
+jbPass = properties.getProperty("jetbrains.plugins.password");
 
 intellij {
     version 'IC-14.1.4'
