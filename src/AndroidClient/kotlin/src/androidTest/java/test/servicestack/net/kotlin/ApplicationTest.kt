@@ -1,13 +1,17 @@
 package test.servicestack.net.kotlinapp
 
 import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.test.ApplicationTestCase
 import com.google.gson.Gson
 import junit.framework.Assert
 import net.servicestack.android.AndroidLogProvider
-import net.servicestack.client.Log
-import test.servicestack.net.kotlin.techstacks.Technology
-import test.servicestack.net.kotlin.techstacks.TechnologyTier
+import net.servicestack.android.AndroidServiceClient
+import net.servicestack.client.*
+import test.servicestack.net.kotlin.techstacks.*
+import java.net.HttpURLConnection
+import java.util.*
 
 /**
  * [Testing Fundamentals](http://d.android.com/tools/testing/testing_android.html)
@@ -17,6 +21,8 @@ class ApplicationTest : ApplicationTestCase<Application>(Application::class.java
     override fun setUp() {
         super.setUp()
         Log.Instance = AndroidLogProvider("ZZZ");
+
+        val client = AndroidServiceClient("http://techstacks.io")
     }
 
     fun test_Fail() {

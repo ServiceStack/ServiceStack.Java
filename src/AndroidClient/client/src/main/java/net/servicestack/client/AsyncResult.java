@@ -3,7 +3,7 @@
 
 package net.servicestack.client;
 
-public abstract class AsyncResult<T> {
+public abstract class AsyncResult<T> implements AsyncSuccess<T>, AsyncError, AsyncComplete {
     T result;
     boolean completed = false;
     Exception ex;
