@@ -87,6 +87,16 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void sendAsync(IReturn<T> request, AsyncSuccess<T> success) {
+        sendAsync(request, success, null);
+    }
+
+    @Override
+    public <T> void sendAsync(IReturn<T> request, AsyncSuccess<T> success, AsyncError error) {
+        sendAsync(request, createAsyncResult(success, error));
+    }
+
+    @Override
     public void sendAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturnVoid, Void, Void>() {
@@ -108,7 +118,18 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, request);
     }
 
+    @Override
+    public void sendAsync(IReturnVoid request, AsyncSuccessVoid success) {
+        sendAsync(request, success, null);
+    }
+
+    @Override
+    public void sendAsync(IReturnVoid request, AsyncSuccessVoid success, AsyncError error) {
+        sendAsync(request, createAsyncResultVoid(success, error));
+    }
+
     /* GET */
+    @Override
     public <T> void getAsync(IReturn<T> request, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturn<T>, Void, T>() {
@@ -130,10 +151,12 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, request);
     }
 
+    @Override
     public <T> void getAsync(IReturn<T> request, final AsyncSuccess<T> successCallback) {
         getAsync(request, successCallback, null);
     }
 
+    @Override
     public <T> void getAsync(IReturn<T> request, final AsyncSuccess<T> success, final AsyncError error){
         getAsync(request, createAsyncResult(success, error));
     }
@@ -161,15 +184,16 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
-    public <T> void getAsync(IReturnVoid request, final AsyncSuccessVoid success) {
+    public void getAsync(IReturnVoid request, final AsyncSuccessVoid success) {
         getAsync(request, success, null);
     }
 
     @Override
-    public <T> void getAsync(IReturnVoid request, AsyncSuccessVoid success, AsyncError error) {
+    public void getAsync(IReturnVoid request, final AsyncSuccessVoid success, final AsyncError error) {
         getAsync(request, createAsyncResultVoid(success, error));
     }
 
+    @Override
     public <T> void getAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturn<T>, Void, T>() {
@@ -196,6 +220,7 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         getAsync(request, queryParams, createAsyncResult(success, null));
     }
 
+    @Override
     public <T> void getAsync(String path, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -249,6 +274,7 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         getAsync(path, responseType, createAsyncResult(success, null));
     }
 
+    @Override
     public void getAsync(String path, final AsyncResult<byte[]> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, byte[]>() {
@@ -300,6 +326,16 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void postAsync(IReturn<T> request, AsyncSuccess<T> success) {
+        postAsync(request, success, null);
+    }
+
+    @Override
+    public <T> void postAsync(IReturn<T> request, AsyncSuccess<T> success, AsyncError error) {
+        postAsync(request, createAsyncResult(success, error));
+    }
+
+    @Override
     public void postAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturnVoid, Void, Void>() {
@@ -319,6 +355,16 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, request);
+    }
+
+    @Override
+    public void postAsync(IReturnVoid request, AsyncSuccessVoid success) {
+        postAsync(request, success, null);
+    }
+
+    @Override
+    public void postAsync(IReturnVoid request, AsyncSuccessVoid success, AsyncError error) {
+        postAsync(request, createAsyncResultVoid(success, error));
     }
 
     @Override
@@ -344,6 +390,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void postAsync(String path, Object request, Class responseType, AsyncSuccess<T> success) {
+        postAsync(path, request, responseType, createAsyncResult(success, null));
+    }
+
+    @Override
     public <T> void postAsync(String path, final Object request, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -363,6 +414,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public <T> void postAsync(String path, Object request, Type responseType, AsyncSuccess<T> success) {
+        postAsync(path, request, responseType, createAsyncResult(success, null));
     }
 
     @Override
@@ -388,6 +444,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void postAsync(String path, byte[] requestBody, String contentType, Class responseType, AsyncSuccess<T> success) {
+        postAsync(path, requestBody, contentType, responseType, createAsyncResult(success, null));
+    }
+
+    @Override
     public <T> void postAsync(String path, final byte[] requestBody, final String contentType, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -407,6 +468,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public <T> void postAsync(String path, byte[] requestBody, String contentType, Type responseType, AsyncSuccess<T> success) {
+        postAsync(path, requestBody, contentType, responseType, createAsyncResult(success, null));
     }
 
     @Override
@@ -430,6 +496,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public void postAsync(String path, byte[] requestBody, String contentType, AsyncSuccess<byte[]> success) {
+        postAsync(path, requestBody, contentType, createAsyncResult(success, null));
     }
 
     /* PUT */
@@ -457,6 +528,17 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void putAsync(IReturn<T> request, AsyncSuccess<T> success) {
+        putAsync(request, success, null);
+    }
+
+    @Override
+    public <T> void putAsync(IReturn<T> request, AsyncSuccess<T> success, AsyncError error) {
+        putAsync(request, createAsyncResult(success, error));
+
+    }
+
+    @Override
     public void putAsync(IReturnVoid request, final AsyncResultVoid asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturnVoid, Void, Void>() {
@@ -476,6 +558,16 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, request);
+    }
+
+    @Override
+    public void putAsync(IReturnVoid request, AsyncSuccessVoid success) {
+        putAsync(request, success, null);
+    }
+
+    @Override
+    public void putAsync(IReturnVoid request, AsyncSuccessVoid success, AsyncError error) {
+        putAsync(request, createAsyncResultVoid(success, error));
     }
 
     @Override
@@ -501,6 +593,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void putAsync(String path, Object request, Class responseType, AsyncSuccess<T> success) {
+        putAsync(path, request, responseType, createAsyncResult(success, null));
+    }
+
+    @Override
     public <T> void putAsync(String path, final Object request, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -520,6 +617,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public <T> void putAsync(String path, Object request, Type responseType, AsyncSuccess<T> success) {
+        putAsync(path, request, responseType, createAsyncResult(success, null));
     }
 
     @Override
@@ -545,6 +647,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     }
 
     @Override
+    public <T> void putAsync(String path, byte[] requestBody, String contentType, Class responseType, AsyncSuccess<T> success) {
+        putAsync(path, requestBody, contentType, responseType, createAsyncResult(success, null));
+    }
+
+    @Override
     public <T> void putAsync(String path, final byte[] requestBody, final String contentType, final Type responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -564,6 +671,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public <T> void putAsync(String path, byte[] requestBody, String contentType, Type responseType, AsyncSuccess<T> success) {
+        putAsync(path, requestBody, contentType, responseType, createAsyncResult(success, null));
     }
 
     @Override
@@ -589,8 +701,14 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, path);
     }
 
+    @Override
+    public void putAsync(String path, byte[] requestBody, String contentType, AsyncSuccess<byte[]> success) {
+        putAsync(path, requestBody, contentType, createAsyncResult(success, null));
+    }
+
     /* DELETE */
 
+    @Override
     public <T> void deleteAsync(IReturn<T> request, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturn<T>, Void, T>() {
@@ -610,6 +728,16 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, request);
+    }
+
+    @Override
+    public <T> void deleteAsync(IReturn<T> request, AsyncSuccess<T> success) {
+        deleteAsync(request, success, null);
+    }
+
+    @Override
+    public <T> void deleteAsync(IReturn<T> request, AsyncSuccess<T> success, AsyncError error) {
+        deleteAsync(request, createAsyncResult(success, error));
     }
 
     @Override
@@ -634,6 +762,17 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, request);
     }
 
+    @Override
+    public void deleteAsync(IReturnVoid request, AsyncSuccessVoid success) {
+        deleteAsync(request, success, null);
+    }
+
+    @Override
+    public void deleteAsync(IReturnVoid request, AsyncSuccessVoid success, AsyncError error) {
+        deleteAsync(request, createAsyncResultVoid(success, error));
+    }
+
+    @Override
     public <T> void deleteAsync(IReturn<T> request, final Map<String, String> queryParams, final AsyncResult<T> asyncResult){
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<IReturn<T>, Void, T>() {
@@ -655,6 +794,12 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, request);
     }
 
+    @Override
+    public <T> void deleteAsync(IReturn<T> request, Map<String, String> queryParams, AsyncSuccess<T> success) {
+        deleteAsync(request, queryParams, createAsyncResult(success, null));
+    }
+
+    @Override
     public <T> void deleteAsync(String path, final Class responseType, final AsyncResult<T> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, T>() {
@@ -674,6 +819,11 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public <T> void deleteAsync(String path, Class responseType, AsyncSuccess<T> success) {
+        deleteAsync(path, responseType, createAsyncResult(success, null));
     }
 
     @Override
@@ -698,6 +848,12 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
         }, path);
     }
 
+    @Override
+    public <T> void deleteAsync(String path, Type responseType, AsyncSuccess<T> success) {
+        deleteAsync(path, responseType, createAsyncResult(success, null));
+    }
+
+    @Override
     public void deleteAsync(String path, final AsyncResult<byte[]> asyncResult) {
         final AndroidServiceClient client = this;
         execTask(new AsyncTask<String, Void, byte[]>() {
@@ -718,5 +874,10 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
             }
 
         }, path);
+    }
+
+    @Override
+    public void deleteAsync(String path, AsyncSuccess<byte[]> success) {
+        deleteAsync(path, createAsyncResult(success, null));
     }
 }
