@@ -6,7 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import net.servicestack.android.AndroidServiceClient
 import net.servicestack.android.AndroidUtils
-import net.servicestack.client.AsyncResult
+import net.servicestack.client.AsyncSuccess
 import net.servicestack.client.Utils
 import java.util.*
 
@@ -41,11 +41,9 @@ class App {
             if (appOverviewResponse != null) {
                 onUpdate(DataType.AppOverview)
             }
-            client.getAsync(AppOverview(), object : AsyncResult<AppOverviewResponse>() {
-                override fun success(response: AppOverviewResponse) {
-                    appOverviewResponse = response
-                    onUpdate(DataType.AppOverview)
-                }
+            client.getAsync(AppOverview(), AsyncSuccess<AppOverviewResponse> {
+                appOverviewResponse = it
+                onUpdate(DataType.AppOverview)
             })
             return this
         }
@@ -62,13 +60,11 @@ class App {
 
             lastTechStacksQuery = query
             client.getAsync(FindTechStacks(),
-                    Utils.createMap("NameContains", query, "DescriptionContains", query),
-                    object : AsyncResult<QueryResponse<TechnologyStack>>() {
-                        override fun success(response: QueryResponse<TechnologyStack>) {
-                            if (Utils.equals(query, lastTechStacksQuery)) {
-                                searchTechStacksResponse = response
-                                onUpdate(DataType.SearchTechStacks)
-                            }
+                    hashMapOf(Pair("NameContains", query), Pair("DescriptionContains", query)),
+                    AsyncSuccess<QueryResponse<TechnologyStack>> {
+                        if (Utils.equals(query, lastTechStacksQuery)) {
+                            searchTechStacksResponse = it
+                            onUpdate(DataType.SearchTechStacks)
                         }
                     })
 
@@ -87,13 +83,11 @@ class App {
 
             lastTechnologiesQuery = query
             client.getAsync(FindTechnologies(),
-                    Utils.createMap("NameContains", query, "DescriptionContains", query),
-                    object : AsyncResult<QueryResponse<Technology>>() {
-                        override fun success(response: QueryResponse<Technology>) {
-                            if (Utils.equals(query, lastTechnologiesQuery)) {
-                                searchTechnologiesResponse = response
-                                onUpdate(DataType.SearchTechnologies)
-                            }
+                    hashMapOf(Pair("NameContains", query), Pair("DescriptionContains", query)),
+                    AsyncSuccess<QueryResponse<Technology>> {
+                        if (Utils.equals(query, lastTechnologiesQuery)) {
+                            searchTechnologiesResponse = it
+                            onUpdate(DataType.SearchTechnologies)
                         }
                     })
 
@@ -113,13 +107,10 @@ class App {
 
             val request = GetTechnology()
             request.Slug = slug
-            client.getAsync(request,
-                object : AsyncResult<GetTechnologyResponse>() {
-                    override fun success(response: GetTechnologyResponse) {
-                        technology = response
-                        onUpdate(DataType.Technology)
-                    }
-                })
+            client.getAsync(request, AsyncSuccess<GetTechnologyResponse> {
+                technology = it
+                onUpdate(DataType.Technology)
+            })
         }
 
         var techStack: GetTechnologyStackResponse? = null
@@ -132,13 +123,10 @@ class App {
 
             val request = GetTechnologyStack()
             request.Slug = slug
-            client.getAsync(request,
-                    object : AsyncResult<GetTechnologyStackResponse>() {
-                        override fun success(response: GetTechnologyStackResponse) {
-                            techStack = response
-                            onUpdate(DataType.TechStack)
-                        }
-                    })
+            client.getAsync(request, AsyncSuccess<GetTechnologyStackResponse> {
+                techStack = it
+                onUpdate(DataType.TechStack)
+            })
         }
 
         internal var imgCache = HashMap<String, Bitmap>()
@@ -149,12 +137,10 @@ class App {
                 return
             }
 
-            client.getAsync(imgUrl, object : AsyncResult<ByteArray>() {
-                override fun success(imgBytes: ByteArray) {
-                    val img = AndroidUtils.readBitmap(imgBytes)
-                    imgCache.put(imgUrl, img)
-                    callback.success(img)
-                }
+            client.getAsync(imgUrl, AsyncSuccess<ByteArray> {
+                val img = AndroidUtils.readBitmap(it)
+                imgCache.put(imgUrl, img)
+                callback.success(img)
             })
         }
     }
@@ -205,5 +191,4 @@ class App {
             activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         }
     }
-
 }
