@@ -1,15 +1,12 @@
+//  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
+
 package test.servicestack.net.kotlin.techstacks
 
+import junit.framework.Assert
 import junit.framework.TestCase
-
 import net.servicestack.client.JsonServiceClient
 import net.servicestack.client.Utils
-
-import java.io.FileInputStream
 import java.io.IOException
-import java.util.ArrayList
-
-import junit.framework.Assert
 
 class TechStacksServiceTests : TestCase() {
 

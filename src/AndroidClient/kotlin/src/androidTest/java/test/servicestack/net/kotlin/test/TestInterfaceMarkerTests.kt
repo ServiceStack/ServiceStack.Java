@@ -1,16 +1,12 @@
+//  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
+
 package test.servicestack.net.kotlin.test
 
 import junit.framework.Assert
 import junit.framework.TestCase
-
 import net.servicestack.client.HttpMethods
 import net.servicestack.client.JsonServiceClient
 
-import test.servicestack.net.kotlin.test.*
-
-/**
- * Created by mythz on 9/11/2015.
- */
 class TestInterfaceMarkerTests : TestCase() {
 
     internal var client = JsonServiceClient("http://test.servicestack.net")

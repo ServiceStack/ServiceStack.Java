@@ -6,16 +6,10 @@ import junit.framework.Assert
 import junit.framework.TestCase
 import net.servicestack.client.ConnectionFilter
 import net.servicestack.client.JsonServiceClient
-
 import net.servicestack.client.WebServiceException
-
-import java.net.HttpURLConnection
-import java.util.Calendar
-import java.util.Date
-
 import test.servicestack.net.kotlin.test.EchoTypes
 import test.servicestack.net.kotlin.test.Hello
-import test.servicestack.net.kotlin.test.HelloResponse
+import java.util.*
 
 class JsonServiceClientTests : TestCase() {
     //10.0.2.2 = loopback

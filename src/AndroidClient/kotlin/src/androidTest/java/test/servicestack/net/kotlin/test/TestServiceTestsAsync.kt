@@ -2,36 +2,35 @@
 
 package test.servicestack.net.kotlin.test
 
+import android.app.Application
+import android.test.ApplicationTestCase
+import android.text.TextUtils
 import junit.framework.Assert
-import junit.framework.TestCase
+import net.servicestack.android.AndroidLogProvider
+import net.servicestack.android.AndroidServiceClient
 import net.servicestack.client.*
-import test.servicestack.net.kotlin.techstacks.LockTechStack
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
-class TestServiceTests : TestCase() {
-
-    internal var client = JsonServiceClient("http://test.servicestack.net")
-    //    JsonServiceClient client = new JsonServiceClient("http://10.0.2.2:2020");
-
-    fun test_Can_GET_Hello() {
-        val request = Hello()
-        request.name = "World"
-
-        val response = client.get<HelloResponse>(request)
-
-        Assert.assertEquals("Hello, World!", response.result)
+class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::class.java) {
+    init {
+        Log.Instance = AndroidLogProvider("ZZZ")
     }
 
-    fun test_does_fire_Request_and_Response_Filters() {
+    internal var client = AndroidServiceClient("http://test.servicestack.net")
 
-        val client = JsonServiceClient("http://test.servicestack.net")
+    @Throws(InterruptedException::class)
+    fun test_does_fire_Request_and_Response_Filters_Async() {
+
+        val client = AndroidServiceClient("http://test.servicestack.net")
 
         val events = ArrayList<String>()
 
-        JsonServiceClient.GlobalRequestFilter = ConnectionFilter { events.add("GlobalRequestFilter") }
-        JsonServiceClient.GlobalResponseFilter = ConnectionFilter { events.add("GlobalResponseFilter") }
+        AndroidServiceClient.GlobalRequestFilter = ConnectionFilter { events.add("GlobalRequestFilter") }
+        AndroidServiceClient.GlobalResponseFilter = ConnectionFilter { events.add("GlobalResponseFilter") }
 
         client.RequestFilter = ConnectionFilter { events.add("RequestFilter") }
         client.ResponseFilter = ConnectionFilter { events.add("ResponseFilter") }
@@ -39,69 +38,60 @@ class TestServiceTests : TestCase() {
         val request = Hello()
         request.name = "World"
 
-        val response = client.get<HelloResponse>(request)
+        val signal = CountDownLatch(1)
 
-        Assert.assertEquals("Hello, World!", response.result)
+        client.getAsync<HelloResponse>(request, AsyncSuccess<HelloResponse> {
+            Assert.assertEquals("Hello, World!", it.result)
 
-        val results = strJoin(", ", events)
+            val results = TextUtils.join(", ", events)
 
-        Assert.assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results)
+            Assert.assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results)
+
+            AndroidServiceClient.GlobalRequestFilter = null
+            AndroidServiceClient.GlobalResponseFilter = null
+            signal.countDown()
+        })
+
+        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
-    fun test_Can_GET_Hello_with_CustomPath() {
-        val response = client.get<HelloResponse>("/hello/World", HelloResponse::class.java)
-
-        Assert.assertEquals("Hello, World!", response.result)
-    }
-
-    fun test_Can_POST_Hello_with_CustomPath() {
-        val request = Hello()
-        request.name = "World"
-
-        val response = client.post<HelloResponse>("/hello", request, HelloResponse::class.java)
-
-        Assert.assertEquals("Hello, World!", response.result)
-    }
-
-    fun test_Can_GET_Hello_with_CustomPath_raw() {
-        val response = client.get("/hello/World")
-        val json = Utils.readToEnd(response)
-
-        Assert.assertEquals("{\"result\":\"Hello, World!\"}", json)
-    }
-
-    fun test_Can_POST_Hello_with_CustomPath_raw() {
-        val response = client.post("/hello", Utils.toUtf8Bytes("Name=World"), MimeTypes.FormUrlEncoded)
-        val json = Utils.readToEnd(response)
-
-        Assert.assertEquals("{\"result\":\"Hello, World!\"}", json)
-    }
-
-    fun test_Can_POST_test_HelloAllTypes() {
+    @Throws(InterruptedException::class)
+    fun test_Can_POST_Test_HelloAllTypes_async() {
         val request = createHelloAllTypes()
-        val response = client.post<HelloAllTypesResponse>(request)
-        assertHelloAllTypesResponse(response, request)
+
+        val signal = CountDownLatch(1)
+
+        client.postAsync<HelloAllTypesResponse>(request, AsyncSuccess<HelloAllTypesResponse> {
+            assertHelloAllTypesResponse(it, request)
+            signal.countDown()
+        })
+
+        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
-    fun test_Can_PUT_test_HelloAllTypes() {
+    @Throws(InterruptedException::class)
+    fun test_Can_PUT_Test_HelloAllTypes_async() {
         val request = createHelloAllTypes()
-        val response = client.put<HelloAllTypesResponse>(request)
-        assertHelloAllTypesResponse(response, request)
+
+        val signal = CountDownLatch(1)
+
+        client.putAsync<HelloAllTypesResponse>(request, AsyncSuccess<HelloAllTypesResponse> {
+            assertHelloAllTypesResponse(it, request)
+            signal.countDown()
+        })
+
+        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
-    fun test_Can_Serailize_AllTypes() {
-        val json = client.gson.toJson(createAllTypes())
-        Log.i(json)
-    }
-
-    fun test_Does_handle_404_Error() {
-        val testClient = JsonServiceClient("http://test.servicestack.net")
+    @Throws(InterruptedException::class)
+    fun test_Does_handle_404_Error_Async() {
+        val testClient = AndroidServiceClient("http://test.servicestack.net")
 
         var globalError:Exception? = null
         var localError:Exception? = null
-        var thrownError: WebServiceException? = null
+        var thrownError:WebServiceException? = null
 
-        JsonServiceClient.GlobalExceptionFilter = ExceptionFilter { res, ex -> globalError = ex }
+        AndroidServiceClient.GlobalExceptionFilter = ExceptionFilter { res, ex -> globalError = ex }
 
         testClient.ExceptionFilter = ExceptionFilter { res, ex -> localError = ex }
 
@@ -109,35 +99,42 @@ class TestServiceTests : TestCase() {
         request.Type = "NotFound"
         request.message = "not here"
 
-        try {
-            val response = testClient.put<ThrowTypeResponse>(request)
-        } catch (webEx: WebServiceException) {
-            thrownError = webEx
-        }
+
+        val signal = CountDownLatch(1)
+
+        testClient.putAsync<ThrowTypeResponse>(request, AsyncSuccess<ThrowTypeResponse> {
+            Assert.fail("should not succeed")
+        }, AsyncError {
+            thrownError = it as WebServiceException
+            signal.countDown()
+        })
+
+        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
 
         Assert.assertNotNull(globalError)
         Assert.assertNotNull(localError)
         Assert.assertNotNull(thrownError)
 
-        val status = thrownError!!.responseStatus
+        val status = thrownError!!.responseStatus!!
 
         Assert.assertEquals("NotFound", status.errorCode)
         Assert.assertEquals("not here", status.message)
         Assert.assertNotNull(status.stackTrace)
     }
 
-    fun test_Does_handle_ValidationException() {
+    fun test_Does_handle_ValidationException_Async() {
         val request = ThrowValidation()
         request.email = "invalidemail"
 
-        try {
-            client.post<ThrowValidationResponse>(request)
-            Assert.fail("Should throw")
-        } catch (webEx: WebServiceException) {
-            val status = webEx.responseStatus
+        val signal = CountDownLatch(1)
 
-            Assert.assertNotNull(status)
-            Assert.assertEquals(3, status.getErrors().size)
+        client.postAsync<ThrowValidationResponse>(request, AsyncSuccess<ThrowValidationResponse> {
+            Assert.fail("should not succeed")
+        }, AsyncError {
+            val webEx = it as WebServiceException
+            val status = webEx.responseStatus!!
+
+            Assert.assertEquals(3, status.errors.size)
 
             Assert.assertEquals(status.errors[0].errorCode, status.errorCode)
             Assert.assertEquals(status.errors[0].message, status.message)
@@ -153,73 +150,38 @@ class TestServiceTests : TestCase() {
             Assert.assertEquals("Email", status.errors[2].errorCode)
             Assert.assertEquals("'Email' is not a valid email address.", status.errors[2].message)
             Assert.assertEquals("Email", status.errors[2].fieldName)
-        }
-
+            signal.countDown()
+        })
     }
 
-    fun test_Can_POST_valid_ThrowValidation_request() {
-        val request = ThrowValidation()
-        request.age = 21
-        request.required = "foo"
-        request.email = "my@gmail.com"
+    fun test_Can_send_ReturnVoid_Async() {
+        val signal = CountDownLatch(1)
 
-        val response = client.post<ThrowValidationResponse>(request)
-
-        Assert.assertNotNull(response)
-        Assert.assertEquals(request.age, response.age)
-        Assert.assertEquals(request.required, response.required)
-        Assert.assertEquals(request.email, response.email)
-    }
-
-    fun test_does_handle_auth_failure() {
-        val techStacksClient = JsonServiceClient("http://techstacks.io/")
-        var errorCode = 0
-        try {
-            val request = LockTechStack()
-            request.TechnologyStackId = 6.toLong()
-            val res = techStacksClient.post(request)
-            Assert.fail("Should throw")
-        } catch (ex: WebServiceException) {
-            //private StatusCode has correct code, response status is null due to empty response body.
-            errorCode = ex.statusCode
-        }
-
-        Assert.assertEquals(errorCode, 401)
-    }
-
-    fun test_Can_send_ReturnVoid() {
         val sentMethods = ArrayList<String>()
         client.RequestFilter = ConnectionFilter { conn -> sentMethods.add(conn.requestMethod) }
 
-        val request = HelloReturnVoid()
+        var request = HelloReturnVoid()
         request.id = 1
 
-        client.send(request)
-        Assert.assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
-        request.id = 2
-        client.get(request)
-        Assert.assertEquals(HttpMethods.Get, sentMethods[sentMethods.size - 1])
-        request.id = 3
-        client.post(request)
-        Assert.assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
-        request.id = 4
-        client.put(request)
-        Assert.assertEquals(HttpMethods.Put, sentMethods[sentMethods.size - 1])
-        request.id = 5
-        client.delete(request)
-        Assert.assertEquals(HttpMethods.Delete, sentMethods[sentMethods.size - 1])
+        client.sendAsync(request, {
+            Assert.assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
+            signal.countDown()
+        })
     }
 
-    fun test_Can_get_response_as_Raw_String() {
-        val request = HelloString()
-        request.name = "World"
-        val response = client.get(request)
-        Assert.assertEquals("World", response)
-    }
+    fun test_Can_delete_ReturnVoid_Async() {
+        val signal = CountDownLatch(1)
 
-    fun test_Can_get_response_as_Raw_Bytes() {
-        val response = client.get<ByteArray>("/json/reply/HelloString?Name=World", ByteArray::class.java)
-        Assert.assertEquals("World", Utils.fromUtf8Bytes(response))
+        val sentMethods = ArrayList<String>()
+        client.RequestFilter = ConnectionFilter { conn -> sentMethods.add(conn.requestMethod) }
+
+        var request = HelloReturnVoid()
+        request.id = 1
+
+        client.deleteAsync(request, {
+            Assert.assertEquals(HttpMethods.Delete, sentMethods[sentMethods.size - 1])
+            signal.countDown()
+        })
     }
 
     companion object {
@@ -366,18 +328,5 @@ class TestServiceTests : TestCase() {
             Assert.assertNotNull(actual)
             Assert.assertEquals(actual.name, expected.name)
         }
-
-        fun strJoin(sSep: String, aArr: ArrayList<String>): String {
-            val sbStr = StringBuilder()
-            var i = 0
-            val il = aArr.size
-            while (i < il) {
-                if (i > 0)
-                    sbStr.append(sSep)
-                sbStr.append(aArr[i])
-                i++
-            }
-            return sbStr.toString()
-        }
     }
-}//Log.Instance = new AndroidLogProvider("ZZZ");
+}
