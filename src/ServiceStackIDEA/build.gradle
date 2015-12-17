@@ -8,8 +8,6 @@ dependencies {
 
 }
 
-
-
 String jbUser;
 String jbPass;
 

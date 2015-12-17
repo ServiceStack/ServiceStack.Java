@@ -47,11 +47,11 @@ public class AddServiceStackRefHandler {
 
         boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(module);
         if(isMavenModule) {
-            showDto = tryAddMavenDependency(module);
+            showDto = !tryAddMavenDependency(module);
         } else {
             //Gradle
             try {
-                showDto = addGradleDependencyIfRequired(module);
+                showDto = !addGradleDependencyIfRequired(module);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 String message = "Failed to update build.gradle with '" +
@@ -138,7 +138,7 @@ public class AddServiceStackRefHandler {
             }
             File pomLibFile = new File(pomFilePath);
             showDto = pomFileHelper.addMavenDependency(module,pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
-            IDEAUtils.refreshFile(module,pomFilePath,!showDto);
+            IDEAUtils.refreshFile(module,pomFilePath,showDto);
         } catch(Exception e) {
             showDto = false;
             e.printStackTrace();
@@ -153,9 +153,9 @@ public class AddServiceStackRefHandler {
     }
 
     private static boolean addGradleDependencyIfRequired(Module module) throws FileNotFoundException {
-        boolean result = true;
+        boolean result = false;
         if(GradleBuildFileHelper.addDependency(module,dependencyGroupId, dependencyPackageId, dependencyVersion)) {
-            result = false;
+            result = true;
             IDEAUtils.refreshBuildFile(module);
         }
         return result;
