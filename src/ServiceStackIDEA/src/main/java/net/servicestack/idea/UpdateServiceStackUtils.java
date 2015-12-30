@@ -130,7 +130,7 @@ public class UpdateServiceStackUtils {
                 Notifications.Bus.notify(notification);
             }
         } catch (Exception e) {
-            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid BaseUrl provided", NotificationType.ERROR);
+            Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", e.getMessage(), NotificationType.ERROR);
             Notifications.Bus.notify(notification);
             e.printStackTrace();
         }

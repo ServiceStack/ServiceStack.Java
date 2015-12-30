@@ -108,6 +108,12 @@ public class AddServiceStackRefHandler {
         } catch (IOException e) {
             e.printStackTrace();
             errorMessage.append(e.getClass().getName()).append(" - Failed to read response - ").append(addressUrl);
+            Notification notification = new Notification(
+                    "ServiceStackIDEA",
+                    "Add ServiceStack Reference failed to read response",
+                    errorMessage.toString() + "\n" + e.getMessage(),
+                    NotificationType.ERROR);
+            Notifications.Bus.notify(notification);
             return null;
         }
         return javaCodeLines;
