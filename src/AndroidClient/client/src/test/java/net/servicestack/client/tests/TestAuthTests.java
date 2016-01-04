@@ -3,6 +3,7 @@ package net.servicestack.client.tests;
 import junit.framework.TestCase;
 
 import net.servicestack.client.JsonServiceClient;
+import net.servicestack.client.ServiceClient;
 import net.servicestack.client.WebServiceException;
 
 import net.servicestack.client.tests.testdtos.*;
@@ -12,10 +13,13 @@ import net.servicestack.client.tests.testdtos.*;
  */
 public class TestAuthTests extends TestCase {
 
-    JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+    public JsonServiceClient CreateClient(){
+        return new JsonServiceClient("http://test.servicestack.net");
+    }
 
     public void test_AuthRequired_returns_401(){
         try {
+            ServiceClient client = CreateClient();
             client.get(new TestAuth());
             fail("should throw");
         } catch (WebServiceException ex){
@@ -25,8 +29,21 @@ public class TestAuthTests extends TestCase {
     }
 
     public void test_does_send_BasicAuthHeaders(){
+        ServiceClient client = CreateClient();
         client.setCredentials("test", "test");
         client.setAlwaysSendBasicAuthHeaders(true);
+
+        TestAuthResponse response = client.get(new TestAuth());
+
+        assertEquals("1", response.getUserId());
+        assertEquals("test", response.getUserName());
+        assertEquals("test DisplayName", response.getDisplayName());
+        assertNotNull(response.getSessionId());
+    }
+
+    public void test_does_transparently_send_BasicAuthHeader_on_401_response(){
+        ServiceClient client = CreateClient();
+        client.setCredentials("test", "test");
 
         TestAuthResponse response = client.get(new TestAuth());
 
