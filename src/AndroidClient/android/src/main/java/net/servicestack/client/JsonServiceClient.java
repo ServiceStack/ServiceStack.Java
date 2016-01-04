@@ -33,6 +33,10 @@ public class JsonServiceClient implements ServiceClient {
     String baseUrl;
     String replyUrl;
 
+    boolean alwaysSendBasicAuthHeaders;
+    String userName;
+    String password;
+
     Integer timeoutMs;
     public ConnectionFilter RequestFilter;
     public ConnectionFilter ResponseFilter;
@@ -123,26 +127,6 @@ public class JsonServiceClient implements ServiceClient {
         return requestUrl + sb.toString();
     }
 
-    public HttpURLConnection createRequest(String url, String httpMethod) {
-        return createRequest(url, httpMethod, null, null);
-    }
-
-    public HttpURLConnection createRequest(String url, String httpMethod, Object request) {
-        String contentType = null;
-        byte[] requestBody = null;
-
-        if (request != null) {
-            contentType = MimeTypes.Json;
-            String json = getGson().toJson(request);
-            if (Log.isDebugEnabled()){
-                Log.d(json);
-            }
-            requestBody = json.getBytes(UTF8);
-        }
-
-        return createRequest(url, httpMethod, requestBody, contentType);
-    }
-
     public HttpURLConnection createRequest(String requestUrl, String httpMethod, byte[] requestBody, String requestType) {
         try {
             URL url = new URL(requestUrl);
@@ -159,6 +143,10 @@ public class JsonServiceClient implements ServiceClient {
 
             if (requestType != null) {
                 req.setRequestProperty(HttpHeaders.ContentType, requestType);
+            }
+
+            if (alwaysSendBasicAuthHeaders) {
+                addBasicAuth(req, userName, password);
             }
 
             if (RequestFilter != null) {
@@ -182,6 +170,21 @@ public class JsonServiceClient implements ServiceClient {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private static void addBasicAuth(HttpURLConnection req, String userName, String password) {
+        req.setRequestProperty(HttpHeaders.Authorization,
+            "Basic " + Utils.toBase64String(userName + ":" + password));
+    }
+
+    private static boolean shouldAuthenticate(HttpURLConnection req, String userName, String password){
+        try {
+            return req.getResponseCode() == 401
+                && userName != null
+                && password != null;
+        } catch (IOException e) {
+            return false;
         }
     }
 
@@ -249,32 +252,63 @@ public class JsonServiceClient implements ServiceClient {
         return true;
     }
 
-    public HttpURLConnection createSendRequest(Object request) {
+    @Override
+    public void setAlwaysSendBasicAuthHeaders(boolean value) {
+        this.alwaysSendBasicAuthHeaders = value;
+    }
+
+    @Override
+    public void setCredentials(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public <TResponse> TResponse sendRequest(Object request, Object responseClass) {
         String httpMethod = GetSendMethod(request);
         if (hasRequestBody(httpMethod)){
-            return createRequest(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request);
+            return send(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request, responseClass);
         } else {
             String url = createUrl(request);
-            return createRequest(url, httpMethod, null, null);
+            return send(url, httpMethod, null, null, responseClass);
         }
     }
 
     @Override
     public <TResponse> TResponse send(IReturn<TResponse> request) {
-        return send(
-            createSendRequest(request),
-            request.getResponseType());
+        return sendRequest(request, request.getResponseType());
     }
 
     @Override
     public void send(IReturnVoid request) {
         String httpMethod = GetSendMethod(request);
-        send(createRequest(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request),
+        send(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request,
             IReturnVoid.class);
     }
 
-    public <TResponse> TResponse send(HttpURLConnection req, Object responseClass) {
+    public <TResponse> TResponse send(String url, String httpMethod, Object responseClass) {
+        return send(url, httpMethod, null, null, responseClass);
+    }
+
+    public <TResponse> TResponse send(String url, String httpMethod, Object request, Object responseClass) {
+        String contentType = null;
+        byte[] requestBody = null;
+
+        if (request != null) {
+            contentType = MimeTypes.Json;
+            String json = getGson().toJson(request);
+            if (Log.isDebugEnabled()){
+                Log.d(json);
+            }
+            requestBody = json.getBytes(UTF8);
+        }
+
+        return send(url, httpMethod, requestBody, contentType, responseClass);
+    }
+
+    public <TResponse> TResponse send(String requestUrl, String httpMethod, byte[] requestBody, String requestType, Object responseClass) {
+        HttpURLConnection req = null;
         try {
+            req = createRequest(requestUrl, httpMethod, requestBody, requestType);
             Class resClass = responseClass instanceof Class ? (Class)responseClass : null;
             Type resType = responseClass instanceof Type ? (Type)responseClass : null;
             if (resClass == null && resType == null)
@@ -282,15 +316,26 @@ public class JsonServiceClient implements ServiceClient {
 
             int responseCode = req.getResponseCode();
             if (responseCode >= 400){
-                RuntimeException ex = createException(req, responseCode);
+                boolean success = false;
 
-                if (ExceptionFilter != null)
-                    ExceptionFilter.exec(req, ex);
+                if (shouldAuthenticate(req, userName, password)){
+                    req.disconnect();
+                    req = createRequest(requestUrl, httpMethod, requestBody, requestType);
+                    addBasicAuth(req, userName, password);
+                    success = req.getResponseCode() < 400;
+                }
 
-                if (GlobalExceptionFilter != null)
-                    GlobalExceptionFilter.exec(req, ex);
+                if (!success){
+                    RuntimeException ex = createException(req, responseCode);
 
-                throw ex;
+                    if (ExceptionFilter != null)
+                        ExceptionFilter.exec(req, ex);
+
+                    if (GlobalExceptionFilter != null)
+                        GlobalExceptionFilter.exec(req, ex);
+
+                    throw ex;
+                }
             }
 
             InputStream is = req.getInputStream();
@@ -323,8 +368,8 @@ public class JsonServiceClient implements ServiceClient {
             else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 TResponse response = resClass != null
-                        ? (TResponse) getGson().fromJson(reader, resClass)
-                        : (TResponse) getGson().fromJson(reader, resType);
+                    ? (TResponse) getGson().fromJson(reader, resClass)
+                    : (TResponse) getGson().fromJson(reader, resType);
 
                 reader.close();
                 return response;
@@ -333,7 +378,8 @@ public class JsonServiceClient implements ServiceClient {
             throw new RuntimeException(e);
         }
         finally {
-            req.disconnect();
+            if (req != null)
+                req.disconnect();
         }
     }
 
@@ -350,81 +396,64 @@ public class JsonServiceClient implements ServiceClient {
 
     @Override
     public <TResponse> TResponse get(IReturn<TResponse> request) {
-        return send(
-                createRequest(createUrl(request), HttpMethods.Get),
-                request.getResponseType());
+        return send(createUrl(request), HttpMethods.Get, request.getResponseType());
     }
 
     @Override
     public void get(IReturnVoid request) {
-        send(createRequest(createUrl(request), HttpMethods.Get), IReturnVoid.class);
+        send(createUrl(request), HttpMethods.Get, IReturnVoid.class);
     }
 
     @Override
     public <TResponse> TResponse get(IReturn<TResponse> request, Map<String, String> queryParams) {
-        return send(
-                createRequest(createUrl(request, queryParams), HttpMethods.Get),
-                request.getResponseType());
+        return send(createUrl(request, queryParams), HttpMethods.Get, request.getResponseType());
     }
 
     @Override
     public <TResponse> TResponse get(String path, Class responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Get),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Get, responseType);
     }
 
     @Override
     public <TResponse> TResponse get(String path, Type responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Get),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Get, responseType);
     }
 
     @Override
     public HttpURLConnection get(String path) {
-        return createRequest(resolveUrl(path), HttpMethods.Get);
+        return createRequest(resolveUrl(path), HttpMethods.Get, null, null);
     }
 
     @Override
     public <TResponse> TResponse post(IReturn<TResponse> request) {
         return send(
-            createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request),
+            Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request,
             request.getResponseType());
     }
 
     @Override
     public void post(IReturnVoid request) {
-        send(createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request),
-            IReturnVoid.class);
+        send(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request, IReturnVoid.class);
     }
 
     @Override
     public <TResponse> TResponse post(String path, Object request, Class responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Post, request),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Post, request, responseType);
     }
 
     @Override
     public <TResponse> TResponse post(String path, Object request, Type responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Post, request),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Post, request, responseType);
     }
 
     @Override
     public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Class responseType) {
-        return send(
-            createRequest(resolveUrl(path), HttpMethods.Post, requestBody, contentType),
-            responseType);
+        return send(resolveUrl(path), HttpMethods.Post, requestBody, contentType, responseType);
     }
 
     @Override
     public <TResponse> TResponse post(String path, byte[] requestBody, String contentType, Type responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Post, requestBody, contentType),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Post, requestBody, contentType, responseType);
     }
 
     @Override
@@ -435,42 +464,34 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public <TResponse> TResponse put(IReturn<TResponse> request) {
         return send(
-            createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request),
+            Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request,
             request.getResponseType());
     }
 
     @Override
     public void put(IReturnVoid request) {
-        send(createRequest(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request),
+        send(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request,
             IReturnVoid.class);
     }
 
     @Override
     public <TResponse> TResponse put(String path, Object request, Class responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Put, request),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Put, request, responseType);
     }
 
     @Override
     public <TResponse> TResponse put(String path, Object request, Type responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Put, request),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Put, request, responseType);
     }
 
     @Override
     public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Class responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Put, requestBody, contentType),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Put, requestBody, contentType, responseType);
     }
 
     @Override
     public <TResponse> TResponse put(String path, byte[] requestBody, String contentType, Type responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Put, requestBody, contentType),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Put, requestBody, contentType, responseType);
     }
 
     @Override
@@ -480,40 +501,32 @@ public class JsonServiceClient implements ServiceClient {
 
     @Override
     public <TResponse> TResponse delete(IReturn<TResponse> request) {
-        return send(
-            createRequest(createUrl(request), HttpMethods.Delete),
-            request.getResponseType());
+        return send(createUrl(request), HttpMethods.Delete, request.getResponseType());
     }
 
     @Override
     public void delete(IReturnVoid request) {
-        send(createRequest(createUrl(request), HttpMethods.Delete), IReturnVoid.class);
+        send(createUrl(request), HttpMethods.Delete, IReturnVoid.class);
     }
 
     @Override
     public <TResponse> TResponse delete(IReturn<TResponse> request, Map<String, String> queryParams) {
-        return send(
-            createRequest(createUrl(request, queryParams), HttpMethods.Delete),
-            request.getResponseType());
+        return send(createUrl(request, queryParams), HttpMethods.Delete, request.getResponseType());
     }
 
     @Override
     public <TResponse> TResponse delete(String path, Class responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Delete),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Delete, responseType);
     }
 
     @Override
     public <TResponse> TResponse delete(String path, Type responseType) {
-        return send(
-                createRequest(resolveUrl(path), HttpMethods.Delete),
-                responseType);
+        return send(resolveUrl(path), HttpMethods.Delete, responseType);
     }
 
     @Override
     public HttpURLConnection delete(String path) {
-        return createRequest(resolveUrl(path), HttpMethods.Delete);
+        return createRequest(resolveUrl(path), HttpMethods.Delete, null, null);
     }
 
 }
