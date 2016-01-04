@@ -8,6 +8,9 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 public interface ServiceClient {
+    void setAlwaysSendBasicAuthHeaders(boolean value);
+    void setCredentials(String userName, String password);
+
     <TResponse> TResponse send(IReturn<TResponse> request);
     void send(IReturnVoid request);
 

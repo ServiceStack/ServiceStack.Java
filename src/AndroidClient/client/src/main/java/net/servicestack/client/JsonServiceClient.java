@@ -33,6 +33,10 @@ public class JsonServiceClient implements ServiceClient {
     String baseUrl;
     String replyUrl;
 
+    boolean alwaysSendBasicAuthHeaders;
+    String userName;
+    String password;
+
     Integer timeoutMs;
     public ConnectionFilter RequestFilter;
     public ConnectionFilter ResponseFilter;
@@ -161,6 +165,10 @@ public class JsonServiceClient implements ServiceClient {
                 req.setRequestProperty(HttpHeaders.ContentType, requestType);
             }
 
+            if (alwaysSendBasicAuthHeaders) {
+                addBasicAuth(req, userName, password);
+            }
+
             if (RequestFilter != null) {
                 RequestFilter.exec(req);
             }
@@ -183,6 +191,11 @@ public class JsonServiceClient implements ServiceClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static void addBasicAuth(HttpURLConnection req, String userName, String password) {
+        req.setRequestProperty(HttpHeaders.Authorization,
+            "Basic " + Utils.toBase64String(userName + ":" + password));
     }
 
     public static RuntimeException createException(HttpURLConnection res, int responseCode){
@@ -257,6 +270,17 @@ public class JsonServiceClient implements ServiceClient {
             String url = createUrl(request);
             return createRequest(url, httpMethod, null, null);
         }
+    }
+
+    @Override
+    public void setAlwaysSendBasicAuthHeaders(boolean value) {
+        this.alwaysSendBasicAuthHeaders = value;
+    }
+
+    @Override
+    public void setCredentials(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
     }
 
     @Override
