@@ -52,4 +52,24 @@ public class TestAuthTests extends TestCase {
         assertEquals("test DisplayName", response.getDisplayName());
         assertNotNull(response.getSessionId());
     }
+
+    public void test_can_authenticate_with_CredentialsAuth(){
+        ServiceClient client = CreateClient();
+
+        AuthenticateResponse authResponse = client.post(new Authenticate()
+            .setProvider("credentials")
+            .setUserName("test")
+            .setPassword("test"));
+
+        assertEquals("1", authResponse.getUserId());
+        assertEquals("test", authResponse.getUserName());
+        assertNotNull(authResponse.getSessionId());
+
+        TestAuthResponse response = client.get(new TestAuth());
+
+        assertEquals("1", response.getUserId());
+        assertEquals("test", response.getUserName());
+        assertEquals("test DisplayName", response.getDisplayName());
+        assertNotNull(response.getSessionId());
+    }
 }
