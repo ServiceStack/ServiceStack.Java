@@ -258,6 +258,11 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public boolean getAlwaysSendBasicAuthHeaders() {
+        return this.alwaysSendBasicAuthHeaders;
+    }
+
+    @Override
     public void setAlwaysSendBasicAuthHeaders(boolean value) {
         this.alwaysSendBasicAuthHeaders = value;
     }

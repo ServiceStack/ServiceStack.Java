@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.util.Map;
 
 public interface ServiceClient {
+    boolean getAlwaysSendBasicAuthHeaders();
     void setAlwaysSendBasicAuthHeaders(boolean value);
     void setCredentials(String userName, String password);
 
