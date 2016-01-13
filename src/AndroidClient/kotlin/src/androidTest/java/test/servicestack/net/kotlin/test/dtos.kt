@@ -1,5 +1,5 @@
 /* Options:
-Date: 2015-12-09 03:53:30
+Date: 2016-01-13 04:11:23
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
@@ -261,8 +261,8 @@ open class HelloExternal
 }
 
 /**
- * AllowedAttributes Description
- */
+* AllowedAttributes Description
+*/
 @Route(Path="/allowed-attributes", Verbs="GET")
 @Api("AllowedAttributes Description")
 // @ApiResponse(400, "Your request was not understood")
@@ -348,8 +348,8 @@ open class HelloWithDataContract : IReturn<HelloWithDataContractResponse>
 }
 
 /**
- * Description on HelloWithDescription type
- */
+* Description on HelloWithDescription type
+*/
 open class HelloWithDescription : IReturn<HelloWithDescriptionResponse>
 {
     var name:String? = null
@@ -531,6 +531,13 @@ open class UpdateSession : IReturn<GetSessionResponse>
 {
     var customName:String? = null
     companion object { private val responseType = GetSessionResponse::class.java }
+    override fun getResponseType(): Any? = responseType
+}
+
+@Route("/testauth")
+open class TestAuth : IReturn<TestAuthResponse>
+{
+    companion object { private val responseType = TestAuthResponse::class.java }
     override fun getResponseType(): Any? = responseType
 }
 
@@ -861,8 +868,8 @@ open class HelloWithDataContractResponse
 }
 
 /**
- * Description on HelloWithDescriptionResponse type
- */
+* Description on HelloWithDescriptionResponse type
+*/
 open class HelloWithDescriptionResponse
 {
     var result:String? = null
@@ -927,6 +934,15 @@ open class GetSessionResponse
 {
     var result:CustomUserSession? = null
     var unAuthInfo:UnAuthInfo? = null
+    var responseStatus:ResponseStatus? = null
+}
+
+open class TestAuthResponse
+{
+    var userId:String? = null
+    var sessionId:String? = null
+    var userName:String? = null
+    var displayName:String? = null
     var responseStatus:ResponseStatus? = null
 }
 
