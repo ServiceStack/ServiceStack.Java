@@ -7,11 +7,11 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -56,7 +56,12 @@ public class IDEAPomFileHelper {
         PsiFile[] pomLibFiles = FilenameIndex.getFilesByName(module.getProject(), "pom.xml", GlobalSearchScope.allScope(module.getProject()));
         String pomFilePath = null;
         for(PsiFile psiPom : pomLibFiles) {
-            if(psiPom.getParent().getVirtualFile().getPath().equals(module.getModuleFile().getParent().getPath())) {
+            PsiDirectory psiPomParent = psiPom.getParent();
+            VirtualFile moduleVirtualFile = module.getModuleFile();
+            if(psiPomParent == null || moduleVirtualFile == null) {
+                continue;
+            }
+            if(psiPomParent.getVirtualFile().getPath().equals(moduleVirtualFile.getParent().getPath())) {
                 pomFilePath = psiPom.getVirtualFile().getPath();
             }
         }
@@ -193,8 +198,11 @@ public class IDEAPomFileHelper {
         return groupIdMatch && artifactIdMatch;
     }
 
+    public static boolean isMavenModule(Module module) {
+        return findNearestModulePomFile(module) != null;
+    }
+
     public static boolean isMavenProjectWithKotlin(Module module) {
-        final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
-        return mavenProjectsManager.isMavenizedModule(module) && pomHasKotlinDependency(module);
+        return isMavenModule(module) && pomHasKotlinDependency(module);
     }
 }

@@ -12,7 +12,6 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiPackage;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.idea.maven.project.MavenProjectsManager;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -43,9 +42,7 @@ public class AddServiceStackRefHandler {
         if (javaCodeLines == null) return;
         defaultNativeTypesHandler = IDEAUtils.getDefaultNativeTypesHandler(module);
         boolean showDto = true;
-        final MavenProjectsManager mavenProjectsManager = MavenProjectsManager.getInstance(module.getProject());
-
-        boolean isMavenModule = mavenProjectsManager != null && mavenProjectsManager.isMavenizedModule(module);
+        boolean isMavenModule = IDEAPomFileHelper.isMavenModule(module);
         if(isMavenModule) {
             showDto = !tryAddMavenDependency(module);
         } else {
