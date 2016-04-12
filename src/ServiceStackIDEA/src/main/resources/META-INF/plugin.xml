@@ -5,7 +5,7 @@
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
-      Integration with ServiceStack Web Services, includes support for Java Add ServiceStack Reference.
+      Integration with ServiceStack Web Services, includes support for Java and Kotlin Add ServiceStack Reference.
     ]]></description>
 
   <change-notes><![CDATA[
