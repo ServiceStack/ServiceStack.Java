@@ -56,4 +56,9 @@ public @interface ApiMember {
     /// Gets or sets route to which applies attribute, matches using StartsWith. By default applies to all routes. 
     /// </summary>
     public String Route() default "";
+
+    /// <summary>
+    /// Whether to exclude this property from being included in the ModelSchema
+    /// </summary>
+    public boolean ExcludeInSchema() default false;
 }

@@ -5,7 +5,6 @@ package net.servicestack.client;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -16,15 +15,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,6 +48,11 @@ public class JsonServiceClient implements ServiceClient {
     public JsonServiceClient(String baseUrl) {
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
         this.replyUrl = this.baseUrl + "json/reply/";
+
+        //Automatically populate response cookies
+        if (CookieHandler.getDefault() == null){
+            CookieHandler.setDefault(new CookieManager());
+        }
     }
 
     public void setTimeout(int timeoutMs) {
@@ -176,11 +179,13 @@ public class JsonServiceClient implements ServiceClient {
     private static void addBasicAuth(HttpURLConnection req, String userName, String password) {
         req.setRequestProperty(HttpHeaders.Authorization,
             "Basic " + Utils.toBase64String(userName + ":" + password));
+        req.setRequestProperty("X-Auth", "Basic"); // HttpURLConnection doesn't allow re-reading Authorization Header
     }
 
     private static boolean shouldAuthenticate(HttpURLConnection req, String userName, String password){
         try {
             return req.getResponseCode() == 401
+                && req.getRequestProperty("X-Auth") == null //only auth if auth never attempted
                 && userName != null
                 && password != null;
         } catch (IOException e) {
@@ -250,6 +255,11 @@ public class JsonServiceClient implements ServiceClient {
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean getAlwaysSendBasicAuthHeaders() {
+        return this.alwaysSendBasicAuthHeaders;
     }
 
     @Override
@@ -368,8 +378,8 @@ public class JsonServiceClient implements ServiceClient {
             else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 TResponse response = resClass != null
-                    ? (TResponse) getGson().fromJson(reader, resClass)
-                    : (TResponse) getGson().fromJson(reader, resType);
+                        ? (TResponse) getGson().fromJson(reader, resClass)
+                        : (TResponse) getGson().fromJson(reader, resType);
 
                 reader.close();
                 return response;
