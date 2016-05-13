@@ -8,7 +8,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.module.Module;
@@ -16,6 +16,7 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.util.PlatformUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class AddServiceStackReference extends AnAction {
         dialog.setTitle("Add ServiceStack Reference");
 
         //Check if a package was selected in the left hand menu, populate package name
-        PsiElement element = DataKeys.PSI_ELEMENT.getData(e.getDataContext());
+        PsiElement element = LangDataKeys.PSI_ELEMENT.getData(e.getDataContext());
         if (element != null && element instanceof PsiPackage) {
             PsiPackage psiPackage = (PsiPackage) element;
             dialog.setSelectedPackage(psiPackage);
@@ -79,7 +80,7 @@ public class AddServiceStackReference extends AnAction {
         }
 
         //Check if a Java file was selected, display without a package name if no file.
-        VirtualFile selectedFile = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+        VirtualFile selectedFile = LangDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
         if (selectedFile == null) {
             Notification notification = new Notification("ServiceStackIDEA", "Error Add ServiceStack Reference", "Context menu failed find folder or file.", NotificationType.ERROR);
             Notifications.Bus.notify(notification);
@@ -153,7 +154,7 @@ public class AddServiceStackReference extends AnAction {
 
         boolean isMavenModule =  IDEAPomFileHelper.isMavenModule(module);
 
-        if (isAndroidProject(module) || isMavenModule) {
+        if (isAndroidProject(module) || isMavenModule || PlatformUtils.isWebStorm()) {
             e.getPresentation().setEnabled(true);
         } else {
             e.getPresentation().setEnabled(false);
@@ -184,9 +185,9 @@ public class AddServiceStackReference extends AnAction {
     }
 
     static Module getModule(AnActionEvent e) {
-        Module module = e.getData(DataKeys.MODULE);
+        Module module = e.getData(LangDataKeys.MODULE);
         if (module == null) {
-            Project project = e.getData(DataKeys.PROJECT);
+            Project project = e.getData(LangDataKeys.PROJECT);
             return getModule(project);
         } else {
             return module;

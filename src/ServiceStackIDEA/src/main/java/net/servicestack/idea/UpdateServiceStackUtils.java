@@ -9,8 +9,6 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiJavaFile;
-import org.apache.commons.httpclient.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.BufferedReader;
@@ -65,8 +63,7 @@ public class UpdateServiceStackUtils {
             return;
         }
 
-        Module module = ModuleUtil.findModuleForPsiElement(psiFile);
-        INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(module,psiFile.getName());
+        INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(psiFile.getName());
 
         String existingPath = builder.getPath();
         if(existingPath == null || existingPath.equals("/")) {

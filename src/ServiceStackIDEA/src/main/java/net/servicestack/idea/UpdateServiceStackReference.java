@@ -2,7 +2,7 @@ package net.servicestack.idea;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -40,8 +40,9 @@ public class UpdateServiceStackReference extends AnAction {
             return;
         }
 
-        if(!psiFile.getFileType().getDefaultExtension().equals("java") &&
-                !psiFile.getFileType().getDefaultExtension().equals("kt")) {
+        INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(psiFile.getName());
+
+        if(nativeTypesHandler == null) {
             e.getPresentation().setVisible(false);
             return;
         }
@@ -71,7 +72,7 @@ public class UpdateServiceStackReference extends AnAction {
         if(module == null) {
             return null;
         }
-        VirtualFile selectedFile = DataKeys.VIRTUAL_FILE.getData(e.getDataContext());
+        VirtualFile selectedFile = LangDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
         if(selectedFile == null) {
             return null;
         }
@@ -90,9 +91,9 @@ public class UpdateServiceStackReference extends AnAction {
     }
 
     static Module getModule(AnActionEvent e) {
-        Module module = e.getData(DataKeys.MODULE);
+        Module module = e.getData(LangDataKeys.MODULE);
         if (module == null) {
-            Project project = e.getData(DataKeys.PROJECT);
+            Project project = e.getData(LangDataKeys.PROJECT);
             return getModule(project);
         } else {
             return module;

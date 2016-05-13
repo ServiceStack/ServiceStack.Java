@@ -5,5 +5,6 @@ package net.servicestack.idea;
  */
 public enum NativeTypesLanguage {
     Java,
-    Kotlin
+    Kotlin,
+    TypeScript
 }

@@ -117,8 +117,10 @@ public class AddServiceStackRefHandler {
     }
 
     private static INativeTypesHandler getNativeTypesHandler(String fileName) {
-        if(fileName.endsWith(".kt")) return new KotlinNativeTypesHandler();
-        if(fileName.endsWith(".java")) return new JavaNativeTypesHandler();
+        INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(fileName);
+        if(nativeTypesHandler != null) {
+            return nativeTypesHandler;
+        }
         return defaultNativeTypesHandler;
     }
 
