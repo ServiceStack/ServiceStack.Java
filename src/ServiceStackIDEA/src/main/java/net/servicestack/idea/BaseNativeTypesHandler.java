@@ -49,6 +49,7 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
         if (!path.endsWith(this.getRelativeTypesUrl() + "/")) {
             serverUrl += (this.getRelativeTypesUrl() + "/");
         }
+        serverUrl = toParentPath(serverUrl);
         URIBuilder builder;
 
         try {
@@ -58,5 +59,12 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
             throw e;
         }
         return builder;
+    }
+
+    public static String toParentPath(String path)
+    {
+        int pos = path.lastIndexOf("/");
+        if (pos == -1) return "/";
+        return path.substring(0, pos);
     }
 }

@@ -28,9 +28,9 @@ public class AddRefTest extends PlatformLiteFixture {
         INativeTypesHandler javaNativeTypesHanlder = new JavaNativeTypesHandler();
         INativeTypesHandler kotlinNativeTypesHandler = new KotlinNativeTypesHandler();
         URIBuilder javaUriBuilder = javaNativeTypesHanlder.getUrl("techstacks.io", null);
-        assertEquals(javaUriBuilder.build().toString(),"http://techstacks.io/types/java/");
+        assertEquals(javaUriBuilder.build().toString(),"http://techstacks.io/types/java");
 
         URIBuilder kotlinUriBuilder = kotlinNativeTypesHandler.getUrl("techstacks.io", null);
-        assertEquals(kotlinUriBuilder.build().toString(),"http://techstacks.io/types/kotlin/");
+        assertEquals(kotlinUriBuilder.build().toString(),"http://techstacks.io/types/kotlin");
     }
 }

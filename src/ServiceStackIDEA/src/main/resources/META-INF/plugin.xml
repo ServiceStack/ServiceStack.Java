@@ -9,7 +9,8 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      1.0.9 - Fix plugin to support Android Studio 2.0.
+      1.0.10 - Fix issue with resolving URL to match behavior of other extensions. <br />
+      1.0.9 - Fix plugin to support Android Studio 2.0. <br />
       1.0.8 - Add support for Kotlin projects with Add/Update ServiceStack reference. <br />
       1.0.7 - Bug fixes and client now gets dependency version from ServiceStack.Java tags, falls back to 1.0.15 if it fails. <br />
       1.0.6 - Update client and android dependency versions to 1.0.13. <br />
