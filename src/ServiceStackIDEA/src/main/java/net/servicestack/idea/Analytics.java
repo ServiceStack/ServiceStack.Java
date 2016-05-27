@@ -17,21 +17,28 @@ public final class Analytics {
     public static void SubmitAnonymousAddReferenceUsage(INativeTypesHandler typesHandler) {
         PluginSettingsService settings = PluginSettingsService.getInstance();
         if(!settings.optOutOfStats) {
-            String url = addRefUrl + typesHandler.getTypesLanguage().name();
-            URL serviceUrl = null;
-            URLConnection javaResponseConnection = null;
-            BufferedReader javaResponseReader = null;
-            try {
-                serviceUrl = new URL(url);
-                javaResponseConnection = serviceUrl.openConnection();
-                javaResponseReader = new BufferedReader(
-                        new InputStreamReader(
-                                javaResponseConnection.getInputStream()));
+            final String url = addRefUrl + typesHandler.getTypesLanguage().name();
+            final URL[] serviceUrl = {null};
+            final URLConnection[] javaResponseConnection = {null};
+            final BufferedReader[] javaResponseReader = {null};
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        serviceUrl[0] = new URL(url);
+                        javaResponseConnection[0] = serviceUrl[0].openConnection();
+                        javaResponseReader[0] = new BufferedReader(
+                                new InputStreamReader(
+                                        javaResponseConnection[0].getInputStream()));
 
-                javaResponseReader.close();
-            } catch (IOException e) {
-                // Ignore failure (eg no internet connection).
-            }
+                        javaResponseReader[0].close();
+                    } catch (IOException e) {
+                        // Ignore failure (eg no internet connection).
+                    }
+                }
+            });
+            thread.start();
+
         }
     }
 }
