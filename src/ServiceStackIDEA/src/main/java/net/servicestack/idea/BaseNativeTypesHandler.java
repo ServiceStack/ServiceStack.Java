@@ -19,7 +19,7 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
     public List<String> getUpdatedCode(String baseUrl, Map<String, String> options) throws IOException, URISyntaxException {
         String url;
         List<String> javaCodeLines = new ArrayList<String>();
-        URIBuilder urlBuilder = this.getUrl(baseUrl,options);
+        URIBuilder urlBuilder = this.getUrl(baseUrl);
         for(Map.Entry<String, String> option : options.entrySet()) {
             urlBuilder.addParameter(option.getKey(),option.getValue());
         }
@@ -41,7 +41,7 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
     }
 
     @Override
-    public URIBuilder getUrl(String baseUrl, Map<String, String> options) throws MalformedURLException, URISyntaxException {
+    public URIBuilder getUrl(String baseUrl) throws MalformedURLException, URISyntaxException {
         String serverUrl = baseUrl.endsWith("/") ? baseUrl : (baseUrl + "/");
         serverUrl = (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) ? serverUrl : ("http://" + serverUrl);
         URL url = new URL(serverUrl);
@@ -49,6 +49,7 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
         if (!path.endsWith(this.getRelativeTypesUrl() + "/")) {
             serverUrl += (this.getRelativeTypesUrl() + "/");
         }
+        serverUrl = toParentPath(serverUrl);
         URIBuilder builder;
 
         try {
@@ -58,5 +59,12 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
             throw e;
         }
         return builder;
+    }
+
+    public static String toParentPath(String path)
+    {
+        int pos = path.lastIndexOf("/");
+        if (pos == -1) return "/";
+        return path.substring(0, pos);
     }
 }

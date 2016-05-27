@@ -73,7 +73,7 @@ public class AddServiceStackRefHandler {
         if (!writeDtoFile(javaCodeLines, dtoPath, errorMessage)) {
             return;
         }
-
+        Analytics.SubmitAnonymousAddReferenceUsage(getNativeTypesHandler(fileName));
         IDEAUtils.refreshFile(module, dtoPath, showDto);
         VirtualFileManager.getInstance().syncRefresh();
     }

@@ -9,7 +9,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      1.0.10 - Add TypeScript support and enable extension for use with WebStorm. <br />
+      1.0.10 - Fix issue with resolving URL to match behavior of other extensions. <br />
       1.0.9 - Fix plugin to support Android Studio 2.0. <br />
       1.0.8 - Add support for Kotlin projects with Add/Update ServiceStack reference. <br />
       1.0.7 - Bug fixes and client now gets dependency version from ServiceStack.Java tags, falls back to 1.0.15 if it fails. <br />
@@ -35,6 +35,15 @@
     <intentionAction>
       <className>net.servicestack.idea.UpdateServiceStackReferenceIntention</className>
     </intentionAction>
+
+    <applicationService serviceImplementation="net.servicestack.idea.PluginSettingsService"
+                        serviceInterface="net.servicestack.idea.PluginSettingsService"
+                        id="ServiceStackIDEASettingsService" />
+
+    <applicationConfigurable groupId="ServiceStackIDEA"
+                             displayName="ServiceStack"
+                             id="ServiceStackIDEAConfig"
+                             instance="net.servicestack.idea.PluginSettingsConfigurable" />
   </extensions>
 
   <actions>
