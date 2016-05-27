@@ -27,10 +27,10 @@ public class AddRefTest extends PlatformLiteFixture {
     public void testCreateUrl() throws MalformedURLException, URISyntaxException {
         INativeTypesHandler javaNativeTypesHanlder = new JavaNativeTypesHandler();
         INativeTypesHandler kotlinNativeTypesHandler = new KotlinNativeTypesHandler();
-        URIBuilder javaUriBuilder = javaNativeTypesHanlder.getUrl("techstacks.io", null);
+        URIBuilder javaUriBuilder = javaNativeTypesHanlder.getUrl("techstacks.io");
         assertEquals(javaUriBuilder.build().toString(),"http://techstacks.io/types/java");
 
-        URIBuilder kotlinUriBuilder = kotlinNativeTypesHandler.getUrl("techstacks.io", null);
+        URIBuilder kotlinUriBuilder = kotlinNativeTypesHandler.getUrl("techstacks.io");
         assertEquals(kotlinUriBuilder.build().toString(),"http://techstacks.io/types/kotlin");
     }
 }

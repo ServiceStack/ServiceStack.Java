@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface INativeTypesHandler {
     String getFileExtension();
-    URIBuilder getUrl(String baseUrl, Map<String,String> options) throws MalformedURLException, URISyntaxException;
+    URIBuilder getUrl(String baseUrl) throws MalformedURLException, URISyntaxException;
     List<String> getUpdatedCode(String baseUrl, Map<String, String> options) throws IOException, URISyntaxException;
     String getRelativeTypesUrl();
     NativeTypesLanguage getTypesLanguage();

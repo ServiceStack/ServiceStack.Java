@@ -34,6 +34,15 @@
     <intentionAction>
       <className>net.servicestack.idea.UpdateServiceStackReferenceIntention</className>
     </intentionAction>
+
+    <applicationService serviceImplementation="net.servicestack.idea.PluginSettingsService"
+                        serviceInterface="net.servicestack.idea.PluginSettingsService"
+                        id="ServiceStackIDEASettingsService" />
+
+    <applicationConfigurable groupId="ServiceStackIDEA"
+                             displayName="ServiceStack"
+                             id="ServiceStackIDEAConfig"
+                             instance="net.servicestack.idea.PluginSettingsConfigurable" />
   </extensions>
 
   <actions>

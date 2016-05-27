@@ -19,7 +19,7 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
     public List<String> getUpdatedCode(String baseUrl, Map<String, String> options) throws IOException, URISyntaxException {
         String url;
         List<String> javaCodeLines = new ArrayList<String>();
-        URIBuilder urlBuilder = this.getUrl(baseUrl,options);
+        URIBuilder urlBuilder = this.getUrl(baseUrl);
         for(Map.Entry<String, String> option : options.entrySet()) {
             urlBuilder.addParameter(option.getKey(),option.getValue());
         }
@@ -41,7 +41,7 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
     }
 
     @Override
-    public URIBuilder getUrl(String baseUrl, Map<String, String> options) throws MalformedURLException, URISyntaxException {
+    public URIBuilder getUrl(String baseUrl) throws MalformedURLException, URISyntaxException {
         String serverUrl = baseUrl.endsWith("/") ? baseUrl : (baseUrl + "/");
         serverUrl = (serverUrl.startsWith("http://") || serverUrl.startsWith("https://")) ? serverUrl : ("http://" + serverUrl);
         URL url = new URL(serverUrl);
