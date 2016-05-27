@@ -10,8 +10,9 @@ import java.awt.*;
 /**
  * Created by Layoric on 27/05/2016.
  */
-public class PluginSettingsView extends JPanel {
+public class PluginSettingsView {
     private JCheckBox optOutOfUsageCheckBox;
+    private JPanel settingsPanel;
 
     public Boolean getOptOutOfUsage() {
         return optOutOfUsageCheckBox.isSelected();
@@ -21,18 +22,8 @@ public class PluginSettingsView extends JPanel {
         optOutOfUsageCheckBox.setSelected(value);
     }
 
-    public PluginSettingsView() {
-        super();
-        setupUi();
-    }
-
-    private void setupUi() {
-        this.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        this.optOutOfUsageCheckBox = new JCheckBox();
-        this.optOutOfUsageCheckBox.setText("Opt out of usage collection ");
-        this.add(optOutOfUsageCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        this.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    public JPanel getSettingsPanel() {
+        return this.settingsPanel;
     }
 
     {
@@ -50,12 +41,19 @@ public class PluginSettingsView extends JPanel {
      * @noinspection ALL
      */
     private void $$$setupUI$$$() {
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        settingsPanel = new JPanel();
+        settingsPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         optOutOfUsageCheckBox = new JCheckBox();
         optOutOfUsageCheckBox.setText("Opt out of usage collection ");
-        panel1.add(optOutOfUsageCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        settingsPanel.add(optOutOfUsageCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        settingsPanel.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    }
+
+    /**
+     * @noinspection ALL
+     */
+    public JComponent $$$getRootComponent$$$() {
+        return settingsPanel;
     }
 }

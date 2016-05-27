@@ -52,7 +52,7 @@ public class PluginSettingsConfigurable implements SearchableConfigurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        return getForm();
+        return getForm().getSettingsPanel();
     }
 
 
