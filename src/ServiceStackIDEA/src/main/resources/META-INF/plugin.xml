@@ -59,7 +59,6 @@
     <action id="AddTypeScriptReference" class="net.servicestack.idea.AddTypeScriptAction" text="TypeScript Reference..." icon="/logo-16.png"
             description="Adds a ServiceStack TypeScript reference to the selected folder">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
-      <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt T"/>
     </action>
   </actions>
 </idea-plugin>

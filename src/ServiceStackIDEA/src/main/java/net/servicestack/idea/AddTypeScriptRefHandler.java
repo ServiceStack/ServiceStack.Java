@@ -5,6 +5,7 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.EnvironmentUtil;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -31,6 +32,10 @@ public class AddTypeScriptRefHandler {
                 + getDtoFileName(fileName,nativeTypesHandler);
         List<String> codeLines = getDtoLines(addressUrl,nativeTypesHandler,errorMessage);
 
+        if(codeLines == null) {
+            return;
+        }
+
         if (!IDEAUtils.writeDtoFile(codeLines, dtoPath, errorMessage)) {
             return;
         }
@@ -42,8 +47,14 @@ public class AddTypeScriptRefHandler {
 
     private static List<String> getDtoLines(String addressUrl, INativeTypesHandler nativeTypesHandler,
                                             StringBuilder errorMessage) {
+        List<String> codeLines;
         try {
-            return nativeTypesHandler.getUpdatedCode(addressUrl, null);
+            codeLines = nativeTypesHandler.getUpdatedCode(addressUrl, null);
+            if (!codeLines.get(0).startsWith("/* Options:")) {
+                //Invalid endpoint
+                errorMessage.append("The address url is not a valid ServiceStack endpoint.");
+                return null;
+            }
         } catch (URISyntaxException e) {
             e.printStackTrace();
             DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
@@ -52,11 +63,18 @@ public class AddTypeScriptRefHandler {
             e.printStackTrace();
             DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
             return null;
-        } catch (IOException e) {
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
+            return null;
+        }
+        catch (IOException e) {
             e.printStackTrace();
             DialogErrorMessages.appendReadResponseError(errorMessage, addressUrl, e);
             return null;
         }
+        return codeLines;
     }
 
     public static String getDtoFileName(String name, INativeTypesHandler nativeTypesHandler) {

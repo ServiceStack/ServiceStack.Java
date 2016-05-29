@@ -60,13 +60,12 @@ public class AddTypeScriptAction extends AnAction {
         Module module = getModule(e);
         if(module == null) {
             e.getPresentation().setEnabled(false);
-            return;
         }
 
         if(!(PlatformUtils.isWebStorm() || PlatformUtils.isPhpStorm() ||
                 PlatformUtils.isRubyMine() || PlatformUtils.isIntelliJ() ||
                 PlatformUtils.isPyCharm())) {
-            return;
+            e.getPresentation().setVisible(false);
         }
 
         super.update(e);
