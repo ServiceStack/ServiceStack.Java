@@ -152,9 +152,14 @@ public class AddServiceStackAction extends AnAction {
             return;
         }
 
+        if(!(PlatformUtils.isIntelliJ() || isAndroidProject(module))) {
+            e.getPresentation().setVisible(false);
+            return;
+        }
+
         boolean isMavenModule =  IDEAPomFileHelper.isMavenModule(module);
 
-        if (isAndroidProject(module) || isMavenModule || PlatformUtils.isWebStorm()) {
+        if (isAndroidProject(module) || isMavenModule) {
             e.getPresentation().setEnabled(true);
         } else {
             e.getPresentation().setEnabled(false);

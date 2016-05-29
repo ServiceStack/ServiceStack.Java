@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.form" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.form" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.java" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptDefinitionNativeTypesHandler.java" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptDefinitionNativeTypesHandler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" />
     </list>
     <ignored path="ServiceStackIDEA.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -144,6 +139,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AddServiceStackAction.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="154" column="68" selection-start-line="154" selection-start-column="11" selection-end-line="154" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="AddTypeScriptAction.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -157,7 +162,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AddTypeScriptRefHandler.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AddTypeScriptRefHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="352">
@@ -165,6 +170,16 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="618">
+              <caret line="50" column="78" selection-start-line="50" selection-start-column="78" selection-end-line="50" selection-end-column="78" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -204,26 +219,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="242">
               <caret line="18" column="50" selection-start-line="18" selection-start-column="50" selection-end-line="18" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="INativeTypesHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/INativeTypesHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TypeScriptNativeTypesHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptNativeTypesHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="20" column="1" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -581,7 +576,6 @@
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/NativeTypesHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/BaseRefHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackReference.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" />
         <option value="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" />
         <option value="C:/Program Files (x86)/JetBrains/IntelliJ IDEA Community Edition 14.1.4/lib/openapi.jar!/com/intellij/openapi/module/Module.class" />
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.form" />
@@ -598,6 +592,7 @@
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" />
       </list>
     </option>
   </component>
@@ -1391,7 +1386,7 @@
       <workItem from="1464317385074" duration="47000" />
       <workItem from="1464317446424" duration="13857000" />
       <workItem from="1464414555004" duration="6908000" />
-      <workItem from="1464422935976" duration="12918000" />
+      <workItem from="1464422935976" duration="14592000" />
     </task>
     <servers />
   </component>
@@ -1428,11 +1423,11 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44546000" />
+    <option name="totallyTimeSpent" value="46220000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1032" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1442,7 +1437,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850778" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3207127" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3207127" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1598,14 +1593,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="49" column="93" selection-start-line="49" selection-start-column="93" selection-end-line="49" selection-end-column="93" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files (x86)/JetBrains/IntelliJ IDEA Community Edition 14.1.4/lib/openapi.jar!/com/intellij/openapi/module/Module.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
@@ -1648,14 +1635,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-262">
-          <caret line="45" column="65" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1819,6 +1798,22 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="154" column="68" selection-start-line="154" selection-start-column="11" selection-end-line="154" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="618">
+          <caret line="50" column="78" selection-start-line="50" selection-start-column="78" selection-end-line="50" selection-end-column="78" />
+          <folding />
         </state>
       </provider>
     </entry>
