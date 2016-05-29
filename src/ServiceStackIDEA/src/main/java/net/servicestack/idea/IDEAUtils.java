@@ -8,7 +8,6 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.util.PlatformUtils;
 
 import java.io.*;
@@ -102,7 +101,7 @@ public class IDEAUtils {
         }
 
         if(PlatformUtils.isWebStorm()) {
-            return new TypeScriptNativeTypesHandler();
+            return new TypeScriptConcreteNativeTypesHandler();
         }
 
         return new JavaNativeTypesHandler();
@@ -112,8 +111,8 @@ public class IDEAUtils {
         INativeTypesHandler result = null;
         if(fileName.endsWith(".kt")) result =  new KotlinNativeTypesHandler();
         if(fileName.endsWith(".java")) result =  new JavaNativeTypesHandler();
-        if(fileName.endsWith(".dtos.ts")) result = new TypeScriptNativeTypesHandler();
-        if(fileName.endsWith(".dtos.d.ts")) result = new TypeScriptDefinitionNativeTypesHandler();
+        if(fileName.endsWith(".dtos.ts")) result = new TypeScriptConcreteNativeTypesHandler();
+        if(fileName.endsWith(".dtos.d.ts")) result = new TypeScriptNativeTypesHandler();
         return result;
     }
 }

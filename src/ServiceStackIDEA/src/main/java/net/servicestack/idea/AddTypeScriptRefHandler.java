@@ -2,7 +2,6 @@ package net.servicestack.idea;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.util.EnvironmentUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import static net.servicestack.idea.IDEAUtils.getNativeTypesHandler;
 import static net.servicestack.idea.IDEAUtils.refreshFile;
 
 public class AddTypeScriptRefHandler {
@@ -25,8 +23,8 @@ public class AddTypeScriptRefHandler {
         File file = new File(selectedDirectory);
         INativeTypesHandler nativeTypesHandler =
                 definitionsOnly ?
-                        new TypeScriptDefinitionNativeTypesHandler() :
-                        new TypeScriptNativeTypesHandler();
+                        new TypeScriptNativeTypesHandler() :
+                        new TypeScriptConcreteNativeTypesHandler();
 
         String dtoPath = file.getAbsolutePath() + File.separator
                 + getDtoFileName(fileName,nativeTypesHandler);

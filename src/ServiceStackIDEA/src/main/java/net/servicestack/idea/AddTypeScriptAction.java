@@ -24,9 +24,9 @@ public class AddTypeScriptAction extends AnAction {
         dialog.setLocationRelativeTo(null);
         dialog.setSize(dialog.getPreferredSize());
         dialog.setResizable(true);
-        dialog.setTitle("Add TypeScript ServiceStack Reference");
+        dialog.setTitle("Add TypeScriptConcrete ServiceStack Reference");
         PsiElement element = LangDataKeys.PSI_ELEMENT.getData(anActionEvent.getDataContext());
-        INativeTypesHandler defaultTsNativeTypesHandler = new TypeScriptDefinitionNativeTypesHandler();
+        INativeTypesHandler defaultTsNativeTypesHandler = new TypeScriptNativeTypesHandler();
         if (element != null && element instanceof PsiDirectory) {
             PsiDirectory selectedDir = (PsiDirectory)element;
             dialog.setSelectedDirectory(selectedDir.getVirtualFile().getPath());

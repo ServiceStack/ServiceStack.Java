@@ -64,10 +64,14 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
         return builder;
     }
 
-    public static String toParentPath(String path)
-    {
+    public static String toParentPath(String path) {
         int pos = path.lastIndexOf("/");
         if (pos == -1) return "/";
         return path.substring(0, pos);
+    }
+
+    @Override
+    public String getLanguageUrlName() {
+        return this.getRelativeTypesUrl().substring(6);
     }
 }

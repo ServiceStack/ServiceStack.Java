@@ -16,7 +16,7 @@ public final class Analytics {
     public static void SubmitAnonymousAddReferenceUsage(INativeTypesHandler typesHandler) {
         PluginSettingsService settings = PluginSettingsService.getInstance();
         if(!settings.optOutOfStats) {
-            final String url = addRefUrl + typesHandler.getTypesLanguage().name();
+            final String url = addRefUrl + typesHandler.getLanguageUrlName();
             final URL[] serviceUrl = {null};
             final URLConnection[] responseConnection = {null};
             final BufferedReader[] responseReader = {null};
