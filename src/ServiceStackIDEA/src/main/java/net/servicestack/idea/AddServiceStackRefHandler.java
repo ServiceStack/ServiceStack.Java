@@ -70,7 +70,7 @@ public class AddServiceStackRefHandler {
             return;
         }
 
-        if (!writeDtoFile(javaCodeLines, dtoPath, errorMessage)) {
+        if (!IDEAUtils.writeDtoFile(javaCodeLines, dtoPath, errorMessage)) {
             return;
         }
         Analytics.SubmitAnonymousAddReferenceUsage(getNativeTypesHandler(fileName));
@@ -80,37 +80,31 @@ public class AddServiceStackRefHandler {
 
     @Nullable
     private static List<String> getDtoLines(String addressUrl, String qualifiedPackageName, String fileName, StringBuilder errorMessage) {
-        Map<String,String> options = new HashMap<String,String>();
+        Map<String,String> options = new HashMap<>();
         List<String> javaCodeLines;
         try {
             options.put("Package", qualifiedPackageName);
             String name = getDtoNameWithoutExtension(fileName).replaceAll("\\.", "_");
             options.put("GlobalNamespace", name);
-            javaCodeLines = getNativeTypesHandler(fileName).getUpdatedCode(addressUrl,options);
+            javaCodeLines = getNativeTypesHandler(fileName).getUpdatedCode(addressUrl, options);
 
-            if(!javaCodeLines.get(0).startsWith("/* Options:")) {
+            if (!javaCodeLines.get(0).startsWith("/* Options:")) {
                 //Invalid endpoint
                 errorMessage.append("The address url is not a valid ServiceStack endpoint.");
                 return null;
             }
-
-        } catch (URISyntaxException e) {
+        }
+        catch (URISyntaxException e) {
             e.printStackTrace();
-            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
+            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
             return null;
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
+            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
             return null;
         } catch (IOException e) {
             e.printStackTrace();
-            errorMessage.append(e.getClass().getName()).append(" - Failed to read response - ").append(addressUrl);
-            Notification notification = new Notification(
-                    "ServiceStackIDEA",
-                    "Add ServiceStack Reference failed to read response",
-                    errorMessage.toString() + "\n" + e.getMessage(),
-                    NotificationType.ERROR);
-            Notifications.Bus.notify(notification);
+            DialogErrorMessages.appendReadResponseError(errorMessage, addressUrl, e);
             return null;
         }
         return javaCodeLines;
@@ -163,30 +157,6 @@ public class AddServiceStackRefHandler {
             result = true;
             IDEAUtils.refreshBuildFile(module);
         }
-        return result;
-    }
-
-    private static boolean writeDtoFile(List<String> javaCode, String path, StringBuilder errorMessage) {
-        BufferedWriter writer = null;
-        boolean result = true;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(path), "utf-8"));
-            for (String item : javaCode) {
-                writer.write(item);
-                writer.newLine();
-            }
-        } catch (IOException ex) {
-            result = false;
-            errorMessage.append("Error writing DTOs to file - ").append(ex.getMessage());
-        } finally {
-            try {
-                assert writer != null;
-                writer.close();
-            } catch (Exception ignored) {
-            }
-        }
-
         return result;
     }
 

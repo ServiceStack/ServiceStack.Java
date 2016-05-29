@@ -20,9 +20,12 @@ public abstract class BaseNativeTypesHandler implements INativeTypesHandler {
         String url;
         List<String> javaCodeLines = new ArrayList<String>();
         URIBuilder urlBuilder = this.getUrl(baseUrl);
-        for(Map.Entry<String, String> option : options.entrySet()) {
-            urlBuilder.addParameter(option.getKey(),option.getValue());
+        if(options != null) {
+            for(Map.Entry<String, String> option : options.entrySet()) {
+                urlBuilder.addParameter(option.getKey(),option.getValue());
+            }
         }
+
         url = urlBuilder.build().toString();
 
         URL serviceUrl = new URL(url);

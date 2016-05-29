@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddServiceStackReference extends AnAction {
+public class AddServiceStackAction extends AnAction {
 
     public void actionPerformed(AnActionEvent e) {
         Module module = getModule(e);

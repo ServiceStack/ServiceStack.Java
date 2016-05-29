@@ -47,7 +47,7 @@
   </extensions>
 
   <actions>
-    <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackReference" text="ServiceStack Reference..." icon="/logo-16.png"
+    <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackAction" text="ServiceStack Reference..." icon="/logo-16.png"
             description="Adds a ServiceStack reference to the selected module">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
@@ -55,6 +55,11 @@
     <action id="UpdateServiceStackReference" class="net.servicestack.idea.UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/logo-16.png"
             description="Updates the selected ServiceStack reference.">
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
+    <action id="AddTypeScriptReference" class="net.servicestack.idea.AddTypeScriptAction" text="TypeScript Reference..." icon="/logo-16.png"
+            description="Adds a ServiceStack TypeScript reference to the selected folder">
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt T"/>
     </action>
   </actions>
 </idea-plugin>
