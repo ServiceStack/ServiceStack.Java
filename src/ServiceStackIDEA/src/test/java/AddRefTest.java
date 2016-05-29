@@ -33,4 +33,16 @@ public class AddRefTest extends PlatformLiteFixture {
         URIBuilder kotlinUriBuilder = kotlinNativeTypesHandler.getUrl("techstacks.io");
         assertEquals(kotlinUriBuilder.build().toString(),"http://techstacks.io/types/kotlin");
     }
+
+    public void testTypeHandlersLanguageName() {
+        INativeTypesHandler java = new JavaNativeTypesHandler();
+        INativeTypesHandler kotlin = new KotlinNativeTypesHandler();
+        INativeTypesHandler typeScriptD = new TypeScriptNativeTypesHandler();
+        INativeTypesHandler typeScript = new TypeScriptConcreteNativeTypesHandler();
+
+        assertEquals(java.getLanguageUrlName(),"java");
+        assertEquals(kotlin.getLanguageUrlName(),"kotlin");
+        assertEquals(typeScriptD.getLanguageUrlName(),"typescript.d");
+        assertEquals(typeScript.getLanguageUrlName(),"typescript");
+    }
 }

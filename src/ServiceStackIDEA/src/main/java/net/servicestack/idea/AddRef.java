@@ -310,7 +310,7 @@ public class AddRef extends JDialog {
     private void $$$setupUI$$$() {
         contentPane = new JPanel();
         contentPane.setLayout(new GridLayoutManager(3, 1, new Insets(10, 10, 10, 10), -1, -1));
-        contentPane.setMaximumSize(new Dimension(550, 320));
+        contentPane.setMaximumSize(new Dimension(700, 420));
         contentPane.setMinimumSize(new Dimension(400, 220));
         contentPane.setOpaque(true);
         contentPane.setPreferredSize(new Dimension(550, 220));

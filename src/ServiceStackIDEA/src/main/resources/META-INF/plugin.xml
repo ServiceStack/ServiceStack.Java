@@ -28,6 +28,7 @@
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
        on how to target different products -->
   <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.platform</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
@@ -46,7 +47,7 @@
   </extensions>
 
   <actions>
-    <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackReference" text="ServiceStack Reference..." icon="/logo-16.png"
+    <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackAction" text="ServiceStack Reference..." icon="/logo-16.png"
             description="Adds a ServiceStack reference to the selected module">
       <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
       <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
@@ -54,6 +55,10 @@
     <action id="UpdateServiceStackReference" class="net.servicestack.idea.UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/logo-16.png"
             description="Updates the selected ServiceStack reference.">
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
+    <action id="AddTypeScriptReference" class="net.servicestack.idea.AddTypeScriptAction" text="TypeScript Reference..." icon="/logo-16.png"
+            description="Adds a ServiceStack TypeScript reference to the selected folder">
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
     </action>
   </actions>
 </idea-plugin>

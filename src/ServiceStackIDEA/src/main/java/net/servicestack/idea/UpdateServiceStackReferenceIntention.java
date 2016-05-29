@@ -2,12 +2,9 @@ package net.servicestack.idea;
 
 import com.intellij.codeInsight.intention.impl.QuickEditAction;
 import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Iconable;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiJavaFile;
+import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,9 +31,11 @@ public class UpdateServiceStackReferenceIntention extends QuickEditAction implem
             if(psiFile == null) {
                 return false;
             }
-            if(!(psiFile instanceof PsiJavaFile || psiFile.getFileType().getDefaultExtension().equals("kt"))) {
+            INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(psiFile.getName());
+            if(nativeTypesHandler == null) {
                 return false;
             }
+
             if(UpdateServiceStackUtils.containsOptionsHeader(psiFile)) {
                 return true;
             }
