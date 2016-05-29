@@ -180,7 +180,9 @@ public class AddServiceStackRefHandler {
                 errorMessage.append("Unable to determine path for DTO file.");
                 throw new FileNotFoundException();
             }
-            fullDtoPath = rootPackageDir.getVirtualFile().getPath() + "/" + getDtoFileName(fileName);
+            fullDtoPath = rootPackageDir.getVirtualFile().getPath() +
+                    File.separator +
+                    getDtoFileName(fileName);
         } else {
             String moduleSourcePath;
             if(moduleFile.getParent() == null) {
@@ -188,7 +190,7 @@ public class AddServiceStackRefHandler {
             } else {
                 moduleSourcePath = moduleFile.getParent().getPath() + "/src/main/java";
             }
-            fullDtoPath = moduleSourcePath + "/" + getDtoFileName(fileName);
+            fullDtoPath = moduleSourcePath + File.separator + getDtoFileName(fileName);
         }
         return fullDtoPath;
     }

@@ -19,22 +19,29 @@ public class AddTypeScriptRefHandler {
                          String addressUrl,
                          String fileName,
                          String selectedDirectory,
+                         Boolean definitionsOnly,
                          StringBuilder errorMessage) {
+        File file = new File(selectedDirectory);
+        INativeTypesHandler nativeTypesHandler =
+                definitionsOnly ?
+                        new TypeScriptDefinitionNativeTypesHandler() :
+                        new TypeScriptNativeTypesHandler();
 
-        List<String> codeLines = getDtoLines(addressUrl,fileName,errorMessage);
-        if (!IDEAUtils.writeDtoFile(codeLines, selectedDirectory, errorMessage)) {
+        String dtoPath = file.getAbsolutePath() + File.separator
+                + getDtoFileName(fileName,nativeTypesHandler);
+        List<String> codeLines = getDtoLines(addressUrl,nativeTypesHandler,errorMessage);
+
+        if (!IDEAUtils.writeDtoFile(codeLines, dtoPath, errorMessage)) {
             return;
         }
-        File file = new File(selectedDirectory);
-        String dtoPath = file.getAbsolutePath() + "/" + getDtoFileName(fileName);
-        Analytics.SubmitAnonymousAddReferenceUsage(getNativeTypesHandler(fileName));
+
+        Analytics.SubmitAnonymousAddReferenceUsage(nativeTypesHandler);
         refreshFile(module,dtoPath, true);
         VirtualFileManager.getInstance().syncRefresh();
     }
 
-    private static List<String> getDtoLines(String addressUrl, String fileName,
+    private static List<String> getDtoLines(String addressUrl, INativeTypesHandler nativeTypesHandler,
                                             StringBuilder errorMessage) {
-        INativeTypesHandler nativeTypesHandler = getNativeTypesHandler(fileName);
         try {
             return nativeTypesHandler.getUpdatedCode(addressUrl, null);
         } catch (URISyntaxException e) {
@@ -52,15 +59,12 @@ public class AddTypeScriptRefHandler {
         }
     }
 
-    public static String getDtoFileName(String name) {
-        INativeTypesHandler nativeTypesHandler = getNativeTypesHandler(name);
-        int p = name.lastIndexOf(".");
-        String e = name.substring(p);
-        if (p == -1 || !e.equals(nativeTypesHandler.getFileExtension())) {
+    public static String getDtoFileName(String name, INativeTypesHandler nativeTypesHandler) {
+        if (!name.endsWith(nativeTypesHandler.getFileExtension())) {
             /* file has no extension */
             return name + nativeTypesHandler.getFileExtension();
         } else {
-            /* file has extension e */
+            /* file has extension */
             return name;
         }
     }

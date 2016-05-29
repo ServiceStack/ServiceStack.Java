@@ -22,12 +22,11 @@ public class AddTypeScriptRef extends JDialog {
     private JTextField nameTextField;
     private JTextPane errorTextPane;
     private JTextPane infoTextPane;
+    private JCheckBox onlyTypeScriptDefinitionsCheckBox;
 
     private String selectedDirectory;
-    private StringBuilder errorMessageBuilder = new StringBuilder();
     private String errorMessage;
 
-    private String initialDtoName;
     private Module module;
 
     public AddTypeScriptRef(Module module) {
@@ -169,14 +168,21 @@ public class AddTypeScriptRef extends JDialog {
     }
 
     private void onOK() {
+        StringBuilder errorMessageBuilder = new StringBuilder();
         AddTypeScriptRefHandler.handleOk(
                 this.module,
                 this.addressUrlTextField.getText(),
                 this.nameTextField.getText(),
                 this.selectedDirectory,
-                this.errorMessageBuilder
+                this.onlyTypeScriptDefinitionsCheckBox.isSelected(),
+                errorMessageBuilder
         );
-        dispose();
+        if (errorMessageBuilder.toString().length() > 0) {
+            errorTextPane.setText(errorMessageBuilder.toString());
+            errorTextPane.setVisible(true);
+        } else {
+            dispose();
+        }
     }
 
     private void onCancel() {
@@ -190,6 +196,7 @@ public class AddTypeScriptRef extends JDialog {
         dialog.setVisible(true);
         System.exit(0);
     }
+
     private ImageIcon createImageIcon(String path, String description) {
         URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
@@ -210,11 +217,11 @@ public class AddTypeScriptRef extends JDialog {
     }
 
     public String getInitialDtoName() {
-        return initialDtoName;
+        return this.nameTextField.getText();
     }
 
     public void setInitialDtoName(String initialDtoName) {
-        this.initialDtoName = initialDtoName;
+        this.nameTextField.setText(initialDtoName);
     }
 
     {
@@ -239,19 +246,23 @@ public class AddTypeScriptRef extends JDialog {
         contentPane.setPreferredSize(new Dimension(550, 220));
         contentPane.setRequestFocusEnabled(false);
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel1.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel1.add(panel2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
         buttonOK.setText("OK");
         panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buttonCancel = new JButton();
         buttonCancel.setText("Cancel");
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        onlyTypeScriptDefinitionsCheckBox = new JCheckBox();
+        onlyTypeScriptDefinitionsCheckBox.setSelected(true);
+        onlyTypeScriptDefinitionsCheckBox.setText("Only TypeScript definitions");
+        panel1.add(onlyTypeScriptDefinitionsCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -265,7 +276,7 @@ public class AddTypeScriptRef extends JDialog {
         label2.setText("Name");
         panel3.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         nameTextField = new JTextField();
-        nameTextField.setText("dtos.java");
+        nameTextField.setText("");
         panel3.add(nameTextField, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));

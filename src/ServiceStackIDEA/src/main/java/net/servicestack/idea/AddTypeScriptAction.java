@@ -10,6 +10,8 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.PlatformUtils;
 
+import java.io.File;
+
 /**
  * Created by Layoric on 28/05/2016.
  */
@@ -24,17 +26,33 @@ public class AddTypeScriptAction extends AnAction {
         dialog.setResizable(true);
         dialog.setTitle("Add TypeScript ServiceStack Reference");
         PsiElement element = LangDataKeys.PSI_ELEMENT.getData(anActionEvent.getDataContext());
-
+        INativeTypesHandler defaultTsNativeTypesHandler = new TypeScriptDefinitionNativeTypesHandler();
         if (element != null && element instanceof PsiDirectory) {
             PsiDirectory selectedDir = (PsiDirectory)element;
             dialog.setSelectedDirectory(selectedDir.getVirtualFile().getPath());
-            dialog.setInitialDtoName("ServiceReference1.dtos.d.ts");
+            String initialName = getInitialFileName(selectedDir.getVirtualFile().getPath(),defaultTsNativeTypesHandler);
+            dialog.setInitialDtoName(initialName);
         }
         showDialog(dialog);
     }
 
     private void showDialog(AddTypeScriptRef dialog) {
         dialog.setVisible(true);
+    }
+
+    private String getInitialFileName(String path, INativeTypesHandler defaultTsNativeTypesHandler) {
+        String initName = "ServiceReference";
+        Integer count = 1;
+        while(true) {
+            File existingFile = new File(path + "/" + initName + count.toString() +
+                    defaultTsNativeTypesHandler.getFileExtension());
+            if(existingFile.exists()) {
+                count++;
+            } else {
+                break;
+            }
+        }
+        return initName + count.toString();
     }
 
     @Override
