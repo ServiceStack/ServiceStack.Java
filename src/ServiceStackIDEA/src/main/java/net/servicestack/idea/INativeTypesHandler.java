@@ -17,4 +17,5 @@ public interface INativeTypesHandler {
     List<String> getUpdatedCode(String baseUrl, Map<String, String> options) throws IOException, URISyntaxException;
     String getRelativeTypesUrl();
     NativeTypesLanguage getTypesLanguage();
+    String getLanguageUrlName();
 }

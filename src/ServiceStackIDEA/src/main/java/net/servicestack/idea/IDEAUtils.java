@@ -8,9 +8,10 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.PsiDocumentManager;
+import com.intellij.util.PlatformUtils;
 
-import java.io.File;
+import java.io.*;
+import java.util.List;
 
 /**
  * Created by Layoric on 10/12/2015.
@@ -53,6 +54,34 @@ public class IDEAUtils {
         VirtualFileManager.getInstance().syncRefresh();
     }
 
+    public static void refreshFile(String filePath, boolean openFile) {
+
+    }
+
+    public static boolean writeDtoFile(List<String> codeLines, String path, StringBuilder errorMessage) {
+        BufferedWriter writer = null;
+        boolean result = true;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(path), "utf-8"));
+            for (String item : codeLines) {
+                writer.write(item);
+                writer.newLine();
+            }
+        } catch (IOException ex) {
+            result = false;
+            errorMessage.append("Error writing DTOs to file - ").append(ex.getMessage());
+        } finally {
+            try {
+                assert writer != null;
+                writer.close();
+            } catch (Exception ignored) {
+            }
+        }
+
+        return result;
+    }
+
     public static void closeFile(Module module, String filePath) {
         File file = new File(filePath);
         VirtualFile fileByUrl = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(file);
@@ -70,12 +99,20 @@ public class IDEAUtils {
         if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
             return new KotlinNativeTypesHandler();
         }
+
+        if(PlatformUtils.isWebStorm()) {
+            return new TypeScriptConcreteNativeTypesHandler();
+        }
+
         return new JavaNativeTypesHandler();
     }
 
-    public static INativeTypesHandler getNativeTypesHandler(Module module,String fileName) {
-        if(fileName.endsWith(".kt")) return new KotlinNativeTypesHandler();
-        if(fileName.endsWith(".java")) return new JavaNativeTypesHandler();
-        return getDefaultNativeTypesHandler(module);
+    public static INativeTypesHandler getNativeTypesHandler(String fileName) {
+        INativeTypesHandler result = null;
+        if(fileName.endsWith(".kt")) result =  new KotlinNativeTypesHandler();
+        if(fileName.endsWith(".java")) result =  new JavaNativeTypesHandler();
+        if(fileName.endsWith(".dtos.ts")) result = new TypeScriptConcreteNativeTypesHandler();
+        if(fileName.endsWith(".dtos.d.ts")) result = new TypeScriptNativeTypesHandler();
+        return result;
     }
 }

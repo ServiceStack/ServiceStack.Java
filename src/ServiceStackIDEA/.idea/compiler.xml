@@ -18,5 +18,9 @@
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ServiceStackIDEA_main" target="1.8" />
+      <module name="ServiceStackIDEA_test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
