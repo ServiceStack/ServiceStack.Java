@@ -121,6 +121,7 @@ public class UpdateServiceStackUtils {
             Document document = FileDocumentManager.getInstance().getDocument(psiFile.getVirtualFile());
             if (document != null) {
                 document.setText(javaCodeResponse);
+                Analytics.SubmitAnonymousUpdateReferenceUsage(nativeTypesHandler);
             } else {
                 //Show error
                 Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "DTO file not found.", NotificationType.ERROR);
