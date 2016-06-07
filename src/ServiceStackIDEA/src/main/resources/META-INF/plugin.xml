@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>net.servicestack.ideaplugin</id>
   <name>ServiceStack</name>
-  <version>1.0.10</version>
+  <version>1.0.11</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
@@ -9,16 +9,19 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      1.0.10 - Add TypeScript support. Fix issue with resolving URL to match behavior of other extensions. <br />
-      1.0.9 - Fix plugin to support Android Studio 2.0. <br />
-      1.0.8 - Add support for Kotlin projects with Add/Update ServiceStack reference. <br />
-      1.0.7 - Bug fixes and client now gets dependency version from ServiceStack.Java tags, falls back to 1.0.15 if it fails. <br />
-      1.0.6 - Update client and android dependency versions to 1.0.13. <br />
-      1.0.5 - Update client and android dependency versions to 1.0.12. <br />
-      1.0.4 - Bug fixes for Maven project support and new versions of net.servicestack:client.<br />
-      1.0.3 - Added support to detect Maven pom.xml and inject net.servicestack:client dependency for IntelliJ + Maven modules.<br />
-      1.0.2 - Fix plugin.xml template bug to enable search from IDE.<br>
-      1.0 - Initial release.<br />
+    <ul>
+      <li>1.0.11 - Small UI fixes.</li>
+      <li>1.0.10 - Add TypeScript support. Fix issue with resolving URL to match behavior of other extensions.</li>
+      <li>1.0.9 - Fix plugin to support Android Studio 2.0.</li>
+      <li>1.0.8 - Add support for Kotlin projects with Add/Update ServiceStack reference.</li>
+      <li>1.0.7 - Bug fixes and client now gets dependency version from ServiceStack.Java tags, falls back to 1.0.15 if it fails.</li>
+      <li>1.0.6 - Update client and android dependency versions to 1.0.13.</li>
+      <li>1.0.5 - Update client and android dependency versions to 1.0.12.</li>
+      <li>1.0.4 - Bug fixes for Maven project support and new versions of net.servicestack:client.</li>
+      <li>1.0.3 - Added support to detect Maven pom.xml and inject net.servicestack:client dependency for IntelliJ + Maven modules.</li>
+      <li>1.0.2 - Fix plugin.xml template bug to enable search from IDE.</li>
+      <li>1.0 - Initial release.</li>
+    </ul>
     ]]>
   </change-notes>
 
