@@ -15,7 +15,7 @@ ServiceStackIDEA now supports many of the most popular Jetbrains IDEs including:
 
 
 ## New TypeScript Support
-Since version 1.0.10, ServiceStackIDEA now supports adding new TypeScript References!
+Since version 1.0.11, ServiceStackIDEA now supports adding new TypeScript References!
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackidea/webstorm-add-typescript.png)
 
