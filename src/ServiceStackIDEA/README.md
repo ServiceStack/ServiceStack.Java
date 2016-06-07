@@ -4,8 +4,6 @@ ServiceStackIDEA is a plugin for Jetbrains' IntelliJ based IDEs to support build
 
 ServiceStackIDEA now supports many of the most popular Jetbrains IDEs including:
 
-
-
 - IntelliJ
     - Java, Kotlin and TypeScript
 - Android Studio
@@ -28,3 +26,14 @@ Once this file as been added to your project, you can update your service DTOs s
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackidea/webstorm-update-typescript.png)
 
 This now means you can integrate with a ServiceStack service easily from your favorite Jetbrains IDE when working with TypeScript!
+
+#### Install ServiceStack IDEA from the Plugin repository
+
+The ServiceStack IDEA is now available to install directly from within a supported IDE Plugins Repository, to Install Go to: 
+
+ 1. `File -> Settings...` Main Menu Item
+ 2. Select **Plugins** on left menu then click **Browse repositories...** at bottom
+ 3. Search for **ServiceStack** and click **Install plugin**
+ 4. Restart to load the installed ServiceStack IDEA plugin
+
+![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackidea/android-plugin-download.gif)
