@@ -1,5 +1,5 @@
 # ServiceStackIDEA plugin
-<img style="float:right;" src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackidea/supported-ides.png" />
+<img align="right" src="https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackidea/supported-ides.png" />
 ServiceStackIDEA is a plugin for Jetbrains' IntelliJ based IDEs to support building client applications for ServiceStack services in the simplest possible way. Leveraging ServiceStack's NativeTypes feature, ServiceStackIDEA makes it easy to work with ServiceStack DTOs by providing intuitive menus for adding ServiceStack references and importing the associated client libraries as dependencies.
 
 ServiceStackIDEA now supports many of the most popular Jetbrains IDEs including:
