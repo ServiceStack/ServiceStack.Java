@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,7 +120,9 @@ public class TechStacksServiceTests extends TestCase {
 //        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("overview.json");
 //        String json = Utils.readToEnd(stream, "UTF-8");
         // Works from gradle -> test or check as they run 'processTestResources' that copy resources into build directory
-        String json =  Utils.readToEnd(getClass().getResourceAsStream("/overview.json"), "UTF-8");
+        String projFolder = getClass().getClassLoader().getResource("").getPath().replace("build/classes/test/","");
+        String overviewPath = projFolder + "src/test/resources/overview.json";
+        String json =  Utils.readToEnd(new FileInputStream(overviewPath), "UTF-8");
 
         OverviewResponse dto = (OverviewResponse)client.fromJson(json, OverviewResponse.class);
 
