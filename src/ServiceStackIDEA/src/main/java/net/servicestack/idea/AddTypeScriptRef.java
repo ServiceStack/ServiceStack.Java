@@ -260,7 +260,7 @@ public class AddTypeScriptRef extends JDialog {
         buttonCancel.setText("Cancel");
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         onlyTypeScriptDefinitionsCheckBox = new JCheckBox();
-        onlyTypeScriptDefinitionsCheckBox.setSelected(true);
+        onlyTypeScriptDefinitionsCheckBox.setSelected(false);
         onlyTypeScriptDefinitionsCheckBox.setText("Only TypeScript definitions");
         panel1.add(onlyTypeScriptDefinitionsCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
