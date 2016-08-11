@@ -179,7 +179,7 @@ public class TestServiceTests extends TestCase {
         TestAuth request = new TestAuth();
 
         try {
-            TestAuthResponse response = testClient.put(request);
+            TestAuthResponse response = testClient.send(request);
         }
         catch (WebServiceException webEx){
             thrownError = webEx;
