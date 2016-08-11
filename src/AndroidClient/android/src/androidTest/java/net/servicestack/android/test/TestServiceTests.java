@@ -168,6 +168,44 @@ public class TestServiceTests extends TestCase {
         assertNotNull(status.getStackTrace());
     }
 
+    public void test_Does_handle_401_Error_with_empty_ResponseBody() {
+        JsonServiceClient testClient = new JsonServiceClient("http://test.servicestack.net");
+
+        final Exception[] globalError = new Exception[1]; //Wow Java, you suck.
+        final Exception[] localError = new Exception[1];
+        WebServiceException thrownError = null;
+
+        JsonServiceClient.GlobalExceptionFilter = new ExceptionFilter() {
+            @Override
+            public void exec(HttpURLConnection res, Exception ex) {
+                globalError[0] = ex;
+            }
+        };
+
+        testClient.ExceptionFilter = new ExceptionFilter() {
+            @Override
+            public void exec(HttpURLConnection res, Exception ex) {
+                localError[0] = ex;
+            }
+        };
+
+        TestAuth request = new TestAuth();
+
+        try {
+            TestAuthResponse response = testClient.send(request);
+        }
+        catch (WebServiceException webEx){
+            thrownError = webEx;
+        }
+
+        assertNotNull(globalError[0]);
+        assertNotNull(localError[0]);
+        assertNotNull(thrownError);
+
+        ResponseStatus status = thrownError.getResponseStatus();
+        assertNull(status);
+    }
+
     public void test_Does_handle_ValidationException(){
         ThrowValidation request = new ThrowValidation()
             .setEmail("invalidemail");
