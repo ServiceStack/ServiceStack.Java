@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>net.servicestack.ideaplugin</id>
   <name>ServiceStack</name>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
   <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
 
   <description><![CDATA[
@@ -10,6 +10,7 @@
 
   <change-notes><![CDATA[
     <ul>
+      <li>1.0.12 - Fix TypeScript dialog defaults to use classes over definitions only.</li>
       <li>1.0.11 - Small UI fixes.</li>
       <li>1.0.10 - Add TypeScript support. Fix issue with resolving URL to match behavior of other extensions.</li>
       <li>1.0.9 - Fix plugin to support Android Studio 2.0.</li>
