@@ -548,11 +548,11 @@ public class Utils {
                 Object field = obj.get(key);
 
                 if (varName.toLowerCase().equals("errorcode")) {
-                    status.setErrorCode(jsonElementEntry.getValue().getAsString());
+                    status.setErrorCode(getAsStringOrNull(jsonElementEntry.getValue()));
                 } else if (varName.toLowerCase().equals("message")) {
-                    status.setMessage(jsonElementEntry.getValue().getAsString());
+                    status.setMessage(getAsStringOrNull(jsonElementEntry.getValue()));
                 } else if (varName.toLowerCase().equals("stacktrace")) {
-                    status.setStackTrace(jsonElementEntry.getValue().getAsString());
+                    status.setStackTrace(getAsStringOrNull(jsonElementEntry.getValue()));
                 } else if (varName.toLowerCase().equals("errors")) {
 
                     if (field instanceof JsonArray){
@@ -567,11 +567,11 @@ public class Utils {
                                 String fieldName = Utils.sanitizeVarName(fieldKey);
 
                                 if (fieldName.toLowerCase().equals("errorcode")) {
-                                    fieldError.setErrorCode(entry.getValue().getAsString());
+                                    fieldError.setErrorCode(getAsStringOrNull(entry.getValue()));
                                 } else if (fieldName.toLowerCase().equals("message")) {
-                                    fieldError.setMessage(entry.getValue().getAsString());
+                                    fieldError.setMessage(getAsStringOrNull(entry.getValue()));
                                 } else if (fieldName.toLowerCase().equals("fieldname")) {
-                                    fieldError.setFieldName(entry.getValue().getAsString());
+                                    fieldError.setFieldName(getAsStringOrNull(entry.getValue()));
                                 }
 
                             }
@@ -727,6 +727,10 @@ public class Utils {
         } else {
             return outBuff;
         }
+    }
+
+    private static String getAsStringOrNull(JsonElement jsonElement) {
+        return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
     }
 
     private final static byte EQUALS_SIGN = (byte)'=';

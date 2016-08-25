@@ -1,6 +1,8 @@
 package net.servicestack.client.tests;
 
+import com.google.gson.*;
 import junit.framework.TestCase;
+import net.servicestack.client.ResponseStatus;
 import net.servicestack.client.Utils;
 
 import java.text.SimpleDateFormat;
@@ -41,5 +43,21 @@ public class UtilsTests extends TestCase {
     public void test_Can_parse_pre_UnixTime(){
         Date date = Utils.parseDate("\\/Date(-30610224000)\\/");
         assertEquals(new Date(-30610224000L), date);
+    }
+
+    public void test_Can_parse_response_with_server_enabled_nulls() {
+        JsonObject jsonObject = new JsonParser().parse("{\n" +
+                "    \"ResponseStatus\": {\n" +
+                "        \"ErrorCode\": \"ModelNotFoundException\",\n" +
+                "        \"Message\": \"The specified model was not found\",\n" +
+                "        \"StackTrace\": null,\n" +
+                "        \"Errors\": [],\n" +
+                "        \"Meta\": null\n" +
+                "    }\n" +
+                "}").getAsJsonObject();
+        ResponseStatus responseStatus = Utils.createResponseStatus(jsonObject.get("ResponseStatus"));
+        assertEquals(responseStatus.getErrorCode(),"ModelNotFoundException");
+        assertEquals(responseStatus.getMessage(),"The specified model was not found");
+        assertEquals(responseStatus.getErrors().size(),0);
     }
 }
