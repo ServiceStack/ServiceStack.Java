@@ -1,19 +1,20 @@
 /* Options:
-Date: 2016-01-04 04:23:37
+Date: 2016-08-11 04:35:31
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
 
 Package: net.servicestack.client.tests
-GlobalNamespace: testdtos
+//GlobalNamespace: testdtos
 //AddPropertyAccessors: True
 //SettersReturnThis: True
 //AddServiceStackTypes: True
 //AddResponseStatus: False
-//AddImplicitVersion: 
-//IncludeTypes: 
-//ExcludeTypes: 
-//TreatTypesAsStrings: 
+//AddDescriptionAsComments: True
+//AddImplicitVersion:
+//IncludeTypes:
+//ExcludeTypes:
+//TreatTypesAsStrings:
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
@@ -32,7 +33,7 @@ public class testdtos
     {
         public Integer statusCode = null;
         public String statusDescription = null;
-        
+
         public Integer getStatusCode() { return statusCode; }
         public CustomHttpError setStatusCode(Integer value) { this.statusCode = value; return this; }
         public String getStatusDescription() { return statusDescription; }
@@ -46,7 +47,7 @@ public class testdtos
     {
         public Integer status = null;
         public String message = null;
-        
+
         public Integer getStatus() { return status; }
         public ThrowHttpError setStatus(Integer value) { this.status = value; return this; }
         public String getMessage() { return message; }
@@ -58,7 +59,7 @@ public class testdtos
     public static class Throw404
     {
         public String message = null;
-        
+
         public String getMessage() { return message; }
         public Throw404 setMessage(String value) { this.message = value; return this; }
     }
@@ -68,7 +69,7 @@ public class testdtos
     public static class ThrowCustom400
     {
         public String message = null;
-        
+
         public String getMessage() { return message; }
         public ThrowCustom400 setMessage(String value) { this.message = value; return this; }
     }
@@ -78,7 +79,7 @@ public class testdtos
     {
         public String type = null;
         public String message = null;
-        
+
         public String getType() { return type; }
         public ThrowType setType(String value) { this.type = value; return this; }
         public String getMessage() { return message; }
@@ -93,7 +94,7 @@ public class testdtos
         public Integer age = null;
         public String required = null;
         public String email = null;
-        
+
         public Integer getAge() { return age; }
         public ThrowValidation setAge(Integer value) { this.age = value; return this; }
         public String getRequired() { return required; }
@@ -107,7 +108,7 @@ public class testdtos
     @Route("/throwbusinesserror")
     public static class ThrowBusinessError implements IReturn<ThrowBusinessErrorResponse>
     {
-        
+
         private static Object responseType = ThrowBusinessErrorResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -117,7 +118,7 @@ public class testdtos
         public Integer id = null;
         public String name = null;
         public ExternalEnum externalEnum = null;
-        
+
         public Integer getId() { return id; }
         public ExternalOperation setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -131,7 +132,7 @@ public class testdtos
     public static class ExternalOperation2 implements IReturn<ExternalOperation2Response>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public ExternalOperation2 setId(Integer value) { this.id = value; return this; }
         private static Object responseType = ExternalOperation2Response.class;
@@ -141,7 +142,7 @@ public class testdtos
     public static class ExternalOperation3 implements IReturn<ExternalReturnTypeResponse>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public ExternalOperation3 setId(Integer value) { this.id = value; return this; }
         private static Object responseType = ExternalReturnTypeResponse.class;
@@ -151,7 +152,7 @@ public class testdtos
     public static class ExternalOperation4
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public ExternalOperation4 setId(Integer value) { this.id = value; return this; }
     }
@@ -160,7 +161,7 @@ public class testdtos
     public static class RootPathRoutes
     {
         public String path = null;
-        
+
         public String getPath() { return path; }
         public RootPathRoutes setPath(String value) { this.path = value; return this; }
     }
@@ -168,7 +169,7 @@ public class testdtos
     public static class GetAccount implements IReturn<Account>
     {
         public String account = null;
-        
+
         public String getAccount() { return account; }
         public GetAccount setAccount(String value) { this.account = value; return this; }
         private static Object responseType = Account.class;
@@ -179,7 +180,7 @@ public class testdtos
     {
         public String account = null;
         public String project = null;
-        
+
         public String getAccount() { return account; }
         public GetProject setAccount(String value) { this.account = value; return this; }
         public String getProject() { return project; }
@@ -192,7 +193,7 @@ public class testdtos
     public static class ImageAsStream
     {
         public String format = null;
-        
+
         public String getFormat() { return format; }
         public ImageAsStream setFormat(String value) { this.format = value; return this; }
     }
@@ -201,7 +202,7 @@ public class testdtos
     public static class ImageAsBytes
     {
         public String format = null;
-        
+
         public String getFormat() { return format; }
         public ImageAsBytes setFormat(String value) { this.format = value; return this; }
     }
@@ -210,7 +211,7 @@ public class testdtos
     public static class ImageAsCustomResult
     {
         public String format = null;
-        
+
         public String getFormat() { return format; }
         public ImageAsCustomResult setFormat(String value) { this.format = value; return this; }
     }
@@ -219,7 +220,7 @@ public class testdtos
     public static class ImageWriteToResponse
     {
         public String format = null;
-        
+
         public String getFormat() { return format; }
         public ImageWriteToResponse setFormat(String value) { this.format = value; return this; }
     }
@@ -228,7 +229,7 @@ public class testdtos
     public static class ImageAsFile
     {
         public String format = null;
-        
+
         public String getFormat() { return format; }
         public ImageAsFile setFormat(String value) { this.format = value; return this; }
     }
@@ -237,7 +238,7 @@ public class testdtos
     public static class ImageAsRedirect
     {
         public String format = null;
-        
+
         public String getFormat() { return format; }
         public ImageAsRedirect setFormat(String value) { this.format = value; return this; }
     }
@@ -252,7 +253,7 @@ public class testdtos
         public Integer fontSize = null;
         public String foreground = null;
         public String background = null;
-        
+
         public String getName() { return name; }
         public DrawImage setName(String value) { this.name = value; return this; }
         public String getFormat() { return format; }
@@ -273,7 +274,7 @@ public class testdtos
     public static class MetadataTest implements IReturn<MetadataTestResponse>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public MetadataTest setId(Integer value) { this.id = value; return this; }
         private static Object responseType = MetadataTestResponse.class;
@@ -284,7 +285,7 @@ public class testdtos
     public static class MetadataTestArray implements IReturn<ArrayList<MetadataTestChild>>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public MetadataTestArray setId(Integer value) { this.id = value; return this; }
         private static Object responseType = new TypeToken<ArrayList<MetadataTestChild>>(){}.getType();
@@ -295,7 +296,7 @@ public class testdtos
     @DataContract
     public static class GetExample implements IReturn<GetExampleResponse>
     {
-        
+
         private static Object responseType = GetExampleResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -304,7 +305,7 @@ public class testdtos
     public static class GetRandomIds implements IReturn<GetRandomIdsResponse>
     {
         public Integer take = null;
-        
+
         public Integer getTake() { return take; }
         public GetRandomIds setTake(Integer value) { this.take = value; return this; }
         private static Object responseType = GetRandomIdsResponse.class;
@@ -315,7 +316,7 @@ public class testdtos
     public static class TextFileTest
     {
         public Boolean asAttachment = null;
-        
+
         public Boolean isAsAttachment() { return asAttachment; }
         public TextFileTest setAsAttachment(Boolean value) { this.asAttachment = value; return this; }
     }
@@ -328,7 +329,7 @@ public class testdtos
         public String name = null;
 
         public String title = null;
-        
+
         public String getName() { return name; }
         public Hello setName(String value) { this.name = value; return this; }
         public String getTitle() { return title; }
@@ -341,7 +342,7 @@ public class testdtos
     {
         public String name = null;
         public NestedClass nestedClassProp = null;
-        
+
         public String getName() { return name; }
         public HelloWithNestedClass setName(String value) { this.name = value; return this; }
         public NestedClass getNestedClassProp() { return nestedClassProp; }
@@ -353,7 +354,7 @@ public class testdtos
     public static class HelloList implements IReturn<ArrayList<ListResult>>
     {
         public ArrayList<String> names = null;
-        
+
         public ArrayList<String> getNames() { return names; }
         public HelloList setNames(ArrayList<String> value) { this.names = value; return this; }
         private static Object responseType = new TypeToken<ArrayList<ListResult>>(){}.getType();
@@ -363,7 +364,7 @@ public class testdtos
     public static class HelloArray implements IReturn<ArrayList<ArrayResult>>
     {
         public ArrayList<String> names = null;
-        
+
         public ArrayList<String> getNames() { return names; }
         public HelloArray setNames(ArrayList<String> value) { this.names = value; return this; }
         private static Object responseType = new TypeToken<ArrayList<ArrayResult>>(){}.getType();
@@ -375,7 +376,7 @@ public class testdtos
         public EnumType enumProp = null;
         public EnumType nullableEnumProp = null;
         public EnumFlags enumFlags = null;
-        
+
         public EnumType getEnumProp() { return enumProp; }
         public HelloWithEnum setEnumProp(EnumType value) { this.enumProp = value; return this; }
         public EnumType getNullableEnumProp() { return nullableEnumProp; }
@@ -387,25 +388,28 @@ public class testdtos
     public static class HelloExternal
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloExternal setName(String value) { this.name = value; return this; }
     }
 
     /**
-    * AllowedAttributes Description
-    */
+     * AllowedAttributes Description
+     */
     @Route(Path="/allowed-attributes", Verbs="GET")
     @Api("AllowedAttributes Description")
     // @ApiResponse(400, "Your request was not understood")
     @DataContract
     public static class AllowedAttributes
     {
+        /**
+         * Range Description
+         */
         @DataMember(Name="Aliased")
         @SerializedName("Aliased")
         @ApiMember(ParameterType="path", Description="Range Description", DataType="double", IsRequired=true)
         public Double range = null;
-        
+
         public Double getRange() { return range; }
         public AllowedAttributes setRange(Double value) { this.range = value; return this; }
     }
@@ -416,7 +420,7 @@ public class testdtos
         public String name = null;
         public AllTypes allTypes = null;
         public AllCollectionTypes allCollectionTypes = null;
-        
+
         public String getName() { return name; }
         public HelloAllTypes setName(String value) { this.name = value; return this; }
         public AllTypes getAllTypes() { return allTypes; }
@@ -454,7 +458,7 @@ public class testdtos
         public HashMap<String,String> stringMap = null;
         public HashMap<Integer,String> intStringMap = null;
         public SubType subType = null;
-        
+
         public Integer getId() { return id; }
         public AllTypes setId(Integer value) { this.id = value; return this; }
         public Integer getNullableId() { return nullableId; }
@@ -510,7 +514,7 @@ public class testdtos
     public static class HelloString implements IReturn<String>
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloString setName(String value) { this.name = value; return this; }
         private static Object responseType = String.class;
@@ -520,7 +524,7 @@ public class testdtos
     public static class HelloDateTime implements IReturn<HelloDateTime>
     {
         public Date dateTime = null;
-        
+
         public Date getDateTime() { return dateTime; }
         public HelloDateTime setDateTime(Date value) { this.dateTime = value; return this; }
         private static Object responseType = HelloDateTime.class;
@@ -530,7 +534,7 @@ public class testdtos
     public static class HelloVoid
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloVoid setName(String value) { this.name = value; return this; }
     }
@@ -545,7 +549,7 @@ public class testdtos
         @DataMember(Name="id", Order=2, EmitDefaultValue=false)
         @SerializedName("id")
         public Integer id = null;
-        
+
         public String getName() { return name; }
         public HelloWithDataContract setName(String value) { this.name = value; return this; }
         public Integer getId() { return id; }
@@ -555,12 +559,12 @@ public class testdtos
     }
 
     /**
-    * Description on HelloWithDescription type
-    */
+     * Description on HelloWithDescription type
+     */
     public static class HelloWithDescription implements IReturn<HelloWithDescriptionResponse>
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloWithDescription setName(String value) { this.name = value; return this; }
         private static Object responseType = HelloWithDescriptionResponse.class;
@@ -570,7 +574,7 @@ public class testdtos
     public static class HelloWithInheritance extends HelloBase implements IReturn<HelloWithInheritanceResponse>
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloWithInheritance setName(String value) { this.name = value; return this; }
         private static Object responseType = HelloWithInheritanceResponse.class;
@@ -580,7 +584,7 @@ public class testdtos
     public static class HelloWithGenericInheritance extends HelloBase_1<Poco>
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithGenericInheritance setResult(String value) { this.result = value; return this; }
     }
@@ -588,20 +592,20 @@ public class testdtos
     public static class HelloWithGenericInheritance2 extends HelloBase_1<Hello>
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithGenericInheritance2 setResult(String value) { this.result = value; return this; }
     }
 
     public static class HelloWithNestedInheritance extends HelloBase_1<Item>
     {
-        
+
     }
 
     public static class HelloWithReturn implements IReturn<HelloWithAlternateReturnResponse>
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloWithReturn setName(String value) { this.name = value; return this; }
         private static Object responseType = HelloWithAlternateReturnResponse.class;
@@ -612,7 +616,7 @@ public class testdtos
     public static class HelloWithRoute implements IReturn<HelloWithRouteResponse>
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloWithRoute setName(String value) { this.name = value; return this; }
         private static Object responseType = HelloWithRouteResponse.class;
@@ -622,7 +626,7 @@ public class testdtos
     public static class HelloWithType implements IReturn<HelloWithTypeResponse>
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public HelloWithType setName(String value) { this.name = value; return this; }
         private static Object responseType = HelloWithTypeResponse.class;
@@ -634,7 +638,7 @@ public class testdtos
         public IPoco poco = null;
         public IEmptyInterface emptyInterface = null;
         public EmptyClass emptyClass = null;
-        
+
         public IPoco getPoco() { return poco; }
         public HelloInterface setPoco(IPoco value) { this.poco = value; return this; }
         public IEmptyInterface getEmptyInterface() { return emptyInterface; }
@@ -645,7 +649,7 @@ public class testdtos
 
     public static class HelloInnerTypes implements IReturn<HelloInnerTypesResponse>
     {
-        
+
         private static Object responseType = HelloInnerTypesResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -653,7 +657,7 @@ public class testdtos
     public static class HelloBuiltin
     {
         public DayOfWeek dayOfWeek = null;
-        
+
         public DayOfWeek getDayOfWeek() { return dayOfWeek; }
         public HelloBuiltin setDayOfWeek(DayOfWeek value) { this.dayOfWeek = value; return this; }
     }
@@ -661,7 +665,7 @@ public class testdtos
     public static class HelloGet implements IReturn<HelloVerbResponse>, IGet
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public HelloGet setId(Integer value) { this.id = value; return this; }
         private static Object responseType = HelloVerbResponse.class;
@@ -670,7 +674,7 @@ public class testdtos
 
     public static class HelloPost extends HelloBase implements IReturn<HelloVerbResponse>, IPost
     {
-        
+
         private static Object responseType = HelloVerbResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -678,7 +682,7 @@ public class testdtos
     public static class HelloPut implements IReturn<HelloVerbResponse>, IPut
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public HelloPut setId(Integer value) { this.id = value; return this; }
         private static Object responseType = HelloVerbResponse.class;
@@ -688,7 +692,7 @@ public class testdtos
     public static class HelloDelete implements IReturn<HelloVerbResponse>, IDelete
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public HelloDelete setId(Integer value) { this.id = value; return this; }
         private static Object responseType = HelloVerbResponse.class;
@@ -698,7 +702,7 @@ public class testdtos
     public static class HelloPatch implements IReturn<HelloVerbResponse>, IPatch
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public HelloPatch setId(Integer value) { this.id = value; return this; }
         private static Object responseType = HelloVerbResponse.class;
@@ -708,7 +712,7 @@ public class testdtos
     public static class HelloReturnVoid implements IReturnVoid
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public HelloReturnVoid setId(Integer value) { this.id = value; return this; }
     }
@@ -716,7 +720,7 @@ public class testdtos
     public static class EnumRequest implements IReturn<EnumResponse>, IPut
     {
         public ScopeType operator = null;
-        
+
         public ScopeType getOperator() { return operator; }
         public EnumRequest setOperator(ScopeType value) { this.operator = value; return this; }
         private static Object responseType = EnumResponse.class;
@@ -726,7 +730,7 @@ public class testdtos
     @Route("/ping")
     public static class Ping implements IReturn<PingResponse>
     {
-        
+
         private static Object responseType = PingResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -734,13 +738,13 @@ public class testdtos
     @Route("/reset-connections")
     public static class ResetConnections
     {
-        
+
     }
 
     @Route("/requires-role")
     public static class RequiresRole implements IReturn<RequiresRoleResponse>
     {
-        
+
         private static Object responseType = RequiresRoleResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -748,7 +752,7 @@ public class testdtos
     public static class SendDefault implements IReturn<SendVerbResponse>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public SendDefault setId(Integer value) { this.id = value; return this; }
         private static Object responseType = SendVerbResponse.class;
@@ -759,7 +763,7 @@ public class testdtos
     public static class SendRestGet implements IReturn<SendVerbResponse>, IGet
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public SendRestGet setId(Integer value) { this.id = value; return this; }
         private static Object responseType = SendVerbResponse.class;
@@ -769,7 +773,7 @@ public class testdtos
     public static class SendGet implements IReturn<SendVerbResponse>, IGet
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public SendGet setId(Integer value) { this.id = value; return this; }
         private static Object responseType = SendVerbResponse.class;
@@ -779,7 +783,7 @@ public class testdtos
     public static class SendPost implements IReturn<SendVerbResponse>, IPost
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public SendPost setId(Integer value) { this.id = value; return this; }
         private static Object responseType = SendVerbResponse.class;
@@ -789,7 +793,7 @@ public class testdtos
     public static class SendPut implements IReturn<SendVerbResponse>, IPut
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public SendPut setId(Integer value) { this.id = value; return this; }
         private static Object responseType = SendVerbResponse.class;
@@ -799,7 +803,7 @@ public class testdtos
     @Route("/session")
     public static class GetSession implements IReturn<GetSessionResponse>
     {
-        
+
         private static Object responseType = GetSessionResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -808,17 +812,27 @@ public class testdtos
     public static class UpdateSession implements IReturn<GetSessionResponse>
     {
         public String customName = null;
-        
+
         public String getCustomName() { return customName; }
         public UpdateSession setCustomName(String value) { this.customName = value; return this; }
         private static Object responseType = GetSessionResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
+    public static class StoreLogs implements IReturn<StoreLogsResponse>
+    {
+        public ArrayList<Logger> loggers = null;
+
+        public ArrayList<Logger> getLoggers() { return loggers; }
+        public StoreLogs setLoggers(ArrayList<Logger> value) { this.loggers = value; return this; }
+        private static Object responseType = StoreLogsResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
     @Route("/testauth")
     public static class TestAuth implements IReturn<TestAuthResponse>
     {
-        
+
         private static Object responseType = TestAuthResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -826,20 +840,20 @@ public class testdtos
     @Route("/void-response")
     public static class TestVoidResponse
     {
-        
+
     }
 
     @Route("/null-response")
     public static class TestNullResponse
     {
-        
+
     }
 
     @Route("/wait/{ForMs}")
     public static class Wait implements IReturn<Wait>
     {
         public Integer forMs = null;
-        
+
         public Integer getForMs() { return forMs; }
         public Wait setForMs(Integer value) { this.forMs = value; return this; }
         private static Object responseType = Wait.class;
@@ -865,7 +879,7 @@ public class testdtos
         public Date dateTimeOffset = null;
         public UUID guid = null;
         @SerializedName("char") public String Char = null;
-        
+
         public Short getByte() { return Byte; }
         public EchoTypes setByte(Short value) { this.Byte = value; return this; }
         public Short getShort() { return Short; }
@@ -909,7 +923,7 @@ public class testdtos
         public ArrayList<String> stringArray = null;
         public HashMap<String,String> stringMap = null;
         public HashMap<Integer,String> intStringMap = null;
-        
+
         public ArrayList<String> getStringList() { return stringList; }
         public EchoCollections setStringList(ArrayList<String> value) { this.stringList = value; return this; }
         public ArrayList<String> getStringArray() { return stringArray; }
@@ -925,7 +939,7 @@ public class testdtos
     public static class EchoComplexTypes implements IReturn<EchoComplexTypes>
     {
         public SubType subType = null;
-        
+
         public SubType getSubType() { return subType; }
         public EchoComplexTypes setSubType(SubType value) { this.subType = value; return this; }
         private static Object responseType = EchoComplexTypes.class;
@@ -995,7 +1009,7 @@ public class testdtos
 
         @DataMember(Order=20)
         public TimeSpan durationLessThan = null;
-        
+
         public Integer getBeforeSecs() { return beforeSecs; }
         public RequestLogs setBeforeSecs(Integer value) { this.beforeSecs = value; return this; }
         public Integer getAfterSecs() { return afterSecs; }
@@ -1090,8 +1104,11 @@ public class testdtos
         public String cnonce = null;
 
         @DataMember(Order=15)
+        public Boolean useTokenCookie = null;
+
+        @DataMember(Order=16)
         public HashMap<String,String> meta = null;
-        
+
         public String getProvider() { return provider; }
         public Authenticate setProvider(String value) { this.provider = value; return this; }
         public String getState() { return state; }
@@ -1120,6 +1137,8 @@ public class testdtos
         public Authenticate setNc(String value) { this.nc = value; return this; }
         public String getCnonce() { return cnonce; }
         public Authenticate setCnonce(String value) { this.cnonce = value; return this; }
+        public Boolean isUseTokenCookie() { return useTokenCookie; }
+        public Authenticate setUseTokenCookie(Boolean value) { this.useTokenCookie = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
         public Authenticate setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = AuthenticateResponse.class;
@@ -1138,7 +1157,7 @@ public class testdtos
 
         @DataMember(Order=3)
         public ArrayList<String> roles = null;
-        
+
         public String getUserName() { return userName; }
         public AssignRoles setUserName(String value) { this.userName = value; return this; }
         public ArrayList<String> getPermissions() { return permissions; }
@@ -1161,7 +1180,7 @@ public class testdtos
 
         @DataMember(Order=3)
         public ArrayList<String> roles = null;
-        
+
         public String getUserName() { return userName; }
         public UnAssignRoles setUserName(String value) { this.userName = value; return this; }
         public ArrayList<String> getPermissions() { return permissions; }
@@ -1175,7 +1194,7 @@ public class testdtos
     public static class QueryPocoBase extends QueryBase_1<OnlyDefinedInGenericType> implements IReturn<QueryResponse<OnlyDefinedInGenericType>>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public QueryPocoBase setId(Integer value) { this.id = value; return this; }
         private static Object responseType = new TypeToken<QueryResponse<OnlyDefinedInGenericType>>(){}.getType();
@@ -1185,7 +1204,7 @@ public class testdtos
     public static class QueryPocoIntoBase extends QueryBase_2<OnlyDefinedInGenericTypeFrom, OnlyDefinedInGenericTypeInto> implements IReturn<QueryResponse<OnlyDefinedInGenericTypeInto>>
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public QueryPocoIntoBase setId(Integer value) { this.id = value; return this; }
         private static Object responseType = new TypeToken<QueryResponse<OnlyDefinedInGenericTypeInto>>(){}.getType();
@@ -1195,7 +1214,7 @@ public class testdtos
     @Route("/rockstars")
     public static class QueryRockstars extends QueryBase_1<Rockstar> implements IReturn<QueryResponse<Rockstar>>
     {
-        
+
         private static Object responseType = new TypeToken<QueryResponse<Rockstar>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
@@ -1204,7 +1223,7 @@ public class testdtos
     {
         public String custom = null;
         public ResponseStatus responseStatus = null;
-        
+
         public String getCustom() { return custom; }
         public CustomHttpErrorResponse setCustom(String value) { this.custom = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -1214,7 +1233,7 @@ public class testdtos
     public static class ThrowTypeResponse
     {
         public ResponseStatus responseStatus = null;
-        
+
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public ThrowTypeResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -1225,7 +1244,7 @@ public class testdtos
         public String required = null;
         public String email = null;
         public ResponseStatus responseStatus = null;
-        
+
         public Integer getAge() { return age; }
         public ThrowValidationResponse setAge(Integer value) { this.age = value; return this; }
         public String getRequired() { return required; }
@@ -1239,7 +1258,7 @@ public class testdtos
     public static class ThrowBusinessErrorResponse
     {
         public ResponseStatus responseStatus = null;
-        
+
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public ThrowBusinessErrorResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -1247,7 +1266,7 @@ public class testdtos
     public static class ExternalOperationResponse
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public ExternalOperationResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1255,7 +1274,7 @@ public class testdtos
     public static class ExternalOperation2Response
     {
         public ExternalType externalType = null;
-        
+
         public ExternalType getExternalType() { return externalType; }
         public ExternalOperation2Response setExternalType(ExternalType value) { this.externalType = value; return this; }
     }
@@ -1263,7 +1282,7 @@ public class testdtos
     public static class ExternalReturnTypeResponse
     {
         public ExternalEnum3 externalEnum3 = null;
-        
+
         public ExternalEnum3 getExternalEnum3() { return externalEnum3; }
         public ExternalReturnTypeResponse setExternalEnum3(ExternalEnum3 value) { this.externalEnum3 = value; return this; }
     }
@@ -1271,7 +1290,7 @@ public class testdtos
     public static class Account
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public Account setName(String value) { this.name = value; return this; }
     }
@@ -1280,7 +1299,7 @@ public class testdtos
     {
         public String account = null;
         public String name = null;
-        
+
         public String getAccount() { return account; }
         public Project setAccount(String value) { this.account = value; return this; }
         public String getName() { return name; }
@@ -1291,7 +1310,7 @@ public class testdtos
     {
         public Integer id = null;
         public ArrayList<MetadataTestChild> results = null;
-        
+
         public Integer getId() { return id; }
         public MetadataTestResponse setId(Integer value) { this.id = value; return this; }
         public ArrayList<MetadataTestChild> getResults() { return results; }
@@ -1307,7 +1326,7 @@ public class testdtos
         @DataMember(Order=2)
         @ApiMember()
         public MenuExample menuExample1 = null;
-        
+
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public GetExampleResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
         public MenuExample getMenuExample1() { return menuExample1; }
@@ -1317,7 +1336,7 @@ public class testdtos
     public static class GetRandomIdsResponse
     {
         public ArrayList<String> results = null;
-        
+
         public ArrayList<String> getResults() { return results; }
         public GetRandomIdsResponse setResults(ArrayList<String> value) { this.results = value; return this; }
     }
@@ -1325,7 +1344,7 @@ public class testdtos
     public static class HelloResponse
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1335,7 +1354,7 @@ public class testdtos
         public String result = null;
         public AllTypes allTypes = null;
         public AllCollectionTypes allCollectionTypes = null;
-        
+
         public String getResult() { return result; }
         public HelloAllTypesResponse setResult(String value) { this.result = value; return this; }
         public AllTypes getAllTypes() { return allTypes; }
@@ -1350,18 +1369,18 @@ public class testdtos
         @DataMember(Name="result", Order=1, IsRequired=true, EmitDefaultValue=false)
         @SerializedName("result")
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithDataContractResponse setResult(String value) { this.result = value; return this; }
     }
 
     /**
-    * Description on HelloWithDescriptionResponse type
-    */
+     * Description on HelloWithDescriptionResponse type
+     */
     public static class HelloWithDescriptionResponse
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithDescriptionResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1369,7 +1388,7 @@ public class testdtos
     public static class HelloWithInheritanceResponse extends HelloResponseBase
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithInheritanceResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1377,7 +1396,7 @@ public class testdtos
     public static class HelloWithAlternateReturnResponse extends HelloWithReturnResponse
     {
         public String altResult = null;
-        
+
         public String getAltResult() { return altResult; }
         public HelloWithAlternateReturnResponse setAltResult(String value) { this.altResult = value; return this; }
     }
@@ -1385,7 +1404,7 @@ public class testdtos
     public static class HelloWithRouteResponse
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithRouteResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1393,7 +1412,7 @@ public class testdtos
     public static class HelloWithTypeResponse
     {
         public HelloType result = null;
-        
+
         public HelloType getResult() { return result; }
         public HelloWithTypeResponse setResult(HelloType value) { this.result = value; return this; }
     }
@@ -1402,7 +1421,7 @@ public class testdtos
     {
         public InnerType innerType = null;
         public InnerEnum innerEnum = null;
-        
+
         public InnerType getInnerType() { return innerType; }
         public HelloInnerTypesResponse setInnerType(InnerType value) { this.innerType = value; return this; }
         public InnerEnum getInnerEnum() { return innerEnum; }
@@ -1412,7 +1431,7 @@ public class testdtos
     public static class HelloVerbResponse
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloVerbResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1420,7 +1439,7 @@ public class testdtos
     public static class EnumResponse
     {
         public ScopeType operator = null;
-        
+
         public ScopeType getOperator() { return operator; }
         public EnumResponse setOperator(ScopeType value) { this.operator = value; return this; }
     }
@@ -1429,7 +1448,7 @@ public class testdtos
     {
         public HashMap<String,ResponseStatus> responses = null;
         public ResponseStatus responseStatus = null;
-        
+
         public HashMap<String,ResponseStatus> getResponses() { return responses; }
         public PingResponse setResponses(HashMap<String,ResponseStatus> value) { this.responses = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -1440,7 +1459,7 @@ public class testdtos
     {
         public String result = null;
         public ResponseStatus responseStatus = null;
-        
+
         public String getResult() { return result; }
         public RequiresRoleResponse setResult(String value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -1452,7 +1471,7 @@ public class testdtos
         public Integer id = null;
         public String pathInfo = null;
         public String requestMethod = null;
-        
+
         public Integer getId() { return id; }
         public SendVerbResponse setId(Integer value) { this.id = value; return this; }
         public String getPathInfo() { return pathInfo; }
@@ -1466,13 +1485,24 @@ public class testdtos
         public CustomUserSession result = null;
         public UnAuthInfo unAuthInfo = null;
         public ResponseStatus responseStatus = null;
-        
+
         public CustomUserSession getResult() { return result; }
         public GetSessionResponse setResult(CustomUserSession value) { this.result = value; return this; }
         public UnAuthInfo getUnAuthInfo() { return unAuthInfo; }
         public GetSessionResponse setUnAuthInfo(UnAuthInfo value) { this.unAuthInfo = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public GetSessionResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class StoreLogsResponse
+    {
+        public ArrayList<Logger> existingLogs = null;
+        public ResponseStatus responseStatus = null;
+
+        public ArrayList<Logger> getExistingLogs() { return existingLogs; }
+        public StoreLogsResponse setExistingLogs(ArrayList<Logger> value) { this.existingLogs = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public StoreLogsResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
     public static class TestAuthResponse
@@ -1482,7 +1512,7 @@ public class testdtos
         public String userName = null;
         public String displayName = null;
         public ResponseStatus responseStatus = null;
-        
+
         public String getUserId() { return userId; }
         public TestAuthResponse setUserId(String value) { this.userId = value; return this; }
         public String getSessionId() { return sessionId; }
@@ -1506,7 +1536,7 @@ public class testdtos
 
         @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
-        
+
         public ArrayList<RequestLogEntry> getResults() { return results; }
         public RequestLogsResponse setResults(ArrayList<RequestLogEntry> value) { this.results = value; return this; }
         public HashMap<String,String> getUsage() { return usage; }
@@ -1534,11 +1564,14 @@ public class testdtos
         public String referrerUrl = null;
 
         @DataMember(Order=6)
-        public ResponseStatus responseStatus = null;
+        public String bearerToken = null;
 
         @DataMember(Order=7)
+        public ResponseStatus responseStatus = null;
+
+        @DataMember(Order=8)
         public HashMap<String,String> meta = null;
-        
+
         public String getUserId() { return userId; }
         public AuthenticateResponse setUserId(String value) { this.userId = value; return this; }
         public String getSessionId() { return sessionId; }
@@ -1549,6 +1582,8 @@ public class testdtos
         public AuthenticateResponse setDisplayName(String value) { this.displayName = value; return this; }
         public String getReferrerUrl() { return referrerUrl; }
         public AuthenticateResponse setReferrerUrl(String value) { this.referrerUrl = value; return this; }
+        public String getBearerToken() { return bearerToken; }
+        public AuthenticateResponse setBearerToken(String value) { this.bearerToken = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public AuthenticateResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
@@ -1566,7 +1601,7 @@ public class testdtos
 
         @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
-        
+
         public ArrayList<String> getAllRoles() { return allRoles; }
         public AssignRolesResponse setAllRoles(ArrayList<String> value) { this.allRoles = value; return this; }
         public ArrayList<String> getAllPermissions() { return allPermissions; }
@@ -1586,7 +1621,7 @@ public class testdtos
 
         @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
-        
+
         public ArrayList<String> getAllRoles() { return allRoles; }
         public UnAssignRolesResponse setAllRoles(ArrayList<String> value) { this.allRoles = value; return this; }
         public ArrayList<String> getAllPermissions() { return allPermissions; }
@@ -1612,7 +1647,7 @@ public class testdtos
 
         @DataMember(Order=5)
         public ResponseStatus responseStatus = null;
-        
+
         public Integer getOffset() { return offset; }
         public QueryResponse<T> setOffset(Integer value) { this.offset = value; return this; }
         public Integer getTotal() { return total; }
@@ -1635,7 +1670,7 @@ public class testdtos
     public static class ExternalType
     {
         public ExternalEnum2 externalEnum2 = null;
-        
+
         public ExternalEnum2 getExternalEnum2() { return externalEnum2; }
         public ExternalType setExternalEnum2(ExternalEnum2 value) { this.externalEnum2 = value; return this; }
     }
@@ -1651,7 +1686,7 @@ public class testdtos
     {
         public String name = null;
         public ArrayList<MetadataTestNestedChild> results = null;
-        
+
         public String getName() { return name; }
         public MetadataTestChild setName(String value) { this.name = value; return this; }
         public ArrayList<MetadataTestNestedChild> getResults() { return results; }
@@ -1664,7 +1699,7 @@ public class testdtos
         @DataMember(Order=1)
         @ApiMember()
         public MenuItemExample menuItemExample1 = null;
-        
+
         public MenuItemExample getMenuItemExample1() { return menuItemExample1; }
         public MenuExample setMenuItemExample1(MenuItemExample value) { this.menuItemExample1 = value; return this; }
     }
@@ -1672,7 +1707,7 @@ public class testdtos
     public static class NestedClass
     {
         public String value = null;
-        
+
         public String getValue() { return value; }
         public NestedClass setValue(String value) { this.value = value; return this; }
     }
@@ -1680,7 +1715,7 @@ public class testdtos
     public static class ListResult
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public ListResult setResult(String value) { this.result = value; return this; }
     }
@@ -1688,7 +1723,7 @@ public class testdtos
     public static class ArrayResult
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public ArrayResult setResult(String value) { this.result = value; return this; }
     }
@@ -1721,7 +1756,7 @@ public class testdtos
         public ArrayList<Poco> pocoList = null;
         public HashMap<String,ArrayList<Poco>> pocoLookup = null;
         public HashMap<String,ArrayList<HashMap<String,Poco>>> pocoLookupMap = null;
-        
+
         public ArrayList<Integer> getIntArray() { return intArray; }
         public AllCollectionTypes setIntArray(ArrayList<Integer> value) { this.intArray = value; return this; }
         public ArrayList<Integer> getIntList() { return intList; }
@@ -1744,7 +1779,7 @@ public class testdtos
     {
         public Integer id = null;
         public String name = null;
-        
+
         public Integer getId() { return id; }
         public SubType setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1754,7 +1789,7 @@ public class testdtos
     public static class HelloBase
     {
         public Integer id = null;
-        
+
         public Integer getId() { return id; }
         public HelloBase setId(Integer value) { this.id = value; return this; }
     }
@@ -1762,7 +1797,7 @@ public class testdtos
     public static class HelloResponseBase
     {
         public Integer refId = null;
-        
+
         public Integer getRefId() { return refId; }
         public HelloResponseBase setRefId(Integer value) { this.refId = value; return this; }
     }
@@ -1770,7 +1805,7 @@ public class testdtos
     public static class Poco
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public Poco setName(String value) { this.name = value; return this; }
     }
@@ -1779,7 +1814,7 @@ public class testdtos
     {
         public ArrayList<T> items = null;
         public ArrayList<Integer> counts = null;
-        
+
         public ArrayList<T> getItems() { return items; }
         public HelloBase_1<T> setItems(ArrayList<T> value) { this.items = value; return this; }
         public ArrayList<Integer> getCounts() { return counts; }
@@ -1789,7 +1824,7 @@ public class testdtos
     public static class Item
     {
         public String value = null;
-        
+
         public String getValue() { return value; }
         public Item setValue(String value) { this.value = value; return this; }
     }
@@ -1797,7 +1832,7 @@ public class testdtos
     public static class HelloWithReturnResponse
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloWithReturnResponse setResult(String value) { this.result = value; return this; }
     }
@@ -1805,7 +1840,7 @@ public class testdtos
     public static class HelloType
     {
         public String result = null;
-        
+
         public String getResult() { return result; }
         public HelloType setResult(String value) { this.result = value; return this; }
     }
@@ -1821,14 +1856,14 @@ public class testdtos
 
     public static class EmptyClass
     {
-        
+
     }
 
     public static class InnerType
     {
         public Long id = null;
         public String name = null;
-        
+
         public Long getId() { return id; }
         public InnerType setId(Long value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1866,7 +1901,7 @@ public class testdtos
 
     public static class PingService
     {
-        
+
     }
 
     public static class CustomUserSession extends AuthUserSession
@@ -1876,7 +1911,7 @@ public class testdtos
 
         @DataMember
         public String customInfo = null;
-        
+
         public String getCustomName() { return customName; }
         public CustomUserSession setCustomName(String value) { this.customName = value; return this; }
         public String getCustomInfo() { return customInfo; }
@@ -1886,9 +1921,20 @@ public class testdtos
     public static class UnAuthInfo
     {
         public String customInfo = null;
-        
+
         public String getCustomInfo() { return customInfo; }
         public UnAuthInfo setCustomInfo(String value) { this.customInfo = value; return this; }
+    }
+
+    public static class Logger
+    {
+        public Long id = null;
+        public ArrayList<Device> devices = null;
+
+        public Long getId() { return id; }
+        public Logger setId(Long value) { this.id = value; return this; }
+        public ArrayList<Device> getDevices() { return devices; }
+        public Logger setDevices(ArrayList<Device> value) { this.devices = value; return this; }
     }
 
     public static class RequestLogEntry
@@ -1912,7 +1958,7 @@ public class testdtos
         public Object responseDto = null;
         public Object errorResponse = null;
         public TimeSpan requestDuration = null;
-        
+
         public Long getId() { return id; }
         public RequestLogEntry setId(Long value) { this.id = value; return this; }
         public Date getDateTime() { return dateTime; }
@@ -1955,14 +2001,14 @@ public class testdtos
 
     public static class QueryBase_1<T> extends QueryBase
     {
-        
+
     }
 
     public static class OnlyDefinedInGenericType
     {
         public Integer id = null;
         public String name = null;
-        
+
         public Integer getId() { return id; }
         public OnlyDefinedInGenericType setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1971,14 +2017,14 @@ public class testdtos
 
     public static class QueryBase_2<From, Into> extends QueryBase
     {
-        
+
     }
 
     public static class OnlyDefinedInGenericTypeFrom
     {
         public Integer id = null;
         public String name = null;
-        
+
         public Integer getId() { return id; }
         public OnlyDefinedInGenericTypeFrom setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1989,7 +2035,7 @@ public class testdtos
     {
         public Integer id = null;
         public String name = null;
-        
+
         public Integer getId() { return id; }
         public OnlyDefinedInGenericTypeInto setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -2002,7 +2048,7 @@ public class testdtos
         public String firstName = null;
         public String lastName = null;
         public Integer age = null;
-        
+
         public Integer getId() { return id; }
         public Rockstar setId(Integer value) { this.id = value; return this; }
         public String getFirstName() { return firstName; }
@@ -2023,7 +2069,7 @@ public class testdtos
     public static class MetadataTestNestedChild
     {
         public String name = null;
-        
+
         public String getName() { return name; }
         public MetadataTestNestedChild setName(String value) { this.name = value; return this; }
     }
@@ -2035,7 +2081,7 @@ public class testdtos
         public String name1 = null;
 
         public MenuItemExampleItem menuItemExampleItem = null;
-        
+
         public String getName1() { return name1; }
         public MenuItemExample setName1(String value) { this.name1 = value; return this; }
         public MenuItemExampleItem getMenuItemExampleItem() { return menuItemExampleItem; }
@@ -2044,7 +2090,7 @@ public class testdtos
 
     public static class TypesGroup
     {
-        
+
     }
 
     public static interface IAuthTokens
@@ -2175,14 +2221,20 @@ public class testdtos
         public Boolean isAuthenticated = null;
 
         @DataMember(Order=38)
-        public String sequence = null;
+        public Boolean fromToken = null;
 
         @DataMember(Order=39)
-        public Long tag = null;
+        public String profileUrl = null;
 
         @DataMember(Order=40)
+        public String sequence = null;
+
+        @DataMember(Order=41)
+        public Long tag = null;
+
+        @DataMember(Order=42)
         public ArrayList<IAuthTokens> providerOAuthAccess = null;
-        
+
         public String getReferrerUrl() { return referrerUrl; }
         public AuthUserSession setReferrerUrl(String value) { this.referrerUrl = value; return this; }
         public String getId() { return id; }
@@ -2257,12 +2309,33 @@ public class testdtos
         public AuthUserSession setPermissions(ArrayList<String> value) { this.permissions = value; return this; }
         public Boolean getIsAuthenticated() { return isAuthenticated; }
         public AuthUserSession setIsAuthenticated(Boolean value) { this.isAuthenticated = value; return this; }
+        public Boolean isFromToken() { return fromToken; }
+        public AuthUserSession setFromToken(Boolean value) { this.fromToken = value; return this; }
+        public String getProfileUrl() { return profileUrl; }
+        public AuthUserSession setProfileUrl(String value) { this.profileUrl = value; return this; }
         public String getSequence() { return sequence; }
         public AuthUserSession setSequence(String value) { this.sequence = value; return this; }
         public Long getTag() { return tag; }
         public AuthUserSession setTag(Long value) { this.tag = value; return this; }
         public ArrayList<IAuthTokens> getProviderOAuthAccess() { return providerOAuthAccess; }
         public AuthUserSession setProviderOAuthAccess(ArrayList<IAuthTokens> value) { this.providerOAuthAccess = value; return this; }
+    }
+
+    public static class Device
+    {
+        public Long id = null;
+        public String type = null;
+        public Long timeStamp = null;
+        public ArrayList<Channel> channels = null;
+
+        public Long getId() { return id; }
+        public Device setId(Long value) { this.id = value; return this; }
+        public String getType() { return type; }
+        public Device setType(String value) { this.type = value; return this; }
+        public Long getTimeStamp() { return timeStamp; }
+        public Device setTimeStamp(Long value) { this.timeStamp = value; return this; }
+        public ArrayList<Channel> getChannels() { return channels; }
+        public Device setChannels(ArrayList<Channel> value) { this.channels = value; return this; }
     }
 
     public static class QueryBase
@@ -2283,8 +2356,11 @@ public class testdtos
         public String include = null;
 
         @DataMember(Order=6)
+        public String fields = null;
+
+        @DataMember(Order=7)
         public HashMap<String,String> meta = null;
-        
+
         public Integer getSkip() { return skip; }
         public QueryBase setSkip(Integer value) { this.skip = value; return this; }
         public Integer getTake() { return take; }
@@ -2295,6 +2371,8 @@ public class testdtos
         public QueryBase setOrderByDesc(String value) { this.orderByDesc = value; return this; }
         public String getInclude() { return include; }
         public QueryBase setInclude(String value) { this.include = value; return this; }
+        public String getFields() { return fields; }
+        public QueryBase setFields(String value) { this.fields = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
         public QueryBase setMeta(HashMap<String,String> value) { this.meta = value; return this; }
     }
@@ -2304,9 +2382,20 @@ public class testdtos
         @DataMember(Order=1)
         @ApiMember()
         public String name1 = null;
-        
+
         public String getName1() { return name1; }
         public MenuItemExampleItem setName1(String value) { this.name1 = value; return this; }
+    }
+
+    public static class Channel
+    {
+        public String name = null;
+        public String value = null;
+
+        public String getName() { return name; }
+        public Channel setName(String value) { this.name = value; return this; }
+        public String getValue() { return value; }
+        public Channel setValue(String value) { this.value = value; return this; }
     }
 
 }
