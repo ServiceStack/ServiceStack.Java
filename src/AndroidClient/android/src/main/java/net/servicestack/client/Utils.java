@@ -53,7 +53,7 @@ public class Utils {
         }
     }
 
-    static final String KotlinAnnotationClass = "kotlin.jvm.internal.KotlinClass";
+    static final String KotlinAnnotationClass = "kotlin.Metadata";
 
     public static boolean isKotlinClass(Class type)
     {
