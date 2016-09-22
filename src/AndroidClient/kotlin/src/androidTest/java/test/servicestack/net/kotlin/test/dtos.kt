@@ -1,5 +1,5 @@
 /* Options:
-Date: 2016-01-13 04:11:23
+Date: 2016-09-22 21:32:47
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
@@ -7,11 +7,12 @@ BaseUrl: http://test.servicestack.net
 Package: test.servicestack.net.kotlin.test
 //AddServiceStackTypes: True
 //AddResponseStatus: False
-//AddImplicitVersion: 
-//IncludeTypes: 
-//ExcludeTypes: 
+//AddImplicitVersion:
+//AddDescriptionAsComments: True
+//IncludeTypes:
+//ExcludeTypes:
 //InitializeCollections: True
-//TreatTypesAsStrings: 
+//TreatTypesAsStrings:
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
@@ -29,7 +30,7 @@ open class CustomHttpError : IReturn<CustomHttpErrorResponse>
     var statusCode:Int? = null
     var statusDescription:String? = null
     companion object { private val responseType = CustomHttpErrorResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = CustomHttpError.responseType
 }
 
 @Route("/throwhttperror/{Status}")
@@ -59,7 +60,7 @@ open class ThrowType : IReturn<ThrowTypeResponse>
     @SerializedName("type") var Type:String? = null
     var message:String? = null
     companion object { private val responseType = ThrowTypeResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = ThrowType.responseType
 }
 
 @Route("/throwvalidation")
@@ -69,14 +70,14 @@ open class ThrowValidation : IReturn<ThrowValidationResponse>
     var required:String? = null
     var email:String? = null
     companion object { private val responseType = ThrowValidationResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = ThrowValidation.responseType
 }
 
 @Route("/throwbusinesserror")
 open class ThrowBusinessError : IReturn<ThrowBusinessErrorResponse>
 {
     companion object { private val responseType = ThrowBusinessErrorResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = ThrowBusinessError.responseType
 }
 
 open class ExternalOperation : IReturn<ExternalOperationResponse>
@@ -85,21 +86,21 @@ open class ExternalOperation : IReturn<ExternalOperationResponse>
     var name:String? = null
     var externalEnum:ExternalEnum? = null
     companion object { private val responseType = ExternalOperationResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = ExternalOperation.responseType
 }
 
 open class ExternalOperation2 : IReturn<ExternalOperation2Response>
 {
     var id:Int? = null
     companion object { private val responseType = ExternalOperation2Response::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = ExternalOperation2.responseType
 }
 
 open class ExternalOperation3 : IReturn<ExternalReturnTypeResponse>
 {
     var id:Int? = null
     companion object { private val responseType = ExternalReturnTypeResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = ExternalOperation3.responseType
 }
 
 open class ExternalOperation4
@@ -117,7 +118,7 @@ open class GetAccount : IReturn<Account>
 {
     var account:String? = null
     companion object { private val responseType = Account::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = GetAccount.responseType
 }
 
 open class GetProject : IReturn<Project>
@@ -125,7 +126,7 @@ open class GetProject : IReturn<Project>
     var account:String? = null
     var project:String? = null
     companion object { private val responseType = Project::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = GetProject.responseType
 }
 
 @Route("/image-stream")
@@ -181,7 +182,7 @@ open class MetadataTest : IReturn<MetadataTestResponse>
 {
     var id:Int? = null
     companion object { private val responseType = MetadataTestResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = MetadataTest.responseType
 }
 
 @Route("/metadatatest-array")
@@ -189,7 +190,7 @@ open class MetadataTestArray : IReturn<ArrayList<MetadataTestChild>>
 {
     var id:Int? = null
     companion object { private val responseType = object : TypeToken<ArrayList<MetadataTestChild>>(){}.type }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = MetadataTestArray.responseType
 }
 
 @Route(Path="/example", Verbs="GET")
@@ -197,7 +198,7 @@ open class MetadataTestArray : IReturn<ArrayList<MetadataTestChild>>
 open class GetExample : IReturn<GetExampleResponse>
 {
     companion object { private val responseType = GetExampleResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = GetExample.responseType
 }
 
 @Route("/randomids")
@@ -205,7 +206,7 @@ open class GetRandomIds : IReturn<GetRandomIdsResponse>
 {
     var take:Int? = null
     companion object { private val responseType = GetRandomIdsResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = GetRandomIds.responseType
 }
 
 @Route("/textfile-test")
@@ -223,7 +224,7 @@ open class Hello : IReturn<HelloResponse>
 
     var title:String? = null
     companion object { private val responseType = HelloResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = Hello.responseType
 }
 
 open class HelloWithNestedClass : IReturn<HelloResponse>
@@ -231,21 +232,21 @@ open class HelloWithNestedClass : IReturn<HelloResponse>
     var name:String? = null
     var nestedClassProp:NestedClass? = null
     companion object { private val responseType = HelloResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithNestedClass.responseType
 }
 
 open class HelloList : IReturn<ArrayList<ListResult>>
 {
     var names:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = object : TypeToken<ArrayList<ListResult>>(){}.type }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloList.responseType
 }
 
 open class HelloArray : IReturn<ArrayList<ArrayResult>>
 {
     var names:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = object : TypeToken<ArrayList<ArrayResult>>(){}.type }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloArray.responseType
 }
 
 open class HelloWithEnum
@@ -261,14 +262,17 @@ open class HelloExternal
 }
 
 /**
-* AllowedAttributes Description
-*/
+ * AllowedAttributes Description
+ */
 @Route(Path="/allowed-attributes", Verbs="GET")
 @Api("AllowedAttributes Description")
 // @ApiResponse(400, "Your request was not understood")
 @DataContract
 open class AllowedAttributes
 {
+    /**
+     * Range Description
+     */
     @DataMember(Name="Aliased")
     @SerializedName("Aliased")
     @ApiMember(ParameterType="path", Description="Range Description", DataType="double", IsRequired=true)
@@ -282,7 +286,7 @@ open class HelloAllTypes : IReturn<HelloAllTypesResponse>
     var allTypes:AllTypes? = null
     var allCollectionTypes:AllCollectionTypes? = null
     companion object { private val responseType = HelloAllTypesResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloAllTypes.responseType
 }
 
 open class AllTypes
@@ -318,14 +322,14 @@ open class HelloString : IReturn<String>
 {
     var name:String? = null
     companion object { private val responseType = String::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloString.responseType
 }
 
 open class HelloDateTime : IReturn<HelloDateTime>
 {
     var dateTime:Date? = null
     companion object { private val responseType = HelloDateTime::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloDateTime.responseType
 }
 
 open class HelloVoid
@@ -344,24 +348,24 @@ open class HelloWithDataContract : IReturn<HelloWithDataContractResponse>
     @SerializedName("id")
     var id:Int? = null
     companion object { private val responseType = HelloWithDataContractResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithDataContract.responseType
 }
 
 /**
-* Description on HelloWithDescription type
-*/
+ * Description on HelloWithDescription type
+ */
 open class HelloWithDescription : IReturn<HelloWithDescriptionResponse>
 {
     var name:String? = null
     companion object { private val responseType = HelloWithDescriptionResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithDescription.responseType
 }
 
 open class HelloWithInheritance : HelloBase(), IReturn<HelloWithInheritanceResponse>
 {
     var name:String? = null
     companion object { private val responseType = HelloWithInheritanceResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithInheritance.responseType
 }
 
 open class HelloWithGenericInheritance : HelloBase_1<Poco>()
@@ -382,7 +386,7 @@ open class HelloWithReturn : IReturn<HelloWithAlternateReturnResponse>
 {
     var name:String? = null
     companion object { private val responseType = HelloWithAlternateReturnResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithReturn.responseType
 }
 
 @Route("/helloroute")
@@ -390,14 +394,14 @@ open class HelloWithRoute : IReturn<HelloWithRouteResponse>
 {
     var name:String? = null
     companion object { private val responseType = HelloWithRouteResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithRoute.responseType
 }
 
 open class HelloWithType : IReturn<HelloWithTypeResponse>
 {
     var name:String? = null
     companion object { private val responseType = HelloWithTypeResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloWithType.responseType
 }
 
 open class HelloInterface
@@ -410,7 +414,7 @@ open class HelloInterface
 open class HelloInnerTypes : IReturn<HelloInnerTypesResponse>
 {
     companion object { private val responseType = HelloInnerTypesResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloInnerTypes.responseType
 }
 
 open class HelloBuiltin
@@ -422,34 +426,34 @@ open class HelloGet : IReturn<HelloVerbResponse>, IGet
 {
     var id:Int? = null
     companion object { private val responseType = HelloVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloGet.responseType
 }
 
 open class HelloPost : HelloBase(), IReturn<HelloVerbResponse>, IPost
 {
     companion object { private val responseType = HelloVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloPost.responseType
 }
 
 open class HelloPut : IReturn<HelloVerbResponse>, IPut
 {
     var id:Int? = null
     companion object { private val responseType = HelloVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloPut.responseType
 }
 
 open class HelloDelete : IReturn<HelloVerbResponse>, IDelete
 {
     var id:Int? = null
     companion object { private val responseType = HelloVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloDelete.responseType
 }
 
 open class HelloPatch : IReturn<HelloVerbResponse>, IPatch
 {
     var id:Int? = null
     companion object { private val responseType = HelloVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = HelloPatch.responseType
 }
 
 open class HelloReturnVoid : IReturnVoid
@@ -461,14 +465,14 @@ open class EnumRequest : IReturn<EnumResponse>, IPut
 {
     @SerializedName("operator") var Operator:ScopeType? = null
     companion object { private val responseType = EnumResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = EnumRequest.responseType
 }
 
 @Route("/ping")
 open class Ping : IReturn<PingResponse>
 {
     companion object { private val responseType = PingResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = Ping.responseType
 }
 
 @Route("/reset-connections")
@@ -480,14 +484,14 @@ open class ResetConnections
 open class RequiresRole : IReturn<RequiresRoleResponse>
 {
     companion object { private val responseType = RequiresRoleResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = RequiresRole.responseType
 }
 
 open class SendDefault : IReturn<SendVerbResponse>
 {
     var id:Int? = null
     companion object { private val responseType = SendVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = SendDefault.responseType
 }
 
 @Route(Path="/sendrestget/{Id}", Verbs="GET")
@@ -495,35 +499,35 @@ open class SendRestGet : IReturn<SendVerbResponse>, IGet
 {
     var id:Int? = null
     companion object { private val responseType = SendVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = SendRestGet.responseType
 }
 
 open class SendGet : IReturn<SendVerbResponse>, IGet
 {
     var id:Int? = null
     companion object { private val responseType = SendVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = SendGet.responseType
 }
 
 open class SendPost : IReturn<SendVerbResponse>, IPost
 {
     var id:Int? = null
     companion object { private val responseType = SendVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = SendPost.responseType
 }
 
 open class SendPut : IReturn<SendVerbResponse>, IPut
 {
     var id:Int? = null
     companion object { private val responseType = SendVerbResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = SendPut.responseType
 }
 
 @Route("/session")
 open class GetSession : IReturn<GetSessionResponse>
 {
     companion object { private val responseType = GetSessionResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = GetSession.responseType
 }
 
 @Route("/session/edit/{CustomName}")
@@ -531,14 +535,21 @@ open class UpdateSession : IReturn<GetSessionResponse>
 {
     var customName:String? = null
     companion object { private val responseType = GetSessionResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = UpdateSession.responseType
+}
+
+open class StoreLogs : IReturn<StoreLogsResponse>
+{
+    var loggers:ArrayList<Logger> = ArrayList<Logger>()
+    companion object { private val responseType = StoreLogsResponse::class.java }
+    override fun getResponseType(): Any? = StoreLogs.responseType
 }
 
 @Route("/testauth")
 open class TestAuth : IReturn<TestAuthResponse>
 {
     companion object { private val responseType = TestAuthResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = TestAuth.responseType
 }
 
 @Route("/void-response")
@@ -556,7 +567,7 @@ open class Wait : IReturn<Wait>
 {
     var forMs:Int? = null
     companion object { private val responseType = Wait::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = Wait.responseType
 }
 
 @Route("/echo/types")
@@ -579,7 +590,7 @@ open class EchoTypes : IReturn<EchoTypes>
     var guid:UUID? = null
     @SerializedName("char") var Char:String? = null
     companion object { private val responseType = EchoTypes::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = EchoTypes.responseType
 }
 
 @Route("/echo/collections")
@@ -590,14 +601,14 @@ open class EchoCollections : IReturn<EchoCollections>
     var stringMap:HashMap<String,String> = HashMap<String,String>()
     var intStringMap:HashMap<Int,String> = HashMap<Int,String>()
     companion object { private val responseType = EchoCollections::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = EchoCollections.responseType
 }
 
 open class EchoComplexTypes : IReturn<EchoComplexTypes>
 {
     var subType:SubType? = null
     companion object { private val responseType = EchoComplexTypes::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = EchoComplexTypes.responseType
 }
 
 @Route("/requestlogs")
@@ -664,7 +675,7 @@ open class RequestLogs : IReturn<RequestLogsResponse>
     @DataMember(Order=20)
     var durationLessThan:TimeSpan? = null
     companion object { private val responseType = RequestLogsResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = RequestLogs.responseType
 }
 
 @Route("/auth")
@@ -717,9 +728,12 @@ open class Authenticate : IReturn<AuthenticateResponse>
     var cnonce:String? = null
 
     @DataMember(Order=15)
+    var useTokenCookie:Boolean? = null
+
+    @DataMember(Order=16)
     var meta:HashMap<String,String> = HashMap<String,String>()
     companion object { private val responseType = AuthenticateResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = Authenticate.responseType
 }
 
 @Route("/assignroles")
@@ -735,7 +749,7 @@ open class AssignRoles : IReturn<AssignRolesResponse>
     @DataMember(Order=3)
     var roles:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = AssignRolesResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = AssignRoles.responseType
 }
 
 @Route("/unassignroles")
@@ -751,28 +765,28 @@ open class UnAssignRoles : IReturn<UnAssignRolesResponse>
     @DataMember(Order=3)
     var roles:ArrayList<String> = ArrayList<String>()
     companion object { private val responseType = UnAssignRolesResponse::class.java }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = UnAssignRoles.responseType
 }
 
 open class QueryPocoBase : QueryBase_1<OnlyDefinedInGenericType>(), IReturn<QueryResponse<OnlyDefinedInGenericType>>
 {
     var id:Int? = null
     companion object { private val responseType = object : TypeToken<QueryResponse<OnlyDefinedInGenericType>>(){}.type }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = QueryPocoBase.responseType
 }
 
 open class QueryPocoIntoBase : QueryBase_2<OnlyDefinedInGenericTypeFrom, OnlyDefinedInGenericTypeInto>(), IReturn<QueryResponse<OnlyDefinedInGenericTypeInto>>
 {
     var id:Int? = null
     companion object { private val responseType = object : TypeToken<QueryResponse<OnlyDefinedInGenericTypeInto>>(){}.type }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = QueryPocoIntoBase.responseType
 }
 
 @Route("/rockstars")
 open class QueryRockstars : QueryBase_1<Rockstar>(), IReturn<QueryResponse<Rockstar>>
 {
     companion object { private val responseType = object : TypeToken<QueryResponse<Rockstar>>(){}.type }
-    override fun getResponseType(): Any? = responseType
+    override fun getResponseType(): Any? = QueryRockstars.responseType
 }
 
 open class CustomHttpErrorResponse
@@ -868,8 +882,8 @@ open class HelloWithDataContractResponse
 }
 
 /**
-* Description on HelloWithDescriptionResponse type
-*/
+ * Description on HelloWithDescriptionResponse type
+ */
 open class HelloWithDescriptionResponse
 {
     var result:String? = null
@@ -937,6 +951,12 @@ open class GetSessionResponse
     var responseStatus:ResponseStatus? = null
 }
 
+open class StoreLogsResponse
+{
+    var existingLogs:ArrayList<Logger> = ArrayList<Logger>()
+    var responseStatus:ResponseStatus? = null
+}
+
 open class TestAuthResponse
 {
     var userId:String? = null
@@ -978,9 +998,12 @@ open class AuthenticateResponse
     var referrerUrl:String? = null
 
     @DataMember(Order=6)
-    var responseStatus:ResponseStatus? = null
+    var bearerToken:String? = null
 
     @DataMember(Order=7)
+    var responseStatus:ResponseStatus? = null
+
+    @DataMember(Order=8)
     var meta:HashMap<String,String> = HashMap<String,String>()
 }
 
@@ -1207,6 +1230,12 @@ open class UnAuthInfo
     var customInfo:String? = null
 }
 
+open class Logger
+{
+    var id:Long? = null
+    var devices:ArrayList<Device> = ArrayList<Device>()
+}
+
 open class RequestLogEntry
 {
     var id:Long? = null
@@ -1417,13 +1446,27 @@ open class AuthUserSession
     var isAuthenticated:Boolean? = null
 
     @DataMember(Order=38)
-    var sequence:String? = null
+    var fromToken:Boolean? = null
 
     @DataMember(Order=39)
-    var tag:Long? = null
+    var profileUrl:String? = null
 
     @DataMember(Order=40)
+    var sequence:String? = null
+
+    @DataMember(Order=41)
+    var tag:Long? = null
+
+    @DataMember(Order=42)
     var providerOAuthAccess:ArrayList<IAuthTokens> = ArrayList<IAuthTokens>()
+}
+
+open class Device
+{
+    var id:Long? = null
+    @SerializedName("type") var Type:String? = null
+    var timeStamp:Long? = null
+    var channels:ArrayList<Channel> = ArrayList<Channel>()
 }
 
 open class QueryBase
@@ -1444,6 +1487,9 @@ open class QueryBase
     var include:String? = null
 
     @DataMember(Order=6)
+    var fields:String? = null
+
+    @DataMember(Order=7)
     var meta:HashMap<String,String> = HashMap<String,String>()
 }
 
@@ -1452,4 +1498,10 @@ open class MenuItemExampleItem
     @DataMember(Order=1)
     @ApiMember()
     var name1:String? = null
+}
+
+open class Channel
+{
+    var name:String? = null
+    var value:String? = null
 }
