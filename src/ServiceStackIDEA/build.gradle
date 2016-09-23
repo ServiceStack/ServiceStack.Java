@@ -1,11 +1,15 @@
 plugins {
     id "org.jetbrains.intellij" version "0.0.32"
 }
+version = '1.0.13'
 
 apply plugin: 'org.jetbrains.intellij'
-
 dependencies {
 
+}
+
+if(System.env.BUILD_NUMBER != null) {
+    version = "${version}.$System.env.BUILD_NUMBER"
 }
 
 String jbUser;
