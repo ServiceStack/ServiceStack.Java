@@ -36,7 +36,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
         setContentView(R.layout.activity_main)
 
         // Set up the action bar.
-        val actionBar = supportActionBar
+        val actionBar = supportActionBar!!
         actionBar.navigationMode = ActionBar.NAVIGATION_MODE_TABS
         actionBar.displayOptions = ActionBar.DISPLAY_SHOW_HOME or ActionBar.DISPLAY_SHOW_TITLE
         actionBar.setBackgroundDrawable(resources.getDrawable(R.color.actionbar_background))
@@ -207,7 +207,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
         private fun getTopTechnologies(data: App.AppData): ArrayList<TechnologyInfo> {
             var topTechnologies = data.appOverviewResponse!!.TopTechnologies
             if (selectedCategory != null && selectedCategory!!.Value != null) {
-                topTechnologies = topTechnologies.filter { it.Tier == selectedCategory?.Value }.toArrayList()
+                topTechnologies = ArrayList(topTechnologies.filter { it.Tier == selectedCategory?.Value })
             }
             return topTechnologies
         }
