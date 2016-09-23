@@ -7,15 +7,16 @@ apply plugin: 'org.jetbrains.intellij'
 dependencies {
 
 }
-
-if(System.env.BUILD_NUMBER != null) {
+Properties properties = System.properties;
+if(System.env.BUILD_NUMBER != null && properties.getProperty("servicestackidea.publish_nightly", null) != null) {
+    // Append build number to version for a new nightly build version to be published.
     version = "${version}.$System.env.BUILD_NUMBER"
 }
 
 String jbUser;
 String jbPass;
 
-Properties properties = System.properties;
+
 if(properties.getProperty("jetbrains.plugins.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
