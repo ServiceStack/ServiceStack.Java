@@ -8,7 +8,7 @@ dependencies {
 
 }
 Properties properties = System.properties;
-if(System.env.BUILD_NUMBER != null && properties.getProperty("servicestackidea.publish_nightly", null) != null) {
+if(System.env.BUILD_NUMBER != null && System.env.SERVICESTACKIDEA_PUBLISH_NIGHTLY != null) {
     // Append build number to version for a new nightly build version to be published.
     version = "${version}.$System.env.BUILD_NUMBER"
 }
