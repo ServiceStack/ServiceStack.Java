@@ -197,10 +197,10 @@ public class Func {
     }
 
     public static <T> T first(Iterable<T> xs) {
-        return first(xs, (T) null);
+        return firstOrDefault(xs, (T) null);
     }
 
-    public static <T> T first(Iterable<T> xs, T defaultValue) {
+    public static <T> T firstOrDefault(Iterable<T> xs, T defaultValue) {
         if (xs == null)
             return defaultValue;
 
