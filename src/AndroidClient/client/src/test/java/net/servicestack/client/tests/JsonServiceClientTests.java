@@ -52,7 +52,7 @@ public class JsonServiceClientTests extends TestCase {
     }
 
     public void test_does_process_missing_service_correctly() {
-        JsonServiceClient localTestClient = new JsonServiceClient("https://servicestack.net/");
+        JsonServiceClient localTestClient = new JsonServiceClient("http://techstacks.io/");
 
         try {
             localTestClient.get(new EchoTypes());
