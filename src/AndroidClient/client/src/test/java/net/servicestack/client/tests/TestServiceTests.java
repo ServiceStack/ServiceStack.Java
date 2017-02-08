@@ -318,6 +318,7 @@ public class TestServiceTests extends TestCase {
             .setDateTimeOffset(new Date(101, 0, 1))
             .setTimeSpan(new TimeSpan().addHours(1))
             .setGuid(UUID.randomUUID())
+            .setKeyValuePair(new KeyValuePair<String,String>().setKey("foo").setValue("bar"))
             .setStringList(Utils.createList("A", "B", "C"))
             .setStringArray(Utils.createList("D", "E", "F"))
             .setStringMap(Utils.createMap("A", "D", "B", "E", "C", "F"))
@@ -359,6 +360,8 @@ public class TestServiceTests extends TestCase {
         assertEquals(expected.getDateTime(), actual.getDateTime());
         assertEquals(expected.getTimeSpan(), actual.getTimeSpan());
         assertEquals(expected.getGuid(), actual.getGuid());
+        assertEquals(expected.getKeyValuePair().getKey(), actual.getKeyValuePair().getKey());
+        assertEquals(expected.getKeyValuePair().getValue(), actual.getKeyValuePair().getValue());
         assertEquals(expected.getChar(), actual.getChar());
         assertEquals(expected.getStringArray(), actual.getStringArray());
         assertEquals(expected.getStringList(), actual.getStringList());
