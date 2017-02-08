@@ -31,6 +31,15 @@ public class TestServiceTests extends TestCase {
         assertEquals("Hello, World!", response.getResult());
     }
 
+    public void test_Can_send_escaped_chars_in_String(){
+        Hello request = new Hello()
+                .setName("Number='001'");
+
+        HelloResponse response = client.get(request);
+
+        assertEquals("Hello, Number='001'!", response.getResult());
+    }
+
     public void test_does_fire_Request_and_Response_Filters(){
 
         JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");

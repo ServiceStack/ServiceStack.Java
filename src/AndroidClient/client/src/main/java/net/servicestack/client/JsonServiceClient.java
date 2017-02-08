@@ -71,7 +71,7 @@ public class JsonServiceClient implements ServiceClient {
 
     public Gson getGson() {
         if (gson == null) {
-            gson = getGsonBuilder().create();
+            gson = getGsonBuilder().disableHtmlEscaping().create();
         }
         return gson;
     }
