@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 import net.servicestack.client.*;
 import net.servicestack.client.tests.testdtos.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
@@ -281,6 +283,27 @@ public class TestServiceTests extends TestCase {
     public void test_Can_get_response_as_Raw_Bytes() {
         byte[] response = client.get("/json/reply/HelloString?Name=World", byte[].class);
         assertEquals("World", Utils.fromUtf8Bytes(response));
+    }
+
+    public void test_Can_get_response_as_Stream() throws IOException {
+        InputStream is = client.get("/json/reply/HelloString?Name=World", InputStream.class);
+        byte[] response = Utils.readBytesToEnd(is);
+        is.close();
+        assertEquals("World", Utils.fromUtf8Bytes(response));
+    }
+
+    public void test_Can_post_data_and_read_as_Stream() throws IOException {
+        ReturnStream req = new ReturnStream();
+        ArrayList<Short> data = new ArrayList<>();
+        data.add((short) 65);
+        data.add((short) 66);
+        data.add((short) 67);
+        req.setData(data);
+
+        InputStream is = client.post(req);
+        byte[] response = Utils.readBytesToEnd(is);
+        is.close();
+        assertEquals("ABC", Utils.fromUtf8Bytes(response));
     }
 
     /* TEST HELPERS */
