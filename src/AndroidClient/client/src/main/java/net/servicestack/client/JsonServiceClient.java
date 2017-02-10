@@ -46,13 +46,17 @@ public class JsonServiceClient implements ServiceClient {
     Gson gson;
 
     public JsonServiceClient(String baseUrl) {
-        this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
-        this.replyUrl = this.baseUrl + "json/reply/";
+        setBaseUrl(baseUrl);
 
         //Automatically populate response cookies
         if (CookieHandler.getDefault() == null){
             CookieHandler.setDefault(new CookieManager());
         }
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+        this.replyUrl = this.baseUrl + "json/reply/";
     }
 
     public void setTimeout(int timeoutMs) {
