@@ -46,13 +46,17 @@ public class JsonServiceClient implements ServiceClient {
     Gson gson;
 
     public JsonServiceClient(String baseUrl) {
-        this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
-        this.replyUrl = this.baseUrl + "json/reply/";
+        setBaseUrl(baseUrl);
 
         //Automatically populate response cookies
         if (CookieHandler.getDefault() == null){
             CookieHandler.setDefault(new CookieManager());
         }
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+        this.replyUrl = this.baseUrl + "json/reply/";
     }
 
     public void setTimeout(int timeoutMs) {
@@ -71,7 +75,7 @@ public class JsonServiceClient implements ServiceClient {
 
     public Gson getGson() {
         if (gson == null) {
-            gson = getGsonBuilder().create();
+            gson = getGsonBuilder().disableHtmlEscaping().create();
         }
         return gson;
     }
@@ -317,9 +321,10 @@ public class JsonServiceClient implements ServiceClient {
 
     public <TResponse> TResponse send(String requestUrl, String httpMethod, byte[] requestBody, String requestType, Object responseClass) {
         HttpURLConnection req = null;
+        Class resClass = null;
         try {
             req = createRequest(requestUrl, httpMethod, requestBody, requestType);
-            Class resClass = responseClass instanceof Class ? (Class)responseClass : null;
+            resClass = responseClass instanceof Class ? (Class)responseClass : null;
             Type resType = responseClass instanceof Type ? (Type)responseClass : null;
             if (resClass == null && resType == null)
                 throw new RuntimeException("responseClass '" + responseClass.getClass().getSimpleName() + "' must be a Class or Type");
@@ -364,6 +369,8 @@ public class JsonServiceClient implements ServiceClient {
                 return (TResponse)Utils.readBytesToEnd(req);
             if (resClass == String.class)
                 return (TResponse)Utils.readToEnd(is, UTF8.name());
+            if (resClass == InputStream.class)
+                return (TResponse)is;
 
             if (Log.isDebugEnabled()) {
                 String json = Utils.readToEnd(is, UTF8.name());
@@ -388,7 +395,7 @@ public class JsonServiceClient implements ServiceClient {
             throw new RuntimeException(e);
         }
         finally {
-            if (req != null)
+            if (req != null && resClass != InputStream.class)
                 req.disconnect();
         }
     }

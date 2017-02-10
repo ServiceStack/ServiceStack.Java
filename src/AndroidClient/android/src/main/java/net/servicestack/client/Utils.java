@@ -21,6 +21,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,8 +31,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import static net.servicestack.func.Func.last;
@@ -53,7 +58,7 @@ public class Utils {
         }
     }
 
-    static final String KotlinAnnotationClass = "kotlin.Metadata";
+    static final String KotlinAnnotationClass = "kotlin.jvm.internal.KotlinClass";
 
     public static boolean isKotlinClass(Class type)
     {
@@ -394,6 +399,21 @@ public class Utils {
     }
 
     /*String Utils*/
+    public static boolean isEmpty(final String string)
+    {
+        return string == null || string.length() == 0;
+    }
+
+    public static boolean isNullOrEmpty(final String string)
+    {
+        return string == null || string.length() == 0;
+    }
+
+    public static boolean isNullOrWhiteSpace(final String string)
+    {
+        return string == null || string.length() == 0 || string.trim().length() == 0;
+    }
+
     public static String[] splitOnFirst(String strVal, char needle) {
         return splitOnFirst(strVal, needle, 0);
     }
@@ -475,6 +495,16 @@ public class Utils {
         }
     }
 
+    public static String readToEnd(String url) {
+        try {
+            URL heartbeatUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection)heartbeatUrl.openConnection();
+            return readToEnd(conn);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static String readToEnd(HttpURLConnection response){
         try {
             return readToEnd(response.getInputStream(), "UTF-8");
@@ -548,11 +578,11 @@ public class Utils {
                 Object field = obj.get(key);
 
                 if (varName.toLowerCase().equals("errorcode")) {
-                    status.setErrorCode(jsonElementEntry.getValue().getAsString());
+                    status.setErrorCode(getAsStringOrNull(jsonElementEntry.getValue()));
                 } else if (varName.toLowerCase().equals("message")) {
-                    status.setMessage(jsonElementEntry.getValue().getAsString());
+                    status.setMessage(getAsStringOrNull(jsonElementEntry.getValue()));
                 } else if (varName.toLowerCase().equals("stacktrace")) {
-                    status.setStackTrace(jsonElementEntry.getValue().getAsString());
+                    status.setStackTrace(getAsStringOrNull(jsonElementEntry.getValue()));
                 } else if (varName.toLowerCase().equals("errors")) {
 
                     if (field instanceof JsonArray){
@@ -567,11 +597,11 @@ public class Utils {
                                 String fieldName = Utils.sanitizeVarName(fieldKey);
 
                                 if (fieldName.toLowerCase().equals("errorcode")) {
-                                    fieldError.setErrorCode(entry.getValue().getAsString());
+                                    fieldError.setErrorCode(getAsStringOrNull(entry.getValue()));
                                 } else if (fieldName.toLowerCase().equals("message")) {
-                                    fieldError.setMessage(entry.getValue().getAsString());
+                                    fieldError.setMessage(getAsStringOrNull(entry.getValue()));
                                 } else if (fieldName.toLowerCase().equals("fieldname")) {
-                                    fieldError.setFieldName(entry.getValue().getAsString());
+                                    fieldError.setFieldName(getAsStringOrNull(entry.getValue()));
                                 }
 
                             }
@@ -729,6 +759,10 @@ public class Utils {
         }
     }
 
+    private static String getAsStringOrNull(JsonElement jsonElement) {
+        return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
+    }
+
     private final static byte EQUALS_SIGN = (byte)'=';
 
     private final static byte[] _STANDARD_ALPHABET = {
@@ -782,4 +816,71 @@ public class Utils {
         }
     }
 
+    public static String addQueryParam(String url, String key, String value) {
+        return addQueryParam(url, key, value, true);
+    }
+
+    public static String addQueryParam(String url, String key, String val, boolean encode) {
+        if (url == null || url.length() == 0)
+            return null;
+        String prefix = "";
+        if (!url.endsWith("?") && !url.endsWith("&")) {
+            prefix = url.indexOf('?') == -1 ? "?" : "&";
+        }
+        try {
+            return url + prefix + key + "=" + (encode && val != null ? URLEncoder.encode(val, "UTF-8") : val);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static final String EMPTY = "";
+
+    public static String toString(Object o, String nullDefault) {
+        return (o != null) ? o.toString() : nullDefault;
+    }
+
+    public static String join(final String[] array, final String separator) {
+        if (array == null)
+            return null;
+
+        return join(Arrays.asList(array), separator);
+    }
+
+    public static String join(final Iterable<?> iterable, final String separator) {
+        if (iterable == null) {
+            return null;
+        }
+        return join(iterable.iterator(), separator);
+    }
+
+    public static String join(final Iterator<?> iterator, final String separator) {
+        if (iterator == null) {
+            return null;
+        }
+        if (!iterator.hasNext()) {
+            return EMPTY;
+        }
+        final Object first = iterator.next();
+        if (!iterator.hasNext()) {
+            final String result = toString(first, "");
+            return result;
+        }
+
+        final StringBuilder buf = new StringBuilder(256);
+        if (first != null) {
+            buf.append(first);
+        }
+
+        while (iterator.hasNext()) {
+            if (separator != null) {
+                buf.append(separator);
+            }
+            final Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+        }
+        return buf.toString();
+    }
 }
