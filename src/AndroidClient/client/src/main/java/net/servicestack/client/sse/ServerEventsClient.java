@@ -21,6 +21,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by mythz on 2/9/2017.
@@ -47,7 +48,7 @@ public class ServerEventsClient implements AutoCloseable {
 
     private Date lastPulseAt;
     private Thread bgThread;
-    private boolean stopped;
+    private final AtomicBoolean stopped = new AtomicBoolean(false);
 
     static int BufferSize = 1024 * 64;
     static int DefaultHeartbeatMs = 10 * 1000;
@@ -162,6 +163,7 @@ public class ServerEventsClient implements AutoCloseable {
             bgThread = null;
         }
 
+        stopped.set(false);
         bgThread = new Thread(new EventStream(this));
         bgThread.start();
         lastPulseAt = new Date();
@@ -173,7 +175,7 @@ public class ServerEventsClient implements AutoCloseable {
         try {
             internalStop();
 
-            if (stopped)
+            if (stopped.get())
                 return;
 
             try {
@@ -210,7 +212,7 @@ public class ServerEventsClient implements AutoCloseable {
     }
 
     public synchronized void stop(){
-        stopped = true;
+        stopped.set(true);
         internalStop();
     }
 
@@ -295,6 +297,9 @@ public class ServerEventsClient implements AutoCloseable {
         if (connectionInfo == null || connectionInfo.getHeartbeatUrl() == null)
             return;
 
+        if (stopped.get())
+            return;
+
         if (heratbeatTimer != null)
             heratbeatTimer.cancel();
 
@@ -314,6 +319,9 @@ public class ServerEventsClient implements AutoCloseable {
         if (connectionInfo == null)
             return;
 
+        if (stopped.get())
+            return;
+
         long elapsedMs = (new Date().getTime() - lastPulseAt.getTime());
         if (elapsedMs > connectionInfo.getIdleTimeoutMs())
         {
@@ -330,7 +338,16 @@ public class ServerEventsClient implements AutoCloseable {
             if (Log.isDebugEnabled())
                 Log.d("[SSE-CLIENT] Sending Heartbeat...");
 
-            String response = Utils.readToEnd(conn);
+            try {
+                String response = Utils.readToEnd(conn.getInputStream(), "UTF-8");
+            } catch (FileNotFoundException notFound) {
+
+                if (stopped.get())
+                    return;
+
+                Log.e(conn.getResponseMessage(), notFound);
+                throw notFound;
+            }
 
             if (Log.isDebugEnabled())
                 Log.d("[SSE-CLIENT] Heartbeat sent to: " + heartbeatUrl);
