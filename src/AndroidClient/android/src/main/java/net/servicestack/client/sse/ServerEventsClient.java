@@ -8,6 +8,7 @@ import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
 
 import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -21,12 +22,13 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by mythz on 2/9/2017.
  */
 
-public class ServerEventsClient {
+public class ServerEventsClient implements AutoCloseable {
     private String baseUri;
     private String[] channels;
     private String eventStreamPath;
@@ -47,11 +49,12 @@ public class ServerEventsClient {
 
     private Date lastPulseAt;
     private Thread bgThread;
-    private boolean stopped;
+    private final AtomicBoolean stopped = new AtomicBoolean(false);
 
     static int BufferSize = 1024 * 64;
     static int DefaultHeartbeatMs = 10 * 1000;
     static int DefaultIdleTimeoutMs = 30 * 1000;
+    public static String UnknownChannel = "*";
 
     public ServerEventsClient(String baseUri, String[] channels) {
         setBaseUri(baseUri);
@@ -64,6 +67,10 @@ public class ServerEventsClient {
 
     public ServerEventsClient(String baseUrl, String channel) {
         this(baseUrl, new String[]{ channel });
+    }
+
+    public ServerEventsClient(String baseUrl) {
+        this(baseUrl, new String[]{});
     }
 
     public String getBaseUri() {
@@ -84,8 +91,8 @@ public class ServerEventsClient {
     }
 
     public void setChannels(String[] channels) {
-        if (channels == null || channels.length == 0)
-            throw new IllegalArgumentException("channels is empty");
+        if (channels == null)
+            channels = new String[0];
 
         this.channels = channels;
         buildEventStreamUri();
@@ -97,6 +104,10 @@ public class ServerEventsClient {
 
     public String getEventStreamUri() {
         return eventStreamUri;
+    }
+
+    public JsonServiceClient getServiceClient() {
+        return this.serviceClient;
     }
 
     public ServerEventsClient setOnConnect(ServerEventConnectCallback onConnect) {
@@ -150,6 +161,12 @@ public class ServerEventsClient {
         return connectionInfo;
     }
 
+    public String getSubscriptionId(){
+        return connectionInfo != null
+            ? connectionInfo.getId()
+            : null;
+    }
+
     public String getConnectionDisplayName() {
         return connectionInfo != null
             ? connectionInfo.getDisplayName()
@@ -162,6 +179,7 @@ public class ServerEventsClient {
             bgThread = null;
         }
 
+        stopped.set(false);
         bgThread = new Thread(new EventStream(this));
         bgThread.start();
         lastPulseAt = new Date();
@@ -173,7 +191,7 @@ public class ServerEventsClient {
         try {
             internalStop();
 
-            if (stopped)
+            if (stopped.get())
                 return;
 
             try {
@@ -185,6 +203,7 @@ public class ServerEventsClient {
 
         } catch (Exception ex){
             Log.e("[SSE-CLIENT] Error whilst restarting: " + ex.getMessage(), ex);
+            ex.printStackTrace();
         }
     }
 
@@ -210,13 +229,13 @@ public class ServerEventsClient {
     }
 
     public synchronized void stop(){
-        stopped = true;
+        stopped.set(true);
         internalStop();
     }
 
     private synchronized void internalStop() {
         if (Log.isDebugEnabled())
-            Log.d("Stop()");
+            Log.d("Stop() " + getConnectionDisplayName());
 
         if (connectionInfo != null && connectionInfo.getUnRegisterUrl() != null) {
             try {
@@ -225,7 +244,9 @@ public class ServerEventsClient {
         }
 
         connectionInfo = null;
-        bgThread.interrupt();
+        if (bgThread != null)
+            bgThread.interrupt();
+
         bgThread = null;
     }
 
@@ -269,6 +290,9 @@ public class ServerEventsClient {
         Log.e("[SSE-CLIENT] OnExceptionReceived: "
                 + ex.getMessage() + " on #" + getConnectionDisplayName(), ex);
 
+        if (Log.isDebugEnabled())
+            Log.d(Utils.getStackTrace(ex));
+
         if (onException != null)
             onException.execute(ex);
 
@@ -283,10 +307,10 @@ public class ServerEventsClient {
                     connectionInfo.getId(),
                     Utils.join(channels, ",")));
 
-        startNewHeartbeat();
-
         if (onConnect != null)
             onConnect.execute(connectionInfo);
+
+        startNewHeartbeat();
     }
 
     Timer heratbeatTimer;
@@ -295,16 +319,19 @@ public class ServerEventsClient {
         if (connectionInfo == null || connectionInfo.getHeartbeatUrl() == null)
             return;
 
-        if (heratbeatTimer != null)
-            heratbeatTimer.cancel();
+        if (stopped.get())
+            return;
 
-        heratbeatTimer = new Timer();
+        if (heratbeatTimer == null)
+            heratbeatTimer = new Timer("ServerEventsClient Heartbeat");
+
+        //reschedule timer on every heartbeat
         heratbeatTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Heartbeat();
             }
-        }, 0, connectionInfo.getHeartbeatIntervalMs());
+        }, connectionInfo.getHeartbeatIntervalMs(), Integer.MAX_VALUE);
     }
 
     public void Heartbeat(){
@@ -312,6 +339,9 @@ public class ServerEventsClient {
             Log.d("[SSE-CLIENT] Prep for Heartbeat...");
 
         if (connectionInfo == null)
+            return;
+
+        if (stopped.get())
             return;
 
         long elapsedMs = (new Date().getTime() - lastPulseAt.getTime());
@@ -330,7 +360,16 @@ public class ServerEventsClient {
             if (Log.isDebugEnabled())
                 Log.d("[SSE-CLIENT] Sending Heartbeat...");
 
-            String response = Utils.readToEnd(conn);
+            try {
+                String response = Utils.readToEnd(conn.getInputStream(), "UTF-8");
+            } catch (FileNotFoundException notFound) {
+
+                if (stopped.get())
+                    return;
+
+                Log.e(conn.getResponseMessage(), notFound);
+                throw notFound;
+            }
 
             if (Log.isDebugEnabled())
                 Log.d("[SSE-CLIENT] Heartbeat sent to: " + heartbeatUrl);
@@ -382,6 +421,11 @@ public class ServerEventsClient {
         onHeartbeatReceived(new ServerEventHeartbeat().populate(e, JsonUtils.toJsonObject(e.getJson())));
     }
 
+    @Override
+    public void close() throws Exception {
+        stop();
+    }
+
     class EventStream implements Runnable {
 
         ServerEventsClient client;
@@ -400,56 +444,52 @@ public class ServerEventsClient {
                 InputStream is = new BufferedInputStream(req.getInputStream());
                 readStream(is);
             } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void readStream(InputStream inputStream) {
-            byte[] buffer = new byte[BufferSize];
-            String overflowText = "";
-
-            try {
-                int len = 0;
-                while (true) {
-                    len = inputStream.read(buffer);
-                    if (len <= 0)
-                        break;
-
-                    String text = overflowText + new String(buffer, 0, len, "UTF-8");
-
-                    int pos;
-                    while ((pos = text.indexOf('\n')) >= 0) {
-                        if (pos == 0) {
-                            if (currentMsg != null)
-                                processEventMessage(currentMsg);
-                            currentMsg = null;
-
-                            text = text.substring(pos + 1);
-
-                            if (!Utils.isEmpty(text))
-                                continue;
-
-                            break;
-                        }
-
-                        String line = text.substring(0, pos);
-                        if (!Utils.isNullOrWhiteSpace(line))
-                            processLine(line);
-                        if (text.length() > pos + 1)
-                            text = text.substring(pos + 1);
-                    }
-
-                    overflowText = text;
-                }
-
-                if (Log.isDebugEnabled())
-                    Log.d("Connection ended on " + client.getConnectionDisplayName());
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("Error reading from event-stream", e);
+                Log.e(Utils.getStackTrace(e));
             } finally {
                 client.restart();
             }
+        }
+
+        private void readStream(InputStream inputStream) throws IOException {
+            byte[] buffer = new byte[BufferSize];
+            String overflowText = "";
+
+            int len = 0;
+            while (true) {
+                len = inputStream.read(buffer);
+                if (len <= 0)
+                    break;
+
+                String text = overflowText + new String(buffer, 0, len, "UTF-8");
+
+                int pos;
+                while ((pos = text.indexOf('\n')) >= 0) {
+                    if (pos == 0) {
+                        if (currentMsg != null)
+                            processEventMessage(currentMsg);
+                        currentMsg = null;
+
+                        text = text.substring(pos + 1);
+
+                        if (!Utils.isEmpty(text))
+                            continue;
+
+                        break;
+                    }
+
+                    String line = text.substring(0, pos);
+                    if (!Utils.isNullOrWhiteSpace(line))
+                        processLine(line);
+                    if (text.length() > pos + 1)
+                        text = text.substring(pos + 1);
+                }
+
+                overflowText = text;
+            }
+
+            if (Log.isDebugEnabled())
+                Log.d("Connection ended on " + client.getConnectionDisplayName());
         }
 
         private void processLine(String line) {
