@@ -8,6 +8,7 @@ import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
 
 import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -53,6 +54,7 @@ public class ServerEventsClient implements AutoCloseable {
     static int BufferSize = 1024 * 64;
     static int DefaultHeartbeatMs = 10 * 1000;
     static int DefaultIdleTimeoutMs = 30 * 1000;
+    public static String UnknownChannel = "*";
 
     public ServerEventsClient(String baseUri, String[] channels) {
         setBaseUri(baseUri);
@@ -65,6 +67,10 @@ public class ServerEventsClient implements AutoCloseable {
 
     public ServerEventsClient(String baseUrl, String channel) {
         this(baseUrl, new String[]{ channel });
+    }
+
+    public ServerEventsClient(String baseUrl) {
+        this(baseUrl, new String[]{});
     }
 
     public String getBaseUri() {
@@ -85,8 +91,8 @@ public class ServerEventsClient implements AutoCloseable {
     }
 
     public void setChannels(String[] channels) {
-        if (channels == null || channels.length == 0)
-            throw new IllegalArgumentException("channels is empty");
+        if (channels == null)
+            channels = new String[0];
 
         this.channels = channels;
         buildEventStreamUri();
@@ -98,6 +104,10 @@ public class ServerEventsClient implements AutoCloseable {
 
     public String getEventStreamUri() {
         return eventStreamUri;
+    }
+
+    public JsonServiceClient getServiceClient() {
+        return this.serviceClient;
     }
 
     public ServerEventsClient setOnConnect(ServerEventConnectCallback onConnect) {
@@ -151,6 +161,12 @@ public class ServerEventsClient implements AutoCloseable {
         return connectionInfo;
     }
 
+    public String getSubscriptionId(){
+        return connectionInfo != null
+            ? connectionInfo.getId()
+            : null;
+    }
+
     public String getConnectionDisplayName() {
         return connectionInfo != null
             ? connectionInfo.getDisplayName()
@@ -187,6 +203,7 @@ public class ServerEventsClient implements AutoCloseable {
 
         } catch (Exception ex){
             Log.e("[SSE-CLIENT] Error whilst restarting: " + ex.getMessage(), ex);
+            ex.printStackTrace();
         }
     }
 
@@ -218,7 +235,7 @@ public class ServerEventsClient implements AutoCloseable {
 
     private synchronized void internalStop() {
         if (Log.isDebugEnabled())
-            Log.d("Stop()");
+            Log.d("Stop() " + getConnectionDisplayName());
 
         if (connectionInfo != null && connectionInfo.getUnRegisterUrl() != null) {
             try {
@@ -227,7 +244,9 @@ public class ServerEventsClient implements AutoCloseable {
         }
 
         connectionInfo = null;
-        bgThread.interrupt();
+        if (bgThread != null)
+            bgThread.interrupt();
+
         bgThread = null;
     }
 
@@ -271,6 +290,9 @@ public class ServerEventsClient implements AutoCloseable {
         Log.e("[SSE-CLIENT] OnExceptionReceived: "
                 + ex.getMessage() + " on #" + getConnectionDisplayName(), ex);
 
+        if (Log.isDebugEnabled())
+            Log.d(Utils.getStackTrace(ex));
+
         if (onException != null)
             onException.execute(ex);
 
@@ -303,13 +325,13 @@ public class ServerEventsClient implements AutoCloseable {
         if (heratbeatTimer != null)
             heratbeatTimer.cancel();
 
-        heratbeatTimer = new Timer();
+        heratbeatTimer = new Timer("ServerEventsClient Heartbeat");
         heratbeatTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Heartbeat();
             }
-        }, 0, connectionInfo.getHeartbeatIntervalMs());
+        }, connectionInfo.getHeartbeatIntervalMs(), Integer.MAX_VALUE);
     }
 
     public void Heartbeat(){
@@ -422,56 +444,52 @@ public class ServerEventsClient implements AutoCloseable {
                 InputStream is = new BufferedInputStream(req.getInputStream());
                 readStream(is);
             } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void readStream(InputStream inputStream) {
-            byte[] buffer = new byte[BufferSize];
-            String overflowText = "";
-
-            try {
-                int len = 0;
-                while (true) {
-                    len = inputStream.read(buffer);
-                    if (len <= 0)
-                        break;
-
-                    String text = overflowText + new String(buffer, 0, len, "UTF-8");
-
-                    int pos;
-                    while ((pos = text.indexOf('\n')) >= 0) {
-                        if (pos == 0) {
-                            if (currentMsg != null)
-                                processEventMessage(currentMsg);
-                            currentMsg = null;
-
-                            text = text.substring(pos + 1);
-
-                            if (!Utils.isEmpty(text))
-                                continue;
-
-                            break;
-                        }
-
-                        String line = text.substring(0, pos);
-                        if (!Utils.isNullOrWhiteSpace(line))
-                            processLine(line);
-                        if (text.length() > pos + 1)
-                            text = text.substring(pos + 1);
-                    }
-
-                    overflowText = text;
-                }
-
-                if (Log.isDebugEnabled())
-                    Log.d("Connection ended on " + client.getConnectionDisplayName());
-
-            } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("Error reading from event-stream", e);
+                Log.e(Utils.getStackTrace(e));
             } finally {
                 client.restart();
             }
+        }
+
+        private void readStream(InputStream inputStream) throws IOException {
+            byte[] buffer = new byte[BufferSize];
+            String overflowText = "";
+
+            int len = 0;
+            while (true) {
+                len = inputStream.read(buffer);
+                if (len <= 0)
+                    break;
+
+                String text = overflowText + new String(buffer, 0, len, "UTF-8");
+
+                int pos;
+                while ((pos = text.indexOf('\n')) >= 0) {
+                    if (pos == 0) {
+                        if (currentMsg != null)
+                            processEventMessage(currentMsg);
+                        currentMsg = null;
+
+                        text = text.substring(pos + 1);
+
+                        if (!Utils.isEmpty(text))
+                            continue;
+
+                        break;
+                    }
+
+                    String line = text.substring(0, pos);
+                    if (!Utils.isNullOrWhiteSpace(line))
+                        processLine(line);
+                    if (text.length() > pos + 1)
+                        text = text.substring(pos + 1);
+                }
+
+                overflowText = text;
+            }
+
+            if (Log.isDebugEnabled())
+                Log.d("Connection ended on " + client.getConnectionDisplayName());
         }
 
         private void processLine(String line) {
