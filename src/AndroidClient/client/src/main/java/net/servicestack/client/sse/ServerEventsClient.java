@@ -26,7 +26,7 @@ import java.util.concurrent.TimeoutException;
  * Created by mythz on 2/9/2017.
  */
 
-public class ServerEventsClient {
+public class ServerEventsClient implements AutoCloseable {
     private String baseUri;
     private String[] channels;
     private String eventStreamPath;
@@ -380,6 +380,11 @@ public class ServerEventsClient {
             Log.d("[SSE-CLIENT] LastPulseAt: " + new SimpleDateFormat("HH:mm:ss.SSS", Locale.US).format(lastPulseAt));
 
         onHeartbeatReceived(new ServerEventHeartbeat().populate(e, JsonUtils.toJsonObject(e.getJson())));
+    }
+
+    @Override
+    public void close() throws Exception {
+        stop();
     }
 
     class EventStream implements Runnable {
