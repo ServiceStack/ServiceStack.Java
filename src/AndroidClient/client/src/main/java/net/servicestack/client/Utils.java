@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -823,12 +825,15 @@ public class Utils {
     public static String addQueryParam(String url, String key, String val, boolean encode) {
         if (url == null || url.length() == 0)
             return null;
+        if (val == null)
+            val = "";
+
         String prefix = "";
         if (!url.endsWith("?") && !url.endsWith("&")) {
             prefix = url.indexOf('?') == -1 ? "?" : "&";
         }
         try {
-            return url + prefix + key + "=" + (encode && val != null ? URLEncoder.encode(val, "UTF-8") : val);
+            return url + prefix + key + "=" + (encode ? URLEncoder.encode(val, "UTF-8") : val);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
@@ -882,5 +887,11 @@ public class Utils {
             }
         }
         return buf.toString();
+    }
+
+    public static String getStackTrace(Exception ex) {
+        StringWriter sw = new StringWriter();
+        ex.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 }

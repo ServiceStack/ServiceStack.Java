@@ -69,4 +69,15 @@ public class ServerEventCommand extends ServerEventMessage {
         if (!Utils.isNullOrEmpty(channels))
             this.channels = channels.split(",");
     }
+
+    @Override
+    public String toString() {
+        return "(" + this.getClass().getSimpleName() +
+                "\n eventId: " + eventId +
+                "\n userId: " + userId +
+                "\n displayName: " + displayName +
+                "\n profileUrl: " + profileUrl +
+                "\n isAuthenticated: " + isAuthenticated +
+                "\n channels: " + Utils.join(channels, ",") + "\n)";
+    }
 }
