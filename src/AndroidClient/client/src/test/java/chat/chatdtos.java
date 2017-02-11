@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-02-11 06:41:16
+Date: 2017-02-11 09:07:46
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://chat.servicestack.net
@@ -92,6 +92,12 @@ public class chatdtos
 
     @Route("/reset")
     public static class ClearChatHistory implements IReturnVoid
+    {
+        
+    }
+
+    @Route("/reset-serverevents")
+    public static class ResetServerEvents implements IReturnVoid
     {
         
     }

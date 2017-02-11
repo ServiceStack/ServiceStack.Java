@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static chat.chatdtos.ChatMessage;
-import static chat.chatdtos.PostChatToChannel;
+import static chat.chatdtos.*;
 
 /**
  * Created by mythz on 2/10/2017.
@@ -261,6 +260,69 @@ public class ServerEventClientTests extends TestCase {
 
             assertEquals(2, msgs1.size());
             assertEquals(2, msgs2.size());
+        }
+    }
+
+    public void test_Does_send_multiple_heartbeats() throws Exception {
+        final CountDownLatch signal = new CountDownLatch(1);
+
+        List<ServerEventMessage> heartbeats = new ArrayList<>();
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+            .setOnConnect(e -> e.setHeartbeatIntervalMs(1000)) //change to 1s
+            .setOnHeartbeat(e -> {
+                heartbeats.add(e);
+                if (heartbeats.size() >= 3)
+                    signal.countDown();
+            })
+            .start()) {
+
+            assertTrue(signal.await(5, TimeUnit.SECONDS));
+
+            assertTrue(heartbeats.size() >= 3);
+        }
+    }
+
+    public void test_Does_reconnect_on_lost_connection() throws Exception {
+
+        List<ServerEventConnect> connectMsgs = new ArrayList<>();
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+            .setOnConnect(connectMsgs::add)
+            .setOnMessage(msgs1::add)
+            .start()) {
+
+            while (connectMsgs.size() == 0){
+                Thread.sleep(100);
+            }
+
+            postChat(client1, "msg1 from client1");
+
+            while (msgs1.size() == 0){
+                Thread.sleep(100);
+            }
+
+            client1.getServiceClient().post(new ResetServerEvents());
+
+            try(ServerEventsClient client2 = new ServerEventsClient("http://chat.servicestack.net")
+                .setOnConnect(connectMsgs::add)
+                .start()) {
+
+                while (connectMsgs.size() < 3){ //client1 + client1 reconnect + client2
+                    Thread.sleep(100);
+                }
+
+                postChat(client2, "msg2 from client2");
+
+                while (msgs1.size() < 2){ //msg1 + msg2
+                    Thread.sleep(100);
+                }
+            }
+
+            ServerEventMessage msg2 = msgs1.get(1);
+
+            ChatMessage chatMsg2 = JsonUtils.fromJson(msg2.getJson(), ChatMessage.class);
+
+            assertEquals("msg2 from client2", chatMsg2.getMessage());
         }
     }
 }

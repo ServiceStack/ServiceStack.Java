@@ -307,10 +307,10 @@ public class ServerEventsClient implements AutoCloseable {
                     connectionInfo.getId(),
                     Utils.join(channels, ",")));
 
-        startNewHeartbeat();
-
         if (onConnect != null)
             onConnect.execute(connectionInfo);
+
+        startNewHeartbeat();
     }
 
     Timer heratbeatTimer;
@@ -322,10 +322,10 @@ public class ServerEventsClient implements AutoCloseable {
         if (stopped.get())
             return;
 
-        if (heratbeatTimer != null)
-            heratbeatTimer.cancel();
+        if (heratbeatTimer == null)
+            heratbeatTimer = new Timer("ServerEventsClient Heartbeat");
 
-        heratbeatTimer = new Timer("ServerEventsClient Heartbeat");
+        //reschedule timer on every heartbeat
         heratbeatTimer.schedule(new TimerTask() {
             @Override
             public void run() {
