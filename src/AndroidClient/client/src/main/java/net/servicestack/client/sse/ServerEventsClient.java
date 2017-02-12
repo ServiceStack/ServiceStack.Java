@@ -8,6 +8,8 @@ import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
+import net.servicestack.func.Func;
+import net.servicestack.func.Function;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -19,8 +21,10 @@ import java.lang.reflect.Parameter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
@@ -62,7 +66,7 @@ public class ServerEventsClient implements AutoCloseable {
     static int DefaultIdleTimeoutMs = 30 * 1000;
     public static String UnknownChannel = "*";
 
-    public ServerEventsClient(String baseUri, String[] channels) {
+    public ServerEventsClient(String baseUri, String... channels) {
         setBaseUri(baseUri);
         setChannels(channels);
         this.serviceClient = new JsonServiceClient(baseUri);
@@ -668,5 +672,82 @@ public class ServerEventsClient implements AutoCloseable {
             client.onMessageReceived(e);
         }
     }
+
+    public List<ServerEventUser> getChannelSubscribers(){
+        ArrayList<HashMap<String,String>> response = this.serviceClient.get(
+            new GetEventSubscribers().setChannels(Func.toList(this.getChannels())));
+
+        return Func.map(response, new Function<HashMap<String, String>, ServerEventUser>() {
+            @Override
+            public ServerEventUser apply(HashMap<String, String> map) {
+                String channels = map.get("channels");
+                ServerEventUser to = new ServerEventUser()
+                    .setUserId(map.get("userId"))
+                    .setDisplayName(map.get("displayName"))
+                    .setProfileUrl(map.get("profileUrl"))
+                    .setChannels(Utils.isNullOrEmpty(channels) ? channels.split(",") : null);
+
+                final ArrayList<String> reservedNames = Func.toList("userId", "displayName", "profileUrl", "channels");
+                for (Map.Entry<String,String> entry : map.entrySet()){
+                    if (reservedNames.contains(entry.getKey()))
+                        continue;
+
+                    if (to.getMeta() == null)
+                        to.setMeta(new HashMap<>());
+
+                    to.getMeta().put(entry.getKey(), entry.getValue());
+                }
+
+                return to;
+            }
+        });
+    }
+
+    public void updateSubscriber(UpdateEventSubscriber request){
+        if (request.getId() == null)
+            request.setId(connectionInfo.getId());
+
+        serviceClient.post(request);
+
+        update(
+            Func.toArray(request.getSubscribeChannels(), String.class),
+            Func.toArray(request.getUnsubscribeChannels(), String.class));
+    }
+
+    public void subscribeToChannels(String... channels)
+    {
+        serviceClient.post(new UpdateEventSubscriber()
+            .setId(connectionInfo.getId())
+            .setSubscribeChannels(Func.toList(channels)));
+
+        update(channels, null);
+    }
+
+    public void unSubscribeFromChannels(String... channels)
+    {
+        serviceClient.post(new UpdateEventSubscriber()
+                .setId(connectionInfo.getId())
+                .setUnsubscribeChannels(Func.toList(channels)));
+
+        update(null, channels);
+    }
+
+    public void update(String[] subscribe, String[] unsubscribe)
+    {
+        List<String> snapshot = Func.toList(getChannels());
+        if (subscribe != null)
+        {
+            for (String channel : subscribe){
+                if (!snapshot.contains(channel))
+                    snapshot.add(channel);
+            }
+        }
+        if (unsubscribe != null)
+        {
+            snapshot.removeAll(Func.toList(unsubscribe));
+        }
+        setChannels(Func.toArray(snapshot, String.class));
+    }
+
 }
 

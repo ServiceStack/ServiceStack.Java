@@ -6,6 +6,7 @@ import net.servicestack.client.sse.ServerEventConnect;
 import net.servicestack.client.sse.ServerEventJoin;
 import net.servicestack.client.sse.ServerEventLeave;
 import net.servicestack.client.sse.ServerEventMessage;
+import net.servicestack.client.sse.ServerEventUser;
 import net.servicestack.client.sse.ServerEventsClient;
 import net.servicestack.client.sse.SingletonInstanceResolver;
 import net.servicestack.func.Func;
@@ -592,5 +593,64 @@ public class ServerEventClientTests extends TestCase {
         //No built-in IOC
     }
 
-    
+    public void test_Does_receive_messages_on_to_clients_subscribed_on_multiple_channels() throws Exception {
+
+        List<ServerEventMessage> msgsA = new ArrayList<>();
+        List<ServerEventMessage> msgsAB = new ArrayList<>();
+        List<ServerEventMessage> msgsABC = new ArrayList<>();
+        List<ServerEventMessage> msgsABCD = new ArrayList<>();
+
+        try(ServerEventsClient clientA = new ServerEventsClient("http://chat.servicestack.net", "A")
+                .setOnMessage(msgsA::add)
+                .start();
+            ServerEventsClient clientAB = new ServerEventsClient("http://chat.servicestack.net", "A", "B")
+                .setOnMessage(msgsAB::add)
+                .start();
+            ServerEventsClient clientABC = new ServerEventsClient("http://chat.servicestack.net", "A", "B", "C")
+                .setOnMessage(msgsABC::add)
+                .start();
+            ServerEventsClient clientABCD = new ServerEventsClient("http://chat.servicestack.net", "A", "B", "C", "D")
+                .setOnMessage(msgsABCD::add)
+                .start()) {
+
+            clientA.waitTillConnected();
+            clientAB.waitTillConnected();
+            clientABC.waitTillConnected();
+            clientABCD.waitTillConnected();
+
+            List<ServerEventUser> channelAsubscribers = clientA.getChannelSubscribers();
+            assertEquals(4, channelAsubscribers.size());
+
+            List<ServerEventUser> channelABsubscribers = clientAB.getChannelSubscribers();
+            assertEquals(4, channelABsubscribers.size());
+
+            System.out.println("Publishing Msg Batch #1 ...");
+            postChat(clientA, "#1 hello to A", "A");
+            postChat(clientA, "#2 hello to B", "B");
+            postChat(clientA, "#3 hello to C", "C");
+            postChat(clientA, "#4 hello to D", "D");
+
+            Thread.sleep(1000);
+
+            assertEquals(1, msgsA.size());
+            assertEquals(2, msgsAB.size());
+            assertEquals(3, msgsABC.size());
+            assertEquals(4, msgsABCD.size());
+
+            Thread.sleep(1000);
+
+            System.out.println("Publishing Msg Batch #2 ...");
+            postChat(clientA, "#5 hello to A", "A");
+            postChat(clientA, "#6 hello to B", "B");
+            postChat(clientA, "#7 hello to C", "C");
+            postChat(clientA, "#8 hello to D", "D");
+
+            Thread.sleep(1000);
+
+            assertEquals(2, msgsA.size());
+            assertEquals(4, msgsAB.size());
+            assertEquals(6, msgsABC.size());
+            assertEquals(8, msgsABCD.size());
+        }
+    }
 }
