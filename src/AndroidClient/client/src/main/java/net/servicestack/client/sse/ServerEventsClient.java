@@ -2,6 +2,8 @@ package net.servicestack.client.sse;
 
 import com.google.gson.JsonObject;
 
+import net.servicestack.client.IReceiver;
+import net.servicestack.client.IResolver;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
@@ -34,6 +36,7 @@ public class ServerEventsClient implements AutoCloseable {
     private String eventStreamPath;
     private String eventStreamUri;
     private JsonServiceClient serviceClient;
+    private IResolver resolver;
 
     private Map<String,ServerEventCallback> handlers;
     private Map<String,ServerEventCallback> namedReceivers;
@@ -60,6 +63,7 @@ public class ServerEventsClient implements AutoCloseable {
         setBaseUri(baseUri);
         setChannels(channels);
         this.serviceClient = new JsonServiceClient(baseUri);
+        this.resolver = new NewInstanceResolver();
 
         this.handlers = new HashMap<>();
         this.namedReceivers = new HashMap<>();
@@ -108,6 +112,14 @@ public class ServerEventsClient implements AutoCloseable {
 
     public JsonServiceClient getServiceClient() {
         return this.serviceClient;
+    }
+
+    public IResolver getResolver() {
+        return resolver;
+    }
+
+    public void setResolver(IResolver resolver) {
+        this.resolver = resolver;
     }
 
     public ServerEventsClient setOnConnect(ServerEventConnectCallback onConnect) {
