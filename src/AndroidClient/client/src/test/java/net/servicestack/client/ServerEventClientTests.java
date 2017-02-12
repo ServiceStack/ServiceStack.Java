@@ -7,6 +7,7 @@ import net.servicestack.client.sse.ServerEventJoin;
 import net.servicestack.client.sse.ServerEventLeave;
 import net.servicestack.client.sse.ServerEventMessage;
 import net.servicestack.client.sse.ServerEventsClient;
+import net.servicestack.client.sse.SingletonInstanceResolver;
 import net.servicestack.func.Func;
 
 import java.util.ArrayList;
@@ -556,4 +557,40 @@ public class ServerEventClientTests extends TestCase {
             assertEquals("#top", bgImageRequest.getCssSelector());
         }
     }
+
+    public void test_Can_reuse_same_instance() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+                .registerReceiver(TestJavaScriptReceiver.class)
+                .registerNamedReceiver("css", TestJavaScriptReceiver.class)
+                .setResolver(new SingletonInstanceResolver())
+                .setOnMessage(msgs1::add)
+                .start()
+                .waitTillConnected()) {
+
+            postRaw(client1, "cmd.announce", "This is your captain speaking...");
+
+            while (msgs1.size() < 1) {
+                Thread.sleep(100);
+            }
+
+            TestJavaScriptReceiver instance = (TestJavaScriptReceiver)client1.getResolver().TryResolve(TestJavaScriptReceiver.class);
+            assertEquals("This is your captain speaking...", instance.AnnounceInstance);
+
+            postRaw(client1, "cmd.announce", "2nd Announcement");
+
+            while (msgs1.size() < 2) {
+                Thread.sleep(100);
+            }
+
+            assertEquals("2nd Announcement", instance.AnnounceInstance);
+        }
+    }
+
+    public void test_Can_use_IOC_to_autowire_Receivers(){
+        //No built-in IOC
+    }
+
+    
 }

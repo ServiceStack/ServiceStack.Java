@@ -121,8 +121,9 @@ public class ServerEventsClient implements AutoCloseable {
         return resolver;
     }
 
-    public void setResolver(IResolver resolver) {
+    public ServerEventsClient setResolver(IResolver resolver) {
         this.resolver = resolver;
+        return this;
     }
 
     public ServerEventsClient setOnConnect(ServerEventConnectCallback onConnect) {
