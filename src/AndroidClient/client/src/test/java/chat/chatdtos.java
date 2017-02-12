@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-02-11 09:07:46
+Date: 2017-02-12 03:54:05
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://chat.servicestack.net
@@ -100,6 +100,27 @@ public class chatdtos
     public static class ResetServerEvents implements IReturnVoid
     {
         
+    }
+
+    @Route("/channels/{Channel}/object")
+    public static class PostObjectToChannel implements IReturnVoid
+    {
+        public String toUserId = null;
+        public String channel = null;
+        public String selector = null;
+        public CustomType customType = null;
+        public SetterType setterType = null;
+        
+        public String getToUserId() { return toUserId; }
+        public PostObjectToChannel setToUserId(String value) { this.toUserId = value; return this; }
+        public String getChannel() { return channel; }
+        public PostObjectToChannel setChannel(String value) { this.channel = value; return this; }
+        public String getSelector() { return selector; }
+        public PostObjectToChannel setSelector(String value) { this.selector = value; return this; }
+        public CustomType getCustomType() { return customType; }
+        public PostObjectToChannel setCustomType(CustomType value) { this.customType = value; return this; }
+        public SetterType getSetterType() { return setterType; }
+        public PostObjectToChannel setSetterType(SetterType value) { this.setterType = value; return this; }
     }
 
     @Route("/account")
@@ -225,6 +246,28 @@ public class chatdtos
         public GetUserDetailsResponse setPostalCode(String value) { this.postalCode = value; return this; }
         public String getTimeZone() { return timeZone; }
         public GetUserDetailsResponse setTimeZone(String value) { this.timeZone = value; return this; }
+    }
+
+    public static class CustomType
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public CustomType setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public CustomType setName(String value) { this.name = value; return this; }
+    }
+
+    public static class SetterType
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public SetterType setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public SetterType setName(String value) { this.name = value; return this; }
     }
 
 }
