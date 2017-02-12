@@ -1,6 +1,6 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package test;
+package net.servicestack.client;
 
 import com.google.gson.Gson;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-import test.dto.*;
+import net.servicestack.client.dto.*;
 
 public class GsonTests extends TestCase {
 

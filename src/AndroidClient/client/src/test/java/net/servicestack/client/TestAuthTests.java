@@ -1,10 +1,6 @@
-package test;
+package net.servicestack.client;
 
 import junit.framework.TestCase;
-
-import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.ServiceClient;
-import net.servicestack.client.WebServiceException;
 
 /**
  * Created by mythz on 1/3/2016.

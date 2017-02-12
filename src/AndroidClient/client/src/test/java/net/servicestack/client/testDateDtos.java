@@ -16,7 +16,7 @@ GlobalNamespace: testDateDtos
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*
 */
 
-package test;
+package net.servicestack.client;
 
 import java.math.*;
 import java.util.*;

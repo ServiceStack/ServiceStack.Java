@@ -1,11 +1,9 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package test;
+package net.servicestack.client;
 
 import io.techstacks.dto;
 import junit.framework.TestCase;
-import net.servicestack.client.*;
-import test.testdtos.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,19 +21,19 @@ public class TestServiceTests extends TestCase {
 //    JsonServiceClient client = new JsonServiceClient("http://10.0.2.2:2020");
 
     public void test_Can_GET_Hello(){
-        Hello request = new Hello()
+        testdtos.Hello request = new testdtos.Hello()
                 .setName("World");
 
-        HelloResponse response = client.get(request);
+        testdtos.HelloResponse response = client.get(request);
 
         assertEquals("Hello, World!", response.getResult());
     }
 
     public void test_Can_send_escaped_chars_in_String(){
-        Hello request = new Hello()
+        testdtos.Hello request = new testdtos.Hello()
                 .setName("Number='001'");
 
-        HelloResponse response = client.get(request);
+        testdtos.HelloResponse response = client.get(request);
 
         assertEquals("Hello, Number='001'!", response.getResult());
     }
@@ -68,10 +66,10 @@ public class TestServiceTests extends TestCase {
             }
         };
 
-        Hello request = new Hello()
+        testdtos.Hello request = new testdtos.Hello()
                 .setName("World");
 
-        HelloResponse response = client.get(request);
+        testdtos.HelloResponse response = client.get(request);
 
         assertEquals("Hello, World!", response.getResult());
 
@@ -81,13 +79,13 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Can_GET_Hello_with_CustomPath(){
-        HelloResponse response = client.get("/hello/World", HelloResponse.class);
+        testdtos.HelloResponse response = client.get("/hello/World", testdtos.HelloResponse.class);
 
         assertEquals("Hello, World!", response.getResult());
     }
 
     public void test_Can_POST_Hello_with_CustomPath(){
-        HelloResponse response = client.post("/hello", new Hello().setName("World"), HelloResponse.class);
+        testdtos.HelloResponse response = client.post("/hello", new testdtos.Hello().setName("World"), testdtos.HelloResponse.class);
 
         assertEquals("Hello, World!", response.getResult());
     }
@@ -107,14 +105,14 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Can_POST_test_HelloAllTypes(){
-        HelloAllTypes request = createHelloAllTypes();
-        HelloAllTypesResponse response = client.post(request);
+        testdtos.HelloAllTypes request = createHelloAllTypes();
+        testdtos.HelloAllTypesResponse response = client.post(request);
         assertHelloAllTypesResponse(response, request);
     }
 
     public void test_Can_PUT_test_HelloAllTypes(){
-        HelloAllTypes request = createHelloAllTypes();
-        HelloAllTypesResponse response = client.put(request);
+        testdtos.HelloAllTypes request = createHelloAllTypes();
+        testdtos.HelloAllTypesResponse response = client.put(request);
         assertHelloAllTypesResponse(response, request);
     }
 
@@ -144,12 +142,12 @@ public class TestServiceTests extends TestCase {
             }
         };
 
-        ThrowType request = new ThrowType()
+        testdtos.ThrowType request = new testdtos.ThrowType()
             .setType("NotFound")
             .setMessage("not here");
 
         try {
-            ThrowTypeResponse response = testClient.put(request);
+            testdtos.ThrowTypeResponse response = testClient.put(request);
         }
         catch (WebServiceException webEx){
             thrownError = webEx;
@@ -187,10 +185,10 @@ public class TestServiceTests extends TestCase {
             }
         };
 
-        TestAuth request = new TestAuth();
+        testdtos.TestAuth request = new testdtos.TestAuth();
 
         try {
-            TestAuthResponse response = testClient.send(request);
+            testdtos.TestAuthResponse response = testClient.send(request);
         }
         catch (WebServiceException webEx){
             thrownError = webEx;
@@ -205,7 +203,7 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Does_handle_ValidationException(){
-        ThrowValidation request = new ThrowValidation()
+        testdtos.ThrowValidation request = new testdtos.ThrowValidation()
             .setEmail("invalidemail");
 
         try {
@@ -235,12 +233,12 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Can_POST_valid_ThrowValidation_request() {
-        ThrowValidation request = new ThrowValidation()
+        testdtos.ThrowValidation request = new testdtos.ThrowValidation()
             .setAge(21)
             .setRequired("foo")
             .setEmail("my@gmail.com");
 
-        ThrowValidationResponse response = client.post(request);
+        testdtos.ThrowValidationResponse response = client.post(request);
 
         assertNotNull(response);
         assertEquals(request.getAge(), response.getAge());
@@ -272,20 +270,20 @@ public class TestServiceTests extends TestCase {
             }
         };
 
-        client.send(new HelloReturnVoid().setId(1));
+        client.send(new testdtos.HelloReturnVoid().setId(1));
         assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
-        client.get(new HelloReturnVoid().setId(2));
+        client.get(new testdtos.HelloReturnVoid().setId(2));
         assertEquals(HttpMethods.Get, sentMethods.get(sentMethods.size() - 1));
-        client.post(new HelloReturnVoid().setId(3));
+        client.post(new testdtos.HelloReturnVoid().setId(3));
         assertEquals(HttpMethods.Post, sentMethods.get(sentMethods.size() - 1));
-        client.put(new HelloReturnVoid().setId(4));
+        client.put(new testdtos.HelloReturnVoid().setId(4));
         assertEquals(HttpMethods.Put, sentMethods.get(sentMethods.size() - 1));
-        client.delete(new HelloReturnVoid().setId(5));
+        client.delete(new testdtos.HelloReturnVoid().setId(5));
         assertEquals(HttpMethods.Delete, sentMethods.get(sentMethods.size() - 1));
     }
 
     public void test_Can_get_response_as_Raw_String(){
-        String response = client.get(new HelloString().setName("World"));
+        String response = client.get(new testdtos.HelloString().setName("World"));
         assertEquals("World", response);
     }
 
@@ -302,7 +300,7 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Can_post_data_and_read_as_Stream() throws IOException {
-        ReturnStream req = new ReturnStream();
+        testdtos.ReturnStream req = new testdtos.ReturnStream();
         ArrayList<Short> data = new ArrayList<>();
         data.add((short) 65);
         data.add((short) 66);
@@ -317,22 +315,22 @@ public class TestServiceTests extends TestCase {
 
     /* TEST HELPERS */
 
-    public static HelloAllTypes createHelloAllTypes(){
-        HelloAllTypes to = new HelloAllTypes()
+    public static testdtos.HelloAllTypes createHelloAllTypes(){
+        testdtos.HelloAllTypes to = new testdtos.HelloAllTypes()
             .setName("name")
             .setAllTypes(createAllTypes())
             .setAllCollectionTypes(createAllCollectionTypes());
         return to;
     }
 
-    public static void assertHelloAllTypesResponse(HelloAllTypesResponse actual, HelloAllTypes expected) {
+    public static void assertHelloAllTypesResponse(testdtos.HelloAllTypesResponse actual, testdtos.HelloAllTypes expected) {
         assertNotNull(actual);
         assertAllTypes(actual.allTypes, expected.allTypes);
         assertAllCollectionTypes(actual.allCollectionTypes, expected.allCollectionTypes);
     }
 
-    public static AllTypes createAllTypes() {
-        AllTypes to = new AllTypes()
+    public static testdtos.AllTypes createAllTypes() {
+        testdtos.AllTypes to = new testdtos.AllTypes()
             .setId(1)
             .setChar("c")
             .setByte((short) 2)
@@ -350,18 +348,18 @@ public class TestServiceTests extends TestCase {
             .setDateTimeOffset(new Date(101, 0, 1))
             .setTimeSpan(new TimeSpan().addHours(1))
             .setGuid(UUID.randomUUID())
-            .setKeyValuePair(new KeyValuePair<String,String>().setKey("foo").setValue("bar"))
+            .setKeyValuePair(new testdtos.KeyValuePair<String,String>().setKey("foo").setValue("bar"))
             .setStringList(Utils.createList("A", "B", "C"))
             .setStringArray(Utils.createList("D", "E", "F"))
             .setStringMap(Utils.createMap("A", "D", "B", "E", "C", "F"))
             .setIntStringMap(Utils.createMap(1, "A", 2, "B", 3, "C"))
-            .setSubType(new SubType().setId(1).setName("name"));
+            .setSubType(new testdtos.SubType().setId(1).setName("name"));
 
         return to;
     }
 
-    public static AllCollectionTypes createAllCollectionTypes(){
-        AllCollectionTypes to = new AllCollectionTypes()
+    public static testdtos.AllCollectionTypes createAllCollectionTypes(){
+        testdtos.AllCollectionTypes to = new testdtos.AllCollectionTypes()
             .setIntArray(Utils.createList(1, 2, 3))
             .setIntList(Utils.createList(4, 5, 6))
             .setStringArray(Utils.createList("A", "B", "C"))
@@ -373,11 +371,11 @@ public class TestServiceTests extends TestCase {
         return to;
     }
 
-    public static Poco createPoco(String name){
-        return new Poco().setName(name);
+    public static testdtos.Poco createPoco(String name){
+        return new testdtos.Poco().setName(name);
     }
 
-    public static void assertAllTypes(AllTypes actual, AllTypes expected) {
+    public static void assertAllTypes(testdtos.AllTypes actual, testdtos.AllTypes expected) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getByte(), actual.getByte());
         assertEquals(expected.getShort(), actual.getShort());
@@ -405,7 +403,7 @@ public class TestServiceTests extends TestCase {
         assertEquals(expected.getSubType().getName(), actual.getSubType().getName());
     }
 
-    public static void assertAllCollectionTypes(AllCollectionTypes actual, AllCollectionTypes expected) {
+    public static void assertAllCollectionTypes(testdtos.AllCollectionTypes actual, testdtos.AllCollectionTypes expected) {
         assertEquals(expected.getIntArray(), actual.getIntArray());
         assertEquals(expected.getIntList(), actual.getIntList());
         assertEquals(expected.getStringArray(), actual.getStringArray());
@@ -417,42 +415,42 @@ public class TestServiceTests extends TestCase {
         assertPocoLookupMapEquals(expected.getPocoLookupMap(), actual.getPocoLookupMap());
     }
 
-    public static void assertPocoEquals(List<Poco> expected, List<Poco> actual){
+    public static void assertPocoEquals(List<testdtos.Poco> expected, List<testdtos.Poco> actual){
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             assertPocoEquals(expected.get(i), actual.get(i));
         }
     }
 
-    public static void assertPocoLookupEquals(HashMap<String,ArrayList<Poco>> expected, HashMap<String,ArrayList<Poco>> actual){
+    public static void assertPocoLookupEquals(HashMap<String,ArrayList<testdtos.Poco>> expected, HashMap<String,ArrayList<testdtos.Poco>> actual){
         assertEquals(expected.size(), actual.size());
         for (String key : actual.keySet()) {
             assertPocoEquals(expected.get(key), actual.get(key));
         }
     }
 
-    public static void assertPocoLookupMapEquals(HashMap<String,ArrayList<HashMap<String,Poco>>> expected, HashMap<String,ArrayList<HashMap<String,Poco>>> actual){
+    public static void assertPocoLookupMapEquals(HashMap<String,ArrayList<HashMap<String,testdtos.Poco>>> expected, HashMap<String,ArrayList<HashMap<String,testdtos.Poco>>> actual){
         assertEquals(expected.size(), actual.size());
         for (String key : actual.keySet()) {
             assertPocoEquals(expected.get(key), actual.get(key));
         }
     }
 
-    public static void assertPocoEquals(ArrayList<HashMap<String, Poco>> expected, ArrayList<HashMap<String, Poco>> actual) {
+    public static void assertPocoEquals(ArrayList<HashMap<String, testdtos.Poco>> expected, ArrayList<HashMap<String, testdtos.Poco>> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             assertPocoEquals(expected.get(i), actual.get(i));
         }
     }
 
-    public static void assertPocoEquals(HashMap<String, Poco> expected, HashMap<String, Poco> actual) {
+    public static void assertPocoEquals(HashMap<String, testdtos.Poco> expected, HashMap<String, testdtos.Poco> actual) {
         assertEquals(expected.size(), actual.size());
         for (String key : actual.keySet()) {
             assertPocoEquals(expected.get(key), actual.get(key));
         }
     }
 
-    public static void assertPocoEquals(Poco expected, Poco actual){
+    public static void assertPocoEquals(testdtos.Poco expected, testdtos.Poco actual){
         assertNotNull(actual);
         assertEquals(actual.getName(), expected.getName());
     }

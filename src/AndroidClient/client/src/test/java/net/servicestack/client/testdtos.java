@@ -18,7 +18,7 @@ GlobalNamespace: testdtos
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*,java.io.*
 */
 
-package test;
+package net.servicestack.client;
 
 import java.math.*;
 import java.util.*;

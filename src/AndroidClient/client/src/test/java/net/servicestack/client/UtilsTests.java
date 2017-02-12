@@ -1,4 +1,4 @@
-package test;
+package net.servicestack.client;
 
 import com.google.gson.*;
 import junit.framework.TestCase;
