@@ -1,4 +1,4 @@
-package net.servicestack.client.tests;
+package test;
 
 import junit.framework.TestCase;
 import net.servicestack.client.JsonServiceClient;

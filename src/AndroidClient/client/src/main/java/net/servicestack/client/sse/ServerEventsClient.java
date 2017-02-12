@@ -148,12 +148,16 @@ public class ServerEventsClient implements AutoCloseable {
         this.handlers = handlers;
     }
 
+    public ServerEventsClient registerHandler(String name, ServerEventCallback handler){
+        this.handlers.put(name, handler);
+        return this;
+    }
+
     public Map<String, ServerEventCallback> getNamedReceivers() {
         return namedReceivers;
     }
 
-    public ServerEventsClient setNamedReceivers(Map<String, ServerEventCallback> namedReceivers) {
-        this.namedReceivers = namedReceivers;
+    public ServerEventsClient registerNamedReceiver(String name, Class<?> namedReceiverClass) {
         return this;
     }
 
@@ -231,6 +235,21 @@ public class ServerEventsClient implements AutoCloseable {
     public synchronized void stop(){
         stopped.set(true);
         internalStop();
+    }
+
+    public ServerEventsClient waitTillConnected() throws Exception {
+        return waitTillConnected(Integer.MAX_VALUE);
+    }
+
+    public ServerEventsClient waitTillConnected(int timeoutMs) throws Exception {
+        Date startedAt = new Date();
+        while (connectionInfo == null) {
+            Thread.sleep(50);
+
+            if ((new Date().getTime() - startedAt.getTime()) > timeoutMs)
+                throw new TimeoutException("Not connected after " + timeoutMs + "ms");
+        }
+        return this;
     }
 
     private synchronized void internalStop() {

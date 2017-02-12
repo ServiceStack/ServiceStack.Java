@@ -1,11 +1,11 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package net.servicestack.client.tests;
+package test;
 
 import io.techstacks.dto;
 import junit.framework.TestCase;
 import net.servicestack.client.*;
-import net.servicestack.client.tests.testdtos.*;
+import test.testdtos.*;
 
 import java.io.IOException;
 import java.io.InputStream;

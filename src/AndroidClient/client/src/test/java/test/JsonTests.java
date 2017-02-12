@@ -1,17 +1,15 @@
 //  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
 
-package net.servicestack.client.tests;
+package test;
 
 import junit.framework.TestCase;
 
 import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.Log;
 import net.servicestack.client.TimeSpan;
 import net.servicestack.client.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Date;
 
 public class JsonTests extends TestCase {
     public JsonTests() {

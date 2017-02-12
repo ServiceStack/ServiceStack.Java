@@ -1,4 +1,4 @@
-package net.servicestack.client.tests;
+package test;
 
 import junit.framework.TestCase;
 
@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static chat.chatdtos.*;
+import static chat.chatdtos.ChatMessage;
+import static chat.chatdtos.PostChatToChannel;
+import static chat.chatdtos.ResetServerEvents;
 
 /**
  * Created by mythz on 2/10/2017.
@@ -324,5 +326,63 @@ public class ServerEventClientTests extends TestCase {
 
             assertEquals("msg2 from client2", chatMsg2.getMessage());
         }
+    }
+
+    public void test_Does_send_message_to_Handler() throws Exception {
+
+        List<ChatMessage> chatMsgs = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+                .registerHandler("chat", (client, e) -> {
+                    ChatMessage chatMsg = JsonUtils.fromJson(e.getJson(), ChatMessage.class);
+                    chatMsgs.add(chatMsg);
+                })
+                .start()
+                .waitTillConnected()) {
+
+            postChat(client1, "msg1");
+
+            while (chatMsgs.size() < 1){
+                Thread.sleep(100);
+            }
+
+            ChatMessage chatMsg = Func.last(chatMsgs);
+            assertEquals("msg1", chatMsg.getMessage());
+
+            postChat(client1, "msg2");
+
+            while (chatMsgs.size() < 2){
+                Thread.sleep(100);
+            }
+
+            chatMsg = Func.last(chatMsgs);
+            assertEquals("msg2", chatMsg.getMessage());
+        }
+    }
+
+    public void test_Does_send_message_to_named_receiver() throws Exception {
+//        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+//                .registerNamedReceiver("test", TestNamedReceiver.class)
+//                .start()
+//                .waitTillConnected()) {
+//
+//            postChat(client1, "msg1");
+//
+//            while (chatMsgs.size() < 1){
+//                Thread.sleep(100);
+//            }
+//
+//            ChatMessage chatMsg = Func.last(chatMsgs);
+//            assertEquals("msg1", chatMsg.getMessage());
+//
+//            postChat(client1, "msg2");
+//
+//            while (chatMsgs.size() < 2){
+//                Thread.sleep(100);
+//            }
+//
+//            chatMsg = Func.last(chatMsgs);
+//            assertEquals("msg2", chatMsg.getMessage());
+//        }
     }
 }
