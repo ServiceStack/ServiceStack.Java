@@ -13,6 +13,9 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -170,6 +173,65 @@ public class ServerEventsClient implements AutoCloseable {
     }
 
     public ServerEventsClient registerNamedReceiver(String name, Class<?> namedReceiverClass) {
+
+        if (!IReceiver.class.isAssignableFrom(namedReceiverClass))
+            throw new IllegalArgumentException(namedReceiverClass.getSimpleName() + " must implement IReceiver");
+
+        namedReceivers.put(name, new ServerEventCallback() {
+            @Override
+            public void execute(ServerEventsClient client, ServerEventMessage msg) {
+                try {
+                    IReceiver receiver = (IReceiver)resolver.TryResolve(namedReceiverClass);
+
+                    if (receiver instanceof ServerEventReceiver){
+                        ServerEventReceiver injectReceiver = (ServerEventReceiver)receiver;
+                        injectReceiver.setClient(client);
+                        injectReceiver.setRequest(msg);
+                    }
+
+                    String target = msg.getTarget().replace("-",""); //css bg-image
+
+                    for (Method mi : namedReceiverClass.getDeclaredMethods()){
+                        if (!Modifier.isPublic(mi.getModifiers()) || Modifier.isStatic(mi.getModifiers()))
+                            continue;
+                        if (mi.getParameterCount() != 1)
+                            continue;
+                        if ("equals".equals(mi.getName()))
+                            continue;
+
+                        Parameter[] args = mi.getParameters();
+
+                        Class requestType = args[0].getType();
+
+                        if (target.equals(requestType.getSimpleName())) {
+                            Object request = msg.getJson() != null
+                                ? JsonUtils.fromJson(msg.getJson(), requestType)
+                                : requestType.newInstance();
+                            mi.invoke(receiver, request);
+                            return;
+                        }
+
+                        String actionName = mi.getName();
+                        if (!target.equalsIgnoreCase(actionName) && actionName.startsWith("set"))
+                            actionName = actionName.substring(3); //= "set".length()
+
+                        if (target.equalsIgnoreCase(actionName)) {
+                            Object request = msg.getJson() != null
+                                ? JsonUtils.fromJson(msg.getJson(), requestType)
+                                : requestType.newInstance();
+                            mi.invoke(receiver, request);
+                            return;
+                        }
+                    }
+
+                    receiver.noSuchMethod(msg.getTarget(), msg);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         return this;
     }
 
