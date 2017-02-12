@@ -172,6 +172,10 @@ public class ServerEventsClient implements AutoCloseable {
         return namedReceivers;
     }
 
+    public ServerEventsClient registerReceiver(Class<?> receiverClass) {
+        return registerNamedReceiver("cmd", receiverClass);
+    }
+
     public ServerEventsClient registerNamedReceiver(String name, Class<?> namedReceiverClass) {
 
         if (!IReceiver.class.isAssignableFrom(namedReceiverClass))
@@ -204,7 +208,7 @@ public class ServerEventsClient implements AutoCloseable {
                         Class requestType = args[0].getType();
 
                         if (target.equals(requestType.getSimpleName())) {
-                            Object request = msg.getJson() != null
+                            Object request = !Utils.isNullOrEmpty(msg.getJson())
                                 ? JsonUtils.fromJson(msg.getJson(), requestType)
                                 : requestType.newInstance();
                             mi.invoke(receiver, request);
@@ -216,7 +220,7 @@ public class ServerEventsClient implements AutoCloseable {
                             actionName = actionName.substring(3); //= "set".length()
 
                         if (target.equalsIgnoreCase(actionName)) {
-                            Object request = msg.getJson() != null
+                            Object request = !Utils.isNullOrEmpty(msg.getJson())
                                 ? JsonUtils.fromJson(msg.getJson(), requestType)
                                 : requestType.newInstance();
                             mi.invoke(receiver, request);

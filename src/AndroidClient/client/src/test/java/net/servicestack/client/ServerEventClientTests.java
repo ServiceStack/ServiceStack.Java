@@ -125,7 +125,7 @@ public class ServerEventClientTests extends TestCase {
             .setOnException(errors::add)
             .start())
         {
-            while (connectMsgs.size() == 0 || commands.size() == 0) {
+            while (connectMsgs.size() < 1 || commands.size() < 1) {
                 Thread.sleep(100);
             }
 
@@ -145,7 +145,7 @@ public class ServerEventClientTests extends TestCase {
                 .setOnConnect(connectMsgs::add)
                 .start())
             {
-                while (connectMsgs.size() == 0 || commands.size() == 0) {
+                while (connectMsgs.size() < 1 || commands.size() < 1) {
                     Thread.sleep(100);
                 }
 
@@ -180,6 +180,39 @@ public class ServerEventClientTests extends TestCase {
             .setSelector("cmd.chat"));
     }
 
+    private void postRaw(ServerEventsClient client, String selector, String message) {
+        postRaw(client, selector, message, null);
+    }
+
+    private void postRaw(ServerEventsClient client, String selector, String message, String channel) {
+        client.getServiceClient().post(new PostRawToChannel()
+            .setFrom(client.getSubscriptionId())
+            .setMessage(message)
+            .setChannel(channel != null ? channel : ServerEventsClient.UnknownChannel)
+            .setSelector(selector));
+    }
+
+    private void postObject(ServerEventsClient client, CustomType dto){
+        postObject(client, dto, null, null);
+    }
+
+    private void postObject(ServerEventsClient client, CustomType dto, String selector){
+        postObject(client, dto, selector, null);
+    }
+
+    private void postObject(ServerEventsClient client, CustomType dto, String selector, String channel){
+        client.getServiceClient().post(new PostObjectToChannel()
+                .setCustomType(dto)
+                .setChannel(channel != null ? channel : ServerEventsClient.UnknownChannel)
+                .setSelector(selector));
+    }
+
+    private void postObject(ServerEventsClient client, SetterType dto){
+        client.getServiceClient().post(new PostObjectToChannel()
+                .setSetterType(dto)
+                .setChannel(ServerEventsClient.UnknownChannel));
+    }
+
     public void test_Does_receive_messages() throws Exception {
 
         List<ServerEventConnect> connectMsgs = new ArrayList<>();
@@ -199,7 +232,7 @@ public class ServerEventClientTests extends TestCase {
         {
             client1.start();
 
-            while (connectMsgs.size() == 0 || commands.size() == 0) {
+            while (connectMsgs.size() < 1 || commands.size() < 1) {
                 Thread.sleep(100);
             }
 
@@ -212,7 +245,7 @@ public class ServerEventClientTests extends TestCase {
             ServerEventConnect info1 = connectMsgs.get(0);
             postChat(client1, "hello from client1");
 
-            while (msgs1.size() == 0 || msgs2.size() == 0) {
+            while (msgs1.size() < 1 || msgs2.size() < 1) {
                 Thread.sleep(100);
             }
 
@@ -290,13 +323,13 @@ public class ServerEventClientTests extends TestCase {
             .setOnMessage(msgs1::add)
             .start()) {
 
-            while (connectMsgs.size() == 0){
+            while (connectMsgs.size() < 1){
                 Thread.sleep(100);
             }
 
             postChat(client1, "msg1 from client1");
 
-            while (msgs1.size() == 0){
+            while (msgs1.size() < 1){
                 Thread.sleep(100);
             }
 
@@ -355,18 +388,6 @@ public class ServerEventClientTests extends TestCase {
             chatMsg = Func.last(chatMsgs);
             assertEquals("msg2", chatMsg.getMessage());
         }
-    }
-
-
-    private void postObject(ServerEventsClient client, CustomType dto, String selector){
-        postObject(client, dto, selector, null);
-    }
-
-    private void postObject(ServerEventsClient client, CustomType dto, String selector, String channel){
-        client.getServiceClient().post(new PostObjectToChannel()
-            .setCustomType(dto)
-            .setChannel(channel != null ? channel : ServerEventsClient.UnknownChannel)
-            .setSelector(selector));
     }
 
     public void test_Does_send_message_to_named_receiver() throws Exception {
@@ -430,6 +451,109 @@ public class ServerEventClientTests extends TestCase {
             assertNotNull(qux);
             assertEquals(4, qux.getId().intValue());
             assertEquals("Qux", qux.getName());
+        }
+    }
+
+    public void test_Does_send_message_to_global_receiver() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+                .registerReceiver(TestGlobalReceiver.class)
+                .setOnMessage(msgs1::add)
+                .start()
+                .waitTillConnected()) {
+
+            postObject(client1, new CustomType()
+                .setId(1)
+                .setName("Foo"));
+
+            while (msgs1.size() < 1){
+                Thread.sleep(100);
+            }
+
+            CustomType foo = TestGlobalReceiver.FooMethodReceived;
+            assertNotNull(foo);
+            assertEquals(1, foo.getId().intValue());
+            assertEquals("Foo", foo.getName());
+        }
+    }
+
+    public void test_Does_set_properties_on_global_receiver() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+                .registerReceiver(TestGlobalReceiver.class)
+                .setOnMessage(msgs1::add)
+                .start()
+                .waitTillConnected()) {
+
+            postObject(client1, new SetterType()
+                .setId(1)
+                .setName("Foo"));
+
+            SetterType foo = TestGlobalReceiver.AnyNamedSetterReceived;
+            assertNotNull(foo);
+            assertEquals(1, foo.getId().intValue());
+            assertEquals("Foo", foo.getName());
+        }
+    }
+
+    public void test_Does_send_raw_string_messages() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net")
+                .registerReceiver(TestJavaScriptReceiver.class)
+                .registerNamedReceiver("css", TestJavaScriptReceiver.class)
+                .setOnMessage(msgs1::add)
+                .start()
+                .waitTillConnected()) {
+
+            postChat(client1, "chat msg");
+
+            while (msgs1.size() < 1) {
+                Thread.sleep(100);
+            }
+
+            ChatMessage chatMsg = TestJavaScriptReceiver.ChatReceived;
+            assertNotNull(chatMsg);
+            assertEquals("chat msg", chatMsg.getMessage());
+
+            postRaw(client1, "cmd.announce", "This is your captain speaking...");
+
+            while (msgs1.size() < 2) {
+                Thread.sleep(100);
+            }
+
+            String announce = TestJavaScriptReceiver.AnnounceReceived;
+            assertEquals("This is your captain speaking...", announce);
+
+            postRaw(client1, "cmd.toggle$#channels", null);
+
+            while (msgs1.size() < 3) {
+                Thread.sleep(100);
+            }
+
+            String toggle = TestJavaScriptReceiver.ToggleReceived;
+            assertEquals("", toggle);
+            ServerEventMessage toggleRequest = TestJavaScriptReceiver.ToggleRequestReceived;
+            assertEquals("cmd.toggle$#channels", toggleRequest.getSelector());
+            assertEquals("cmd", toggleRequest.getOp());
+            assertEquals("toggle", toggleRequest.getTarget());
+            assertEquals("#channels", toggleRequest.getCssSelector());
+
+            postRaw(client1, "css.background-image$#top", "url(http://bit.ly/1yIJOBH)");
+
+            while (msgs1.size() < 4) {
+                Thread.sleep(100);
+            }
+
+            String bgImage = TestJavaScriptReceiver.BackgroundImageReceived;
+            assertEquals("url(http://bit.ly/1yIJOBH)", bgImage);
+            ServerEventMessage bgImageRequest = TestJavaScriptReceiver.BackgroundImageRequestReceived;
+            assertEquals("css.background-image$#top", bgImageRequest.getSelector());
+            assertEquals("css", bgImageRequest.getOp());
+            assertEquals("background-image", bgImageRequest.getTarget());
+            assertEquals("#top", bgImageRequest.getCssSelector());
         }
     }
 }
