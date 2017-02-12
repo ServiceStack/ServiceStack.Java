@@ -2,6 +2,8 @@ package net.servicestack.client.sse;
 
 import com.google.gson.JsonObject;
 
+import net.servicestack.client.IReceiver;
+import net.servicestack.client.IResolver;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
@@ -11,6 +13,9 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -34,6 +39,7 @@ public class ServerEventsClient implements AutoCloseable {
     private String eventStreamPath;
     private String eventStreamUri;
     private JsonServiceClient serviceClient;
+    private IResolver resolver;
 
     private Map<String,ServerEventCallback> handlers;
     private Map<String,ServerEventCallback> namedReceivers;
@@ -60,6 +66,7 @@ public class ServerEventsClient implements AutoCloseable {
         setBaseUri(baseUri);
         setChannels(channels);
         this.serviceClient = new JsonServiceClient(baseUri);
+        this.resolver = new NewInstanceResolver();
 
         this.handlers = new HashMap<>();
         this.namedReceivers = new HashMap<>();
@@ -110,6 +117,14 @@ public class ServerEventsClient implements AutoCloseable {
         return this.serviceClient;
     }
 
+    public IResolver getResolver() {
+        return resolver;
+    }
+
+    public void setResolver(IResolver resolver) {
+        this.resolver = resolver;
+    }
+
     public ServerEventsClient setOnConnect(ServerEventConnectCallback onConnect) {
         this.onConnect = onConnect;
         return this;
@@ -148,12 +163,75 @@ public class ServerEventsClient implements AutoCloseable {
         this.handlers = handlers;
     }
 
+    public ServerEventsClient registerHandler(String name, ServerEventCallback handler){
+        this.handlers.put(name, handler);
+        return this;
+    }
+
     public Map<String, ServerEventCallback> getNamedReceivers() {
         return namedReceivers;
     }
 
-    public ServerEventsClient setNamedReceivers(Map<String, ServerEventCallback> namedReceivers) {
-        this.namedReceivers = namedReceivers;
+    public ServerEventsClient registerNamedReceiver(String name, Class<?> namedReceiverClass) {
+
+        if (!IReceiver.class.isAssignableFrom(namedReceiverClass))
+            throw new IllegalArgumentException(namedReceiverClass.getSimpleName() + " must implement IReceiver");
+
+        namedReceivers.put(name, new ServerEventCallback() {
+            @Override
+            public void execute(ServerEventsClient client, ServerEventMessage msg) {
+                try {
+                    IReceiver receiver = (IReceiver)resolver.TryResolve(namedReceiverClass);
+
+                    if (receiver instanceof ServerEventReceiver){
+                        ServerEventReceiver injectReceiver = (ServerEventReceiver)receiver;
+                        injectReceiver.setClient(client);
+                        injectReceiver.setRequest(msg);
+                    }
+
+                    String target = msg.getTarget().replace("-",""); //css bg-image
+
+                    for (Method mi : namedReceiverClass.getDeclaredMethods()){
+                        if (!Modifier.isPublic(mi.getModifiers()) || Modifier.isStatic(mi.getModifiers()))
+                            continue;
+                        if (mi.getParameterCount() != 1)
+                            continue;
+                        if ("equals".equals(mi.getName()))
+                            continue;
+
+                        Parameter[] args = mi.getParameters();
+
+                        Class requestType = args[0].getType();
+
+                        if (target.equals(requestType.getSimpleName())) {
+                            Object request = msg.getJson() != null
+                                ? JsonUtils.fromJson(msg.getJson(), requestType)
+                                : requestType.newInstance();
+                            mi.invoke(receiver, request);
+                            return;
+                        }
+
+                        String actionName = mi.getName();
+                        if (!target.equalsIgnoreCase(actionName) && actionName.startsWith("set"))
+                            actionName = actionName.substring(3); //= "set".length()
+
+                        if (target.equalsIgnoreCase(actionName)) {
+                            Object request = msg.getJson() != null
+                                ? JsonUtils.fromJson(msg.getJson(), requestType)
+                                : requestType.newInstance();
+                            mi.invoke(receiver, request);
+                            return;
+                        }
+                    }
+
+                    receiver.noSuchMethod(msg.getTarget(), msg);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
         return this;
     }
 
@@ -231,6 +309,21 @@ public class ServerEventsClient implements AutoCloseable {
     public synchronized void stop(){
         stopped.set(true);
         internalStop();
+    }
+
+    public ServerEventsClient waitTillConnected() throws Exception {
+        return waitTillConnected(Integer.MAX_VALUE);
+    }
+
+    public ServerEventsClient waitTillConnected(int timeoutMs) throws Exception {
+        Date startedAt = new Date();
+        while (connectionInfo == null) {
+            Thread.sleep(50);
+
+            if ((new Date().getTime() - startedAt.getTime()) > timeoutMs)
+                throw new TimeoutException("Not connected after " + timeoutMs + "ms");
+        }
+        return this;
     }
 
     private synchronized void internalStop() {
