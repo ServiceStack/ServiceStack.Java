@@ -193,7 +193,7 @@ public class ServerEventsClient implements AutoCloseable {
         return registerNamedReceiver("cmd", receiverClass);
     }
 
-    public ServerEventsClient registerNamedReceiver(String name, Class<?> namedReceiverClass) {
+    public ServerEventsClient registerNamedReceiver(String name, final Class<?> namedReceiverClass) {
 
         if (!IReceiver.class.isAssignableFrom(namedReceiverClass))
             throw new IllegalArgumentException(namedReceiverClass.getSimpleName() + " must implement IReceiver");
