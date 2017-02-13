@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -221,9 +220,9 @@ public class ServerEventsClient implements AutoCloseable {
                         if ("equals".equals(mi.getName()))
                             continue;
 
-                        Parameter[] args = mi.getParameters();
+                        Class[] args = mi.getParameterTypes();
 
-                        Class requestType = args[0].getType();
+                        Class requestType = args[0];
 
                         if (target.equals(requestType.getSimpleName())) {
                             Object request = !Utils.isNullOrEmpty(msg.getJson())
@@ -706,7 +705,7 @@ public class ServerEventsClient implements AutoCloseable {
                         continue;
 
                     if (to.getMeta() == null)
-                        to.setMeta(new HashMap<>());
+                        to.setMeta(new HashMap<String,String>());
 
                     to.getMeta().put(entry.getKey(), entry.getValue());
                 }
