@@ -15,11 +15,13 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +112,18 @@ public class ServerEventsClient implements AutoCloseable {
     }
 
     private void buildEventStreamUri() {
-        this.eventStreamUri = Utils.addQueryParam(this.eventStreamPath, "channels", Utils.join(this.channels, ","));
+        //Encode channel names to avoid URLEncoder encoding ',' separator
+        List<String> encodedChannels = Func.map(channels != null ? channels : new String[0], new Function<String, String>() {
+            @Override
+            public String apply(String x) {
+                try {
+                    return URLEncoder.encode(x, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    return x;
+                }
+            }
+        });
+        this.eventStreamUri = Utils.addQueryParam(this.eventStreamPath, "channels", Utils.join(encodedChannels, ","), false);
     }
 
     public String getEventStreamUri() {

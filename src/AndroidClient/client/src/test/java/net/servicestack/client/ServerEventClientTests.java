@@ -2,6 +2,7 @@ package net.servicestack.client;
 
 import junit.framework.TestCase;
 
+import net.servicestack.client.sse.GetEventSubscribers;
 import net.servicestack.client.sse.ServerEventConnect;
 import net.servicestack.client.sse.ServerEventJoin;
 import net.servicestack.client.sse.ServerEventLeave;
@@ -12,6 +13,7 @@ import net.servicestack.client.sse.SingletonInstanceResolver;
 import net.servicestack.func.Func;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,7 @@ import static chat.chatdtos.*;
 import static chat.chatdtos.ChatMessage;
 import static chat.chatdtos.PostChatToChannel;
 import static chat.chatdtos.ResetServerEvents;
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * Created by mythz on 2/10/2017.
@@ -493,6 +496,10 @@ public class ServerEventClientTests extends TestCase {
                 .setId(1)
                 .setName("Foo"));
 
+            while (msgs1.size() < 1){
+                Thread.sleep(100);
+            }
+
             SetterType foo = TestGlobalReceiver.AnyNamedSetterReceived;
             assertNotNull(foo);
             assertEquals(1, foo.getId().intValue());
@@ -651,6 +658,250 @@ public class ServerEventClientTests extends TestCase {
             assertEquals(4, msgsAB.size());
             assertEquals(6, msgsABC.size());
             assertEquals(8, msgsABCD.size());
+        }
+    }
+
+    public void test_Does_receive_all_join_and_leave_messages() throws Exception {
+        List<ServerEventJoin> joinA = new ArrayList<>();
+        List<ServerEventJoin> joinB = new ArrayList<>();
+        List<ServerEventJoin> joinAB = new ArrayList<>();
+
+        List<ServerEventLeave> leaveA = new ArrayList<>();
+        List<ServerEventLeave> leaveB = new ArrayList<>();
+        List<ServerEventLeave> leaveAB = new ArrayList<>();
+
+        try(ServerEventsClient clientA = new ServerEventsClient("http://chat.servicestack.net", "A")
+                .setOnCommand(e -> {
+                    if (e instanceof ServerEventJoin){
+                        joinA.add((ServerEventJoin)e);
+                    } else if (e instanceof ServerEventLeave){
+                        leaveA.add((ServerEventLeave)e);
+                    }
+                });
+            ServerEventsClient clientB = new ServerEventsClient("http://chat.servicestack.net", "B")
+                .setOnCommand(e -> {
+                    if (e instanceof ServerEventJoin){
+                        joinB.add((ServerEventJoin)e);
+                    } else if (e instanceof ServerEventLeave){
+                        leaveB.add((ServerEventLeave)e);
+                    }
+                });
+            ServerEventsClient clientAB = new ServerEventsClient("http://chat.servicestack.net", "A", "B")
+                .setOnCommand(e -> {
+                    if (e instanceof ServerEventJoin){
+                        joinAB.add((ServerEventJoin)e);
+                    } else if (e instanceof ServerEventLeave){
+                        leaveAB.add((ServerEventLeave)e);
+                    }
+                });
+            ){
+
+            clientA.start().waitTillConnected();
+            clientB.start().waitTillConnected();
+            clientAB.start().waitTillConnected();
+
+            while (joinA.size() < 2 || joinB.size() < 2 || joinAB.size() < 2){
+                Thread.sleep(100);
+            }
+
+            assertEquals(2, joinA.size());  //A + [(A) B]
+            assertEquals(2, joinB.size());  //B + [A (B)]
+            assertEquals(2, joinAB.size()); //[(A) B] + [A (B)]
+
+            List<ServerEventUser> channelAsubscribers = clientA.getChannelSubscribers();
+            assertEquals(2, channelAsubscribers.size());
+
+            List<ServerEventUser> channelBsubscribers = clientB.getChannelSubscribers();
+            assertEquals(2, channelBsubscribers.size());
+
+            List<ServerEventUser> channelABsubscribers = clientAB.getChannelSubscribers();
+            assertEquals(3, channelABsubscribers.size());
+
+            ArrayList<HashMap<String,String>> usersA = clientA.getServiceClient().get(new GetEventSubscribers()
+                    .setChannels(Func.toList("A")));
+            ArrayList<HashMap<String,String>> usersB = clientA.getServiceClient().get(new GetEventSubscribers()
+                    .setChannels(Func.toList("B")));
+            ArrayList<HashMap<String,String>> usersAB = clientA.getServiceClient().get(new GetEventSubscribers()
+                    .setChannels(Func.toList("A", "B")));
+
+            assertEquals(2, usersA.size());
+            assertEquals(2, usersB.size());
+            assertEquals(3, usersAB.size());
+
+            clientAB.stop();
+
+            Thread.sleep(100);
+
+            clientB.stop();
+            clientA.stop();
+
+            Thread.sleep(100);
+
+            assertEquals(1, leaveA.size());
+            assertEquals(1, leaveB.size());
+            assertEquals(0, leaveAB.size());
+        }
+    }
+
+    public void test_MultiChannel_Does_receive_all_join_and_leave_messages() throws Exception {
+        List<ServerEventJoin> joinA = new ArrayList<>();
+        List<ServerEventJoin> joinB = new ArrayList<>();
+        List<ServerEventJoin> joinAB = new ArrayList<>();
+
+        List<ServerEventLeave> leaveA = new ArrayList<>();
+        List<ServerEventLeave> leaveB = new ArrayList<>();
+        List<ServerEventLeave> leaveAB = new ArrayList<>();
+
+        try(
+            ServerEventsClient clientAB = new ServerEventsClient("http://chat.servicestack.net", "A", "B")
+                .setOnCommand(e -> {
+                    if (e instanceof ServerEventJoin){
+                        joinAB.add((ServerEventJoin)e);
+                    } else if (e instanceof ServerEventLeave){
+                        leaveAB.add((ServerEventLeave)e);
+                    }
+                });
+            ServerEventsClient clientA = new ServerEventsClient("http://chat.servicestack.net", "A")
+                .setOnCommand(e -> {
+                    if (e instanceof ServerEventJoin){
+                        joinA.add((ServerEventJoin)e);
+                    } else if (e instanceof ServerEventLeave){
+                        leaveA.add((ServerEventLeave)e);
+                    }
+                });
+            ServerEventsClient clientB = new ServerEventsClient("http://chat.servicestack.net", "B")
+                .setOnCommand(e -> {
+                    if (e instanceof ServerEventJoin){
+                        joinB.add((ServerEventJoin)e);
+                    } else if (e instanceof ServerEventLeave){
+                        leaveB.add((ServerEventLeave)e);
+                    }
+                });
+        ) {
+
+            clientAB.start().waitTillConnected();
+            clientA.start().waitTillConnected();
+            clientB.start().waitTillConnected();
+
+            while (joinAB.size() < 4 //[(A) B] + [A (B)] + A + B
+                || joinA.size() < 1 || joinB.size() < 1) {
+                Thread.sleep(100);
+            }
+
+            clientA.stop();
+            clientB.stop();
+
+            Thread.sleep(100);
+
+            clientAB.stop();
+
+            assertEquals(2, leaveAB.size());
+            assertEquals(0, leaveA.size());
+            assertEquals(0, leaveB.size());
+        }
+    }
+
+    public void test_Can_subscribe_to_channels_whilst_connected() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+        List<ServerEventMessage> msgs2 = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net", "A")
+                .setOnMessage(msgs1::add)
+                .start();
+            ServerEventsClient client2 = new ServerEventsClient("http://chat.servicestack.net", "B")
+                .setOnMessage(msgs2::add)
+                .start()) {
+
+            client1.waitTillConnected();
+            client2.waitTillConnected();
+
+            assertArrayEquals(new String[]{"A"}, client1.getChannels());
+
+            postChat(client2, "#1 hello to B", "B");
+
+            Thread.sleep(500);
+
+            assertEquals(0, msgs1.size());
+            assertEquals(1, msgs2.size());
+
+            client1.subscribeToChannels("B");
+
+            Thread.sleep(500);
+
+            postChat(client2, "#2 hello to B", "B");
+            postChat(client2, "#3 hello to C", "C");
+            Thread.sleep(500);
+
+            assertArrayEquals(new String[]{"A", "B"}, client1.getChannels());
+            assertArrayEquals(new String[]{"B"}, client2.getChannels());
+
+            assertTrue(client1.getEventStreamUri().endsWith("?channels=A,B"));
+            assertTrue(client2.getEventStreamUri().endsWith("?channels=B"));
+
+            client1.subscribeToChannels("C");
+            client2.subscribeToChannels("C");
+            Thread.sleep(500);
+
+            postChat(client2, "#4 hello to C", "C");
+            Thread.sleep(500);
+
+            assertArrayEquals(new String[]{"A", "B", "C"}, client1.getChannels());
+            assertArrayEquals(new String[]{"B", "C"}, client2.getChannels());
+
+            assertTrue(client1.getEventStreamUri().endsWith("?channels=A,B,C"));
+            assertTrue(client2.getEventStreamUri().endsWith("?channels=B,C"));
+        }
+    }
+
+    public void test_Can_unsubscribe_from_channels_whilst_connected() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+        List<ServerEventMessage> msgs2 = new ArrayList<>();
+
+        try(ServerEventsClient client1 = new ServerEventsClient("http://chat.servicestack.net", "A","B","C")
+                .setOnMessage(msgs1::add)
+                .start()
+                .waitTillConnected();
+            ServerEventsClient client2 = new ServerEventsClient("http://chat.servicestack.net", "B","C")
+                .setOnMessage(msgs2::add)
+                .start()
+                .waitTillConnected()) {
+
+            assertArrayEquals(new String[]{"A","B","C"}, client1.getChannels());
+
+            postChat(client2, "#1 hello to B", "B");
+            Thread.sleep(500);
+
+            assertEquals(1, msgs1.size());
+            assertEquals(1, msgs2.size());
+
+            client1.unSubscribeFromChannels("B");
+            Thread.sleep(500);
+
+            postChat(client2, "#2 hello to B", "B");
+            postChat(client2, "#3 hello to C", "C");
+            Thread.sleep(500);
+
+            assertEquals(2, msgs1.size());
+            assertEquals(3, msgs2.size());
+
+            assertArrayEquals(new String[]{"A", "C"}, client1.getChannels());
+            assertArrayEquals(new String[]{"B", "C"}, client2.getChannels());
+
+            assertTrue(client1.getEventStreamUri().endsWith("?channels=A,C"));
+            assertTrue(client2.getEventStreamUri().endsWith("?channels=B,C"));
+
+            client1.unSubscribeFromChannels("C");
+            client2.unSubscribeFromChannels("C");
+            Thread.sleep(500);
+
+            postChat(client2, "#4 hello to C", "C");
+            Thread.sleep(500);
+
+            assertArrayEquals(new String[]{"A"}, client1.getChannels());
+            assertArrayEquals(new String[]{"B"}, client2.getChannels());
+
+            assertTrue(client1.getEventStreamUri().endsWith("?channels=A"));
+            assertTrue(client2.getEventStreamUri().endsWith("?channels=B"));
         }
     }
 }
