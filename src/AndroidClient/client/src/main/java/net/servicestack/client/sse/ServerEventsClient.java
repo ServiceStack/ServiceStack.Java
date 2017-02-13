@@ -215,12 +215,11 @@ public class ServerEventsClient implements AutoCloseable {
                     for (Method mi : namedReceiverClass.getDeclaredMethods()){
                         if (!Modifier.isPublic(mi.getModifiers()) || Modifier.isStatic(mi.getModifiers()))
                             continue;
-                        if (mi.getParameterCount() != 1)
+                        Class[] args = mi.getParameterTypes();
+                        if (args.length != 1)
                             continue;
                         if ("equals".equals(mi.getName()))
                             continue;
-
-                        Class[] args = mi.getParameterTypes();
 
                         Class requestType = args[0];
 
