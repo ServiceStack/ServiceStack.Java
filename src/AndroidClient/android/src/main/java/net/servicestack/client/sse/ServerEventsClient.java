@@ -12,6 +12,7 @@ import net.servicestack.func.Func;
 import net.servicestack.func.Function;
 
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Created by mythz on 2/9/2017.
  */
 
-public class ServerEventsClient implements AutoCloseable {
+public class ServerEventsClient implements Closeable {
     private String baseUri;
     private String[] channels;
     private String eventStreamPath;
@@ -535,7 +536,7 @@ public class ServerEventsClient implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         stop();
     }
 
