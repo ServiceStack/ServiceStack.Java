@@ -73,10 +73,20 @@ public class Func {
     }
 
     public static <K, V> HashMap<K, V> toDictionary(K k1, V v1, K k2, V v2, K k3, V v3) {
-        HashMap<K, V> to = new HashMap<>();
-        to.put(k1, v1);
-        to.put(k2, v2);
+        HashMap<K, V> to = toDictionary(k1, v1, k2, v2);
         to.put(k3, v3);
+        return to;
+    }
+
+    public static <K, V> HashMap<K, V> toDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
+        HashMap<K, V> to = toDictionary(k1, v1, k2, v2, k3, v3);
+        to.put(k4, v4);
+        return to;
+    }
+
+    public static <K, V> HashMap<K, V> toDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
+        HashMap<K, V> to = toDictionary(k1, v1, k2, v2, k3, v3, k4, v4);
+        to.put(k5, v5);
         return to;
     }
 
