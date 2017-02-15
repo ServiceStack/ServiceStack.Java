@@ -499,8 +499,7 @@ public class Utils {
 
     public static String readToEnd(String url) {
         try {
-            URL heartbeatUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection)heartbeatUrl.openConnection();
+            HttpURLConnection conn = (HttpURLConnection)new URL(url).openConnection();
             return readToEnd(conn);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -527,6 +526,16 @@ public class Utils {
         String text = sb.toString();
         reader.close();
         return text;
+    }
+
+    public static byte[] readBytesToEnd(String url) {
+        try {
+            URL heartbeatUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection)heartbeatUrl.openConnection();
+            return readBytesToEnd(conn);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static byte[] readBytesToEnd(HttpURLConnection response){
