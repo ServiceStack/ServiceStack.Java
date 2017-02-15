@@ -40,28 +40,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class ServerEventsClient implements Closeable {
-    private String baseUri;
-    private String[] channels;
-    private String eventStreamPath;
-    private String eventStreamUri;
-    private JsonServiceClient serviceClient;
-    private IResolver resolver;
+    protected String baseUri;
+    protected String[] channels;
+    protected String eventStreamPath;
+    protected String eventStreamUri;
+    protected JsonServiceClient serviceClient;
+    protected IResolver resolver;
 
-    private Map<String,ServerEventCallback> handlers;
-    private Map<String,ServerEventCallback> namedReceivers;
+    protected Map<String,ServerEventCallback> handlers;
+    protected Map<String,ServerEventCallback> namedReceivers;
 
-    private ServerEventConnectCallback onConnect;
-    private ServerEventMessageCallback onMessage;
-    private ServerEventMessageCallback onCommand;
-    private ServerEventMessageCallback onHeartbeat;
-    private ExceptionCallback onException;
-    private HttpRequestFilter heartbeatRequestFilter;
+    protected ServerEventConnectCallback onConnect;
+    protected ServerEventMessageCallback onMessage;
+    protected ServerEventMessageCallback onCommand;
+    protected ServerEventMessageCallback onHeartbeat;
+    protected ExceptionCallback onException;
+    protected HttpRequestFilter heartbeatRequestFilter;
 
-    private ServerEventConnect connectionInfo;
+    protected ServerEventConnect connectionInfo;
 
-    private Date lastPulseAt;
-    private Thread bgThread;
-    private final AtomicBoolean stopped = new AtomicBoolean(false);
+    protected Date lastPulseAt;
+    protected Thread bgThread;
+    protected final AtomicBoolean stopped = new AtomicBoolean(false);
 
     static int BufferSize = 1024 * 64;
     static int DefaultHeartbeatMs = 10 * 1000;
@@ -689,6 +689,10 @@ public class ServerEventsClient implements Closeable {
         ArrayList<HashMap<String,String>> response = this.serviceClient.get(
             new GetEventSubscribers().setChannels(Func.toList(this.getChannels())));
 
+        return toServerEventUser(response);
+    }
+
+    protected ArrayList<ServerEventUser> toServerEventUser(ArrayList<HashMap<String, String>> response) {
         return Func.map(response, new Function<HashMap<String, String>, ServerEventUser>() {
             @Override
             public ServerEventUser apply(HashMap<String, String> map) {
