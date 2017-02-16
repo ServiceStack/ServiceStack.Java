@@ -44,4 +44,7 @@ public interface ServiceClient {
     <TResponse> TResponse delete(String path, Class responseType);
     <TResponse> TResponse delete(String path, Type responseType);
     HttpURLConnection delete(String path);
+
+    void setCookie(String name, String value);
+    void setCookie(String name, String value, Long expiresInSecs);
 }

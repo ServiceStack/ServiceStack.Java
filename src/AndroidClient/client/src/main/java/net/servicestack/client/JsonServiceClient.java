@@ -18,6 +18,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -546,4 +547,18 @@ public class JsonServiceClient implements ServiceClient {
         return createRequest(resolveUrl(path), HttpMethods.Delete, null, null);
     }
 
+    @Override
+    public void setCookie(String name, String value) {
+        setCookie(name, value, null);
+    }
+
+    @Override
+    public void setCookie(String name, String value, Long expiresInSecs) {
+        CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
+        HttpCookie cookie = new HttpCookie(name, value);
+        if (expiresInSecs != null){
+            cookie.setMaxAge(expiresInSecs.longValue());
+        }
+        cookieManager.getCookieStore().getCookies().add(cookie);
+    }
 }
