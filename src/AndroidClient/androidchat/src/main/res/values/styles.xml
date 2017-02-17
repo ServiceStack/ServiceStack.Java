@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#3498DB</item>
+        <item name="colorPrimaryDark">#0665A2</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <drawable name="item_bg_selected">#58ACE3</drawable>
+    <drawable name="white_color">#FFFFFF</drawable>
+    <drawable name="chat_list_item_bg">#CCFFFFFF</drawable>
+    <drawable name="chat_background_blend">#AAFFFFFF</drawable>
+</resources>

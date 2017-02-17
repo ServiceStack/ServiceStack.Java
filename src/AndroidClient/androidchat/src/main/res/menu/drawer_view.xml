@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/channelsItemChannels" android:title="Channels">
+        <menu>
+            <group android:checkableBehavior="single" android:id="@+id/channelsGroup">
+
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Users" android:id="@+id/channelsItemUsers">
+        <menu>
+            <group android:checkableBehavior="single" android:id="@+id/usersGroup">
+
+            </group>
+        </menu>
+    </item>
+
+</menu>
