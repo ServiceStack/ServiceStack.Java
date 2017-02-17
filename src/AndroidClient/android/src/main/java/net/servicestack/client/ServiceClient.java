@@ -47,4 +47,5 @@ public interface ServiceClient {
 
     void setCookie(String name, String value);
     void setCookie(String name, String value, Long expiresInSecs);
+    void clearCookies();
 }

@@ -557,8 +557,14 @@ public class JsonServiceClient implements ServiceClient {
         CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
         HttpCookie cookie = new HttpCookie(name, value);
         if (expiresInSecs != null){
-            cookie.setMaxAge(expiresInSecs.longValue());
+            cookie.setMaxAge(expiresInSecs);
         }
         cookieManager.getCookieStore().getCookies().add(cookie);
+    }
+
+    @Override
+    public void clearCookies() {
+        CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
+        cookieManager.getCookieStore().removeAll();
     }
 }
