@@ -903,4 +903,13 @@ public class Utils {
         ex.printStackTrace(new PrintWriter(sw));
         return sw.toString();
     }
+
+    public static String unescapeHtml(String html){
+        return html
+            .replace("&lt;","<")
+            .replace("&gt;",">")
+            .replace("&amp;","&")
+            .replace("&#39;","\'")
+            .replace("&quot;","\"");
+    }
 }

@@ -56,8 +56,15 @@ public class JsonUtils {
             : defaultValue;
     }
 
+    private static Gson gson;
     public static Gson getGson(){
-        return new GsonBuilder().disableHtmlEscaping().create();
+        return gson != null
+            ? gson
+            : (gson = new GsonBuilder().disableHtmlEscaping().create());
+    }
+
+    public static void setGson(Gson value){
+        gson = value;
     }
 
     public static <T> T fromJson(String json, Class<?> cls) {
