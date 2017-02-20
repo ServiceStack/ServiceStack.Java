@@ -20,6 +20,7 @@
         android:layout_height="fill_parent"
         android:layout_marginBottom="200dp"
         android:gravity="center">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -38,7 +39,9 @@
                 android:text="Twitter"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
         </LinearLayout>
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -58,6 +61,7 @@
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
+
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progressBar"
