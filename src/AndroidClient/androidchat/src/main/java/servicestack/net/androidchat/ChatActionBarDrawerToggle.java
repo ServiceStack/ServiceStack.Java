@@ -21,7 +21,12 @@ public class ChatActionBarDrawerToggle extends ActionBarDrawerToggle {
     private boolean rightIsClosed = true;
     private boolean leftIsClosed = true;
 
-    public ChatActionBarDrawerToggle(AppCompatActivity host, DrawerLayout drawerLayout, Toolbar toolbar, @StringRes int openedResource, @StringRes int closedResource) {
+    public ChatActionBarDrawerToggle(
+            AppCompatActivity host,
+            DrawerLayout drawerLayout,
+            Toolbar toolbar,
+            @StringRes int openedResource,
+            @StringRes int closedResource) {
         super(host, drawerLayout, toolbar, openedResource, closedResource);
 
         hostActivity = host;
