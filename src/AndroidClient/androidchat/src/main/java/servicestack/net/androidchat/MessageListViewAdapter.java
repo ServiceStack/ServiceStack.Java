@@ -64,7 +64,7 @@ public class MessageListViewAdapter extends BaseAdapter {
         label.setText(displayMessage);
 
         ImageView image = (ImageView)row.findViewById(R.id.imgUser);
-        AsyncUtils.readBitmap(profileUrl, image::setImageBitmap);
+        App.get().readBitmap(profileUrl, image::setImageBitmap);
         return row;
     }
 

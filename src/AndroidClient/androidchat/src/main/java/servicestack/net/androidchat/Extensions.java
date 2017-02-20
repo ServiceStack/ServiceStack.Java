@@ -65,7 +65,7 @@ public class Extensions {
             TextView txtUser = (TextView)activity.findViewById(R.id.txtUserName);
             txtUser.setText(connectMsg.getDisplayName());
 
-            AsyncUtils.readBitmap(connectMsg.getProfileUrl(), bitmap -> {
+            App.get().readBitmap(connectMsg.getProfileUrl(), bitmap -> {
                 ImageView imgProfile = (ImageView)activity.findViewById(R.id.imgProfile);
                 imgProfile.setImageBitmap(bitmap);
             });

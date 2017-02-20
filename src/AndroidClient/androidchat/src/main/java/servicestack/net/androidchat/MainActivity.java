@@ -141,18 +141,9 @@ public class MainActivity extends AppCompatActivity {
         sendButton.setOnClickListener(this::onSendClick);
     }
 
-    static LruCache bitmapCache = new LruCache(4 * 1024 * 1024) {// 4MiB
-        protected int sizeOf(String key, Bitmap value) {
-            return value.getByteCount();
-        }
-    };
-
     private void InitDefaultBackground(final ImageView chatBackground){
         final String url = "https://servicestack.net/img/slide/image01.jpg";
-        AsyncUtils.readBitmap(url, imageBitmap -> {
-            bitmapCache.put(url, imageBitmap);
-            chatBackground.setImageBitmap(imageBitmap);
-        });
+        App.get().readBitmap(url, chatBackground::setImageBitmap);
     }
 
     public boolean onChannelClick(MenuItem menuItem)

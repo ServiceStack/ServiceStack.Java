@@ -126,7 +126,7 @@ public class ChatCommandHandler {
             ? message.substring(4, message.length() - 5)
             : message;
 
-        AsyncUtils.readBitmap(url, bitmap -> {
+        App.get().readBitmap(url, bitmap -> {
             ImageView chatBackground = (ImageView)parentActivity.findViewById(R.id.chat_background);
             parentActivity.runOnUiThread(() -> chatBackground.setImageBitmap(bitmap));
         });
