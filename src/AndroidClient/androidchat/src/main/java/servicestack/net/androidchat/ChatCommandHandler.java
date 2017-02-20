@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Vibrator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import net.servicestack.android.AsyncUtils;
+import net.servicestack.client.Utils;
 import net.servicestack.func.Func;
 
 import java.util.ArrayList;
@@ -123,7 +125,7 @@ public class ChatCommandHandler {
     public void changeBackground(String message)
     {
         String url = message.startsWith("url(")
-            ? message.substring(4, message.length() - 5)
+            ? message.substring(4, message.length() - 1)
             : message;
 
         App.get().readBitmap(url, bitmap -> {
@@ -132,18 +134,31 @@ public class ChatCommandHandler {
         });
     }
 
-    public void changeBackgroundColor(String message)
-    {
+    public void changeBackgroundColor(String message, String cssSelector){
         // Inject alpha values
         String color = message.replace("#", "#AA");
         ListView chatLayout = (ListView)parentActivity.findViewById(R.id.messageHistory);
         EditText editText = (EditText)parentActivity.findViewById(R.id.message);
         Button sendButton = (Button)parentActivity.findViewById(R.id.sendMessageButton);
 
+        int colorVal = Color.parseColor(color);
         parentActivity.runOnUiThread(() -> {
-            chatLayout.setBackgroundColor(Color.parseColor(color));
-            editText.setBackgroundColor(Color.parseColor(color));
-            sendButton.setBackgroundColor(Color.parseColor(color));
+            if (Objects.equals(cssSelector, "#top")){
+                parentActivity.getSupportActionBar().setBackgroundDrawable(
+                    new ColorDrawable(colorVal)
+                );
+            }
+
+            if (Objects.equals(cssSelector, "#body") || cssSelector == null){
+                chatLayout.setBackgroundColor(colorVal);
+                ImageView chatBackground = (ImageView)parentActivity.findViewById(R.id.chat_background);
+                chatBackground.setImageDrawable(null);
+            }
+
+            if (Objects.equals(cssSelector, "#bottom")){
+                editText.setBackgroundColor(colorVal);
+                sendButton.setBackgroundColor(colorVal);
+            }
         });
     }
 }

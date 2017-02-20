@@ -50,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
     private List<ServerEventUser> subscriberList = new ArrayList<>();
 
     private static Map<String, String> commands = Func.toDictionary(
-        "Announce Hello",          "/cmd.announce Hello from Android",
-        "Play YouTube",            "/tv.watch https://youtu.be/u5CVsCnxyXg",
-        "Set background color",    "/css.background$#top #0091ea",
-        "Reset background color",  "/css.background$#top #ffffff",
-        "Logout",                  "/logout"
+        "Announce Hello",     "/cmd.announce Hello from Java Android",
+        "Play YouTube",       "/tv.watch https://youtu.be/u5CVsCnxyXg",
+        "Background Image",   "/css.background-image url(http://bit.ly/2lZxbHv)",
+        "Background Top",     "/css.background$#top #0091ea",
+        "Background",         "/css.background #fffde7",
+        "Background Bottom",  "/css.background$#bottom #cccccc",
+        "Logout",             "/logout"
     );
 
     public AndroidServerEventsClient getClient(){
@@ -124,11 +126,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         drawerToggle = new ChatActionBarDrawerToggle(
-            this,                   //Host Activity
-            drawerLayout,           //DrawerLayout
-            toolbar,                //Instance of toolbar, if you use other ctor, the hamburger icon/arrow animation won't work..
-            R.string.openDrawer,    //Opened Message
-            R.string.closeDrawer    //Closed Message
+            this,              //Host Activity
+            drawerLayout,      //DrawerLayout
+            toolbar,           //Instance of toolbar, if you use other ctor, the hamburger icon/arrow animation won't work..
+            R.string.openDrawer, //Opened Message
+            R.string.closeDrawer     //Closed Message
         );
 
         getSupportActionBar().setHomeButtonEnabled(true);

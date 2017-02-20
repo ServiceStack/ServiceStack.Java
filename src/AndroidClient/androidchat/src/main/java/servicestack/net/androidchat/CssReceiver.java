@@ -17,7 +17,7 @@ public class CssReceiver extends ServerEventReceiver {
         chatMessageHandler.changeBackground(message);
     }
 
-    public void Background(String message){
-        chatMessageHandler.changeBackgroundColor(message);
+    public void background(String message){
+        chatMessageHandler.changeBackgroundColor(message, super.getRequest().getCssSelector());
     }
 }
