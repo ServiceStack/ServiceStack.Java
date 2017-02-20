@@ -1,5 +1,5 @@
 /* Options:
-Date: 2017-02-15 07:36:14
+Date: 2017-02-19 23:57:28
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://chat.servicestack.net
@@ -184,6 +184,12 @@ public class dtos
         public Boolean useTokenCookie = null;
 
         @DataMember(Order=16)
+        public String accessToken = null;
+
+        @DataMember(Order=17)
+        public String accessTokenSecret = null;
+
+        @DataMember(Order=18)
         public HashMap<String,String> meta = null;
         
         public String getProvider() { return provider; }
@@ -216,6 +222,10 @@ public class dtos
         public Authenticate setCnonce(String value) { this.cnonce = value; return this; }
         public Boolean isUseTokenCookie() { return useTokenCookie; }
         public Authenticate setUseTokenCookie(Boolean value) { this.useTokenCookie = value; return this; }
+        public String getAccessToken() { return accessToken; }
+        public Authenticate setAccessToken(String value) { this.accessToken = value; return this; }
+        public String getAccessTokenSecret() { return accessTokenSecret; }
+        public Authenticate setAccessTokenSecret(String value) { this.accessTokenSecret = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
         public Authenticate setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = AuthenticateResponse.class;
