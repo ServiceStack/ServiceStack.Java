@@ -87,12 +87,12 @@ public class LoginActivity extends AppCompatActivity {
                         r -> {
                             Intent intent = new Intent(activity, MainActivity.class);
                             startActivity(intent);
+                            stopProgressBar();
                         },
                         error -> {
                             Log.e("TwitterAuthClient FAILED!", error);
+                            stopProgressBar();
                         });
-
-                    stopProgressBar();
                 }
 
                 @Override
