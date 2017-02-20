@@ -1,11 +1,9 @@
 package servicestack.net.androidchat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.util.LruCache;
 import android.support.v4.widget.DrawerLayout;
@@ -38,7 +36,7 @@ import static servicestack.net.androidchat.dtos.PostRawToChannel;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String BaseUrl = "http://chat.servicestack.net/";
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private ChatActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private ListView rightDrawer;
@@ -48,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Exception> errors = new ArrayList<>();
 
-    private AndroidServerEventsClient client;
     private ChatCommandHandler cmdReceiver;
 
     private List<ServerEventUser> subscriberList = new ArrayList<>();
@@ -61,9 +58,14 @@ public class MainActivity extends AppCompatActivity {
         "Logout",                  "/logout"
     );
 
+    public AndroidServerEventsClient getClient(){
+        return App.get().getServerEventsClient();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         Button sendButton = (Button)findViewById(R.id.sendMessageButton);
@@ -87,18 +89,17 @@ public class MainActivity extends AppCompatActivity {
             this, new ArrayList<>(), () -> this.subscriberList);
         messageHistoryList.setAdapter(messageHistoryAdapter);
 
-        String[] channels = new String[] { "home" };
         MainActivity mainActivity = this;
         cmdReceiver = new ChatCommandHandler(mainActivity, messageHistoryAdapter, "home");
 
-        client = new AndroidServerEventsClient(BaseUrl, channels);
-        client.setOnConnect(connectMsg -> {
-                Extensions.updateChatHistory(client, cmdReceiver);
+        getClient()
+            .setOnConnect(connectMsg -> {
+                Extensions.updateChatHistory(getClient(), cmdReceiver);
                 Extensions.updateUserProfile(connectMsg, mainActivity);
             })
             .setOnCommand(command -> {
                 if (command instanceof ServerEventJoin){
-                    client.getChannelSubscribersAsync(r -> {
+                    getClient().getChannelSubscribersAsync(r -> {
                         subscriberList = r;
                         // Refresh profile icons when users join
                         messageHistoryAdapter.notifyDataSetChanged();
@@ -162,17 +163,17 @@ public class MainActivity extends AppCompatActivity {
         if (Objects.equals(itemText, UiHelpers.CreateChannelLabel)){
             UiHelpers.showChannelDialog(this, nChannel -> {
                 try {
-                    List<String> nChannels = Func.toList(client.getChannels());
+                    List<String> nChannels = Func.toList(getClient().getChannels());
                     nChannels.add(nChannel);
                     UiHelpers.resetChannelDrawer(this, navigationView, Func.toArray(nChannels, String.class));
-                    Extensions.changeChannel(client, nChannel, cmdReceiver);
+                    Extensions.changeChannel(getClient(), nChannel, cmdReceiver);
                     cmdReceiver.syncAdapter();
                 } catch (Exception ex){
                     errors.add(ex);
                 }
             });
         } else {
-            Extensions.changeChannel(client, itemText, cmdReceiver);
+            Extensions.changeChannel(getClient(), itemText, cmdReceiver);
         }
         drawerLayout.closeDrawer(navigationView);
         return true;
@@ -189,9 +190,9 @@ public class MainActivity extends AppCompatActivity {
             : messageBox.getText().toString();
 
         if (Objects.equals(selector, "cmd.chat")){
-            client.getAndroidClient().postAsync(new PostChatToChannel()
+            App.get().getServiceClient().postAsync(new PostChatToChannel()
                 .setChannel(cmdReceiver.getCurrentChannel())
-                .setFrom(client.getSubscriptionId())
+                .setFrom(getClient().getSubscriptionId())
                 .setMessage(message)
                 .setSelector(selector),
                 ignore -> {});
@@ -199,9 +200,9 @@ public class MainActivity extends AppCompatActivity {
         else if (Objects.equals(selector, "logout")){
             performLogout();
         } else {
-            client.getAndroidClient().postAsync(new PostRawToChannel()
+            App.get().getServiceClient().postAsync(new PostRawToChannel()
                 .setChannel(cmdReceiver.getCurrentChannel())
-                .setFrom(client.getSubscriptionId())
+                .setFrom(getClient().getSubscriptionId())
                 .setMessage(message)
                 .setSelector(selector),
                 () -> {});
@@ -213,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
     private void performLogout() {
         TextView txtUser = (TextView)findViewById(R.id.txtUserName);
 //        AccountStore.Create(this).Delete(new Account(txtUser.getText()), "Twitter");
-        client.getServiceClient().clearCookies();
+        App.get().getServiceClient().clearCookies();
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -249,11 +250,11 @@ public class MainActivity extends AppCompatActivity {
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        Extensions.updateCookiesFromIntent(this, client);
+        Extensions.updateCookiesFromIntent(this, getClient());
 
         drawerToggle.syncState();
-        UiHelpers.resetChannelDrawer(this, navigationView, client.getChannels());
-        client.start();
+        UiHelpers.resetChannelDrawer(this, navigationView, getClient().getChannels());
+        getClient().start();
     }
 
     @Override
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        client.stop();
+        getClient().stop();
         cmdReceiver = null;
         super.onDestroy();
     }
