@@ -35,11 +35,6 @@ import io.fabric.sdk.android.Fabric;
 public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ObjectAnimator animation;
-
-//  For: http://localhost:11001/
-    private static final String TWITTER_KEY = "3H1FHjGbA1N0n0aT5yApA";
-    private static final String TWITTER_SECRET = "MLrZ0ujK6DwyjlRk2YLp6HwSdoBjtuqwXeHDQLv0Q";
-
     private TwitterAuthClient twitterAuth;
 
     @Override
@@ -67,7 +62,10 @@ public class LoginActivity extends AppCompatActivity {
         ImageButton btnAnon = (ImageButton)findViewById(R.id.btnAnon);
         LoginActivity activity = this;
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(
+                getString(R.string.twitter_key),
+                getString(R.string.twitter_secret));
+
         Fabric.with(this, new Twitter(authConfig));
 
         twitterAuth = new TwitterAuthClient();
