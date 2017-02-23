@@ -8,7 +8,10 @@
 
     <string name="facebook_app_id">316911901802572</string>
 
+    <string name="twitter_key">8dXLKcaGWqrtkC02uoETHVzat</string>
+    <string name="twitter_secret">v6DTRjK5o6dwSPrA5ipbMzXwMybGHuJZdcazip2KbUQtBZ4244</string>
+
     <!-- For: http://localhost:11001/ -->
-    <string name="twitter_key">3H1FHjGbA1N0n0aT5yApA</string>
-    <string name="twitter_secret">MLrZ0ujK6DwyjlRk2YLp6HwSdoBjtuqwXeHDQLv0Q</string>
+    <!--<string name="twitter_key">3H1FHjGbA1N0n0aT5yApA</string>-->
+    <!--<string name="twitter_secret">MLrZ0ujK6DwyjlRk2YLp6HwSdoBjtuqwXeHDQLv0Q</string>-->
 </resources>
