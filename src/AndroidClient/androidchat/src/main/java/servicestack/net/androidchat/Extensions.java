@@ -71,18 +71,4 @@ public class Extensions {
             });
         });
     }
-
-    public static void updateCookiesFromIntent(MainActivity mainActivity, ServerEventsClient client){
-        if (mainActivity.getIntent() == null)
-            return;
-        String cookieStr = mainActivity.getIntent().getStringExtra("SSCookie");
-        if (Utils.isNullOrEmpty(cookieStr) || !cookieStr.contains(";"))
-            return;
-        String[] cookies = cookieStr.split(";");
-        for (String c : cookies){
-            String key = c.split("=")[0].trim();
-            String val = c.split("=")[1].trim();
-            client.getServiceClient().setCookie(key, val);
-        }
-    }
 }

@@ -128,53 +128,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void performServiceStackAuth(AndroidServiceClient client){
-//        var ssAuth = new ServiceStackAuthenticator(
-//                MainActivity.BaseUrl,
-//                "twitter",
-//                jsonServiceClient =>
-//                {
-//                    var userDetails = jsonServiceClient.Get(new GetUserDetails());
-//                    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-//                    prefs.Edit().PutString("TwitterUserName", userDetails.UserName).Commit();
-//                    return new Account(userDetails.UserName, jsonServiceClient.CookieContainer);
-//                    });
-//                    ssAuth.Title = "Twitter / Authorize Chat";
-//                    ssAuth.ServiceClientFactory = baseUrl => client;
-//                    StartActivity(ssAuth.GetUI(this));
-//                    ssAuth.Completed += (authSender, authArgs) =>
-//                    {
-//                        if (authArgs.IsAuthenticated)
-//                        {
-//                            AccountStore.Create(this).Save(authArgs.Account, "Twitter");
-//                            StartAuthChatActivity(client, authArgs.Account);
-//                        }
-//                    };
-    }
-
-    private void startAuthChatActivity(AndroidServiceClient client, Account existingAccount)
-    {
-//        client.CookieContainer = existingAccount.Cookies;
-        Intent intent = new Intent(this, MainActivity.class);
-//        intent.putExtra("SSCookie", client.CookieContainer.GetCookieHeader(new Uri(MainActivity.BaseUrl)));
-        startActivity(intent);
-    }
-
     private void startGuestChatActivity(AndroidServiceClient client)
     {
         client.clearCookies();
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("SSCookie", "");
         startActivity(intent);
-    }
-
-    private Account tryResolveAccount(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String userName = prefs.getString("TwitterUserName", null);
-
-//        var existingTwitterAccount = AccountStore.Create(this).FindAccountsForService("Twitter");
-//        var twitterAccount = existingTwitterAccount.FirstOrDefault(x => x.Username == userName);
-//        return twitterAccount;
-        return null;
     }
 }

@@ -2,10 +2,8 @@ package servicestack.net.androidchat;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.util.LruCache;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,8 +16,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
 import net.servicestack.android.AndroidServerEventsClient;
-import net.servicestack.android.AsyncUtils;
 import net.servicestack.client.Utils;
 import net.servicestack.client.sse.ServerEventJoin;
 import net.servicestack.client.sse.ServerEventUser;
@@ -203,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void performLogout() {
+        LoginManager.getInstance().logOut();
         App.get().getServiceClient().clearCookies();
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -238,8 +238,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        Extensions.updateCookiesFromIntent(this, getClient());
 
         drawerToggle.syncState();
         UiHelpers.resetChannelDrawer(this, navigationView, getClient().getChannels());
