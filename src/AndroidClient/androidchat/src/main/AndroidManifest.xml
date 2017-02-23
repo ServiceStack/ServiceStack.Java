@@ -14,22 +14,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".MainActivity">
+        </activity>
+
         <activity android:name=".LoginActivity">
+        </activity>
+
+        <activity android:name=".LoginButtonsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity">
-
-        </activity>
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="b2d318d908fceea66ab422d2d31907d9444b01cc"
-            />
+        <meta-data android:name="io.fabric.ApiKey" android:value="b2d318d908fceea66ab422d2d31907d9444b01cc" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
     </application>
 
