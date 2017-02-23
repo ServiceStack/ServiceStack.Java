@@ -1,12 +1,9 @@
 package servicestack.net.androidchat;
 
-import android.accounts.Account;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +11,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -25,24 +28,29 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.Log;
 
+import java.util.Arrays;
+
 import io.fabric.sdk.android.Fabric;
 
-
 /**
- * Created by mythz on 2/16/2017.
+ * This Login Page signs in using Custom Facebook and Twitter Image Buttons
  */
 
 public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private ObjectAnimator animation;
+
     private TwitterAuthClient twitterAuth;
+    private CallbackManager facebookCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        // Create your application here
-        // Set our view from the "main" layout resource
+        Fabric.with(this, new Twitter(new TwitterAuthConfig(
+            getString(R.string.twitter_key),
+            getString(R.string.twitter_secret))));
+
         setContentView(R.layout.login);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.loginToolbar);
@@ -58,16 +66,9 @@ public class LoginActivity extends AppCompatActivity {
         animation.setDuration(1500);
         animation.setInterpolator(new FastOutLinearInInterpolator());
 
-        ImageButton btnTwitter = (ImageButton)findViewById(R.id.btnTwitter);
-        ImageButton btnAnon = (ImageButton)findViewById(R.id.btnAnon);
         LoginActivity activity = this;
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(
-                getString(R.string.twitter_key),
-                getString(R.string.twitter_secret));
-
-        Fabric.with(this, new Twitter(authConfig));
-
+        ImageButton btnTwitter = (ImageButton)findViewById(R.id.btnTwitter);
         twitterAuth = new TwitterAuthClient();
         btnTwitter.setOnClickListener(view -> {
             startProgressBar();
@@ -78,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     App.get().getServiceClient().postAsync(new dtos.Authenticate()
                             .setProvider("twitter")
-                            .setUserName(Long.toString(session.getUserId()))
                             .setAccessToken(session.getAuthToken().token)
                             .setAccessTokenSecret(session.getAuthToken().secret)
                             .setRememberMe(true),
@@ -101,17 +101,67 @@ public class LoginActivity extends AppCompatActivity {
             });
         });
 
+        facebookCallback = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(facebookCallback, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                loginWithFacebook(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                stopProgressBar();
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.e(exception);
+                stopProgressBar();
+            }
+        });
+
+        ImageButton btnFacebook = (ImageButton)findViewById(R.id.btnFacebook);
+        btnFacebook.setOnClickListener(view -> {
+            startProgressBar();
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email"));
+        });
+
+        ImageButton btnAnon = (ImageButton)findViewById(R.id.btnAnon);
         btnAnon.setOnClickListener(view -> {
             startProgressBar();
             startGuestChatActivity(App.get().getServiceClient());
             stopProgressBar();
         });
+
+        //Login with facebook if already logged in
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null){
+            loginWithFacebook(accessToken);
+        }
+    }
+
+    private void loginWithFacebook(AccessToken accessToken){
+        LoginActivity activity = this;
+        App.get().getServiceClient().postAsync(new dtos.Authenticate()
+            .setProvider("facebook")
+            .setAccessToken(accessToken.getToken())
+            .setRememberMe(true),
+                r -> {
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    startActivity(intent);
+                    stopProgressBar();
+                },
+                error -> {
+                    Log.e("Facebook LoginButton FAILED!", error);
+                    stopProgressBar();
+                });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         twitterAuth.onActivityResult(requestCode, resultCode, data);
+        facebookCallback.onActivityResult(requestCode, resultCode, data);
     }
 
     private void startProgressBar(){

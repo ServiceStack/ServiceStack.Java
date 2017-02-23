@@ -15,11 +15,11 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
         android:showAsAction="always" />
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginBottom="200dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_alignParentBottom="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -39,7 +39,26 @@
                 android:text="Twitter"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom">
+            <ImageButton
+                android:id="@+id/btnFacebook"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/ic_facebook_logo" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="Facebook"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </LinearLayout>
 
         <LinearLayout
