@@ -554,17 +554,26 @@ public class ServerEventsClient implements Closeable {
         @Override
         public void run() {
             try {
+                if (running.get())
+                    return;
+                running.set(true);
+
                 URL streamUri = new URL(client.getEventStreamUri());
                 HttpURLConnection req = (HttpURLConnection) streamUri.openConnection();
 
                 InputStream is = new BufferedInputStream(req.getInputStream());
                 errorsCount.set(0);
                 readStream(is);
-            } catch (IOException e) {
+
+                running.set(false);
+            } catch (Exception e) {
                 Log.e("Error reading from event-stream, continuous errors: " + errorsCount.incrementAndGet(), e);
                 Log.e(Utils.getStackTrace(e));
+                running.set(false);
             } finally {
-                client.restart();
+                if (!running.get()){
+                    client.restart();
+                }
             }
         }
 
