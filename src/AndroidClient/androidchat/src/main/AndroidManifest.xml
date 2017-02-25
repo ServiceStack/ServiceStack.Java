@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name=".LoginButtonsActivity">
+            <!-- Move to .LoginActivity if you prefer that login page instead -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

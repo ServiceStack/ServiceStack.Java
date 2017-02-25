@@ -34,6 +34,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by mythz on 2/9/2017.
@@ -62,6 +63,7 @@ public class ServerEventsClient implements Closeable {
     protected Date lastPulseAt;
     protected Thread bgThread;
     protected final AtomicBoolean stopped = new AtomicBoolean(false);
+    protected final AtomicBoolean running = new AtomicBoolean(false);
 
     static int BufferSize = 1024 * 64;
     static int DefaultHeartbeatMs = 10 * 1000;
@@ -294,7 +296,7 @@ public class ServerEventsClient implements Closeable {
                 return;
 
             try {
-                sleepBackOffMultiplier(errorsCount);
+                sleepBackOffMultiplier(errorsCount.intValue());
                 start();
             } catch (Exception e){
                 onExceptionReceived(e);
@@ -321,8 +323,7 @@ public class ServerEventsClient implements Closeable {
             MaxSleepMs
         );
 
-        if (Log.isDebugEnabled())
-            Log.d("Sleeping for " + nextTry + "ms after " + continuousErrorsCount + " continuous errors");
+        Log.info("Sleeping for " + nextTry + "ms after " + continuousErrorsCount + " continuous errors");
 
         Thread.sleep(nextTry);
     }
@@ -397,9 +398,10 @@ public class ServerEventsClient implements Closeable {
             onMessage.execute(e);
     }
 
-    private int errorsCount;
+    private AtomicInteger errorsCount = new AtomicInteger();
+
     protected void onExceptionReceived(Exception ex) {
-        errorsCount++;
+        errorsCount.incrementAndGet();
 
         Log.e("[SSE-CLIENT] OnExceptionReceived: "
                 + ex.getMessage() + " on #" + getConnectionDisplayName(), ex);
@@ -552,16 +554,26 @@ public class ServerEventsClient implements Closeable {
         @Override
         public void run() {
             try {
+                if (running.get())
+                    return;
+                running.set(true);
+
                 URL streamUri = new URL(client.getEventStreamUri());
                 HttpURLConnection req = (HttpURLConnection) streamUri.openConnection();
 
                 InputStream is = new BufferedInputStream(req.getInputStream());
+                errorsCount.set(0);
                 readStream(is);
-            } catch (IOException e) {
-                Log.e("Error reading from event-stream", e);
+
+                running.set(false);
+            } catch (Exception e) {
+                Log.e("Error reading from event-stream, continuous errors: " + errorsCount.incrementAndGet(), e);
                 Log.e(Utils.getStackTrace(e));
+                running.set(false);
             } finally {
-                client.restart();
+                if (!running.get()){
+                    client.restart();
+                }
             }
         }
 
