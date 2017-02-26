@@ -89,6 +89,18 @@ public class App extends Application {
         editor.putString("twitter.AccessTokenSecret", authToken.secret);
         editor.apply();
     }
+
+    public void logout(){
+        App.get().getServiceClient().clearCookies();    //Logout server
+
+        LoginManager.getInstance().logOut();            //Logout facebook
+
+        SharedPreferences.Editor editor = prefs.edit(); //Logout twitter
+        editor.remove("twitter.AccessToken");
+        editor.remove("twitter.AccessTokenSecret");
+        editor.apply();
+    }
+
     public void readBitmap(final String url, final AsyncSuccess<Bitmap> success){
         Bitmap cachedBitmap = (Bitmap)bitmapCache.get(url);
         if (cachedBitmap != null){

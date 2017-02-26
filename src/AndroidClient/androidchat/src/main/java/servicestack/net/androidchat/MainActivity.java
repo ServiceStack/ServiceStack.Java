@@ -202,11 +202,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void performLogout() {
-        LoginManager.getInstance().logOut();
-        App.get().getServiceClient().clearCookies();
+        App.get().logout();
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-
         startActivity(intent);
         finish();
     }
