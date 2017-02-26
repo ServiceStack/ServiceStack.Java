@@ -106,8 +106,19 @@ public class LoginButtonsActivity extends AppCompatActivity {
         btnFacebookLogin.registerCallback(facebookCallback, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                startProgressBar();
-                loginWithFacebook(loginResult.getAccessToken());
+                App.get().getServiceClient().postAsync(new dtos.Authenticate()
+                    .setProvider("facebook")
+                    .setAccessToken(loginResult.getAccessToken().getToken())
+                    .setRememberMe(true),
+                    r -> {
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        stopProgressBar();
+                        startActivity(intent);
+                    },
+                    error -> {
+                        Log.e("Facebook LoginButton FAILED!", error);
+                        stopProgressBar();
+                    });
             }
 
             @Override
@@ -124,33 +135,23 @@ public class LoginButtonsActivity extends AppCompatActivity {
 
         Button btnGuestLogin = (Button)findViewById(R.id.btnGuestLogin);
         btnGuestLogin.setOnClickListener(view -> {
-            startProgressBar();
             startGuestChatActivity(App.get().getServiceClient());
-            stopProgressBar();
         });
 
-        //Login with facebook if already logged in
-//        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-//        if (accessToken != null){
-//            loginWithFacebook(accessToken);
-//        }
-    }
-
-    private void loginWithFacebook(AccessToken accessToken){
-        LoginButtonsActivity activity = this;
-        App.get().getServiceClient().postAsync(new dtos.Authenticate()
-            .setProvider("facebook")
-            .setAccessToken(accessToken.getToken())
-            .setRememberMe(true),
+        dtos.Authenticate authDto = App.get().getSavedAccessToken();
+        if (authDto != null){
+            Log.i("Signing in with existing " + authDto.getProvider() + " AccessToken...");
+            App.get().getServiceClient().postAsync(authDto,
                 r -> {
                     Intent intent = new Intent(activity, MainActivity.class);
-                    startActivity(intent);
                     stopProgressBar();
+                    startActivity(intent);
                 },
                 error -> {
-                    Log.e("Facebook LoginButton FAILED!", error);
+                    Log.e("Error logging into " + authDto.getProvider() + " using Saved AccessToken", error);
                     stopProgressBar();
                 });
+        }
     }
 
     @Override
