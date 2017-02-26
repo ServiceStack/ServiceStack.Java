@@ -82,9 +82,10 @@ public class LoginButtonsActivity extends AppCompatActivity {
                     .setAccessTokenSecret(session.getAuthToken().secret)
                     .setRememberMe(true),
                         r -> {
+                            App.get().saveTwitterAccessToken(session.getAuthToken());
                             Intent intent = new Intent(activity, MainActivity.class);
-                            startActivity(intent);
                             stopProgressBar();
+                            startActivity(intent);
                         },
                         error -> {
                             Log.e("TwitterAuthClient FAILED!", error);
