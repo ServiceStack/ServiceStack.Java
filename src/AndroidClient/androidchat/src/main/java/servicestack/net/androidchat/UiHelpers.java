@@ -2,6 +2,7 @@ package servicestack.net.androidchat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
@@ -13,8 +14,12 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import net.servicestack.client.AsyncSuccess;
+import net.servicestack.client.Log;
+
+import org.w3c.dom.Text;
 
 import java.util.Objects;
 
@@ -68,5 +73,17 @@ public class UiHelpers {
             createChanMenuItem.setIcon(R.drawable.ic_plus_circle_white_24dp);
             navigationView.refreshDrawableState();
         });
+    }
+
+    public static void setStatus(TextView txtStatus, String message){
+        txtStatus.setTextColor(Color.BLACK);
+        txtStatus.setText(message);
+        Log.i(message);
+    }
+
+    public static void setStatusError(TextView txtStatus, String message, Exception ex){
+        txtStatus.setTextColor(Color.RED);
+        txtStatus.setText(message);
+        Log.e(message, ex);
     }
 }

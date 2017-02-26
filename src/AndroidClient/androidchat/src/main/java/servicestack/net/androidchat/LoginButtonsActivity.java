@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -37,6 +38,7 @@ import io.fabric.sdk.android.Fabric;
 
 public class LoginButtonsActivity extends AppCompatActivity {
     private ProgressBar progressBar;
+    private TextView txtStatus;
     private ObjectAnimator animation;
 
     private TwitterLoginButton btnTwitterLogin;
@@ -60,6 +62,8 @@ public class LoginButtonsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        txtStatus = (TextView)findViewById(R.id.txtStatus);
+        UiHelpers.setStatus(txtStatus, "");
 
         animation = ObjectAnimator.ofInt(progressBar, "progress", 0, 500); // see this max value coming back here, we animale towards that value
         animation.setRepeatMode(ValueAnimator.REVERSE);
@@ -74,6 +78,7 @@ public class LoginButtonsActivity extends AppCompatActivity {
             @Override
             public void success(Result<TwitterSession> result) {
                 startProgressBar();
+                UiHelpers.setStatus(txtStatus, "Local twitter sign-in successful, signing into server...");
 
                 TwitterSession session = result.data;
                 App.get().getServiceClient().postAsync(new dtos.Authenticate()
@@ -82,13 +87,14 @@ public class LoginButtonsActivity extends AppCompatActivity {
                     .setAccessTokenSecret(session.getAuthToken().secret)
                     .setRememberMe(true),
                         r -> {
+                            UiHelpers.setStatus(txtStatus, "Server twitter sign-in successful, opening chat...");
                             App.get().saveTwitterAccessToken(session.getAuthToken());
                             Intent intent = new Intent(activity, MainActivity.class);
                             stopProgressBar();
                             startActivity(intent);
                         },
                         error -> {
-                            Log.e("TwitterAuthClient FAILED!", error);
+                            UiHelpers.setStatusError(txtStatus, "Server twitter sign-in failed", error);
                             stopProgressBar();
                         });
             }
@@ -106,17 +112,20 @@ public class LoginButtonsActivity extends AppCompatActivity {
         btnFacebookLogin.registerCallback(facebookCallback, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                UiHelpers.setStatus(txtStatus, "Local facebook sign-in successful, signing into server...");
+
                 App.get().getServiceClient().postAsync(new dtos.Authenticate()
                     .setProvider("facebook")
                     .setAccessToken(loginResult.getAccessToken().getToken())
                     .setRememberMe(true),
                     r -> {
+                        UiHelpers.setStatus(txtStatus, "Server facebook sign-in successful, opening chat...");
                         Intent intent = new Intent(activity, MainActivity.class);
                         stopProgressBar();
                         startActivity(intent);
                     },
                     error -> {
-                        Log.e("Facebook LoginButton FAILED!", error);
+                        UiHelpers.setStatusError(txtStatus, "Server facebook sign-in failed", error);
                         stopProgressBar();
                     });
             }
@@ -135,12 +144,13 @@ public class LoginButtonsActivity extends AppCompatActivity {
 
         Button btnGuestLogin = (Button)findViewById(R.id.btnGuestLogin);
         btnGuestLogin.setOnClickListener(view -> {
+            UiHelpers.setStatus(txtStatus, "Opening chat as guest...");
             startGuestChatActivity(App.get().getServiceClient());
         });
 
         dtos.Authenticate authDto = App.get().getSavedAccessToken();
         if (authDto != null){
-            Log.i("Signing in with existing " + authDto.getProvider() + " AccessToken...");
+            UiHelpers.setStatus(txtStatus, "Signing in with saved " + authDto.getProvider() + " AccessToken...");
             App.get().getServiceClient().postAsync(authDto,
                 r -> {
                     Intent intent = new Intent(activity, MainActivity.class);
@@ -148,7 +158,7 @@ public class LoginButtonsActivity extends AppCompatActivity {
                     startActivity(intent);
                 },
                 error -> {
-                    Log.e("Error logging into " + authDto.getProvider() + " using Saved AccessToken", error);
+                    UiHelpers.setStatusError(txtStatus, "Error logging into " + authDto.getProvider() + " using Saved AccessToken", error);
                     stopProgressBar();
                 });
         }

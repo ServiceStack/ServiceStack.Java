@@ -42,6 +42,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
