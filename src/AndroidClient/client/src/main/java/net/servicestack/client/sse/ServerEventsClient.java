@@ -16,6 +16,7 @@ import java.io.Closeable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -274,11 +275,18 @@ public class ServerEventsClient implements Closeable {
             : "(not connected)";
     }
 
-    public ServerEventsClient start(){
+    private synchronized void interruptBackgroundThread() {
         if (bgThread != null){
             bgThread.interrupt();
+            try {
+                bgThread.join();
+            } catch (InterruptedException ignore) {}
             bgThread = null;
         }
+    }
+
+    public ServerEventsClient start(){
+        interruptBackgroundThread();
 
         stopped.set(false);
         bgThread = new Thread(new EventStream(this));
@@ -359,10 +367,7 @@ public class ServerEventsClient implements Closeable {
         }
 
         connectionInfo = null;
-        if (bgThread != null)
-            bgThread.interrupt();
-
-        bgThread = null;
+        interruptBackgroundThread();
     }
 
     private void onCommandReceived(ServerEventMessage e) {
@@ -564,26 +569,35 @@ public class ServerEventsClient implements Closeable {
                 InputStream is = new BufferedInputStream(req.getInputStream());
                 errorsCount.set(0);
                 readStream(is);
-
-                running.set(false);
+            } catch (InterruptedException ie){
+                Log.i("EventStream.run(): Caught InterruptedException"); //thrown by interruptBackgroundThread()
+                return;
             } catch (Exception e) {
                 Log.e("Error reading from event-stream, continuous errors: " + errorsCount.incrementAndGet(), e);
                 Log.e(Utils.getStackTrace(e));
-                running.set(false);
             } finally {
-                if (!running.get()){
-                    client.restart();
-                }
+                running.set(false);
+            }
+
+            if (!running.get()){
+                client.restart();
             }
         }
 
-        private void readStream(InputStream inputStream) throws IOException {
+        private void readStream(InputStream inputStream) throws IOException, InterruptedException {
             byte[] buffer = new byte[BufferSize];
             String overflowText = "";
 
             int len = 0;
             while (true) {
+                while (true) {
+                    int available = inputStream.available();
+                    if (available > 0) break;
+                    Thread.sleep(5);
+                }
+
                 len = inputStream.read(buffer);
+
                 if (len <= 0)
                     break;
 
