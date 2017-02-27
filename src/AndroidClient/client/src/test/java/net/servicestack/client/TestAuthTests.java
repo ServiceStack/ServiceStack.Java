@@ -35,16 +35,32 @@ public class TestAuthTests extends TestCase {
         assertNotNull(response.getSessionId());
     }
 
-    public void test_does_transparently_send_BasicAuthHeader_on_401_response(){
+    private void does_transparently_send_BasicAuthHeader_on_401(Boolean isPost){
         ServiceClient client = CreateClient();
         client.setCredentials("test", "test");
-
-        testdtos.TestAuthResponse response = client.get(new testdtos.TestAuth());
-
+        
+        testdtos.TestAuthResponse response = null;
+        if (isPost) {
+        	response = client.post(new testdtos.TestAuth());
+        } else {
+        	response = client.get(new testdtos.TestAuth());
+        }
         assertEquals("1", response.getUserId());
         assertEquals("test", response.getUserName());
         assertEquals("test DisplayName", response.getDisplayName());
         assertNotNull(response.getSessionId());
+    }
+    
+    public void test_does_transparently_send_BasicAuthHeader_on_401_response_From_get(){
+        
+    	does_transparently_send_BasicAuthHeader_on_401( false);
+
+    }
+    
+    public void test_does_transparently_send_BasicAuthHeader_on_401_response_from_post(){
+    	
+    	does_transparently_send_BasicAuthHeader_on_401( true);
+
     }
 
     public void test_can_authenticate_with_CredentialsAuth(){

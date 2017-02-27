@@ -136,6 +136,11 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     public HttpURLConnection createRequest(String requestUrl, String httpMethod, byte[] requestBody, String requestType) {
+    	return createRequest(requestUrl, httpMethod, requestBody, requestType, false);
+    
+    }
+    
+    public HttpURLConnection createRequest(String requestUrl, String httpMethod, byte[] requestBody, String requestType, Boolean forceAuthentication) {
         try {
             URL url = new URL(requestUrl);
 
@@ -153,7 +158,7 @@ public class JsonServiceClient implements ServiceClient {
                 req.setRequestProperty(HttpHeaders.ContentType, requestType);
             }
 
-            if (alwaysSendBasicAuthHeaders) {
+            if (forceAuthentication || alwaysSendBasicAuthHeaders) {
                 addBasicAuth(req, userName, password);
             }
 
@@ -336,8 +341,8 @@ public class JsonServiceClient implements ServiceClient {
 
                 if (shouldAuthenticate(req, userName, password)){
                     req.disconnect();
-                    req = createRequest(requestUrl, httpMethod, requestBody, requestType);
-                    addBasicAuth(req, userName, password);
+                    req = createRequest(requestUrl, httpMethod, requestBody, requestType, true);
+                  
                     success = req.getResponseCode() < 400;
                 }
 
