@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.lang.reflect.Field;
+import java.net.CookieHandler;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
 import java.net.URL;
@@ -39,9 +40,15 @@ import okio.BufferedSource;
  */
 
 public class AndroidServerEventsClient extends ServerEventsClient {
+    protected OkHttpClient client;
+
     public AndroidServerEventsClient(String baseUri, String... channels) {
         super(baseUri, channels);
         this.serviceClient = new AndroidServiceClient(this.baseUri);
+
+        client = new OkHttpClient.Builder()
+            .cookieJar(new JavaNetCookieJar(CookieHandler.getDefault()))
+            .build();
     }
 
     public AndroidServerEventsClient(String baseUrl, String channel) {
@@ -52,6 +59,15 @@ public class AndroidServerEventsClient extends ServerEventsClient {
         this(baseUrl, new String[]{});
     }
 
+    public AndroidServerEventsClient setOkHttpClient(OkHttpClient client){
+        this.client = client;
+        return this;
+    }
+
+    public OkHttpClient getOkHttpClient(){
+        return client;
+    }
+
     public AndroidServiceClient getAndroidClient(){
         return (AndroidServiceClient) this.serviceClient;
     }
@@ -60,8 +76,6 @@ public class AndroidServerEventsClient extends ServerEventsClient {
     protected EventStream createEventStream() {
         return new AndroidEventStream(this);
     }
-
-    public static final OkHttpClient client = new OkHttpClient();
 
     class AndroidEventStream extends EventStream
     {
