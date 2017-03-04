@@ -53,8 +53,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':android')
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
     compile 'net.servicestack:android:1.0.27'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile('com.twitter.sdk.android:twitter:2.3.1@aar') {
