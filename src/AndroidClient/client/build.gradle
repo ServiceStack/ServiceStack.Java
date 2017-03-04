@@ -3,15 +3,13 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven'
 
+version = "1.0.28"
 
 dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
-    compile 'org.apache.httpcomponents:httpmime:4.2.3'
-    testCompile 'junit:junit:4.11'
-    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'junit:junit:4.12'
 }
 
-version = "1.0.28"
 group = "net.servicestack"                                        // Maven Group ID for the artifact
 String packageId = "client"
 String groupID = group
