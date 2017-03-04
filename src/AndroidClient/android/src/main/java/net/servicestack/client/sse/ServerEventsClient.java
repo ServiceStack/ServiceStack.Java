@@ -11,12 +11,8 @@ import net.servicestack.client.Utils;
 import net.servicestack.func.Func;
 import net.servicestack.func.Function;
 
-import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -63,10 +59,11 @@ public class ServerEventsClient implements Closeable {
 
     protected Date lastPulseAt;
     protected Thread bgThread;
+    protected EventStream bgEventStream;
     protected final AtomicBoolean stopped = new AtomicBoolean(false);
     protected final AtomicBoolean running = new AtomicBoolean(false);
+    protected final AtomicInteger errorsCount = new AtomicInteger();
 
-    static int BufferSize = 1024 * 64;
     static int DefaultHeartbeatMs = 10 * 1000;
     static int DefaultIdleTimeoutMs = 30 * 1000;
     public static String UnknownChannel = "*";
@@ -275,8 +272,9 @@ public class ServerEventsClient implements Closeable {
             : "(not connected)";
     }
 
-    private synchronized void interruptBackgroundThread() {
+    protected synchronized void interruptBackgroundThread() {
         if (bgThread != null){
+            bgEventStream.close();
             bgThread.interrupt();
             try {
                 bgThread.join();
@@ -285,11 +283,16 @@ public class ServerEventsClient implements Closeable {
         }
     }
 
-    public ServerEventsClient start(){
+    protected EventStream createEventStream(){
+        return new EventStream(this);
+    }
+
+    public synchronized ServerEventsClient start(){
         interruptBackgroundThread();
 
         stopped.set(false);
-        bgThread = new Thread(new EventStream(this));
+        bgEventStream = createEventStream();
+        bgThread = new Thread(bgEventStream);
         bgThread.start();
         lastPulseAt = new Date();
 
@@ -394,7 +397,7 @@ public class ServerEventsClient implements Closeable {
             onHeartbeat.execute(e);
     }
 
-    private void onMessageReceived(ServerEventMessage e) {
+    protected void onMessageReceived(ServerEventMessage e) {
         if (Log.isDebugEnabled())
             Log.d("[SSE-CLIENT] OnMessageReceived: " + e.getEventId() + " on #"
                     + getConnectionDisplayName() + " " +  Utils.join(channels, ","));
@@ -402,8 +405,6 @@ public class ServerEventsClient implements Closeable {
         if (onMessage != null)
             onMessage.execute(e);
     }
-
-    private AtomicInteger errorsCount = new AtomicInteger();
 
     protected void onExceptionReceived(Exception ex) {
         errorsCount.incrementAndGet();
@@ -505,7 +506,7 @@ public class ServerEventsClient implements Closeable {
         }
     }
 
-    private void processOnConnectMessage(ServerEventMessage e) {
+    protected void processOnConnectMessage(ServerEventMessage e) {
         JsonObject msg = JsonUtils.toJsonObject(e.getJson());
         connectionInfo = new ServerEventConnect();
 
@@ -522,19 +523,19 @@ public class ServerEventsClient implements Closeable {
         onConnectReceived();
     }
 
-    private void processOnJoinMessage(ServerEventMessage e) {
+    protected void processOnJoinMessage(ServerEventMessage e) {
         onCommandReceived(new ServerEventJoin().populate(e, JsonUtils.toJsonObject(e.getJson())));
     }
 
-    private void processOnLeaveMessage(ServerEventMessage e) {
+    protected void processOnLeaveMessage(ServerEventMessage e) {
         onCommandReceived(new ServerEventLeave().populate(e, JsonUtils.toJsonObject(e.getJson())));
     }
 
-    private void processOnUpdateMessage(ServerEventMessage e) {
+    protected void processOnUpdateMessage(ServerEventMessage e) {
         onCommandReceived(new ServerEventUpdate().populate(e, JsonUtils.toJsonObject(e.getJson())));
     }
 
-    private void processOnHeartbeatMessage(ServerEventMessage e) {
+    protected void processOnHeartbeatMessage(ServerEventMessage e) {
         lastPulseAt = new Date();
         if (Log.isDebugEnabled())
             Log.d("[SSE-CLIENT] LastPulseAt: " + new SimpleDateFormat("HH:mm:ss.SSS", Locale.US).format(lastPulseAt));
@@ -545,170 +546,6 @@ public class ServerEventsClient implements Closeable {
     @Override
     public void close() {
         stop();
-    }
-
-    class EventStream implements Runnable {
-
-        ServerEventsClient client;
-        ServerEventMessage currentMsg;
-
-        public EventStream(ServerEventsClient client) {
-            this.client = client;
-        }
-
-        @Override
-        public void run() {
-            try {
-                if (running.get())
-                    return;
-                running.set(true);
-
-                URL streamUri = new URL(client.getEventStreamUri());
-                HttpURLConnection req = (HttpURLConnection) streamUri.openConnection();
-
-                InputStream is = new BufferedInputStream(req.getInputStream());
-                errorsCount.set(0);
-                readStream(is);
-            } catch (InterruptedException ie){
-                Log.i("EventStream.run(): Caught InterruptedException"); //thrown by interruptBackgroundThread()
-                return;
-            } catch (Exception e) {
-                Log.e("Error reading from event-stream, continuous errors: " + errorsCount.incrementAndGet(), e);
-                Log.e(Utils.getStackTrace(e));
-            } finally {
-                running.set(false);
-            }
-
-            if (!running.get()){
-                client.restart();
-            }
-        }
-
-        private void readStream(InputStream inputStream) throws IOException, InterruptedException {
-            byte[] buffer = new byte[BufferSize];
-            String overflowText = "";
-
-            int len = 0;
-            while (true) {
-                while (true) {
-                    int available = inputStream.available();
-                    if (available > 0) break;
-                    Thread.sleep(5);
-                }
-
-                len = inputStream.read(buffer);
-
-                if (len <= 0)
-                    break;
-
-                String text = overflowText + new String(buffer, 0, len, "UTF-8");
-
-                int pos;
-                while ((pos = text.indexOf('\n')) >= 0) {
-                    if (pos == 0) {
-                        if (currentMsg != null)
-                            processEventMessage(currentMsg);
-                        currentMsg = null;
-
-                        text = text.substring(pos + 1);
-
-                        if (!Utils.isEmpty(text))
-                            continue;
-
-                        break;
-                    }
-
-                    String line = text.substring(0, pos);
-                    if (!Utils.isNullOrWhiteSpace(line))
-                        processLine(line);
-                    if (text.length() > pos + 1)
-                        text = text.substring(pos + 1);
-                }
-
-                overflowText = text;
-            }
-
-            if (Log.isDebugEnabled())
-                Log.d("Connection ended on " + client.getConnectionDisplayName());
-        }
-
-        private void processLine(String line) {
-            if (line == null || line.length() == 0)
-                return;
-
-            if (currentMsg == null)
-                currentMsg = new ServerEventMessage();
-
-            String[] parts = Utils.splitOnFirst(line, ':');
-            String label = parts[0];
-            String data = parts[1];
-            if (data.length() > 0 && data.charAt(0) == ' ')
-                data = data.substring(1);
-
-            if ("id".equals(label)) {
-                currentMsg.setEventId(Long.parseLong(data));
-            } else if ("data".equals(label)) {
-                currentMsg.setData(data);
-            }
-        }
-
-        private void processEventMessage(ServerEventMessage e) {
-            String[] parts = Utils.splitOnFirst(e.getData(), ' ');
-            e.setSelector(parts[0]);
-            String[] selParts = Utils.splitOnFirst(e.getSelector(), '@');
-            if (selParts.length > 1) {
-                e.setChannel(selParts[0]);
-                e.setSelector(selParts[1]);
-            }
-
-            e.setJson(parts[1]);
-
-            if (!Utils.isNullOrEmpty(e.getSelector())) {
-                parts = Utils.splitOnFirst(e.getSelector(), '.');
-                if (parts.length < 2)
-                    throw new IllegalArgumentException("Invalid Selector '" + e.getSelector() + "'");
-
-                e.setOp(parts[0]);
-                String target = parts[1].replace("%20", " ");
-
-                String[] tokens = Utils.splitOnFirst(target, '$');
-                e.setTarget(tokens[0]);
-                if (tokens.length > 1)
-                    e.setCssSelector(tokens[1]);
-
-                if ("cmd".equals(e.getOp())) {
-                    target = e.getTarget();
-                    if ("onConnect".equals(target)) {
-                        client.processOnConnectMessage(e);
-                        return;
-                    } else if ("onJoin".equals(target)) {
-                        client.processOnJoinMessage(e);
-                        return;
-                    } else if ("onLeave".equals(target)) {
-                        client.processOnLeaveMessage(e);
-                        return;
-                    } else if ("onUpdate".equals(target)) {
-                        client.processOnUpdateMessage(e);
-                        return;
-                    } else if ("onHeartbeat".equals(target)) {
-                        client.processOnHeartbeatMessage(e);
-                        return;
-                    } else {
-                        ServerEventCallback cb = client.getHandlers().get(e.getTarget());
-                        if (cb != null) {
-                            cb.execute(this.client, e);
-                        }
-                    }
-                }
-
-                ServerEventCallback receiver = client.getNamedReceivers().get(e.getOp());
-                if (receiver != null) {
-                    receiver.execute(this.client, e);
-                }
-            }
-
-            client.onMessageReceived(e);
-        }
     }
 
     public List<ServerEventUser> getChannelSubscribers(){
