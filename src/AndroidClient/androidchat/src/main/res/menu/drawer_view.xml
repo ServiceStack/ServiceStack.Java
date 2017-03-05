@@ -6,13 +6,4 @@
             </group>
         </menu>
     </item>
-
-    <item android:title="Users" android:id="@+id/channelsItemUsers">
-        <menu>
-            <group android:checkableBehavior="single" android:id="@+id/usersGroup">
-
-            </group>
-        </menu>
-    </item>
-
 </menu>

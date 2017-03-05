@@ -78,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
         InitDefaultBackground(chatBackground);
 
         navigationView.setTag(0);
-        navigationView.getMenu().clear(); //clear old inflated items.
-        navigationView.inflateMenu(R.menu.drawer_view); //inflate new items.
-        navigationView.inflateHeaderView(R.layout.nav_header);
-
         rightDrawer.setTag(1);
 
         MessageListViewAdapter messageHistoryAdapter = new MessageListViewAdapter(
