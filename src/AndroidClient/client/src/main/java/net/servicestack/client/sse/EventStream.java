@@ -43,7 +43,8 @@ public class EventStream implements Runnable {
             client.errorsCount.set(0);
             readStream(is);
         } catch (InterruptedException ie){
-            Log.i("EventStream.run(): Caught InterruptedException"); //thrown by interruptBackgroundThread()
+            //Caused by stopBackgroundThread(), exit without restarting as the new bgThread does it
+            Log.i("EventStream.run(): Caught InterruptedException");
             return;
         } catch (Exception e) {
             Log.e("Error reading from event-stream, continuous errors: " + client.errorsCount.incrementAndGet(), e);
@@ -60,9 +61,10 @@ public class EventStream implements Runnable {
     protected int readFromStream(InputStream inputStream, byte[] buffer) throws IOException, InterruptedException {
         int len;
         while (true) {
+            //Checking if bytes are available to read to avoid performing a blocking read
             int available = inputStream.available();
             if (available > 0) break;
-            Thread.sleep(1);
+            Thread.sleep(1); //If bgThread was interrupted this throws an InterruptedException
         }
 
         len = inputStream.read(buffer);

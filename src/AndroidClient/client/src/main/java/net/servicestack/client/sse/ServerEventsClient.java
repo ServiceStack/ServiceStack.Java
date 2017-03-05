@@ -272,10 +272,10 @@ public class ServerEventsClient implements Closeable {
             : "(not connected)";
     }
 
-    protected synchronized void interruptBackgroundThread() {
+    protected synchronized void stopBackgroundThread() {
         if (bgThread != null){
             bgEventStream.close();
-            bgThread.interrupt();
+            bgThread.interrupt(); //notify the bgThread to exit
             try {
                 bgThread.join();
             } catch (InterruptedException ignore) {}
@@ -288,7 +288,7 @@ public class ServerEventsClient implements Closeable {
     }
 
     public synchronized ServerEventsClient start(){
-        interruptBackgroundThread();
+        stopBackgroundThread();
 
         stopped.set(false);
         bgEventStream = createEventStream();
@@ -370,7 +370,7 @@ public class ServerEventsClient implements Closeable {
         }
 
         connectionInfo = null;
-        interruptBackgroundThread();
+        stopBackgroundThread();
     }
 
     private void onCommandReceived(ServerEventMessage e) {
