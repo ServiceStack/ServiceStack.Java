@@ -176,7 +176,7 @@ public class JsonServiceClient implements ServiceClient {
                 DataOutputStream wr = new DataOutputStream(req.getOutputStream());
                 wr.write(requestBody);
                 wr.flush();
-                wr.close();
+                Utils.closeQuietly(wr);
             }
 
             return req;
@@ -391,10 +391,10 @@ public class JsonServiceClient implements ServiceClient {
             else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 TResponse response = resClass != null
-                        ? (TResponse) getGson().fromJson(reader, resClass)
-                        : (TResponse) getGson().fromJson(reader, resType);
+                    ? (TResponse) getGson().fromJson(reader, resClass)
+                    : (TResponse) getGson().fromJson(reader, resType);
 
-                reader.close();
+                Utils.closeQuietly(reader);
                 return response;
             }
         } catch (IOException e) {

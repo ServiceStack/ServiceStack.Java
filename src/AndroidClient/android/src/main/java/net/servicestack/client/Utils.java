@@ -13,6 +13,7 @@ import net.servicestack.func.Function;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -524,7 +525,7 @@ public class Utils {
         }
 
         String text = sb.toString();
-        reader.close();
+        closeQuietly(reader);
         return text;
     }
 
@@ -557,7 +558,7 @@ public class Utils {
             }
             return bytes.toByteArray();
         } finally {
-            bufferedStream.close();
+            closeQuietly(bufferedStream);
         }
     }
 
@@ -911,5 +912,15 @@ public class Utils {
             .replace("&amp;","&")
             .replace("&#39;","\'")
             .replace("&quot;","\"");
+    }
+
+    public static void closeQuietly(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (RuntimeException rethrown) {
+                throw rethrown;
+            } catch (Exception ignored) {}
+        }
     }
 }
