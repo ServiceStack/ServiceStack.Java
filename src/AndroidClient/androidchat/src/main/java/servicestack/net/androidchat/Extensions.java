@@ -6,11 +6,14 @@ import android.widget.TextView;
 
 import net.servicestack.android.AndroidServerEventsClient;
 import net.servicestack.android.AsyncUtils;
+import net.servicestack.client.AsyncSuccess;
+import net.servicestack.client.AsyncSuccessVoid;
 import net.servicestack.client.Utils;
 import net.servicestack.client.sse.ServerEventConnect;
 import net.servicestack.client.sse.ServerEventsClient;
 import net.servicestack.func.Func;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +27,7 @@ import static servicestack.net.androidchat.dtos.PostRawToChannel;
 
 public class Extensions {
 
-    public static void updateChatHistory(AndroidServerEventsClient client, ChatCommandHandler cmdReceiver){
+    public static void updateChatHistory(AndroidServerEventsClient client, ChatCommandHandler cmdReceiver, AsyncSuccessVoid cb){
 
         client.getAndroidClient().getAsync(new GetChatHistory()
             .setChannels(Func.toList(client.getChannels())),
@@ -37,22 +40,19 @@ public class Extensions {
                             Objects.equals(x.getChannel(), channel)));
                 }
                 cmdReceiver.syncAdapter();
+                cb.success();
             });
     }
 
-    public static void changeChannel(AndroidServerEventsClient client, String channel, ChatCommandHandler cmdReceiver){
-        List<String> currentChannels = Func.toList(client.getChannels());
-
-        if (cmdReceiver.getFullHistory().containsKey(channel) && currentChannels.contains(channel)){
+    public static void changeChannel(AndroidServerEventsClient client, String channel, ChatCommandHandler cmdReceiver, AsyncSuccessVoid cb){
+        if (cmdReceiver.getFullHistory().containsKey(channel) && Arrays.asList(client.getChannels()).contains(channel)){
             cmdReceiver.changeChannel(channel);
+            cb.success();
         } else {
-
-            if (!currentChannels.contains(channel))
-                currentChannels.add(channel);
-
-            client.subscribeToChannels(Func.toArray(currentChannels, String.class));
-            cmdReceiver.setCurrentChannel(channel);
-            updateChatHistory(client, cmdReceiver);
+            client.subscribeToChannelsAsync(new String[]{ channel }, () -> {
+                cmdReceiver.setCurrentChannel(channel);
+                updateChatHistory(client, cmdReceiver, cb);
+            });
         }
     }
 

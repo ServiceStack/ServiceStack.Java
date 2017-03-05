@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         "Announce Hello",     "/cmd.announce Hello from Java Android",
         "Play YouTube",       "/tv.watch https://youtu.be/u5CVsCnxyXg",
         "Background Image",   "/css.background-image url(http://bit.ly/2lZxbHv)",
-        "Background Top",     "/css.background$#top #0091ea",
-        "Background",         "/css.background #fffde7",
-        "Background Bottom",  "/css.background$#bottom #cccccc",
+        "Background Top",     "/css.background$#top #86B951",
+        "Background Color",   "/css.background #eceff1",
+        "Background Bottom",  "/css.background$#bottom #91C654",
         "Logout",             "/logout"
     );
 
@@ -93,8 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
         getClient()
             .setOnConnect(connectMsg -> {
-                Extensions.updateChatHistory(getClient(), cmdReceiver);
-                Extensions.updateUserProfile(connectMsg, mainActivity);
+                Extensions.updateChatHistory(getClient(), cmdReceiver, () -> {
+                    Extensions.updateUserProfile(connectMsg, mainActivity);
+                });
             })
             .setOnCommand(command -> {
                 if (command instanceof ServerEventJoin){
@@ -156,14 +157,15 @@ public class MainActivity extends AppCompatActivity {
                     List<String> nChannels = Func.toList(getClient().getChannels());
                     nChannels.add(nChannel);
                     UiHelpers.resetChannelDrawer(this, navigationView, Func.toArray(nChannels, String.class));
-                    Extensions.changeChannel(getClient(), nChannel, cmdReceiver);
-                    cmdReceiver.syncAdapter();
+                    Extensions.changeChannel(getClient(), nChannel, cmdReceiver, () -> {
+                        cmdReceiver.syncAdapter();
+                    });
                 } catch (Exception ex){
                     errors.add(ex);
                 }
             });
         } else {
-            Extensions.changeChannel(getClient(), itemText, cmdReceiver);
+            Extensions.changeChannel(getClient(), itemText, cmdReceiver, () -> {});
         }
         drawerLayout.closeDrawer(navigationView);
         return true;

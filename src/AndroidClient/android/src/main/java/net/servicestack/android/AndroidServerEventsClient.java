@@ -113,6 +113,7 @@ public class AndroidServerEventsClient extends ServerEventsClient {
             try {
                  len = inputStream.read(buffer);
             } catch (SocketException e){
+                //if we caused the Exception with call.cancel() treat as bgThread.interrupt()
                 if (call.isCanceled()){
                     throw new InterruptedException();
                 }
@@ -126,11 +127,11 @@ public class AndroidServerEventsClient extends ServerEventsClient {
     }
 
     @Override
-    protected synchronized void interruptBackgroundThread() {
+    protected synchronized void stopBackgroundThread() {
         if (bgThread != null){
             bgEventStream.close();
             try {
-                bgThread.join(1000);
+                bgThread.join(100);
             } catch (InterruptedException ignore) {}
             bgThread = null;
             bgEventStream = null;
@@ -218,11 +219,11 @@ public class AndroidServerEventsClient extends ServerEventsClient {
             });
     }
 
-    public void subscribeToChannelsAsync(final String[] channels, final AsyncSuccess success){
+    public void subscribeToChannelsAsync(final String[] channels, final AsyncSuccessVoid success){
         subscribeToChannelsAsync(channels, AsyncUtils.createAsyncResult(success, null));
     }
 
-    public void subscribeToChannelsAsync(final String[] channels, final AsyncSuccess success, final AsyncError error){
+    public void subscribeToChannelsAsync(final String[] channels, final AsyncSuccessVoid success, final AsyncError error){
         subscribeToChannelsAsync(channels, AsyncUtils.createAsyncResult(success, error));
     }
 
@@ -248,11 +249,11 @@ public class AndroidServerEventsClient extends ServerEventsClient {
             });
     }
 
-    public void unSubscribeFromChannelsAsync(final String[] channels, final AsyncSuccess success){
+    public void unSubscribeFromChannelsAsync(final String[] channels, final AsyncSuccessVoid success){
         unSubscribeFromChannelsAsync(channels, AsyncUtils.createAsyncResult(success, null));
     }
 
-    public void unSubscribeFromChannelsAsync(final String[] channels, final AsyncSuccess success, final AsyncError error){
+    public void unSubscribeFromChannelsAsync(final String[] channels, final AsyncSuccessVoid success, final AsyncError error){
         unSubscribeFromChannelsAsync(channels, AsyncUtils.createAsyncResult(success, error));
     }
 }
