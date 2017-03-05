@@ -28,18 +28,19 @@ public class EventStream implements Runnable {
         return new BufferedInputStream(req.getInputStream());
     }
 
-    public void close(){
+    public void cancel(){
     }
 
     @Override
     public void run() {
+        InputStream is = null;
         try {
             if (client.running.get())
                 return;
             client.running.set(true);
 
             URL streamUri = new URL(client.getEventStreamUri());
-            InputStream is = getInputStream(streamUri);
+            is = getInputStream(streamUri);
             client.errorsCount.set(0);
             readStream(is);
         } catch (InterruptedException ie){
@@ -50,6 +51,7 @@ public class EventStream implements Runnable {
             Log.e("Error reading from event-stream, continuous errors: " + client.errorsCount.incrementAndGet(), e);
             Log.e(Utils.getStackTrace(e));
         } finally {
+            Utils.closeQuietly(is);
             client.running.set(false);
         }
 

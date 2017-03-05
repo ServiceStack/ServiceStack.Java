@@ -26,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -47,7 +48,8 @@ public class AndroidServerEventsClient extends ServerEventsClient {
         this.serviceClient = new AndroidServiceClient(this.baseUri);
 
         client = new OkHttpClient.Builder()
-            .cookieJar(new JavaNetCookieJar(CookieHandler.getDefault()))
+            .cookieJar(new JavaNetCookieJar(CookieHandler.getDefault())) //sync cookies with Android HTTP
+            .readTimeout(0, TimeUnit.MILLISECONDS) //disable Read Timeout on long poll /event-stream
             .build();
     }
 
@@ -99,9 +101,10 @@ public class AndroidServerEventsClient extends ServerEventsClient {
         }
 
         @Override
-        public void close() {
-            if (call == null) return;
-            call.cancel();
+        public void cancel() {
+            if (call != null){
+                call.cancel();
+            }
         }
 
         @Override
@@ -129,7 +132,7 @@ public class AndroidServerEventsClient extends ServerEventsClient {
     @Override
     protected synchronized void stopBackgroundThread() {
         if (bgThread != null){
-            bgEventStream.close();
+            bgEventStream.cancel();
             try {
                 bgThread.join(100);
             } catch (InterruptedException ignore) {}

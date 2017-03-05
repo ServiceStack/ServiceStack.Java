@@ -274,7 +274,7 @@ public class ServerEventsClient implements Closeable {
 
     protected synchronized void stopBackgroundThread() {
         if (bgThread != null){
-            bgEventStream.close();
+            bgEventStream.cancel();
             bgThread.interrupt(); //notify the bgThread to exit
             try {
                 bgThread.join();
