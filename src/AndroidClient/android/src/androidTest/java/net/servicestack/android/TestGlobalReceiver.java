@@ -11,18 +11,18 @@ import static chat.chatdtos.*;
  */
 
 public class TestGlobalReceiver extends ServerEventReceiver {
-    public static CustomType FooMethodReceived;
+    public static CustomType CustomTypeReceived;
     public static CustomType NoSuchMethodReceived;
     public static String NoSuchMethodSelector;
-    public static SetterType AnyNamedSetterReceived;
+    public static SetterType SetterTypeReceived;
 
-    public void setAnyNamedSetter(SetterType value) {
-        AnyNamedSetterReceived = value;
+    public void setterType(SetterType value) {
+        SetterTypeReceived = value;
     }
 
-    public void anyNamedMethod(CustomType request)
+    public void customType(CustomType request)
     {
-        FooMethodReceived = request;
+        CustomTypeReceived = request;
     }
 
     @Override

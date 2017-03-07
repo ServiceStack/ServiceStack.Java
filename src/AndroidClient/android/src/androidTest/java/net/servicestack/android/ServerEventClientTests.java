@@ -226,8 +226,6 @@ public class ServerEventClientTests {
 
                 connectMsg = Func.first(connectMsgs);
                 joinMsg = Func.first(Func.ofType(commands, ServerEventJoin.class));
-
-                Utils.readToEnd(connectMsg.getUnRegisterUrl());
             }
 
             while (commands.size() < 2) {
@@ -365,7 +363,6 @@ public class ServerEventClientTests {
                 assertTrue(chatMsg.getId() > 0);
                 assertEquals(info1.getUserId(), chatMsg.getFromUserId());
                 assertEquals(info1.getDisplayName(), chatMsg.getFromName());
-                assertEquals(info1.getDisplayName(), chatMsg.getFromName());
             }
 
             assertEquals(1, msgs1.size());
@@ -387,7 +384,6 @@ public class ServerEventClientTests {
             for (ChatMessage chatMsg : new ChatMessage[]{ chatMsg1, chatMsg2 }){
                 assertTrue(chatMsg.getId() > 0);
                 assertEquals(info2.getUserId(), chatMsg.getFromUserId());
-                assertEquals(info2.getDisplayName(), chatMsg.getFromName());
                 assertEquals(info2.getDisplayName(), chatMsg.getFromName());
             }
 
@@ -613,7 +609,7 @@ public class ServerEventClientTests {
                 Thread.sleep(100);
             }
 
-            CustomType foo = TestGlobalReceiver.FooMethodReceived;
+            CustomType foo = TestGlobalReceiver.CustomTypeReceived;
             assertNotNull(foo);
             assertEquals(1, foo.getId().intValue());
             assertEquals("Foo", foo.getName());
@@ -643,7 +639,7 @@ public class ServerEventClientTests {
                 Thread.sleep(100);
             }
 
-            SetterType foo = TestGlobalReceiver.AnyNamedSetterReceived;
+            SetterType foo = TestGlobalReceiver.SetterTypeReceived;
             assertNotNull(foo);
             assertEquals(1, foo.getId().intValue());
             assertEquals("Foo", foo.getName());
