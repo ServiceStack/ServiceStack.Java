@@ -816,8 +816,6 @@ public class ServerEventClientTests {
             assertEquals(3, msgsABC.size());
             assertEquals(4, msgsABCD.size());
 
-            Thread.sleep(1000);
-
             System.out.println("Publishing Msg Batch #2 ...");
             postChat(clientA, "#5 hello to A", "A");
             postChat(clientA, "#6 hello to B", "B");
