@@ -480,7 +480,7 @@ public class ServerEventClientTests extends TestCase {
                 Thread.sleep(100);
             }
 
-            CustomType foo = TestGlobalReceiver.FooMethodReceived;
+            CustomType foo = TestGlobalReceiver.CustomTypeReceived;
             assertNotNull(foo);
             assertEquals(1, foo.getId().intValue());
             assertEquals("Foo", foo.getName());

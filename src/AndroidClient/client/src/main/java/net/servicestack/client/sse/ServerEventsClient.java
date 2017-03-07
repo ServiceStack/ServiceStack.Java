@@ -224,7 +224,8 @@ public class ServerEventsClient implements Closeable {
 
                         Class requestType = args[0];
 
-                        if (target.equals(requestType.getSimpleName())) {
+                        if (target.equals(requestType.getSimpleName()) &&
+                            mi.getName().toLowerCase().equals(target.toLowerCase())) {
                             Object request = !Utils.isNullOrEmpty(msg.getJson())
                                 ? JsonUtils.fromJson(msg.getJson(), requestType)
                                 : requestType.newInstance();
