@@ -25,7 +25,9 @@ import net.servicestack.client.sse.ServerEventMessageCallback;
 import net.servicestack.client.sse.ServerEventUser;
 import net.servicestack.client.sse.ServerEventsClient;
 import net.servicestack.client.sse.SingletonInstanceResolver;
+import net.servicestack.func.Action;
 import net.servicestack.func.Func;
+import net.servicestack.func.Predicate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1115,4 +1117,58 @@ public class ServerEventClientTests {
             assertTrue(client2.getEventStreamUri().endsWith("?channels=B"));
         }
     }
-}
+
+    @Test
+    public void test_Does_fire_multiple_listeners_for_custom_trigger() throws Exception {
+        final List<ServerEventMessage> msgs1 = new ArrayList<>();
+        final List<ServerEventMessage> msgs2 = new ArrayList<>();
+
+        Action<ServerEventMessage> handler = new Action<ServerEventMessage>() {
+            @Override
+            public void apply(ServerEventMessage e) {
+                msgs1.add(e);
+            }
+        };
+
+        try (ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+                .addListener("customEvent", handler)
+                .addListener("customEvent", new Action<ServerEventMessage>() {
+                    @Override
+                    public void apply(ServerEventMessage e) {
+                        msgs2.add(e);
+                    }
+                })
+                .start()
+                .waitTillConnected();
+             ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+                     .start()
+                     .waitTillConnected()) {
+
+            postRaw(client2, "trigger.customEvent", "arg");
+
+            while (msgs1.size() < 1 || msgs2.size() < 1) {
+                Thread.sleep(100);
+            }
+
+            assertEquals(1, msgs1.size());
+            assertEquals(1, msgs2.size());
+
+            client1.removeListener("customEvent", handler);
+
+            postRaw(client2, "trigger.customEvent", "arg");
+
+            while (msgs1.size() < 1 || msgs2.size() < 2) {
+                Thread.sleep(100);
+            }
+
+            assertEquals(1, msgs1.size());
+            assertEquals(2, msgs2.size());
+
+            assertTrue(Func.all(Func.concat(msgs1, msgs2), new Predicate<ServerEventMessage>() {
+                @Override
+                public boolean apply(ServerEventMessage msg) {
+                    return "arg".equals(JsonUtils.fromJson(msg.getJson(), String.class));
+                }
+            }));
+        }
+    }}

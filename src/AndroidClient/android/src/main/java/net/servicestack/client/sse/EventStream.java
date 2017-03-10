@@ -182,6 +182,8 @@ public class EventStream implements Runnable {
                         cb.execute(this.client, e);
                     }
                 }
+            } else if ("trigger".equals(e.getOp())){
+                client.onTriggerReceived(e);
             }
 
             ServerEventCallback receiver = client.getNamedReceivers().get(e.getOp());

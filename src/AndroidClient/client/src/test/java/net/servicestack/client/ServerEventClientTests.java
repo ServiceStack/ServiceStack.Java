@@ -10,6 +10,7 @@ import net.servicestack.client.sse.ServerEventMessage;
 import net.servicestack.client.sse.ServerEventUser;
 import net.servicestack.client.sse.ServerEventsClient;
 import net.servicestack.client.sse.SingletonInstanceResolver;
+import net.servicestack.func.Action;
 import net.servicestack.func.Func;
 
 import java.util.ArrayList;
@@ -902,4 +903,45 @@ public class ServerEventClientTests extends TestCase {
             assertTrue(client2.getEventStreamUri().endsWith("?channels=B"));
         }
     }
+
+    public void test_Does_fire_multiple_listeners_for_custom_trigger() throws Exception {
+        List<ServerEventMessage> msgs1 = new ArrayList<>();
+        List<ServerEventMessage> msgs2 = new ArrayList<>();
+
+        Action<ServerEventMessage> handler = msgs1::add;
+
+        try (ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+                .addListener("customEvent", handler)
+                .addListener("customEvent", msgs2::add)
+                .start()
+                .waitTillConnected();
+             ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+                 .start()
+                 .waitTillConnected()) {
+
+            postRaw(client2, "trigger.customEvent", "arg");
+
+            while (msgs1.size() < 1 || msgs2.size() < 1) {
+                Thread.sleep(100);
+            }
+
+            assertEquals(1, msgs1.size());
+            assertEquals(1, msgs2.size());
+
+            client1.removeListener("customEvent", handler);
+
+            postRaw(client2, "trigger.customEvent", "arg");
+
+            while (msgs1.size() < 1 || msgs2.size() < 2) {
+                Thread.sleep(100);
+            }
+
+            assertEquals(1, msgs1.size());
+            assertEquals(2, msgs2.size());
+
+            assertTrue(Func.all(Func.concat(msgs1, msgs2), msg ->
+                "arg".equals(JsonUtils.fromJson(msg.getJson(), String.class))));
+        }
+    }
+
 }

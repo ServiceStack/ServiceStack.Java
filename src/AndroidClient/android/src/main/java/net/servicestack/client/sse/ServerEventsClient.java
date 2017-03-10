@@ -8,6 +8,7 @@ import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
+import net.servicestack.func.Action;
 import net.servicestack.func.Func;
 import net.servicestack.func.Function;
 
@@ -47,6 +48,7 @@ public class ServerEventsClient implements Closeable {
 
     protected Map<String,ServerEventCallback> handlers;
     protected Map<String,ServerEventCallback> namedReceivers;
+    protected Map<String, List<Action<ServerEventMessage>>> listeners;
 
     protected ServerEventConnectCallback onConnect;
     protected ServerEventMessageCallback onMessage;
@@ -76,6 +78,7 @@ public class ServerEventsClient implements Closeable {
 
         this.handlers = new HashMap<>();
         this.namedReceivers = new HashMap<>();
+        this.listeners = new HashMap<>();
     }
 
     public ServerEventsClient(String baseUrl, String channel) {
@@ -386,6 +389,17 @@ public class ServerEventsClient implements Closeable {
             onCommand.execute(e);
     }
 
+    protected void onTriggerReceived(ServerEventMessage e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnTriggerReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        raiseEvent(e.getTarget(), e);
+    }
+
     private void onHeartbeatReceived(ServerEventMessage e) {
         if (Log.isDebugEnabled())
             Log.d("[SSE-CLIENT] OnHeartbeatReceived: ("
@@ -434,6 +448,37 @@ public class ServerEventsClient implements Closeable {
             onConnect.execute(connectionInfo);
 
         startNewHeartbeat();
+    }
+
+    public synchronized ServerEventsClient addListener(String eventName, Action<ServerEventMessage> handler){
+        List<Action<ServerEventMessage>> handlers = listeners.get(eventName);
+        if (handlers == null){
+            handlers = new ArrayList<>();
+            listeners.put(eventName, handlers);
+        }
+        handlers.add(handler);
+        return this;
+    }
+
+    public synchronized ServerEventsClient removeListener(String eventName, Action<ServerEventMessage> handler){
+        List<Action<ServerEventMessage>> handlers = listeners.get(eventName);
+        if (handlers != null){
+            handlers.remove(handler);
+        }
+        return this;
+    }
+
+    public synchronized void raiseEvent(String eventName, ServerEventMessage message) {
+        List<Action<ServerEventMessage>> handlers = listeners.get(eventName);
+        if (handlers != null){
+            for (Action<ServerEventMessage> handler : handlers) {
+                try {
+                    handler.apply(message);
+                } catch (Exception e) {
+                    Log.e("Error whilst executing '" + eventName + "' handler", e);
+                }
+            }
+        }
     }
 
     Timer heratbeatTimer;
