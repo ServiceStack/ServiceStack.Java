@@ -3,6 +3,6 @@
 
 package net.servicestack.func;
 
-public interface Each<T> {
+public interface Action<T> {
     public void apply(T t);
 }

@@ -159,11 +159,11 @@ public class Func {
         return to;
     }
 
-    public static <T> void each(T[] xs, Each<T> f) {
+    public static <T> void each(T[] xs, Action<T> f) {
         each(toList(xs), f);
     }
 
-    public static <T> void each(Iterable<T> xs, Each<T> f) {
+    public static <T> void each(Iterable<T> xs, Action<T> f) {
         if (xs == null) return;
         for (T x : xs) {
             f.apply(x);
