@@ -1,3 +1,6 @@
+Join the [ServiceStack Google+ Community](https://plus.google.com/communities/112445368900682590445) or follow [@ServiceStack](https://twitter.com/servicestack) 
+for updates, or [StackOverflow](http://stackoverflow.com/questions/ask) or the [Customer Support Forums](https://forums.servicestack.net/) for support.
+
 # ServiceStack.Java
 
 This repository contains the source for ServiceStack plugins for the leading Android Studio, IntelliJ and Eclipse Java IDE's providing Java developers a highly productive development experience for consuming Typed ServiceStack Services by leveraging [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) directly within their IDE! 
