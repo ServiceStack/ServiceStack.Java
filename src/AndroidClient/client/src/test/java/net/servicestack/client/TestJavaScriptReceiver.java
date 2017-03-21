@@ -31,9 +31,9 @@ public class TestJavaScriptReceiver extends ServerEventReceiver {
         AnnounceInstance = message;
     }
 
-    public void toggle(String message)
+    public void toggle()
     {
-        ToggleReceived = message;
+        ToggleReceived = "";
         ToggleRequestReceived = super.getRequest();
     }
 

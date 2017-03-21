@@ -238,10 +238,22 @@ public class ServerEventsClient implements Closeable {
                         if (!Modifier.isPublic(mi.getModifiers()) || Modifier.isStatic(mi.getModifiers()))
                             continue;
                         Class[] args = mi.getParameterTypes();
-                        if (args.length != 1)
+                        if (args.length > 1)
                             continue;
                         if ("equals".equals(mi.getName()))
                             continue;
+
+                        String actionName = mi.getName();
+                        if (!target.equalsIgnoreCase(actionName) && actionName.startsWith("set"))
+                            actionName = actionName.substring(3); //= "set".length()
+
+                        if (args.length == 0){
+                            if (target.equalsIgnoreCase(actionName)) {
+                                mi.invoke(receiver, null);
+                                return;
+                            }
+                            continue;
+                        }
 
                         Class requestType = args[0];
 
@@ -253,10 +265,6 @@ public class ServerEventsClient implements Closeable {
                             mi.invoke(receiver, request);
                             return;
                         }
-
-                        String actionName = mi.getName();
-                        if (!target.equalsIgnoreCase(actionName) && actionName.startsWith("set"))
-                            actionName = actionName.substring(3); //= "set".length()
 
                         if (target.equalsIgnoreCase(actionName)) {
                             Object request = !Utils.isNullOrEmpty(msg.getJson())
