@@ -9,6 +9,7 @@ import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
 import net.servicestack.func.Action;
+import net.servicestack.func.ActionVoid;
 import net.servicestack.func.Func;
 import net.servicestack.func.Function;
 
@@ -57,6 +58,7 @@ public class ServerEventsClient implements Closeable {
     protected ServerEventUpdateCallback onUpdate;
     protected ServerEventMessageCallback onCommand;
     protected ServerEventMessageCallback onHeartbeat;
+    protected ActionVoid onReconnect;
     protected ExceptionCallback onException;
     protected HttpRequestFilter heartbeatRequestFilter;
 
@@ -176,6 +178,11 @@ public class ServerEventsClient implements Closeable {
 
     public ServerEventsClient setOnCommand(ServerEventMessageCallback onCommand) {
         this.onCommand = onCommand;
+        return this;
+    }
+
+    public ServerEventsClient setOnReconnect(ActionVoid onReconnect) {
+        this.onReconnect = onReconnect;
         return this;
     }
 
@@ -343,6 +350,9 @@ public class ServerEventsClient implements Closeable {
                 onExceptionReceived(e);
             }
 
+            if (onReconnect != null){
+                onReconnect.apply();
+            }
         } catch (Exception ex){
             Log.e("[SSE-CLIENT] Error whilst restarting: " + ex.getMessage(), ex);
             ex.printStackTrace();

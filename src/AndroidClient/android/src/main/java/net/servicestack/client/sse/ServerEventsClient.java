@@ -9,6 +9,7 @@ import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
 import net.servicestack.func.Action;
+import net.servicestack.func.ActionVoid;
 import net.servicestack.func.Func;
 import net.servicestack.func.Function;
 
@@ -52,8 +53,12 @@ public class ServerEventsClient implements Closeable {
 
     protected ServerEventConnectCallback onConnect;
     protected ServerEventMessageCallback onMessage;
+    protected ServerEventJoinCallback onJoin;
+    protected ServerEventLeaveCallback onLeave;
+    protected ServerEventUpdateCallback onUpdate;
     protected ServerEventMessageCallback onCommand;
     protected ServerEventMessageCallback onHeartbeat;
+    protected ActionVoid onReconnect;
     protected ExceptionCallback onException;
     protected HttpRequestFilter heartbeatRequestFilter;
 
@@ -156,8 +161,28 @@ public class ServerEventsClient implements Closeable {
         return this;
     }
 
+    public ServerEventsClient setOnJoin(ServerEventJoinCallback onJoin) {
+        this.onJoin = onJoin;
+        return this;
+    }
+
+    public ServerEventsClient setOnLeave(ServerEventLeaveCallback onLeave) {
+        this.onLeave = onLeave;
+        return this;
+    }
+
+    public ServerEventsClient setOnUpdate(ServerEventUpdateCallback onUpdate) {
+        this.onUpdate = onUpdate;
+        return this;
+    }
+
     public ServerEventsClient setOnCommand(ServerEventMessageCallback onCommand) {
         this.onCommand = onCommand;
+        return this;
+    }
+
+    public ServerEventsClient setOnReconnect(ActionVoid onReconnect) {
+        this.onReconnect = onReconnect;
         return this;
     }
 
@@ -220,10 +245,22 @@ public class ServerEventsClient implements Closeable {
                         if (!Modifier.isPublic(mi.getModifiers()) || Modifier.isStatic(mi.getModifiers()))
                             continue;
                         Class[] args = mi.getParameterTypes();
-                        if (args.length != 1)
+                        if (args.length > 1)
                             continue;
                         if ("equals".equals(mi.getName()))
                             continue;
+
+                        String actionName = mi.getName();
+                        if (!target.equalsIgnoreCase(actionName) && actionName.startsWith("set"))
+                            actionName = actionName.substring(3); //= "set".length()
+
+                        if (args.length == 0){
+                            if (target.equalsIgnoreCase(actionName)) {
+                                mi.invoke(receiver, null);
+                                return;
+                            }
+                            continue;
+                        }
 
                         Class requestType = args[0];
 
@@ -235,10 +272,6 @@ public class ServerEventsClient implements Closeable {
                             mi.invoke(receiver, request);
                             return;
                         }
-
-                        String actionName = mi.getName();
-                        if (!target.equalsIgnoreCase(actionName) && actionName.startsWith("set"))
-                            actionName = actionName.substring(3); //= "set".length()
 
                         if (target.equalsIgnoreCase(actionName)) {
                             Object request = !Utils.isNullOrEmpty(msg.getJson())
@@ -317,6 +350,9 @@ public class ServerEventsClient implements Closeable {
                 onExceptionReceived(e);
             }
 
+            if (onReconnect != null){
+                onReconnect.apply();
+            }
         } catch (Exception ex){
             Log.e("[SSE-CLIENT] Error whilst restarting: " + ex.getMessage(), ex);
             ex.printStackTrace();
@@ -375,6 +411,42 @@ public class ServerEventsClient implements Closeable {
 
         connectionInfo = null;
         stopBackgroundThread();
+    }
+
+    private void onJoinReceived(ServerEventJoin e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnJoinReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        if (onJoin != null)
+            onJoin.execute(e);
+    }
+
+    private void onLeaveReceived(ServerEventLeave e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnLeaveReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        if (onLeave != null)
+            onLeave.execute(e);
+    }
+
+    private void onUpdateReceived(ServerEventUpdate e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnUpdateReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        if (onUpdate != null)
+            onUpdate.execute(e);
     }
 
     private void onCommandReceived(ServerEventMessage e) {
@@ -570,15 +642,24 @@ public class ServerEventsClient implements Closeable {
     }
 
     protected void processOnJoinMessage(ServerEventMessage e) {
-        onCommandReceived(new ServerEventJoin().populate(e, JsonUtils.toJsonObject(e.getJson())));
+        ServerEventJoin m = new ServerEventJoin();
+        m.populate(e, JsonUtils.toJsonObject(e.getJson()));
+        onJoinReceived(m);
+        onCommandReceived(m);
     }
 
     protected void processOnLeaveMessage(ServerEventMessage e) {
-        onCommandReceived(new ServerEventLeave().populate(e, JsonUtils.toJsonObject(e.getJson())));
+        ServerEventLeave m = new ServerEventLeave();
+        m.populate(e, JsonUtils.toJsonObject(e.getJson()));
+        onLeaveReceived(m);
+        onCommandReceived(m);
     }
 
     protected void processOnUpdateMessage(ServerEventMessage e) {
-        onCommandReceived(new ServerEventUpdate().populate(e, JsonUtils.toJsonObject(e.getJson())));
+        ServerEventUpdate m = new ServerEventUpdate();
+        m.populate(e, JsonUtils.toJsonObject(e.getJson()));
+        onUpdateReceived(m);
+        onCommandReceived(m);
     }
 
     protected void processOnHeartbeatMessage(ServerEventMessage e) {
