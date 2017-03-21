@@ -363,8 +363,13 @@ public class ServerEventClientTests extends TestCase {
     public void test_Does_send_message_to_Handler() throws Exception {
 
         List<ChatMessage> chatMsgs = new ArrayList<>();
+        List<String> paintMsgs = new ArrayList<>();
 
         try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+                .registerHandler("paint", (client, e) -> {
+                    String color = JsonUtils.fromJson(e.getJson(), String.class);
+                    paintMsgs.add(color);
+                })
                 .registerHandler("chat", (client, e) -> {
                     ChatMessage chatMsg = JsonUtils.fromJson(e.getJson(), ChatMessage.class);
                     chatMsgs.add(chatMsg);
@@ -389,6 +394,14 @@ public class ServerEventClientTests extends TestCase {
 
             chatMsg = Func.last(chatMsgs);
             assertEquals("msg2", chatMsg.getMessage());
+
+            postRaw(client1, "cmd.paint$#town", "red");
+
+            while (paintMsgs.size() < 1){
+                Thread.sleep(100);
+            }
+
+            assertEquals("red", paintMsgs.get(0));
         }
     }
 
