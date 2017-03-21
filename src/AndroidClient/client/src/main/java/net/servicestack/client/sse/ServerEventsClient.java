@@ -52,6 +52,9 @@ public class ServerEventsClient implements Closeable {
 
     protected ServerEventConnectCallback onConnect;
     protected ServerEventMessageCallback onMessage;
+    protected ServerEventJoinCallback onJoin;
+    protected ServerEventLeaveCallback onLeave;
+    protected ServerEventUpdateCallback onUpdate;
     protected ServerEventMessageCallback onCommand;
     protected ServerEventMessageCallback onHeartbeat;
     protected ExceptionCallback onException;
@@ -153,6 +156,21 @@ public class ServerEventsClient implements Closeable {
 
     public ServerEventsClient setOnMessage(ServerEventMessageCallback onMessage) {
         this.onMessage = onMessage;
+        return this;
+    }
+
+    public ServerEventsClient setOnJoin(ServerEventJoinCallback onJoin) {
+        this.onJoin = onJoin;
+        return this;
+    }
+
+    public ServerEventsClient setOnLeave(ServerEventLeaveCallback onLeave) {
+        this.onLeave = onLeave;
+        return this;
+    }
+
+    public ServerEventsClient setOnUpdate(ServerEventUpdateCallback onUpdate) {
+        this.onUpdate = onUpdate;
         return this;
     }
 
@@ -377,6 +395,42 @@ public class ServerEventsClient implements Closeable {
         stopBackgroundThread();
     }
 
+    private void onJoinReceived(ServerEventJoin e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnJoinReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        if (onJoin != null)
+            onJoin.execute(e);
+    }
+
+    private void onLeaveReceived(ServerEventLeave e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnLeaveReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        if (onLeave != null)
+            onLeave.execute(e);
+    }
+
+    private void onUpdateReceived(ServerEventUpdate e) {
+        if (Log.isDebugEnabled())
+            Log.d("[SSE-CLIENT] OnUpdateReceived: ("
+                    + e.getClass().getSimpleName() + ") #"
+                    + e.getEventId() + " on #"
+                    + getConnectionDisplayName() + " ("
+                    + Utils.join(channels, ",") + ")");
+
+        if (onUpdate != null)
+            onUpdate.execute(e);
+    }
+
     private void onCommandReceived(ServerEventMessage e) {
         if (Log.isDebugEnabled())
             Log.d("[SSE-CLIENT] OnCommandReceived: ("
@@ -570,15 +624,24 @@ public class ServerEventsClient implements Closeable {
     }
 
     protected void processOnJoinMessage(ServerEventMessage e) {
-        onCommandReceived(new ServerEventJoin().populate(e, JsonUtils.toJsonObject(e.getJson())));
+        ServerEventJoin m = new ServerEventJoin();
+        m.populate(e, JsonUtils.toJsonObject(e.getJson()));
+        onJoinReceived(m);
+        onCommandReceived(m);
     }
 
     protected void processOnLeaveMessage(ServerEventMessage e) {
-        onCommandReceived(new ServerEventLeave().populate(e, JsonUtils.toJsonObject(e.getJson())));
+        ServerEventLeave m = new ServerEventLeave();
+        m.populate(e, JsonUtils.toJsonObject(e.getJson()));
+        onLeaveReceived(m);
+        onCommandReceived(m);
     }
 
     protected void processOnUpdateMessage(ServerEventMessage e) {
-        onCommandReceived(new ServerEventUpdate().populate(e, JsonUtils.toJsonObject(e.getJson())));
+        ServerEventUpdate m = new ServerEventUpdate();
+        m.populate(e, JsonUtils.toJsonObject(e.getJson()));
+        onUpdateReceived(m);
+        onCommandReceived(m);
     }
 
     protected void processOnHeartbeatMessage(ServerEventMessage e) {

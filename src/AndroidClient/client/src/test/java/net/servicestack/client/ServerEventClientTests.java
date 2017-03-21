@@ -83,19 +83,15 @@ public class ServerEventClientTests extends TestCase {
         try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", channels))
         {
             client
-                .setOnCommand(e -> {
-                    System.out.print("onCommand: " + e);
+                .setOnJoin(e -> {
+                    System.out.print("onJoin: " + e);
 
-                    if (e instanceof ServerEventJoin) {
-                        ServerEventJoin joinMsg = (ServerEventJoin)e;
-                        joinMsgs.add(joinMsg);
+                    joinMsgs.add(e);
+                    assertEquals(channels[joinMsgs.size() - 1], e.getChannel());
+                    assertEquals(client.getConnectionInfo().getDisplayName(), e.getDisplayName());
 
-                        assertEquals(channels[joinMsgs.size() - 1], joinMsg.getChannel());
-                        assertEquals(client.getConnectionInfo().getDisplayName(), joinMsg.getDisplayName());
-
-                        if (joinMsgs.size() == channels.length)
-                            signal.countDown();
-                    }
+                    if (joinMsgs.size() == channels.length)
+                        signal.countDown();
                 })
                 .start();
 
