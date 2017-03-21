@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -168,6 +169,14 @@ public class Func {
         for (T x : xs) {
             f.apply(x);
         }
+    }
+
+    public static <T> void forEach(T[] xs, Action<T> f) {
+        each(toList(xs), f);
+    }
+
+    public static <T> void forEach(Iterable<T> xs, Action<T> f){
+        each(xs, f);
     }
 
     public static <T> ArrayList<T> filter(T[] xs, Predicate<T> predicate) {
