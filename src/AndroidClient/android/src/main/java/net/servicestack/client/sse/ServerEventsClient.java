@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -409,6 +409,14 @@ public class ServerEventsClient implements Closeable {
             } catch (Exception ignore) {}
         }
 
+        if (heartbeatTimer != null)
+        {
+            try {
+                heartbeatTimer.shutdown();
+            } catch (Exception ignore) {}
+            heartbeatTimer = null;
+        }
+
         connectionInfo = null;
         stopBackgroundThread();
     }
@@ -553,7 +561,7 @@ public class ServerEventsClient implements Closeable {
         }
     }
 
-    Timer heratbeatTimer;
+    ScheduledThreadPoolExecutor heartbeatTimer;
 
     private void startNewHeartbeat() {
         if (connectionInfo == null || connectionInfo.getHeartbeatUrl() == null)
@@ -562,16 +570,15 @@ public class ServerEventsClient implements Closeable {
         if (stopped.get())
             return;
 
-        if (heratbeatTimer == null)
-            heratbeatTimer = new Timer("ServerEventsClient Heartbeat");
+        if (heartbeatTimer == null)
+            heartbeatTimer = new ScheduledThreadPoolExecutor(1);
 
-        //reschedule timer on every heartbeat
-        heratbeatTimer.schedule(new TimerTask() {
+        heartbeatTimer.schedule(new Runnable() {
             @Override
             public void run() {
                 Heartbeat();
             }
-        }, connectionInfo.getHeartbeatIntervalMs(), Integer.MAX_VALUE);
+        }, connectionInfo.getHeartbeatIntervalMs(), TimeUnit.MILLISECONDS);
     }
 
     public void Heartbeat(){
