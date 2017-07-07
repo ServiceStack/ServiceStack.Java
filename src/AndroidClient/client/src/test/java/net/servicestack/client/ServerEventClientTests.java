@@ -24,6 +24,7 @@ import static chat.chatdtos.ChatMessage;
 import static chat.chatdtos.PostChatToChannel;
 import static chat.chatdtos.ResetServerEvents;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by mythz on 2/10/2017.
@@ -37,6 +38,18 @@ public class ServerEventClientTests extends TestCase {
 
     public ServerEventsClient createServerEventsClient(String baseUrl, String... channels){
         return new ServerEventsClient(baseUrl, channels);
+    }
+
+    public void renameto_test_leave_running() throws InterruptedException {
+        final CountDownLatch signal = new CountDownLatch(1);
+
+        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", "home")
+                .setOnConnect(e -> {
+                    System.out.print("onConnect: " + e);
+                }).start())
+        {
+            assertFalse(signal.await(60, TimeUnit.MINUTES));
+        }
     }
 
     public void test_Can_connect_to_ServerEventsStream() throws Exception {
