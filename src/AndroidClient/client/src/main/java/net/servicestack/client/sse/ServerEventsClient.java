@@ -573,12 +573,12 @@ public class ServerEventsClient implements Closeable {
         if (heartbeatTimer == null)
             heartbeatTimer = new ScheduledThreadPoolExecutor(1);
 
-        heartbeatTimer.schedule(new Runnable() {
+        heartbeatTimer.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
                 Heartbeat();
             }
-        }, connectionInfo.getHeartbeatIntervalMs(), TimeUnit.MILLISECONDS);
+        }, connectionInfo.getHeartbeatIntervalMs(), connectionInfo.getHeartbeatIntervalMs(), TimeUnit.MILLISECONDS);
     }
 
     public void Heartbeat(){
@@ -620,8 +620,6 @@ public class ServerEventsClient implements Closeable {
 
             if (Log.isDebugEnabled())
                 Log.d("[SSE-CLIENT] Heartbeat sent to: " + heartbeatUrl);
-
-            startNewHeartbeat();
 
         } catch (Exception e) {
             if (Log.isDebugEnabled())
