@@ -67,9 +67,9 @@ public class UpdateServiceStackUtils {
 
         String existingPath = builder.getPath();
         if(existingPath == null || existingPath.equals("/")) {
-            builder.setPath("/" + nativeTypesHandler.getRelativeTypesUrl());
+            builder.setPath(combinePath("", nativeTypesHandler.getRelativeTypesUrl()));
         } else {
-            builder.setPath(existingPath + "/" + nativeTypesHandler.getRelativeTypesUrl());
+            builder.setPath(combinePath(existingPath, nativeTypesHandler.getRelativeTypesUrl()));
         }
 
         Map<String,String> options = new HashMap<String,String>();
@@ -132,6 +132,18 @@ public class UpdateServiceStackUtils {
             Notifications.Bus.notify(notification);
             e.printStackTrace();
         }
+    }
+
+    public static String combinePath(String path, String segment) {
+        if (path == null || path.isEmpty()) {
+            return "/" + segment;
+        }
+
+        if (path.charAt(path.length() - 1) == '/') {
+            return path + segment;
+        }
+
+        return path + "/" + segment;
     }
 
     public static boolean containsOptionsHeader(PsiFile psiJavaFile) {
