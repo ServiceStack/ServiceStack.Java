@@ -62,11 +62,13 @@ public class Utils {
     }
 
     static final String KotlinAnnotationClass = "kotlin.jvm.internal.KotlinClass";
+    static final String KotliMetadataClass = "kotlin.Metadata";
 
     public static boolean isKotlinClass(Class type)
     {
         for (Annotation attr : type.getAnnotations()){
-            if (KotlinAnnotationClass.equals(attr.annotationType().getName()))
+            String annotationName = attr.annotationType().getName();
+            if (KotlinAnnotationClass.equals(annotationName) || KotliMetadataClass.equals(annotationName))
                 return true;
         }
         return false;
