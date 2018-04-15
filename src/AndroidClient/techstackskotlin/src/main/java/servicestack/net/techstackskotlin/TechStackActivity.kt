@@ -26,13 +26,13 @@ class TechStackActivity : Activity(), App.AppDataListener {
                 R.id.lblTechStackDescription,
                 R.id.lblTechStackAppUrl)
 
-        val img = findViewById(R.id.imgTechStackScreenshotUrl) as ImageView
+        val img = findViewById<ImageView>(R.id.imgTechStackScreenshotUrl)
         img.setImageBitmap(null)
 
-        val txtUrl = findViewById(R.id.lblTechStackAppUrl) as TextView
+        val txtUrl = findViewById<TextView>(R.id.lblTechStackAppUrl)
         txtUrl.setOnClickListener(View.OnClickListener {
             val result = App.data.techStack ?: return@OnClickListener
-            val url = result.Result!!.AppUrl ?: return@OnClickListener
+            val url = result.result!!.appUrl ?: return@OnClickListener
 
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         })
@@ -40,7 +40,7 @@ class TechStackActivity : Activity(), App.AppDataListener {
 
     internal fun setLoadingTextViews(vararg viewIds: Int) {
         for (viewId in viewIds) {
-            val txtView = findViewById(viewId) as TextView
+            val txtView = findViewById<TextView>(viewId)
             txtView.text = "Loading..."
         }
     }
@@ -48,20 +48,20 @@ class TechStackActivity : Activity(), App.AppDataListener {
     override fun onUpdate(data: App.AppData, dataType: App.DataType) {
         when (dataType) {
             App.DataType.TechStack -> {
-                val result = data.techStack!!.Result!!
+                val result = data.techStack!!.result!!
 
-                val lblName = findViewById(R.id.lblTechStackName) as TextView
-                lblName.text = result.Name
+                val lblName = findViewById<TextView>(R.id.lblTechStackName)
+                lblName.text = result.name
 
-                val lblDescription = findViewById(R.id.lblTechStackDescription) as TextView
-                lblDescription.text = result.Description
+                val lblDescription = findViewById<TextView>(R.id.lblTechStackDescription)
+                lblDescription.text = result.description
 
-                val lblUrl = findViewById(R.id.lblTechStackAppUrl) as TextView
-                lblUrl.text = Utils.toHumanFriendlyUrl(result.AppUrl)
+                val lblUrl = findViewById<TextView>(R.id.lblTechStackAppUrl)
+                lblUrl.text = Utils.toHumanFriendlyUrl(result.appUrl)
 
-                val imgUrl = result.ScreenshotUrl
+                val imgUrl = result.screenshotUrl
                 if (imgUrl != null) {
-                    val img = findViewById(R.id.imgTechStackScreenshotUrl) as ImageView
+                    val img = findViewById<ImageView>(R.id.imgTechStackScreenshotUrl)
                     Picasso.with(applicationContext).load(imgUrl).into(img)
                 }
 
@@ -72,16 +72,16 @@ class TechStackActivity : Activity(), App.AppDataListener {
 
     private fun renderCategories(result: TechStackDetails) {
 
-        val layout = findViewById(R.id.layoutTechStackCategories) as LinearLayout
+        val layout = findViewById<LinearLayout>(R.id.layoutTechStackCategories)
         layout.removeAllViews()
-        for (o in App.data.appOverviewResponse!!.AllTiers) {
-            val results = result.TechnologyChoices.filter { it.Tier === o.Value }
+        for (o in App.data.appOverviewResponse!!.allTiers) {
+            val results = result.technologyChoices.filter { it.tier === o.value }
 
             if (results.size == 0)
                 continue
 
             val lblCategory = TextView(this)
-            lblCategory.setText(o.Title)
+            lblCategory.setText(o.title)
             lblCategory.setPadding(0, 20, 0, 0)
             layout.addView(lblCategory,
                     LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT))
@@ -96,8 +96,8 @@ class TechStackActivity : Activity(), App.AppDataListener {
                 img.maxHeight = 120
                 img.adjustViewBounds = true
                 img.setPadding(30, 10, 0, 30)
-                img.setOnClickListener { App.openTechnology(activity, x.Slug) }
-                Picasso.with(applicationContext).load(x.LogoUrl).into(img)
+                img.setOnClickListener { App.openTechnology(activity, x.slug) }
+                Picasso.with(applicationContext).load(x.logoUrl).into(img)
 
                 if (i % 3 == 0) {
                     layoutCategories = LinearLayout(this)

@@ -22,7 +22,7 @@ class ApplicationTest : ApplicationTestCase<Application>(Application::class.java
         super.setUp()
         Log.Instance = AndroidLogProvider("ZZZ");
 
-        val client = AndroidServiceClient("http://techstacks.io")
+        val client = AndroidServiceClient("https://www.techstacks.io")
     }
 
     fun test_Fail() {
@@ -31,8 +31,8 @@ class ApplicationTest : ApplicationTestCase<Application>(Application::class.java
 
     fun test_Can_Serialize_Technology(){
         val dto = Technology();
-        dto.Name = "Test";
-        dto.Tier = TechnologyTier.ProgrammingLanguage;
+        dto.name = "Test";
+        dto.tier = TechnologyTier.ProgrammingLanguage;
 
         var gson = Gson()
 
@@ -42,6 +42,6 @@ class ApplicationTest : ApplicationTestCase<Application>(Application::class.java
 
         val fromJson = gson.fromJson(json, Technology::class.java)
 
-        Log.d("Name: ${fromJson.Name}, Tier: ${fromJson.Tier}")
+        Log.d("Name: ${fromJson.name}, Tier: ${fromJson.tier}")
     }
 }

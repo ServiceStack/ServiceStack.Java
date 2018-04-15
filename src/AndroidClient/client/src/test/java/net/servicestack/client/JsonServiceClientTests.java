@@ -16,7 +16,7 @@ import java.util.Date;
 public class JsonServiceClientTests extends TestCase {
 
     public JsonServiceClientTests() {
-
+        Log.setInstance(new LogProvider("", true));
     }
     //10.0.2.2 = loopback
     //http://developer.android.com/tools/devices/emulator.html
@@ -52,7 +52,7 @@ public class JsonServiceClientTests extends TestCase {
     }
 
     public void test_does_process_missing_service_correctly() {
-        JsonServiceClient localTestClient = new JsonServiceClient("http://techstacks.io/");
+        JsonServiceClient localTestClient = new JsonServiceClient("https://www.techstacks.io/");
 
         try {
             localTestClient.get(new EchoTypes());

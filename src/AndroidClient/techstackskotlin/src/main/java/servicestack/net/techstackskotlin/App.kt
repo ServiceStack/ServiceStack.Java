@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.support.v4.app.FragmentActivity
 import net.servicestack.android.AndroidServiceClient
 import net.servicestack.android.AndroidUtils
 import net.servicestack.client.AsyncSuccess
@@ -16,7 +17,7 @@ class App {
     var appData: AppData
 
     init {
-        client = AndroidServiceClient("http://techstacks.io")
+        client = AndroidServiceClient("https://www.techstacks.io")
         appData = AppData(client)
     }
 
@@ -106,7 +107,7 @@ class App {
             }
 
             val request = GetTechnology()
-            request.Slug = slug
+            request.slug = slug
             client.getAsync(request, AsyncSuccess<GetTechnologyResponse> {
                 technology = it
                 onUpdate(DataType.Technology)
@@ -122,7 +123,7 @@ class App {
             }
 
             val request = GetTechnologyStack()
-            request.Slug = slug
+            request.slug = slug
             client.getAsync(request, AsyncSuccess<GetTechnologyStackResponse> {
                 techStack = it
                 onUpdate(DataType.TechStack)
@@ -137,7 +138,7 @@ class App {
                 return
             }
 
-            client.getAsync(imgUrl, AsyncSuccess<ByteArray> {
+            client.getAsync(imgUrl, {
                 val img = AndroidUtils.readBitmap(it)
                 imgCache.put(imgUrl, img)
                 callback.success(img)
@@ -172,18 +173,18 @@ class App {
         val data: AppData
             get() = get().appData
 
-        fun openTechStack(activity: Activity, slug: String?) {
+        fun openTechStack(activity: Activity?, slug: String?) {
             if (slug == null) return
             val openTechStack = Intent(activity, TechStackActivity::class.java)
             openTechStack.putExtra("slug", slug)
-            activity.startActivity(openTechStack)
+            activity!!.startActivity(openTechStack)
         }
 
-        fun openTechnology(activity: Activity, slug: String?) {
+        fun openTechnology(activity: Activity?, slug: String?) {
             if (slug == null) return
             val openTechnology = Intent(activity, TechnologyActivity::class.java)
             openTechnology.putExtra("slug", slug)
-            activity.startActivity(openTechnology)
+            activity!!.startActivity(openTechnology)
         }
 
         fun openUrl(activity: Activity, url: String?) {

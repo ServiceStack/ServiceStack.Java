@@ -7,10 +7,11 @@ import junit.framework.TestCase
 import net.servicestack.client.JsonServiceClient
 import net.servicestack.client.Utils
 import java.io.IOException
+import java.util.ArrayList
 
 class TechStacksServiceTests : TestCase() {
 
-    internal var client = JsonServiceClient("http://techstacks.io")
+    internal var client = JsonServiceClient("https://www.techstacks.io")
 
     fun test_Can_GET_TechStacks_Overview() {
         val response = client.get<OverviewResponse>(Overview())
@@ -23,8 +24,8 @@ class TechStacksServiceTests : TestCase() {
     fun test_Can_GET_TechStacks_AppOverview() {
         val r = client.get<AppOverviewResponse>(AppOverview())
         Assert.assertNotNull(r)
-        Assert.assertTrue(r.TopTechnologies!!.size > 0)
-        Assert.assertTrue(r.AllTiers!!.size > 0)
+        Assert.assertTrue(r.topTechnologies.size > 0)
+        Assert.assertTrue(r.allTiers.size > 0)
     }
 
     fun test_Can_GET_TechStacks_Overview_with_relative_url() {
@@ -39,7 +40,7 @@ class TechStacksServiceTests : TestCase() {
 
     fun test_Can_GET_GetTechnology_with_params() {
         val requestDto = GetTechnology()
-        requestDto.Slug = "servicestack"
+        requestDto.slug = "servicestack"
 
         val response = client.get<GetTechnologyResponse>(requestDto)
         assertGetTechnologyResponse(response)
@@ -52,21 +53,21 @@ class TechStacksServiceTests : TestCase() {
 
     fun test_Can_call_FindTechnologies_AutoQuery_Service() {
         val request = FindTechnologies()
-        request.Name = "ServiceStack"
+        request.name = "ServiceStack"
 
         val response = client.get<QueryResponse<Technology>>(request)
 
-        Assert.assertEquals(1, response.Results?.size)
+        Assert.assertEquals(1, response.results.size)
     }
 
     fun test_Can_call_FindTechnologies_AutoQuery_Implicit_Service() {
         val request = FindTechnologies()
-        request.Take = 5
+        request.take = 5
 
         val response = client.get<QueryResponse<Technology>>(request,
                 Utils.createMap("DescriptionContains", "framework"))
 
-        Assert.assertEquals(5, response.Results?.size)
+        Assert.assertEquals(5, response.results.size)
     }
 
     fun test_Can_serialize_Empty_Option() {
@@ -82,16 +83,16 @@ class TechStacksServiceTests : TestCase() {
 
         val dto = client.fromJson(json, Option::class.java) as Option
 
-        Assert.assertNull(dto.Name)
-        Assert.assertNull(dto.Title)
-        Assert.assertNull(dto.Value)
+        Assert.assertNull(dto.name)
+        Assert.assertNull(dto.title)
+        Assert.assertNull(dto.value)
     }
 
     fun test_Can_serialize_Full_Option() {
         val dto = Option()
-        dto.Name = "name"
-        dto.Title = "title"
-        dto.Value = TechnologyTier.ProgrammingLanguage
+        dto.name = "name"
+        dto.title = "title"
+        dto.value = TechnologyTier.ProgrammingLanguage
 
         val json = client.toJson(dto)
 
@@ -103,9 +104,9 @@ class TechStacksServiceTests : TestCase() {
 
         val dto = client.fromJson(json, Option::class.java) as Option
 
-        Assert.assertEquals("name", dto.Name)
-        Assert.assertEquals("title", dto.Title)
-        Assert.assertEquals(TechnologyTier.ProgrammingLanguage, dto.Value)
+        Assert.assertEquals("name", dto.name)
+        Assert.assertEquals("title", dto.title)
+        Assert.assertEquals(TechnologyTier.ProgrammingLanguage, dto.value)
     }
 
     @Throws(IOException::class)
@@ -117,72 +118,72 @@ class TechStacksServiceTests : TestCase() {
 
         val dto = client.fromJson(json, OverviewResponse::class.java) as OverviewResponse
 
-        Assert.assertEquals(6, dto.TopUsers?.size)
-        val topUser = dto.TopUsers!![0]
-        Assert.assertEquals("demisbellot", topUser.UserName)
-        Assert.assertEquals("http:\\/\\/pbs.twimg.com\\/profile_images\\/1765666853\\/image1326949938_normal.png", topUser.AvatarUrl)
-        Assert.assertEquals(61, topUser.StacksCount)
+        Assert.assertEquals(20, dto.topUsers.size)
+        val topUser = dto.topUsers[0]
+        Assert.assertEquals("demisbellot", topUser.userName)
+        Assert.assertEquals("http://pbs.twimg.com/profile_images/1765666853/image1326949938_normal.png", topUser.avatarUrl)
+        Assert.assertEquals(95, topUser.stacksCount)
 
 
-        Assert.assertEquals(20, dto.TopTechnologies?.size)
-        val topTech = dto.TopTechnologies!![0]
-        Assert.assertEquals(TechnologyTier.Data, topTech.Tier)
-        Assert.assertEquals("redis", topTech.Slug)
-        Assert.assertEquals("Redis", topTech.Name)
-        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/redis-logo.png", topTech.LogoUrl)
-        Assert.assertEquals(35, topTech.StacksCount)
+        Assert.assertEquals(50, dto.topTechnologies.size)
+        val topTech = dto.topTechnologies[0]
+        Assert.assertEquals(TechnologyTier.Data, topTech.tier)
+        Assert.assertEquals("redis", topTech.slug)
+        Assert.assertEquals("Redis", topTech.name)
+        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/redis-logo.png", topTech.logoUrl)
+        Assert.assertEquals(73, topTech.stacksCount)
 
 
-        val latestStacks = dto.LatestTechStacks
-        Assert.assertEquals(20, latestStacks?.size)
+        val latestStacks = dto.latestTechStacks
+        Assert.assertEquals(20, latestStacks.size)
 
-        val techstacks = latestStacks!![0]
-        Assert.assertEquals(1, techstacks.Id!!)
-        Assert.assertEquals("TechStacks Website", techstacks.Name)
-        Assert.assertEquals("ServiceStack", techstacks.VendorName)
-        Assert.assertTrue(techstacks.Description!!.startsWith("This Website! "))
-        Assert.assertEquals("http://techstacks.io", techstacks.AppUrl)
-        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.ScreenshotUrl)
-        Assert.assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.Created)
-        Assert.assertEquals("layoric", techstacks.CreatedBy)
-        Assert.assertEquals(Utils.parseDate("2015-01-12T23:34:12.4516410"), techstacks.LastModified)
-        Assert.assertEquals("layoric", techstacks.LastModifiedBy)
-        Assert.assertTrue(techstacks.IsLocked!!)
-        Assert.assertEquals("2", techstacks.OwnerId)
-        Assert.assertEquals("techstacks-website", techstacks.Slug)
-        Assert.assertEquals(Utils.parseDate("2015-01-12T23:34:12.4516410"), techstacks.LastStatusUpdate)
+        val techstacks = latestStacks[0]
+        Assert.assertEquals(1, techstacks.id!!)
+        Assert.assertEquals("TechStacks Website", techstacks.name)
+        Assert.assertEquals("ServiceStack", techstacks.vendorName)
+        Assert.assertTrue(techstacks.description!!.startsWith("The original TechStacks Website"))
+        Assert.assertEquals("http://angular.techstacks.io", techstacks.appUrl)
+        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.screenshotUrl)
+        Assert.assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.created)
+        Assert.assertEquals("layoric", techstacks.createdBy)
+        Assert.assertEquals(Utils.parseDate("2018-03-23T03:18:38.9958030"), techstacks.lastModified)
+        Assert.assertEquals("mythz", techstacks.lastModifiedBy)
+        Assert.assertTrue(techstacks.isLocked!!)
+        Assert.assertEquals("2", techstacks.ownerId)
+        Assert.assertEquals("techstacks-website", techstacks.slug)
+        Assert.assertEquals(Utils.parseDate("2018-03-23T03:12:44.0426320"), techstacks.lastStatusUpdate)
 
-        val techstackChoices = techstacks.TechnologyChoices
-        Assert.assertEquals(10, techstackChoices?.size)
-        val techChoice = techstackChoices!![0]
-        Assert.assertEquals(1, techChoice.TechnologyId!!)
-        Assert.assertEquals(1, techChoice.TechnologyStackId!!)
-        Assert.assertEquals(2, techChoice.Id!!)
-        Assert.assertEquals("ServiceStack", techChoice.Name)
-        Assert.assertEquals("Service Stack", techChoice.VendorName)
-        Assert.assertEquals("https://servicestack.net", techChoice.VendorUrl)
-        Assert.assertEquals("https://servicestack.net", techChoice.ProductUrl)
-        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/servicestack-logo.png", techChoice.LogoUrl)
-        Assert.assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.Created)
-        Assert.assertEquals("demisbellot", techChoice.CreatedBy)
-        Assert.assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.LastModified)
-        Assert.assertEquals("demisbellot", techChoice.LastModifiedBy)
-        Assert.assertEquals("1", techChoice.OwnerId)
-        Assert.assertEquals("servicestack", techChoice.Slug)
-        Assert.assertTrue(techChoice.LogoApproved!!)
-        Assert.assertFalse(techChoice.IsLocked!!)
-        Assert.assertEquals(TechnologyTier.Server, techChoice.Tier)
+        val techstackChoices = techstacks.technologyChoices
+        Assert.assertEquals(11, techstackChoices.size)
+        val techChoice = techstackChoices[0]
+        Assert.assertEquals(1, techChoice.technologyId!!)
+        Assert.assertEquals(1, techChoice.technologyStackId!!)
+        Assert.assertEquals(2, techChoice.id!!)
+        Assert.assertEquals("ServiceStack", techChoice.name)
+        Assert.assertEquals("ServiceStack", techChoice.vendorName)
+        Assert.assertEquals("https://servicestack.net", techChoice.vendorUrl)
+        Assert.assertEquals("https://servicestack.net", techChoice.productUrl)
+        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/servicestack-logo.png", techChoice.logoUrl)
+        Assert.assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.created)
+        Assert.assertEquals("demisbellot", techChoice.createdBy)
+        Assert.assertEquals(Utils.parseDate("2018-03-14T06:01:13.9571660"), techChoice.lastModified)
+        Assert.assertEquals("mythz", techChoice.lastModifiedBy)
+        Assert.assertEquals("1", techChoice.ownerId)
+        Assert.assertEquals("servicestack", techChoice.slug)
+        Assert.assertTrue(techChoice.logoApproved!!)
+        Assert.assertFalse(techChoice.isLocked!!)
+        Assert.assertEquals(TechnologyTier.Server, techChoice.tier)
 
 
-        Assert.assertEquals(9, dto.TopTechnologiesByTier?.size)
-        val langs = dto.TopTechnologiesByTier!![TechnologyTier.ProgrammingLanguage]
-        Assert.assertEquals(3, langs?.size)
-        val lang = langs!![0]
-        Assert.assertEquals(TechnologyTier.ProgrammingLanguage, lang.Tier)
-        Assert.assertEquals("python", lang.Slug)
-        Assert.assertEquals("Python", lang.Name)
-        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/python-logo.png", lang.LogoUrl)
-        Assert.assertEquals(25, lang.StacksCount)
+        Assert.assertEquals(9, dto.topTechnologiesByTier.size)
+        val langs = dto.topTechnologiesByTier[TechnologyTier.ProgrammingLanguage.toString()]
+        Assert.assertEquals(5, langs!!.size)
+        val lang = langs[0]
+        Assert.assertEquals(TechnologyTier.ProgrammingLanguage, lang.tier)
+        Assert.assertEquals("python", lang.slug)
+        Assert.assertEquals("Python", lang.name)
+        Assert.assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/python-logo.png", lang.logoUrl)
+        Assert.assertEquals(47, lang.stacksCount)
 
         //        let toJson = dtos.toJson()
         //        println(toJson)
@@ -193,17 +194,17 @@ class TechStacksServiceTests : TestCase() {
 
         fun assertOverviewResponse(r: OverviewResponse) {
             Assert.assertNotNull(r)
-            Assert.assertTrue(r.TopUsers!!.size > 0)
-            Assert.assertTrue(r.TopTechnologies!!.size > 0)
-            Assert.assertTrue(r.LatestTechStacks!!.size > 0)
-            Assert.assertTrue(r.LatestTechStacks!![0].TechnologyChoices!!.size > 0)
-            Assert.assertTrue(r.TopTechnologiesByTier!!.size > 0)
+            Assert.assertTrue(r.topUsers.size > 0)
+            Assert.assertTrue(r.topTechnologies.size > 0)
+            Assert.assertTrue(r.latestTechStacks.size > 0)
+            Assert.assertTrue(r.latestTechStacks[0].technologyChoices.size > 0)
+            Assert.assertTrue(r.topTechnologiesByTier.size > 0)
         }
 
         fun assertGetTechnologyResponse(r: GetTechnologyResponse) {
             Assert.assertNotNull(r)
-            Assert.assertEquals("ServiceStack", r.Technology?.Name)
-            Assert.assertTrue(r.TechnologyStacks!!.size > 0)
+            Assert.assertEquals("ServiceStack", r.technology?.name)
+            Assert.assertTrue(r.technologyStacks.size > 0)
         }
     }
 }

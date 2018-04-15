@@ -7,14 +7,14 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
-import android.support.v7.app.ActionBarActivity
+import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.widget.*
 import java.util.*
 
-class MainActivity : ActionBarActivity(), ActionBar.TabListener {
+class MainActivity : AppCompatActivity(), ActionBar.TabListener {
 
     /**
      * The [android.support.v4.view.PagerAdapter] that will provide
@@ -48,7 +48,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById(R.id.pager) as ViewPager
+        mViewPager = findViewById<ViewPager>(R.id.pager)
         mViewPager?.adapter = mSectionsPagerAdapter
 
         // When swiping between different sections, select the corresponding
@@ -121,7 +121,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 1 -> return "TechStacks"
                 2 -> return "Technologies"
             }
-            throw RuntimeException("Invalid position: " + position)
+            throw RuntimeException("Invalid position: $position")
         }
 
         override fun getItem(position: Int): Fragment {
@@ -130,7 +130,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 1 -> return TechStacksFragment.create(position + 1)
                 2 -> return TechnologiesFragment.create(position + 1)
             }
-            throw RuntimeException("Invalid position: " + position)
+            throw RuntimeException("Invalid position: $position")
         }
     }
 
@@ -142,8 +142,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             App.data.addListener(this)
         }
 
-        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             App.data.loadAppOverview()
 
             val rootView = inflater!!.inflate(R.layout.fragment_top_rated, container, false)
@@ -151,7 +150,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             val spinner = rootView.findViewById(R.id.spinnerCategory) as Spinner
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    selectedCategory = App.data.appOverviewResponse?.AllTiers!![position]
+                    selectedCategory = App.data.appOverviewResponse?.allTiers!![position]
                     refreshTopTechnologies(App.data, rootView.findViewById(R.id.listTopRated) as ListView)
                 }
 
@@ -162,7 +161,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             val list = rootView.findViewById(R.id.listTopRated) as ListView
             list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
                 val result = getTopTechnologies(App.data)[position]
-                App.openTechnology(activity, result.Slug)
+                App.openTechnology(activity, result.slug)
             }
 
             return rootView
@@ -172,14 +171,14 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             get() {
                 if (activity == null)
                     return null
-                return activity.findViewById(R.id.spinnerCategory) as Spinner?
+                return activity!!.findViewById(R.id.spinnerCategory) as Spinner?
             }
 
         internal val topRatedListView: ListView?
             get() {
                 if (activity == null)
                     return null
-                return activity.findViewById(R.id.listTopRated) as ListView?
+                return activity!!.findViewById(R.id.listTopRated) as ListView?
             }
 
         override fun onUpdate(data: App.AppData, dataType: App.DataType) {
@@ -187,7 +186,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 App.DataType.AppOverview -> {
                     val spinner = categorySpinner
                     if (spinner != null) {
-                        val categories = data.appOverviewResponse!!.AllTiers.map { it.Title }
+                        val categories = data.appOverviewResponse!!.allTiers.map { it.title }
                         spinner.adapter = ArrayAdapter(activity, android.R.layout.simple_spinner_item, categories)
                     }
 
@@ -200,14 +199,14 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
         }
 
         private fun refreshTopTechnologies(data: App.AppData, list: ListView) {
-            val topTechnologyNames = getTopTechnologies(data).map { it.Name + " (" + it.StacksCount + ")" }
+            val topTechnologyNames = getTopTechnologies(data).map { it.name + " (" + it.stacksCount + ")" }
             list.adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, topTechnologyNames)
         }
 
         private fun getTopTechnologies(data: App.AppData): ArrayList<TechnologyInfo> {
-            var topTechnologies = data.appOverviewResponse!!.TopTechnologies
-            if (selectedCategory != null && selectedCategory!!.Value != null) {
-                topTechnologies = ArrayList(topTechnologies.filter { it.Tier == selectedCategory?.Value })
+            var topTechnologies = data.appOverviewResponse!!.topTechnologies
+            if (selectedCategory != null && selectedCategory!!.value != null) {
+                topTechnologies = ArrayList(topTechnologies.filter { it.tier == selectedCategory?.value })
             }
             return topTechnologies
         }
@@ -227,9 +226,8 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             App.data.addListener(this).searchTechStacks("")
         }
 
-        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater!!.inflate(R.layout.fragment_tech_stacks, container, false)
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            val rootView = inflater.inflate(R.layout.fragment_tech_stacks, container, false)
 
             val txtSearch = rootView.findViewById(R.id.searchTechStacks) as EditText
             txtSearch.addTextChangedListener(object : TextWatcher {
@@ -246,8 +244,8 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
 
             val list = rootView.findViewById(R.id.listTechStacks) as ListView
             list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val result = App.data.searchTechStacksResponse!!.Results[position]
-                App.openTechStack(activity, result.Slug)
+                val result = App.data.searchTechStacksResponse!!.results[position]
+                App.openTechStack(activity, result.slug)
             }
 
             return rootView
@@ -257,7 +255,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             get() {
                 if (activity == null)
                     return null
-                return activity.findViewById(R.id.listTechStacks) as ListView
+                return activity!!.findViewById(R.id.listTechStacks) as ListView
             }
 
         override fun onUpdate(data: App.AppData, dataType: App.DataType) {
@@ -265,7 +263,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 App.DataType.SearchTechStacks -> {
                     val list = listViewResults
                     if (list != null) {
-                        val results = data.searchTechStacksResponse!!.Results.map { it.Name }
+                        val results = data.searchTechStacksResponse!!.results.map { it.name }
                         list.adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, results)
                     }
                 }
@@ -286,11 +284,10 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             App.data.addListener(this).searchTechnologies("")
         }
 
-        override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater!!.inflate(R.layout.fragment_technologies, container, false)
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            val rootView = inflater.inflate(R.layout.fragment_technologies, container, false)
 
-            val txtSearch = rootView.findViewById(R.id.searchTechnologies) as EditText
+            val txtSearch = rootView.findViewById<EditText>(R.id.searchTechnologies)
             txtSearch.addTextChangedListener(object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                     App.data.searchTechnologies(s.toString())
@@ -305,8 +302,8 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
 
             val list = rootView.findViewById(R.id.listTechnologies) as ListView
             list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                val result = App.data.searchTechnologiesResponse!!.Results[position]
-                App.openTechnology(activity, result.Slug)
+                val result = App.data.searchTechnologiesResponse!!.results[position]
+                App.openTechnology(activity, result.slug)
             }
             return rootView
         }
@@ -315,7 +312,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
             get() {
                 if (activity == null)
                     return null
-                return activity.findViewById(R.id.listTechnologies) as ListView
+                return activity!!.findViewById<ListView>(R.id.listTechnologies)
             }
 
         override fun onUpdate(data: App.AppData, dataType: App.DataType) {
@@ -323,7 +320,7 @@ class MainActivity : ActionBarActivity(), ActionBar.TabListener {
                 App.DataType.SearchTechnologies -> {
                     val list = listViewResults
                     if (list != null) {
-                        val results = data.searchTechnologiesResponse!!.Results.map { it.Name }
+                        val results = data.searchTechnologiesResponse!!.results.map { it.name }
                         list.adapter = ArrayAdapter(activity, android.R.layout.simple_list_item_1, results)
                     }
                 }

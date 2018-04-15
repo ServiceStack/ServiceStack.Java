@@ -176,7 +176,7 @@ class TestServiceTests : TestCase() {
         var errorCode = 0
         try {
             val request = LockTechStack()
-            request.TechnologyStackId = 6.toLong()
+            request.technologyStackId = 6.toLong()
             val res = techStacksClient.post(request)
             Assert.fail("Should throw")
         } catch (ex: WebServiceException) {

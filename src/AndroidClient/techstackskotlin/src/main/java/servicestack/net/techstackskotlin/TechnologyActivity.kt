@@ -22,23 +22,23 @@ class TechnologyActivity : Activity(), App.AppDataListener {
                 R.id.lblTechnologyVendorUrl,
                 R.id.lblTechnologyDescription)
 
-        val img = findViewById(R.id.imgTechnologyLogo) as ImageView
+        val img = findViewById<ImageView>(R.id.imgTechnologyLogo)
         img.setImageBitmap(null)
 
-        val list = findViewById(R.id.listTechnologyTechStacks) as ListView
+        val list = findViewById<ListView>(R.id.listTechnologyTechStacks)
         list.adapter = null
 
-        val txtUrl = findViewById(R.id.lblTechnologyVendorUrl) as TextView
+        val txtUrl = findViewById<TextView>(R.id.lblTechnologyVendorUrl)
         val activity = this
         txtUrl.setOnClickListener(View.OnClickListener {
             val result = App.data.technology ?: return@OnClickListener
-            App.openUrl(activity, result.Technology!!.VendorUrl)
+            App.openUrl(activity, result.technology!!.vendorUrl)
         })
     }
 
     internal fun setLoadingTextViews(vararg viewIds: Int) {
         for (viewId in viewIds) {
-            val txtView = findViewById(viewId) as TextView
+            val txtView = findViewById<TextView>(viewId)
             txtView.text = "Loading..."
         }
     }
@@ -47,31 +47,31 @@ class TechnologyActivity : Activity(), App.AppDataListener {
         when (dataType) {
             App.DataType.Technology -> {
                 val result = data.technology!!
-                val lblName = findViewById(R.id.lblTechnologyName) as TextView
-                lblName.text = result.Technology!!.Name
+                val lblName = findViewById<TextView>(R.id.lblTechnologyName)
+                lblName.text = result.technology!!.name
 
-                val lblVendor = findViewById(R.id.lblTechnologyVendor) as TextView
-                lblVendor.text = result.Technology!!.VendorName
+                val lblVendor = findViewById<TextView>(R.id.lblTechnologyVendor)
+                lblVendor.text = result.technology!!.vendorName
 
-                val lblVendorUrl = findViewById(R.id.lblTechnologyVendorUrl) as TextView
-                lblVendorUrl.text = Utils.toHumanFriendlyUrl(result.Technology!!.VendorUrl)
+                val lblVendorUrl = findViewById<TextView>(R.id.lblTechnologyVendorUrl)
+                lblVendorUrl.text = Utils.toHumanFriendlyUrl(result.technology!!.vendorUrl)
 
-                val lblDescription = findViewById(R.id.lblTechnologyDescription) as TextView
-                lblDescription.text = result.Technology!!.Description
+                val lblDescription = findViewById<TextView>(R.id.lblTechnologyDescription)
+                lblDescription.text = result.technology!!.description
 
-                val imgUrl = result.Technology!!.LogoUrl
+                val imgUrl = result.technology!!.logoUrl
                 if (imgUrl != null) {
-                    val img = findViewById(R.id.imgTechnologyLogo) as ImageView
+                    val img = findViewById<ImageView>(R.id.imgTechnologyLogo)
                     Picasso.with(applicationContext).load(imgUrl).into(img)
                 }
 
-                val list = findViewById(R.id.listTechnologyTechStacks) as ListView
-                val stackNames = result.TechnologyStacks.map { it.Name }
+                val list = findViewById<ListView>(R.id.listTechnologyTechStacks)
+                val stackNames = result.technologyStacks.map { it.name }
 
                 val activity = this
                 list.adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, stackNames)
                 list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-                    App.openTechStack(activity, result.TechnologyStacks[position].Slug)
+                    App.openTechStack(activity, result.technologyStacks[position].slug)
                 }
             }
         }

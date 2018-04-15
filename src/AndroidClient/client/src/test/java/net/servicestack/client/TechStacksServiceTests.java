@@ -17,7 +17,7 @@ public class TechStacksServiceTests extends TestCase {
 
     }
 
-    JsonServiceClient client = new JsonServiceClient("http://techstacks.io");
+    JsonServiceClient client = new JsonServiceClient("https://www.techstacks.io");
 
     public void test_Can_GET_TechStacks_Overview(){
         OverviewResponse response = client.get(new Overview());
@@ -148,7 +148,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(1, (long)techstacks.getId());
         assertEquals("TechStacks Website", techstacks.getName());
         assertEquals("ServiceStack", techstacks.getVendorName());
-        assertTrue(techstacks.Description.startsWith("This Website! "));
+        assertTrue(techstacks.description.startsWith("This Website! "));
         assertEquals("http://techstacks.io", techstacks.getAppUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.getScreenshotUrl());
         assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.getCreated());

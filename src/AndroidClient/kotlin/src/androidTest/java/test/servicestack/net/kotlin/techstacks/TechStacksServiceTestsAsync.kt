@@ -17,7 +17,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
         Log.Instance = AndroidLogProvider("ZZZ")
     }
 
-    internal var client = AndroidServiceClient("http://techstacks.io")
+    internal var client = AndroidServiceClient("https://www.techstacks.io")
 
     @Throws(InterruptedException::class)
     fun test_Can_GET_TechStacks_Overview() {
@@ -37,8 +37,8 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
 
         client.getAsync<AppOverviewResponse>(AppOverview(), AsyncSuccess<AppOverviewResponse> {
             Assert.assertNotNull(it)
-            Assert.assertTrue(it.TopTechnologies.size > 0)
-            Assert.assertTrue(it.AllTiers.size > 0)
+            Assert.assertTrue(it.topTechnologies.size > 0)
+            Assert.assertTrue(it.allTiers.size > 0)
             signal.countDown()
         })
 
@@ -72,7 +72,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
     @Throws(InterruptedException::class)
     fun test_Can_GET_GetTechnology_with_params_Async() {
         val requestDto = GetTechnology()
-        requestDto.Slug = "servicestack"
+        requestDto.slug = "servicestack"
 
         val signal = CountDownLatch(1)
 
@@ -99,12 +99,12 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
     @Throws(InterruptedException::class)
     fun test_Can_call_FindTechnologies_AutoQuery_Service_Async() {
         val request = FindTechnologies()
-        request.Name = "ServiceStack"
+        request.name = "ServiceStack"
 
         val signal = CountDownLatch(1)
 
         client.getAsync<QueryResponse<Technology>>(request, AsyncSuccess<QueryResponse<Technology>> {
-            Assert.assertEquals(1, it.Results.size)
+            Assert.assertEquals(1, it.results.size)
             signal.countDown()
         })
 
@@ -114,13 +114,13 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
     @Throws(InterruptedException::class)
     fun test_Can_call_FindTechnologies_AutoQuery_Implicit_Service() {
         val request = FindTechnologies()
-        request.Take = 5
+        request.take = 5
 
         val signal = CountDownLatch(1)
 
         client.getAsync<QueryResponse<Technology>>(request, hashMapOf(Pair("DescriptionContains", "framework")),
             AsyncSuccess<QueryResponse<Technology>> {
-                Assert.assertEquals(5, it.Results.size)
+                Assert.assertEquals(5, it.results.size)
                 signal.countDown()
             })
 
@@ -131,17 +131,17 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
 
         fun assertOverviewResponse(r: OverviewResponse) {
             Assert.assertNotNull(r)
-            Assert.assertTrue(r.TopUsers.size > 0)
-            Assert.assertTrue(r.TopTechnologies.size > 0)
-            Assert.assertTrue(r.LatestTechStacks.size > 0)
-            Assert.assertTrue(r.LatestTechStacks[0].TechnologyChoices.size > 0)
-            Assert.assertTrue(r.TopTechnologiesByTier.size > 0)
+            Assert.assertTrue(r.topUsers.size > 0)
+            Assert.assertTrue(r.topTechnologies.size > 0)
+            Assert.assertTrue(r.latestTechStacks.size > 0)
+            Assert.assertTrue(r.latestTechStacks[0].technologyChoices.size > 0)
+            Assert.assertTrue(r.topTechnologiesByTier.size > 0)
         }
 
         fun assertGetTechnologyResponse(r: GetTechnologyResponse) {
             Assert.assertNotNull(r)
-            Assert.assertEquals("ServiceStack", r.Technology?.Name)
-            Assert.assertTrue(r.TechnologyStacks.size > 0)
+            Assert.assertEquals("ServiceStack", r.technology?.name)
+            Assert.assertTrue(r.technologyStacks.size > 0)
         }
     }
 }
