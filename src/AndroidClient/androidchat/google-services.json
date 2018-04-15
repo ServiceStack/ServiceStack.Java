@@ -1,0 +1,52 @@
+{
+  "project_info": {
+    "project_number": "1052104404413",
+    "project_id": "chat-162801"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052104404413:android:488b76c4867da4bf",
+        "android_client_info": {
+          "package_name": "servicestack.net.androidchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052104404413-9nnchqdtv3ahs7r6eti9eet2rff7pr67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "servicestack.net.androidchat",
+            "certificate_hash": "35b494838697a46d5c52e5a5436d29d8278f0c01"
+          }
+        },
+        {
+          "client_id": "1052104404413-9u4aaoc3hnh01uhmhb38f29chl4i492g.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1052104404413-ltjkinrgo98st0393ogjcc39va25ll0p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgPtwIjcmAcJVJxTqUZbF8bYeqbhXxv0g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
