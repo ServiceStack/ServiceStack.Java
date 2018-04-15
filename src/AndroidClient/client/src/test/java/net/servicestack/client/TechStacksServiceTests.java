@@ -116,29 +116,30 @@ public class TechStacksServiceTests extends TestCase {
     }
 
     public void test_Can_deserialize_Overview() throws IOException {
-//Latest Android Update broke test resources
-//        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("overview.json");
-//        String json = Utils.readToEnd(stream, "UTF-8");
+        //Latest Android Update broke test resources
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("overview.json");
+        String json = Utils.readToEnd(stream, "UTF-8");
+
         // Works from gradle -> test or check as they run 'processTestResources' that copy resources into build directory
-        String projFolder = getClass().getClassLoader().getResource("").getPath().replace("build/classes/test/","");
-        String overviewPath = projFolder + "src/test/resources/overview.json";
-        String json =  Utils.readToEnd(new FileInputStream(overviewPath), "UTF-8");
+//        String projFolder = getClass().getClassLoader().getResource("").getPath().replace("build/classes/test/","");
+//        String overviewPath = projFolder + "src/test/resources/overview.json";
+//        String json =  Utils.readToEnd(new FileInputStream(overviewPath), "UTF-8");
 
         OverviewResponse dto = (OverviewResponse)client.fromJson(json, OverviewResponse.class);
 
-        assertEquals(6, dto.getTopUsers().size());
+        assertEquals(20, dto.getTopUsers().size());
         assertEquals("demisbellot", dto.getTopUsers().get(0).getUserName());
-        assertEquals("http:\\/\\/pbs.twimg.com\\/profile_images\\/1765666853\\/image1326949938_normal.png", dto.getTopUsers().get(0).getAvatarUrl());
-        assertEquals(61, (int)dto.getTopUsers().get(0).getStacksCount());
+        assertEquals("http://pbs.twimg.com/profile_images/1765666853/image1326949938_normal.png", dto.getTopUsers().get(0).getAvatarUrl());
+        assertEquals(95, (int)dto.getTopUsers().get(0).getStacksCount());
 
 
-        assertEquals(20 ,dto.getTopTechnologies().size());
+        assertEquals(50 ,dto.getTopTechnologies().size());
         TechnologyInfo topTech = dto.getTopTechnologies().get(0);
         assertEquals(TechnologyTier.Data, topTech.getTier());
         assertEquals("redis", topTech.getSlug());
         assertEquals("Redis", topTech.getName());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/redis-logo.png", topTech.getLogoUrl());
-        assertEquals(35, (int)topTech.getStacksCount());
+        assertEquals(73, (int)topTech.getStacksCount());
 
 
         ArrayList<TechStackDetails> latestStacks = dto.getLatestTechStacks();
@@ -148,33 +149,33 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(1, (long)techstacks.getId());
         assertEquals("TechStacks Website", techstacks.getName());
         assertEquals("ServiceStack", techstacks.getVendorName());
-        assertTrue(techstacks.description.startsWith("This Website! "));
-        assertEquals("http://techstacks.io", techstacks.getAppUrl());
+        assertTrue(techstacks.description.startsWith("The original TechStacks Website"));
+        assertEquals("http://angular.techstacks.io", techstacks.getAppUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.getScreenshotUrl());
         assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.getCreated());
         assertEquals("layoric", techstacks.getCreatedBy());
-        assertEquals(Utils.parseDate("2015-01-12T23:34:12.4516410"), techstacks.getLastModified());
-        assertEquals("layoric", techstacks.getLastModifiedBy());
+        assertEquals(Utils.parseDate("2018-03-23T03:18:38.9958030"), techstacks.getLastModified());
+        assertEquals("mythz", techstacks.getLastModifiedBy());
         assertTrue(techstacks.getIsLocked());
         assertEquals("2", techstacks.getOwnerId());
         assertEquals("techstacks-website", techstacks.getSlug());
-        assertEquals(Utils.parseDate("2015-01-12T23:34:12.4516410"), techstacks.getLastStatusUpdate());
+        assertEquals(Utils.parseDate("2018-03-23T03:12:44.0426320"), techstacks.getLastStatusUpdate());
 
         ArrayList<TechnologyInStack> techstackChoices = techstacks.getTechnologyChoices();
-        assertEquals(10, techstackChoices.size());
+        assertEquals(11, techstackChoices.size());
         TechnologyInStack techChoice = techstackChoices.get(0);
         assertEquals(1, (long)techChoice.getTechnologyId());
         assertEquals(1, (long)techChoice.getTechnologyStackId());
         assertEquals(2, (long)techChoice.getId());
         assertEquals("ServiceStack", techChoice.getName());
-        assertEquals("Service Stack", techChoice.getVendorName());
+        assertEquals("ServiceStack", techChoice.getVendorName());
         assertEquals("https://servicestack.net", techChoice.getVendorUrl());
         assertEquals("https://servicestack.net", techChoice.getProductUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/servicestack-logo.png", techChoice.getLogoUrl());
         assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.getCreated());
         assertEquals("demisbellot", techChoice.getCreatedBy());
-        assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.getLastModified());
-        assertEquals("demisbellot", techChoice.getLastModifiedBy());
+        assertEquals(Utils.parseDate("2018-03-14T06:01:13.9571660"), techChoice.getLastModified());
+        assertEquals("mythz", techChoice.getLastModifiedBy());
         assertEquals("1", techChoice.getOwnerId());
         assertEquals("servicestack", techChoice.getSlug());
         assertTrue(techChoice.isLogoApproved());
@@ -183,14 +184,14 @@ public class TechStacksServiceTests extends TestCase {
 
 
         assertEquals(9, dto.getTopTechnologiesByTier().size());
-        ArrayList<TechnologyInfo> langs = dto.getTopTechnologiesByTier().get(TechnologyTier.ProgrammingLanguage);
-        assertEquals(3, langs.size());
+        ArrayList<TechnologyInfo> langs = dto.getTopTechnologiesByTier().get(TechnologyTier.ProgrammingLanguage.toString());
+        assertEquals(5, langs.size());
         TechnologyInfo lang = langs.get(0);
         assertEquals(TechnologyTier.ProgrammingLanguage, lang.getTier());
         assertEquals("python", lang.getSlug());
         assertEquals("Python", lang.getName());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/python-logo.png", lang.getLogoUrl());
-        assertEquals(25, (int)lang.getStacksCount());
+        assertEquals(47, (int)lang.getStacksCount());
 
 //        let toJson = dto.toJson()
 //        println(toJson)
