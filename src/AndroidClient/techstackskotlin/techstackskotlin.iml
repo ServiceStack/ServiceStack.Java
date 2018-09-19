@@ -22,14 +22,14 @@
       </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="3" platform="JVM 1.8" useProjectSettings="false">
+      <configuration version="3" platform="JVM 1.6" useProjectSettings="false">
         <compilerSettings />
         <compilerArguments>
           <option name="destination" value="$MODULE_DIR$/build/tmp/kotlin-classes/debug" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/transforms-1/files-1.1/design-27.1.1.aar/cdf892409416eb67c81fbffd68970d3b/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/6180fe07cc12a1deb769239a06cf55a7/jars/classes.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.70/b5b9449f73ce7bf312e89a7560cb3c209a0fa13e/kotlin-stdlib-1.2.70.jar;C:/src/ServiceStack.Java/src/AndroidClient/android/build/intermediates/intermediate-jars/debug/classes.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-v4-27.1.1.aar/a5b52fe954ccb8fb1049250accb24caf/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-fragment-27.1.1.aar/25876fc9e9aded11b80fcb40aa95e760/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.1.1.aar/daf0c70aa929fb6fa842c1f0f2688de4/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-27.1.1.aar/8604b606207706327fa4620b3a9fe587/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/4661d7b197a9531872049e05ea444879/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.1.1.aar/255c7c02285ce0c2c194645c32074971/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.1.1.aar/6b93da798ac091b36f4c6b066bf33d0d/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/transition-27.1.1.aar/61116234b4a6e98d6032e737764bba05/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.1.1.aar/35f168f734aaadc0098bcfdc74f3553a/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/0db054fd1781e22244ced21d6a3427cb/jars/classes.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/com.android.support/support-annotations/27.1.1/39ded76b5e1ce1c5b2688e1d25cdc20ecee32007/support-annotations-27.1.1.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.2.70/6ea722d7d0b9451293e739076ddb6a4108d57b6b/kotlin-stdlib-common-1.2.70.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/livedata-core-1.1.0.aar/b989a4171e77684e7e92a16d144f1ada/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/viewmodel-1.1.0.aar/e080b46a777954aa7b7b143a7136ae55/jars/classes.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/2beabb92714a8bb21be65c6dbcae1dd1/jars/classes.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/android.arch.lifecycle/common/1.1.0/edf3f7bfb84a7521d0599efa3b0113a0ee90f85/common-1.1.0.jar;C:/Users/mythz/.gradle/caches/transforms-1/files-1.1/runtime-1.1.0.aar/586fd830fa72170926a96d89a3ef161a/jars/classes.jar;C:/Users/mythz/.gradle/caches/modules-2/files-2.1/android.arch.core/common/1.1.0/8007981f7d7540d89cd18471b8e5dcd2b4f99167/common-1.1.0.jar;C:/Users/mythz/AppData/Local/Android/sdk/platforms/android-27/android.jar" />
           <option name="noStdlib" value="true" />
           <option name="noReflect" value="true" />
           <option name="moduleName" value="techstackskotlin_debug" />
-          <option name="jvmTarget" value="1.8" />
           <option name="addCompilerBuiltIns" value="true" />
           <option name="loadBuiltInsFromDependencies" value="true" />
           <option name="languageVersion" value="1.2" />
@@ -107,16 +107,25 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTest/shaders" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/check-manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/javaPrecompile" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/prebuild" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/splits-support" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
+      <excludeFolder url="file://$MODULE_DIR$/build/kotlin" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -126,7 +135,7 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:27.1.1@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:animated-vector-drawable-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.31@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.70@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:viewmodel-1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:recyclerview-v7-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable-27.1.1" level="project" />
@@ -134,10 +143,9 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-core-ui-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.0@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:1.11.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.2.70@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-fragment-27.1.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okhttp3:okhttp:3.6.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:runtime-1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3@jar" level="project" />

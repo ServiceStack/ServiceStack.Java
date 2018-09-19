@@ -17,10 +17,11 @@ GlobalNamespace: techstacksdtos
 
 package servicestack.net.androidclient;
 
+import com.google.gson.annotations.*;
+
 import java.math.*;
 import java.util.*;
 import net.servicestack.client.*;
-import com.google.gson.annotations.*;
 
 public class techstacksdtos
 {

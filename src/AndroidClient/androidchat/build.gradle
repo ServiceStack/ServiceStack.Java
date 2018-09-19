@@ -45,17 +45,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(':android')
-    compile 'com.android.support:appcompat-v7:27.1.1'
-    compile 'com.android.support:design:27.1.1'
-    compile 'net.servicestack:android:1.0.27'
-    compile 'com.facebook.android:facebook-android-sdk:4.31.0'
-    compile('com.twitter.sdk.android:twitter:2.3.1@aar') {
+    implementation project(':android')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'net.servicestack:android:1.0.27'
+    implementation 'com.facebook.android:facebook-android-sdk:4.31.0'
+    implementation('com.twitter.sdk.android:twitter:2.3.1@aar') {
         transitive = true;
     }
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
