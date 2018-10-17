@@ -1,25 +1,46 @@
 package net.servicestack.android.techstacks;
 
+import android.support.test.runner.AndroidJUnit4;
+
 import junit.framework.TestCase;
 
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Utils;
 import net.servicestack.client.WebServiceException;
 
-import java.io.FileInputStream;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static net.servicestack.android.techstacks.dtos.*;
+import static net.servicestack.android.techstacks.dtos.AppOverview;
+import static net.servicestack.android.techstacks.dtos.AppOverviewResponse;
+import static net.servicestack.android.techstacks.dtos.FindTechnologies;
+import static net.servicestack.android.techstacks.dtos.GetTechnology;
+import static net.servicestack.android.techstacks.dtos.GetTechnologyResponse;
+import static net.servicestack.android.techstacks.dtos.LockStackResponse;
+import static net.servicestack.android.techstacks.dtos.LockTechStack;
+import static net.servicestack.android.techstacks.dtos.Option;
+import static net.servicestack.android.techstacks.dtos.Overview;
+import static net.servicestack.android.techstacks.dtos.OverviewResponse;
+import static net.servicestack.android.techstacks.dtos.QueryResponse;
+import static net.servicestack.android.techstacks.dtos.TechStackDetails;
+import static net.servicestack.android.techstacks.dtos.Technology;
+import static net.servicestack.android.techstacks.dtos.TechnologyInStack;
+import static net.servicestack.android.techstacks.dtos.TechnologyInfo;
+import static net.servicestack.android.techstacks.dtos.TechnologyTier;
 
+@RunWith(AndroidJUnit4.class)
 public class TechStacksServiceTests extends TestCase {
     public TechStacksServiceTests() {
 
     }
 
-    JsonServiceClient client = new JsonServiceClient("http://techstacks.io");
+    JsonServiceClient client = new JsonServiceClient("https://www.techstacks.io");
 
+    @Test
     public void test_Can_GET_TechStacks_Overview(){
         OverviewResponse response = client.get(new Overview());
 
@@ -28,6 +49,7 @@ public class TechStacksServiceTests extends TestCase {
         assertOverviewResponse(response);
     }
 
+    @Test
     public void test_Can_GET_TechStacks_AppOverview(){
         AppOverviewResponse r = client.get(new AppOverview());
         assertNotNull(r);
@@ -35,16 +57,19 @@ public class TechStacksServiceTests extends TestCase {
         assertTrue(r.getAllTiers().size() > 0);
     }
 
+    @Test
     public void test_Can_GET_TechStacks_Overview_with_relative_url() {
         OverviewResponse response = client.get("/overview", OverviewResponse.class);
         assertOverviewResponse(response);
     }
 
+    @Test
     public void test_Can_GET_TechStacks_Overview_with_absolute_url() {
-        OverviewResponse response = client.get("http://techstacks.io/overview", OverviewResponse.class);
+        OverviewResponse response = client.get("https://www.techstacks.io/overview", OverviewResponse.class);
         assertOverviewResponse(response);
     }
 
+    @Test
     public void test_Can_GET_GetTechnology_with_params() {
         GetTechnology requestDto = new GetTechnology()
             .setSlug("servicestack");
@@ -53,11 +78,13 @@ public class TechStacksServiceTests extends TestCase {
         assertGetTechnologyResponse(response);
     }
 
+    @Test
     public void test_Can_GET_GetTechnology_with_url() {
         GetTechnologyResponse response = client.get("/technology/servicestack", GetTechnologyResponse.class);
         assertGetTechnologyResponse(response);
     }
 
+    @Test
     public void test_Can_call_FindTechnologies_AutoQuery_Service() {
         FindTechnologies request = new FindTechnologies()
             .setName("ServiceStack");
@@ -67,6 +94,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(1, response.getResults().size());
     }
 
+    @Test
     public void test_Can_call_FindTechnologies_AutoQuery_Implicit_Service() {
         FindTechnologies request = (FindTechnologies) new FindTechnologies()
             .setTake(5);
@@ -77,6 +105,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(5, response.getResults().size());
     }
 
+    @Test
     public void test_Can_serialize_Empty_Option() {
         Option dto = new Option();
 
@@ -85,6 +114,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals("{}", json);
     }
 
+    @Test
     public void test_Can_deserialize_Empty_Option() {
         String json = "{\"name\":null,\"title\":null,\"value\":null}";
 
@@ -95,6 +125,7 @@ public class TechStacksServiceTests extends TestCase {
         assertNull(dto.getValue());
     }
 
+    @Test
     public void test_Can_serialize_Full_Option() {
         Option dto = new Option()
             .setName("name")
@@ -106,6 +137,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals("{\"name\":\"name\",\"title\":\"title\",\"value\":\"ProgrammingLanguage\"}", json);
     }
 
+    @Test
     public void test_Can_deserialize_Full_Option() {
         String json = "{\"name\":\"name\",\"title\":\"title\",\"value\":\"ProgrammingLanguage\"}";
 
@@ -116,6 +148,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(TechnologyTier.ProgrammingLanguage, dto.getValue());
     }
 
+    @Test
     public void test_does_handle_auth_failure() {
         JsonServiceClient techStacksClient = new JsonServiceClient("http://techstacks.io/");
         int errorCode = 0;
@@ -131,6 +164,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(errorCode, 401);
     }
 
+    @Test
     public void test_Can_deserialize_Overview() throws IOException {
         if ("1".equals("1"))
             return; //Ignore until we work out how to add resources to android test only
@@ -162,7 +196,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals(1, (long)techstacks.getId());
         assertEquals("TechStacks Website", techstacks.getName());
         assertEquals("ServiceStack", techstacks.getVendorName());
-        assertTrue(techstacks.Description.startsWith("This Website! "));
+        assertTrue(techstacks.description.startsWith("This Website! "));
         assertEquals("http://techstacks.io", techstacks.getAppUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.getScreenshotUrl());
         assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.getCreated());

@@ -1,23 +1,21 @@
 package net.servicestack.android.test;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.support.test.runner.AndroidJUnit4;
 import android.text.TextUtils;
 
-import net.servicestack.android.AndroidLogProvider;
 import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.AsyncResultVoid;
 import net.servicestack.client.ConnectionFilter;
 import net.servicestack.client.ExceptionFilter;
 import net.servicestack.client.HttpMethods;
-import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.Log;
 import net.servicestack.client.ResponseStatus;
 import net.servicestack.client.TimeSpan;
 import net.servicestack.client.Utils;
 import net.servicestack.client.WebServiceException;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -30,16 +28,30 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static net.servicestack.android.test.dtos.*;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.fail;
+import static net.servicestack.android.test.dtos.AllCollectionTypes;
+import static net.servicestack.android.test.dtos.AllTypes;
+import static net.servicestack.android.test.dtos.Hello;
+import static net.servicestack.android.test.dtos.HelloAllTypes;
+import static net.servicestack.android.test.dtos.HelloAllTypesResponse;
+import static net.servicestack.android.test.dtos.HelloResponse;
+import static net.servicestack.android.test.dtos.HelloReturnVoid;
+import static net.servicestack.android.test.dtos.Poco;
+import static net.servicestack.android.test.dtos.SubType;
+import static net.servicestack.android.test.dtos.ThrowType;
+import static net.servicestack.android.test.dtos.ThrowTypeResponse;
+import static net.servicestack.android.test.dtos.ThrowValidation;
+import static net.servicestack.android.test.dtos.ThrowValidationResponse;
+import static org.junit.Assert.assertEquals;
 
-public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
-    public TestServiceTestsAsync() {
-        super(Application.class);
-        Log.Instance = new AndroidLogProvider("ZZZ");
-    }
+@RunWith(AndroidJUnit4.class)
+public class TestServiceTestsAsync {
 
     AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
 
+    @Test
     public void test_does_fire_Request_and_Response_Filters_Async() throws InterruptedException {
 
         AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
@@ -95,6 +107,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_POST_Test_HelloAllTypes_async() throws InterruptedException {
         final HelloAllTypes request = createHelloAllTypes();
 
@@ -115,6 +128,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_PUT_Test_HelloAllTypes_async() throws InterruptedException {
         final HelloAllTypes request = createHelloAllTypes();
 
@@ -135,7 +149,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
-
+    @Test
     public void test_Does_handle_404_Error_Async() throws InterruptedException {
         AndroidServiceClient testClient = new AndroidServiceClient("http://test.servicestack.net");
 
@@ -194,6 +208,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         assertNotNull(status.getStackTrace());
     }
 
+    @Test
     public void test_Does_handle_ValidationException_Async(){
         ThrowValidation request = new ThrowValidation()
             .setEmail("invalidemail");
@@ -237,6 +252,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         });
     }
 
+    @Test
     public void test_Can_send_ReturnVoid_Async(){
         final CountDownLatch signal = new CountDownLatch(1);
 
@@ -257,6 +273,7 @@ public class TestServiceTestsAsync extends ApplicationTestCase<Application> {
         });
     }
 
+    @Test
     public void test_Can_delete_ReturnVoid_Async(){
         final CountDownLatch signal = new CountDownLatch(1);
 

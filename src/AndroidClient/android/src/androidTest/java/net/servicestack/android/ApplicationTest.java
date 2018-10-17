@@ -1,9 +1,8 @@
 package net.servicestack.android;
 
-import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.test.ApplicationTestCase;
+import android.support.test.runner.AndroidJUnit4;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,20 +10,25 @@ import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Flags;
 import net.servicestack.client.Utils;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.net.HttpURLConnection;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class ApplicationTest extends ApplicationTestCase<Application> {
-    public ApplicationTest() {
-        super(Application.class);
-    }
+@RunWith(AndroidJUnit4.class)
+public class ApplicationTest {
 
     AndroidServiceClient client = new AndroidServiceClient("http://techstacks.io");
 
+    @Test
     public void test_Can_download_image_bytes(){
         HttpURLConnection httpRes = client.get("https://servicestack.net/img/logo.png");
         byte[] imgBytes = Utils.readBytesToEnd(httpRes);
@@ -34,6 +38,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         assertEquals(55, img.getHeight());
     }
 
+    @Test
     public void test_Can_download_image_bytes_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 

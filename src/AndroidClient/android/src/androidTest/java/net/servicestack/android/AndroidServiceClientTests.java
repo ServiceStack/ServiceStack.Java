@@ -1,20 +1,21 @@
 package net.servicestack.android;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.support.test.runner.AndroidJUnit4;
 
-import net.servicestack.android.AndroidLogProvider;
-import net.servicestack.android.AndroidServiceClient;
 import net.servicestack.client.Log;
 
-public class AndroidServiceClientTests extends ApplicationTestCase<Application> {
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+@RunWith(AndroidJUnit4.class)
+public class AndroidServiceClientTests {
     public AndroidServiceClientTests() {
-        super(Application.class);
         Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
-    AndroidServiceClient client = new AndroidServiceClient("http://techstacks.io");
+    AndroidServiceClient client = new AndroidServiceClient("https://www.techstacks.io");
 
+    @Test
     public void test(){
 
     }

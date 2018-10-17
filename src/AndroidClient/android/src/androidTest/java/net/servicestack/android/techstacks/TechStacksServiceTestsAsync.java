@@ -1,7 +1,6 @@
 package net.servicestack.android.techstacks;
 
-import android.app.Application;
-import android.test.ApplicationTestCase;
+import android.support.test.runner.AndroidJUnit4;
 
 import net.servicestack.android.AndroidLogProvider;
 import net.servicestack.android.AndroidServiceClient;
@@ -9,19 +8,34 @@ import net.servicestack.client.AsyncResult;
 import net.servicestack.client.Log;
 import net.servicestack.client.Utils;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static net.servicestack.android.techstacks.dtos.*;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+import static net.servicestack.android.techstacks.dtos.AppOverview;
+import static net.servicestack.android.techstacks.dtos.AppOverviewResponse;
+import static net.servicestack.android.techstacks.dtos.FindTechnologies;
+import static net.servicestack.android.techstacks.dtos.GetTechnology;
+import static net.servicestack.android.techstacks.dtos.GetTechnologyResponse;
+import static net.servicestack.android.techstacks.dtos.Overview;
+import static net.servicestack.android.techstacks.dtos.OverviewResponse;
+import static net.servicestack.android.techstacks.dtos.QueryResponse;
+import static net.servicestack.android.techstacks.dtos.Technology;
+import static org.junit.Assert.assertEquals;
 
-public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application> {
+@RunWith(AndroidJUnit4.class)
+public class TechStacksServiceTestsAsync {
     public TechStacksServiceTestsAsync() {
-        super(Application.class);
         Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
-    AndroidServiceClient client = new AndroidServiceClient("http://techstacks.io");
+    AndroidServiceClient client = new AndroidServiceClient("https://www.techstacks.io");
 
+    @Test
     public void test_Can_GET_TechStacks_Overview() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
@@ -40,6 +54,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_GET_TechStacks_AppOverview_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
@@ -60,6 +75,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_GET_TechStacks_Overview_with_relative_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
@@ -78,6 +94,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_GET_TechStacks_Overview_with_absolute_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
@@ -96,6 +113,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_GET_GetTechnology_with_params_Async() throws InterruptedException {
         GetTechnology requestDto = new GetTechnology()
             .setSlug("servicestack");
@@ -117,6 +135,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_GET_GetTechnology_with_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
@@ -135,6 +154,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_call_FindTechnologies_AutoQuery_Service_Async() throws InterruptedException {
         FindTechnologies request = new FindTechnologies()
             .setName("ServiceStack");
@@ -157,6 +177,7 @@ public class TechStacksServiceTestsAsync extends ApplicationTestCase<Application
         assertTrue(signal.await(5, TimeUnit.SECONDS));
     }
 
+    @Test
     public void test_Can_call_FindTechnologies_AutoQuery_Implicit_Service() throws InterruptedException {
         FindTechnologies request = (FindTechnologies) new FindTechnologies()
             .setTake(5);
