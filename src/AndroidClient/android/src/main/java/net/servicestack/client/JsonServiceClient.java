@@ -66,6 +66,7 @@ public class JsonServiceClient implements ServiceClient {
 
     public GsonBuilder getGsonBuilder() {
         return new GsonBuilder()
+            .registerTypeAdapterFactory(JsonSerializers.getCaseInsensitiveEnumTypeAdapterFactory())
             .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
             .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
             .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())

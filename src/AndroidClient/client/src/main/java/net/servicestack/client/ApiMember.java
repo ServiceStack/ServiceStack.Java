@@ -43,6 +43,11 @@ public @interface ApiMember {
     public String DataType() default "";
 
     /// <summary>
+    /// Fine-tuned primitive type definition.
+    /// </summary>
+    public String Format() default "";
+
+    /// <summary>
     /// For path, this is always true. Otherwise, this field tells the client whether or not the field must be supplied.
     /// </summary>
     public boolean IsRequired() default false;

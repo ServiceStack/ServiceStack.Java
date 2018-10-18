@@ -8,6 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AutoQueryViewer {
+    public String Name() default "";
     public String Title() default "";
     public String Description() default "";
     public String IconUrl() default "";
@@ -20,4 +21,5 @@ public @interface AutoQueryViewer {
     public String DefaultSearchField() default "";
     public String DefaultSearchType() default "";
     public String DefaultSearchText() default "";
+    public String DefaultFields() default "";
 }

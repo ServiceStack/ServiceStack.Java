@@ -38,4 +38,10 @@ public @interface Route {
     /// i.e. Priorities below 0 are auto-generated have less precedence.
     /// </summary>
     public int Priority() default 0;
+
+    /// <summary>
+    /// Must match rule defined in Config.RequestRules or Regex expression with format:
+    /// "{IHttpRequest.Field} =~ {pattern}", e.g "PathInfo =~ \/[0-9]+$"
+    /// </summary>
+    public String Matches() default "";
 }
