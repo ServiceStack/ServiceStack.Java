@@ -1,4 +1,4 @@
-package net.servicestack;
+package net.servicestack.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;

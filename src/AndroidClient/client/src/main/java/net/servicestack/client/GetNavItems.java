@@ -1,7 +1,5 @@
 package net.servicestack.client;
 
-import net.servicestack.GetNavItemsResponse;
-
 @Route("/metadata/nav")
 @DataContract
 public class GetNavItems implements IReturn<GetNavItemsResponse>

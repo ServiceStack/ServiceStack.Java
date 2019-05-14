@@ -1,8 +1,4 @@
-package net.servicestack;
-
-import net.servicestack.client.DataContract;
-import net.servicestack.client.DataMember;
-import net.servicestack.client.ResponseStatus;
+package net.servicestack.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,17 +7,22 @@ import java.util.HashMap;
 public class GetNavItemsResponse
 {
     @DataMember(Order=1)
-    public ArrayList<NavItem> results = null;
+    public String baseUrl = null;
 
     @DataMember(Order=2)
-    public HashMap<String,ArrayList<NavItem>> navItemsMap = null;
+    public ArrayList<NavItem> results = null;
 
     @DataMember(Order=3)
-    public HashMap<String,String> meta = null;
+    public HashMap<String,ArrayList<NavItem>> navItemsMap = null;
 
     @DataMember(Order=4)
+    public HashMap<String,String> meta = null;
+
+    @DataMember(Order=5)
     public ResponseStatus responseStatus = null;
 
+    public String getBaseUrl() { return baseUrl; }
+    public GetNavItemsResponse setBaseUrl(String value) { this.baseUrl = value; return this; }
     public ArrayList<NavItem> getResults() { return results; }
     public GetNavItemsResponse setResults(ArrayList<NavItem> value) { this.results = value; return this; }
     public HashMap<String,ArrayList<NavItem>> getNavItemsMap() { return navItemsMap; }
