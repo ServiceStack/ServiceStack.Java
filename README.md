@@ -11,6 +11,10 @@ This repository contains the source for ServiceStack plugins for the leading And
    - [Install ServiceStack IDEA from the Plugin repository](https://github.com/ServiceStack/ServiceStack/wiki/Java-Add-ServiceStack-Reference#install-servicestack-idea-from-the-plugin-repository)
    - [Download and Install ServiceStack IDEA Manually](https://github.com/ServiceStack/ServiceStack/wiki/Java-Add-ServiceStack-Reference#download-and-install-servicestack-idea-manually)
 
+#### Issues
+
+Please report any issues to https://github.com/ServiceStack/Issues
+
 ### [Installing ServiceStackEclipse Plugin on Eclipse](https://github.com/ServiceStack/ServiceStack.Java/tree/master/src/ServiceStackEclipse)
 
 ## Usage
