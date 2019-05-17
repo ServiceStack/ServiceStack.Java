@@ -13,7 +13,7 @@ This repository contains the source for ServiceStack plugins for the leading And
 
 #### Issues
 
-Please submit any issues to https://github.com/ServiceStack/Issues
+Please submit issues to https://github.com/ServiceStack/Issues
 
 ### [Installing ServiceStackEclipse Plugin on Eclipse](https://github.com/ServiceStack/ServiceStack.Java/tree/master/src/ServiceStackEclipse)
 
