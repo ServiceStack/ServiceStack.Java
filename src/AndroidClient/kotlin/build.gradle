@@ -31,7 +31,7 @@ dependencies {
     androidTestImplementation 'com.google.code.gson:gson:2.8.2'
 }
 buildscript {
-    ext.kotlin_version = '1.2.71'
+    ext.kotlin_version = '1.3.10'
     repositories {
         mavenCentral()
     }
