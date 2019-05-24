@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ServiceStackIDEA.iml" filepath="$PROJECT_DIR$/.idea/modules/ServiceStackIDEA.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ServiceStackIDEA_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ServiceStackIDEA_main.iml" group="ServiceStackIDEA" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ServiceStackIDEA_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ServiceStackIDEA_test.iml" group="ServiceStackIDEA" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ServiceStackIDEA.iml" filepath="$PROJECT_DIR$/.idea/ServiceStackIDEA.iml" />
     </modules>
   </component>
 </project>
