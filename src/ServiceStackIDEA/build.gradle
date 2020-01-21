@@ -33,6 +33,6 @@ intellij {
 
     publishPlugin {
       token jbToken
-      channel 'nightly'
+      channel 'beta'
     } 
 }
