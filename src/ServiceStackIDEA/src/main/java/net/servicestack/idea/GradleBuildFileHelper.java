@@ -58,7 +58,7 @@ public class GradleBuildFileHelper {
         if(!dependencyRequired) {
             return false;
         }
-        list.add(dependenciesEndIndex, "    compile '" + groupId + ":" + packageName + ":" + version + "'");
+        list.add(dependenciesEndIndex, "    implementation '" + groupId + ":" + packageName + ":" + version + "'");
         try {
             PrintWriter writer = new PrintWriter(gradleFile);
             for(String item : list) {
