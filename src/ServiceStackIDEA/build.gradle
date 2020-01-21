@@ -1,7 +1,7 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.0.32"
+    id "org.jetbrains.intellij" version "0.4.15"
 }
-version = '1.0.13'
+version = '1.0.36'
 
 apply plugin: 'org.jetbrains.intellij'
 dependencies {
