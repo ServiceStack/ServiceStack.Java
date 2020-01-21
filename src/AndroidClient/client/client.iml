@@ -4,6 +4,8 @@
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
         <option name="GRADLE_PROJECT_PATH" value=":client" />
+        <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" />
+        <option name="LAST_KNOWN_AGP_VERSION" />
       </configuration>
     </facet>
     <facet type="java-gradle" name="Java-Gradle">
@@ -31,15 +33,5 @@
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: JUnitParams-1.1.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: junit-4.12" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Gradle: hamcrest-core-1.3" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35-sources" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35-javadoc" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
-    <orderEntry type="library" exported="" name="client.client-1.0.35" level="project" />
   </component>
 </module>

@@ -5,16 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/android/android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/android/android.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/androidchat/androidchat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/androidchat/androidchat.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/client/client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/kotlin/kotlin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/kotlin/kotlin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/techstacks/techstacks.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/techstacks/techstacks.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/techstackskotlin/techstackskotlin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/techstackskotlin/techstackskotlin.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" afterDir="false" />
     </list>
-    <ignored path="ServiceStackIDEA.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <ignored path="$PROJECT_DIR$/.gradle/" />
-    <ignored path="$PROJECT_DIR$/build/" />
-    <ignored path=".idea/dataSources.local.xml" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,17 +41,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ServiceStackIDEA" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ServiceStackIDEA" type="f1a62948:ProjectNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -56,88 +51,6 @@
   <component name="FavoritesManager">
     <favorites_list name="ServiceStackIDEA" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2363">
-              <caret line="171" column="37" selection-start-line="171" selection-start-column="37" selection-end-line="171" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.form">
-          <provider selected="true" editor-type-id="ui-designer" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackReference.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="28" column="43" selection-start-line="28" selection-start-column="20" selection-end-line="28" selection-end-column="43" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1139">
-              <caret line="83" column="13" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gradlew">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/settings.gradle">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -145,60 +58,8 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>UpdateServiceStackUtils</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/settings.gradle" />
-        <option value="$PROJECT_DIR$/ServiceStackIDEA.iml" />
-        <option value="$PROJECT_DIR$/local.properties" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackReference.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackReferenceIntention.java" />
-        <option value="C:/Program Files/Java/jdk1.7.0_75/src.zip!/javax/swing/JCheckBox.java" />
-        <option value="C:/Program Files/Java/jdk1.7.0_75/src.zip!/javax/swing/JToggleButton.java" />
-        <option value="C:/Program Files/Java/jdk1.7.0_75/src.zip!/javax/swing/AbstractButton.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettings.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsConfigurableProvider.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsView.form" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsConfigurable.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/NativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/BaseRefHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackReference.java" />
-        <option value="C:/Program Files (x86)/JetBrains/IntelliJ IDEA Community Edition 14.1.4/lib/openapi.jar!/com/intellij/openapi/module/Module.class" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.form" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptDefinitionsNativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/ErrorMessages.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DialogErrorMessages.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.form" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/NativeTypesLanguage.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptDefinitionNativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/INativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptNativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptConcreteNativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/BaseNativeTypesHandler.java" />
-        <option value="$PROJECT_DIR$/src/test/java/AddRefTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/Analytics.java" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackUtils.java" />
-      </list>
-    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -213,20 +74,12 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="1920" />
-    <option name="height" value="1032" />
-  </component>
+  <component name="ProjectId" id="1WguG8NEOLvZZ47tEP2WW7PQYLv" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-    </panes>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="378" />
@@ -234,7 +87,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dynamic.classpath" value="false" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -246,18 +99,6 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\projects\ServiceStack\ServiceStack.Java\src\ServiceStackIDEA\src\main\java\net\servicestack\idea" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Gradle.ServiceStackIDEA [buildPlugin]">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
@@ -296,6 +137,12 @@
       <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <method />
+    </configuration>
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="ArquillianJUnit" factoryName="">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
@@ -491,6 +338,15 @@
       <listeners />
       <method />
     </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -512,12 +368,6 @@
     </configuration>
     <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
       <method />
-    </configuration>
-    <configuration default="true" type="Applet">
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -619,23 +469,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JarApplication" factoryName="JAR Application">
+    <configuration default="true" type="JarApplication">
       <option name="JAR_PATH" value="$PROJECT_DIR$/build/libs/ServiceStackIDEA.jar" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <properties />
       <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-      <module name="" />
-      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file enabled="true" id="idea.log" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -660,6 +502,18 @@
   <component name="SbtLocalSettings">
     <option name="externalProjectsViewState">
       <projects_view />
+    </option>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
     </option>
   </component>
   <component name="SvnConfiguration">
@@ -723,46 +577,6 @@
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="55017000" />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="3428" height="1895" extended-state="7" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09085511" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info id="Palette&#9;" order="3" />
-      <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Image Layers" order="6" />
-      <window_info anchor="bottom" id="Flutter Performance" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3418708" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49921876" weight="0.31923652" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4075724" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32962137" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5002969" side_tool="true" visible="true" weight="0.3295519" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32850778" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32683983" />
-      <window_info anchor="bottom" id="Build" order="12" sideWeight="0.49970308" weight="0.3295519" />
-      <window_info anchor="right" id="Flutter Outline" />
-      <window_info anchor="right" id="Flutter Inspector" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Gradle" order="4" visible="true" weight="0.14251782" />
-      <window_info anchor="right" id="Designer" order="5" />
-      <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Database" order="8" />
-      <window_info anchor="right" id="Theme Preview" order="9" />
-      <window_info anchor="right" id="Maven" order="10" />
-    </layout>
-  </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
       <collection />
@@ -771,13 +585,22 @@
       <collection />
     </option>
   </component>
+  <component name="WindowStateProjectService">
+    <state x="634" y="700" key="FileChooserDialogImpl" timestamp="1579583868577">
+      <screen x="0" y="0" width="3413" height="1880" />
+    </state>
+    <state x="634" y="700" key="FileChooserDialogImpl/0.0.3413.1880@0.0.3413.1880" timestamp="1579583868577" />
+    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1579583561065">
+      <screen x="0" y="0" width="3413" height="1880" />
+    </state>
+    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1579583561065" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java</url>
           <line>71</line>
-          <properties />
           <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
@@ -791,229 +614,6 @@
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAPomFileHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackReferenceIntention.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/openapi.jar!/com/intellij/util/ui/CheckBox.class" />
-    <entry file="jar://C:/Program Files/Java/jdk1.7.0_75/src.zip!/javax/swing/JCheckBox.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.7.0_75/src.zip!/javax/swing/AbstractButton.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.7.0_75/src.zip!/javax/swing/JToggleButton.java" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/openapi.jar!/com/intellij/openapi/options/ConfigurableProvider.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/openapi.jar!/com/intellij/openapi/options/Configurable.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/openapi.jar!/com/intellij/openapi/options/SearchableConfigurable.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/extensions.jar!/com/intellij/openapi/extensions/AbstractExtensionPointBean.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/webstorm.jar!/com/intellij/openapi/options/ex/ConfigurableExtensionPointUtil.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/util.jar!/com/intellij/openapi/util/AtomicNotNullLazyValue.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/openapi.jar!/com/intellij/openapi/options/ConfigurableEP.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/webstorm.jar!/com/intellij/openapi/options/ex/ConfigurableWrapper.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/webstorm.jar!/com/intellij/openapi/options/ex/ConfigurableCardPanel.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/webstorm.jar!/com/intellij/application/options/CodeStyleAbstractConfigurable.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/webstorm.jar!/com/intellij/ide/IdeEventQueue.class" />
-    <entry file="jar://C:/Program Files (x86)/JetBrains/WebStorm 2016.1.1/lib/webstorm.jar!/com/intellij/openapi/application/impl/LaterInvocator.class" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsView.form">
-      <provider selected="true" editor-type-id="ui-designer" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsConfigurable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="54" column="43" selection-start-line="54" selection-start-column="43" selection-end-line="54" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/PluginSettingsView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/JavaNativeTypesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="18" column="57" selection-start-line="18" selection-start-column="56" selection-end-line="18" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.form">
-      <provider selected="true" editor-type-id="ui-designer" />
-      <provider editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/DialogErrorMessages.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="7" column="58" selection-start-line="7" selection-start-column="58" selection-end-line="7" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIC/14.1.4/f5169c4a780da12ca4eec17553de9f6d43a49d52/ideaIC-14.1.4-sources.jar!/com/intellij/ide/IdeEventQueue.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="82" selection-start-line="82" selection-end-line="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/KotlinNativeTypesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="278" column="57" selection-start-line="278" selection-start-column="57" selection-end-line="278" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/NativeTypesLanguage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="154" column="68" selection-start-line="154" selection-start-column="11" selection-end-line="154" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="90" column="12" selection-start-line="90" selection-start-column="12" selection-end-line="94" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/INativeTypesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptNativeTypesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="66" selection-start-line="5" selection-start-column="66" selection-end-line="5" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/TypeScriptConcreteNativeTypesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/BaseNativeTypesHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1364">
-          <caret line="74" column="53" selection-start-line="74" selection-start-column="53" selection-end-line="74" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/AddRefTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="36" column="32" selection-start-line="36" selection-start-column="32" selection-end-line="36" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/Analytics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="575">
-          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="9" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2363">
-          <caret line="171" column="37" selection-start-line="171" selection-start-column="37" selection-end-line="171" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRef.form">
-      <provider selected="true" editor-type-id="ui-designer" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackReference.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="28" column="43" selection-start-line="28" selection-start-column="20" selection-end-line="28" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1139">
-          <caret line="83" column="13" selection-start-line="83" selection-start-column="13" selection-end-line="83" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gradlew">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
   </component>
   <component name="masterDetails">
     <states>
