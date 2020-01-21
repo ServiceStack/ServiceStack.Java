@@ -15,6 +15,7 @@ if(System.env.BUILD_NUMBER != null && System.env.SERVICESTACKIDEA_PUBLISH_NIGHTL
 
 String jbUser;
 String jbPass;
+String jbToken;
 
 
 if(properties.getProperty("jetbrains.plugins.user", null) == null) {
@@ -22,6 +23,7 @@ if(properties.getProperty("jetbrains.plugins.user", null) == null) {
 }
 jbUser = properties.getProperty("jetbrains.plugins.user");
 jbPass = properties.getProperty("jetbrains.plugins.password");
+jbToken = properties.getProperty("jetbrains.plugins.token");
 
 intellij {
     version 'IC-14.1.4'
@@ -29,10 +31,9 @@ intellij {
     pluginName 'ServiceStackIDEA'
     updateSinceUntilBuild false
 
-    publish {
-        username jbUser
-        password jbPass
-        pluginId '7749'
-        channel 'nightly'
-    }
+    publishPlugin {
+      token jbToken
+      pluginId '7749'
+      channel 'nightly'
+    } 
 }
