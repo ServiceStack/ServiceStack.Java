@@ -33,7 +33,6 @@ intellij {
 
     publishPlugin {
       token jbToken
-      pluginId '7749'
       channel 'nightly'
     } 
 }
