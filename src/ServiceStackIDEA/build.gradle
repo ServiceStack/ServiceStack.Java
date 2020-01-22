@@ -13,16 +13,11 @@ if(System.env.BUILD_NUMBER != null && System.env.SERVICESTACKIDEA_PUBLISH_NIGHTL
     version = "${version}.$System.env.BUILD_NUMBER"
 }
 
-String jbUser;
-String jbPass;
 String jbToken;
-
 
 if(properties.getProperty("jetbrains.plugins.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
-jbUser = properties.getProperty("jetbrains.plugins.user");
-jbPass = properties.getProperty("jetbrains.plugins.password");
 jbToken = properties.getProperty("jetbrains.plugins.token");
 
 intellij {
