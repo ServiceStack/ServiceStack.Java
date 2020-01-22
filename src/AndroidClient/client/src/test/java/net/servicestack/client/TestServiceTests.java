@@ -223,7 +223,7 @@ public class TestServiceTests extends TestCase {
             assertEquals("Age", status.getErrors().get(0).getFieldName());
 
             assertEquals("NotEmpty", status.getErrors().get(1).errorCode);
-            assertEquals("'Required' should not be empty.", status.getErrors().get(1).getMessage());
+            assertEquals("'Required' must not be empty.", status.getErrors().get(1).getMessage());
             assertEquals("Required", status.getErrors().get(1).getFieldName());
 
             assertEquals("Email", status.getErrors().get(2).errorCode);
