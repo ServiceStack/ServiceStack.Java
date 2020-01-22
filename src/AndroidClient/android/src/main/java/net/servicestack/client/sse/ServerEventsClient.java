@@ -256,7 +256,7 @@ public class ServerEventsClient implements Closeable {
 
                         if (args.length == 0){
                             if (target.equalsIgnoreCase(actionName)) {
-                                mi.invoke(receiver, null);
+                                mi.invoke(receiver);
                                 return;
                             }
                             continue;
