@@ -117,13 +117,15 @@ public class AddServiceStackRefHandler {
         try {
             IDEAPomFileHelper pomFileHelper = new IDEAPomFileHelper();
             String pomFilePath = IDEAPomFileHelper.findNearestModulePomFile(module);
-            if(pomFilePath == null) {
+            if (pomFilePath == null) {
                 Notifications.Bus.notify(notification);
                 return false;
             }
             File pomLibFile = new File(pomFilePath);
-            showDto = pomFileHelper.addMavenDependency(module,pomLibFile, DepConfig.servicestackGroupId, DepConfig.clientPackageId, DepConfig.servicestackVersion) ||
-                      pomFileHelper.addMavenDependency(module,pomLibFile, DepConfig.gsonGroupId, DepConfig.gsonPackageId, DepConfig.gsonVersion);
+            showDto = pomFileHelper.addMavenDependency(module,pomLibFile, DepConfig.servicestackGroupId, DepConfig.clientPackageId, DepConfig.servicestackVersion);
+            if (pomFileHelper.addMavenDependency(module,pomLibFile, DepConfig.gsonGroupId, DepConfig.gsonPackageId, DepConfig.gsonVersion))
+                showDto = true;
+
             IDEAUtils.refreshFile(module,pomFilePath,showDto);
         } catch(Exception e) {
             showDto = false;
@@ -139,8 +141,11 @@ public class AddServiceStackRefHandler {
     }
 
     private static boolean addGradleDependencyIfRequired(Module module) throws FileNotFoundException {
-        if (GradleBuildFileHelper.addDependency(module, DepConfig.servicestackGroupId, DepConfig.androidPackageId, DepConfig.servicestackVersion) ||
-            GradleBuildFileHelper.addDependency(module, DepConfig.gsonGroupId, DepConfig.gsonPackageId, DepConfig.gsonVersion)) {
+        boolean depAdded = GradleBuildFileHelper.addDependency(module, DepConfig.servicestackGroupId, DepConfig.androidPackageId, DepConfig.servicestackVersion);
+        if (GradleBuildFileHelper.addDependency(module, DepConfig.gsonGroupId, DepConfig.gsonPackageId, DepConfig.gsonVersion))
+            depAdded = true;
+
+        if (depAdded) {
             IDEAUtils.refreshBuildFile(module);
             return true;
         }
