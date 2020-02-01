@@ -4,12 +4,7 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DepConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DepConfig.java" afterDir="false" />
-    </list>
+    <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -585,10 +580,10 @@
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
     <state x="634" y="700" key="FileChooserDialogImpl/0.0.3413.1880@0.0.3413.1880" timestamp="1580597977595" />
-    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580599355571">
+    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580599908855">
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
-    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580599355571" />
+    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580599908855" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
