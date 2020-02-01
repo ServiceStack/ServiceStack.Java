@@ -40,8 +40,13 @@ public class AddReferenceWizard extends Wizard {
     boolean packageSelected = false;
 
     private static final String dependencyGroupId = "net.servicestack";
-    private static final String dependencyVersion = "1.0.19";
+    private static final String dependencyVersion = "1.0.38";
     private static final String clientPackageId = "client";
+
+    private static final String gsonDependencyGroupId = "com.google.code.gson";
+    private static final String gsonPackageId = "gson";
+    private static final String gsonDependencyVersion = "2.8.6";
+
     boolean success = false;
 
     public AddReferenceWizard(IFolder selection,
@@ -216,8 +221,8 @@ public class AddReferenceWizard extends Wizard {
         IProject project = currentProject;
         IPath pomPath = new Path(_pomFile.getPath());
         IFile file = project.getFile(pomPath);
-        if (mavenHelper.addMavenDependencyIfRequired(file, dependencyGroupId,
-                clientPackageId, dependencyVersion)) {
+        if (mavenHelper.addMavenDependencyIfRequired(file, dependencyGroupId, clientPackageId, dependencyVersion) ||
+            mavenHelper.addMavenDependencyIfRequired(file, gsonDependencyGroupId, gsonPackageId , gsonDependencyVersion)) {
             file.refreshLocal(IResource.DEPTH_ZERO, null);
             openEditor(file, null);
         }

@@ -24,10 +24,11 @@ import java.util.Map;
 public class AddServiceStackRefHandler {
 
     private static final String dependencyGroupId = "net.servicestack";
-    private static final String dependencyPackageId = "android";
+    private static final String androidPackageId = "android";
     //Fallback version of dependencies if GitHub tags can't be checked.
-    private static String dependencyVersion = "1.0.15";
+    private static String dependencyVersion = "1.0.38";
     private static final String clientPackageId = "client";
+
     private static INativeTypesHandler defaultNativeTypesHandler;
 
     public static void setDependencyVersion(String version) {
@@ -153,7 +154,7 @@ public class AddServiceStackRefHandler {
 
     private static boolean addGradleDependencyIfRequired(Module module) throws FileNotFoundException {
         boolean result = false;
-        if(GradleBuildFileHelper.addDependency(module,dependencyGroupId, dependencyPackageId, dependencyVersion)) {
+        if(GradleBuildFileHelper.addDependency(module,dependencyGroupId, androidPackageId, dependencyVersion)) {
             result = true;
             IDEAUtils.refreshBuildFile(module);
         }
