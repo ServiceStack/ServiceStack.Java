@@ -1,7 +1,7 @@
 plugins {
     id "org.jetbrains.intellij" version "0.4.15"
 }
-version = '1.0.38'
+version = '1.0.39'
 
 apply plugin: 'org.jetbrains.intellij'
 dependencies {
@@ -15,7 +15,7 @@ if(System.env.BUILD_NUMBER != null && System.env.SERVICESTACKIDEA_PUBLISH_NIGHTL
 
 String jbToken;
 
-if(properties.getProperty("jetbrains.plugins.user", null) == null) {
+if (properties.getProperty("jetbrains.plugins.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
 jbToken = properties.getProperty("jetbrains.plugins.token");

@@ -5,21 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DepConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.idea/ServiceStack.Java.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/ServiceStack.Java.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/Analytics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/Analytics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DialogErrorMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DialogErrorMessages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAPomFileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAPomFileHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../AndroidClient/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -592,14 +579,14 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="634" y="700" key="FileChooserDialogImpl" timestamp="1579583868577">
+    <state x="634" y="700" key="FileChooserDialogImpl" timestamp="1580597977595">
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
-    <state x="634" y="700" key="FileChooserDialogImpl/0.0.3413.1880@0.0.3413.1880" timestamp="1579583868577" />
-    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580597436213">
+    <state x="634" y="700" key="FileChooserDialogImpl/0.0.3413.1880@0.0.3413.1880" timestamp="1580597977595" />
+    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580597966272">
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
-    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580597436213" />
+    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580597966272" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
