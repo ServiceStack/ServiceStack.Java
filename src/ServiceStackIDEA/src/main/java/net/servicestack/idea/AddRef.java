@@ -224,7 +224,7 @@ public class AddRef extends JDialog {
             JsonElement jElement = new JsonParser().parse(builder.toString());
             if (jElement.getAsJsonArray().size() > 0) {
                 String latestTag = jElement.getAsJsonArray().get(0).getAsJsonObject().get("name").getAsJsonPrimitive().getAsString();
-                AddServiceStackRefHandler.setDependencyVersion(latestTag.substring(1));
+                DepConfig.setServiceStackVersion(latestTag.substring(1));
             }
 
         } catch (MalformedURLException e) {

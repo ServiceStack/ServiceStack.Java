@@ -27,7 +27,7 @@ public class AddTypeScriptAction extends AnAction {
         dialog.setTitle("Add TypeScript ServiceStack Reference");
         PsiElement element = LangDataKeys.PSI_ELEMENT.getData(anActionEvent.getDataContext());
         INativeTypesHandler defaultTsNativeTypesHandler = new TypeScriptNativeTypesHandler();
-        if (element != null && element instanceof PsiDirectory) {
+        if (element instanceof PsiDirectory) {
             PsiDirectory selectedDir = (PsiDirectory)element;
             dialog.setSelectedDirectory(selectedDir.getVirtualFile().getPath());
             String initialName = getInitialFileName(selectedDir.getVirtualFile().getPath(),defaultTsNativeTypesHandler);
@@ -58,11 +58,11 @@ public class AddTypeScriptAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         Module module = getModule(e);
-        if(module == null) {
+        if (module == null) {
             e.getPresentation().setEnabled(false);
         }
 
-        if(!(PlatformUtils.isWebStorm() || PlatformUtils.isPhpStorm() ||
+        if (!(PlatformUtils.isWebStorm() || PlatformUtils.isPhpStorm() ||
                 PlatformUtils.isRubyMine() || PlatformUtils.isIntelliJ() ||
                 PlatformUtils.isPyCharm())) {
             e.getPresentation().setVisible(false);

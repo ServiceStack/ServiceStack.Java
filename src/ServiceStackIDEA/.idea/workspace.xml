@@ -5,20 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/android/android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/android/android.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/androidchat/androidchat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/androidchat/androidchat.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/client/client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/kotlin/kotlin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/kotlin/kotlin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/techstacks/techstacks.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/techstacks/techstacks.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AndroidClient/techstackskotlin/techstackskotlin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../AndroidClient/techstackskotlin/techstackskotlin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DepConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.idea/ServiceStack.Java.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/ServiceStack.Java.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddRef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddTypeScriptRefHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/Analytics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/Analytics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DialogErrorMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DialogErrorMessages.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAPomFileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAPomFileHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +42,12 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ServiceStackIDEA" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -590,21 +596,12 @@
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
     <state x="634" y="700" key="FileChooserDialogImpl/0.0.3413.1880@0.0.3413.1880" timestamp="1579583868577" />
-    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1579583561065">
+    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580597436213">
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
-    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1579583561065" />
+    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580597436213" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="GradleRunConfiguration">
         <watch expression="getDtoFileName(fileName,nativeTypesHandler)" language="JAVA" custom="" />

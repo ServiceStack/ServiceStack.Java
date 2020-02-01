@@ -26,7 +26,7 @@ public final class Analytics {
 
     public static void SubmitAnonymousUsage(final String url) {
         PluginSettingsService settings = PluginSettingsService.getInstance();
-        if (!settings.optOutOfStats) {
+        if (!settings.optOutOfStats && !"1".equals(System.getenv("SERVICESTACK_TELEMETRY_OPTOUT"))) {
             final URL[] serviceUrl = {null};
             final URLConnection[] responseConnection = {null};
             final BufferedReader[] responseReader = {null};
@@ -36,10 +36,7 @@ public final class Analytics {
                     try {
                         serviceUrl[0] = new URL(url);
                         responseConnection[0] = serviceUrl[0].openConnection();
-                        responseReader[0] = new BufferedReader(
-                                new InputStreamReader(
-                                        responseConnection[0].getInputStream()));
-
+                        responseReader[0] = new BufferedReader(new InputStreamReader(responseConnection[0].getInputStream()));
                         responseReader[0].close();
                     } catch (IOException e) {
                         // Ignore failure (eg no internet connection).

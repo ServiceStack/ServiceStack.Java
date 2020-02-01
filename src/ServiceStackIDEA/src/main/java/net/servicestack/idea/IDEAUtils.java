@@ -92,15 +92,15 @@ public class IDEAUtils {
     }
 
     public static INativeTypesHandler getDefaultNativeTypesHandler(Module module) {
-        if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
+        if (GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
             return new KotlinNativeTypesHandler();
         }
 
-        if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
+        if (IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
             return new KotlinNativeTypesHandler();
         }
 
-        if(PlatformUtils.isWebStorm()) {
+        if (PlatformUtils.isWebStorm()) {
             return new TypeScriptConcreteNativeTypesHandler();
         }
 
@@ -109,10 +109,10 @@ public class IDEAUtils {
 
     public static INativeTypesHandler getNativeTypesHandler(String fileName) {
         INativeTypesHandler result = null;
-        if(fileName.endsWith(".kt")) result =  new KotlinNativeTypesHandler();
-        if(fileName.endsWith(".java")) result =  new JavaNativeTypesHandler();
-        if(fileName.endsWith(".dtos.ts")) result = new TypeScriptConcreteNativeTypesHandler();
-        if(fileName.endsWith(".dtos.d.ts")) result = new TypeScriptNativeTypesHandler();
+        if (fileName.endsWith(".kt")) result =  new KotlinNativeTypesHandler();
+        if (fileName.endsWith(".java")) result =  new JavaNativeTypesHandler();
+        if (fileName.endsWith(".dtos.ts")) result = new TypeScriptConcreteNativeTypesHandler();
+        if (fileName.endsWith(".dtos.d.ts")) result = new TypeScriptNativeTypesHandler();
         return result;
     }
 }

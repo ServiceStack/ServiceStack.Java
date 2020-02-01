@@ -33,22 +33,18 @@ import java.io.StringWriter;
 public class IDEAPomFileHelper {
 
     public boolean addMavenDependency(final Module module,File pomFile, String groupId, String packageId, String version) throws Exception {
-        boolean dependencyAdded = false;
 
         try {
-            if(!pomHasMavenDependency(pomFile,groupId,packageId)) {
+            if (!pomHasMavenDependency(pomFile,groupId,packageId)) {
                 PomAppendDependency(module, pomFile,groupId,packageId,version);
-                dependencyAdded = true;
+                return true;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception("Unable to process pom.xml to add " + groupId + ":" + packageId + ":" + version);
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | ParserConfigurationException e) {
             e.printStackTrace();
             throw new Exception("Unable to process pom.xml to add " + groupId + ":" + packageId + ":" + version);
         }
 
-        return dependencyAdded;
+        return false;
     }
 
 
@@ -123,60 +119,52 @@ public class IDEAPomFileHelper {
 
     private static Node getMavenDependenciesNode(Document document) {
         Node rootNode = document.getFirstChild();
-        NodeList firstChildern = rootNode.getChildNodes();
-        Node result = null;
-        for(int i = 0; i < firstChildern.getLength(); i++) {
-            Node child = firstChildern.item(i);
-            if(child == null) {
+        NodeList firstChildren = rootNode.getChildNodes();
+        for (int i = 0; i < firstChildren.getLength(); i++) {
+            Node child = firstChildren.item(i);
+            if (child == null) {
                 continue;
             }
-            if(child.getNodeName().equals("dependencies")) {
-                result = child;
-                break;
+            if (child.getNodeName().equals("dependencies")) {
+                return child;
             }
         }
-        return result;
+        return null;
     }
 
     public static boolean pomHasMavenDependency(File pomFile, String groupId, String packageId) throws ParserConfigurationException, IOException, SAXException {
-        boolean hasDependency = false;
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.parse(pomFile);
 
-        if(!pomHasDependenciesNode(doc)) {
+        if (!pomHasDependenciesNode(doc)) {
             return false;
         }
 
         Node dependencies = getMavenDependenciesNode(doc);
         NodeList depElements = dependencies.getChildNodes();
-        for(int i = 0; i < depElements.getLength(); i++) {
+        for (int i = 0; i < depElements.getLength(); i++) {
             Node dependencyElement = depElements.item(i);
-            if(pomDependencyElementMatch(dependencyElement, groupId,packageId)) {
-                hasDependency = true;
-                break;
+            if (pomDependencyElementMatch(dependencyElement, groupId, packageId)) {
+                return true;
             }
         }
-        return hasDependency;
+        return false;
     }
 
     public static boolean pomHasKotlinDependency(Module module) {
         String pomFilePath = findNearestModulePomFile(module);
-        if(pomFilePath == null) {
+        if (pomFilePath == null) {
             return false;
         }
         File pomFile = new File(pomFilePath);
-        if(!pomFile.exists()) {
+        if (!pomFile.exists()) {
             return false;
         }
 
         try {
             return pomHasMavenDependency(pomFile,"org.jetbrains.kotlin","kotlin-stdlib");
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException e) {
             e.printStackTrace();
         }
         return false;

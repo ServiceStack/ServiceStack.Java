@@ -35,7 +35,7 @@ public class AddServiceStackAction extends AnAction {
 
         //Check if a package was selected in the left hand menu, populate package name
         PsiElement element = LangDataKeys.PSI_ELEMENT.getData(e.getDataContext());
-        if (element != null && element instanceof PsiPackage) {
+        if (element instanceof PsiPackage) {
             PsiPackage psiPackage = (PsiPackage) element;
             dialog.setSelectedPackage(psiPackage);
             dialog.setVisible(true);
@@ -43,10 +43,10 @@ public class AddServiceStackAction extends AnAction {
         }
 
         //Check if a directory containing a Java file was selected, populate package name
-        if (element != null && element instanceof PsiDirectory) {
+        if (element instanceof PsiDirectory) {
             PsiElement firstChild = element.getFirstChild();
             dialog.setSelectedDirectory(((PsiDirectory) element).getVirtualFile().getPath());
-            if (firstChild != null && firstChild instanceof PsiJavaFile) {
+            if (firstChild instanceof PsiJavaFile) {
                 PsiJavaFile firstJavaFile = (PsiJavaFile) firstChild;
                 PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(firstJavaFile.getPackageName());
                 if (mainPackage != null) {

@@ -8,7 +8,7 @@ import com.intellij.notification.Notifications;
  * Helper messages for common add reference dialog errors.
  */
 public class DialogErrorMessages {
-    public static StringBuilder appendInvalidEnpoint(StringBuilder errorMessage,String addressUrl, Exception e) {
+    public static StringBuilder appendInvalidEndpoint(StringBuilder errorMessage, String addressUrl, Exception e) {
         errorMessage.append(e.getClass().getName()).append(" - Invalid ServiceStack endpoint provided - ").append(addressUrl);
         return errorMessage;
     }

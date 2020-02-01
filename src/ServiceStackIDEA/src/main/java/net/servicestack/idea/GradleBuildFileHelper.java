@@ -41,7 +41,7 @@ public class GradleBuildFileHelper {
             e.printStackTrace();
         }
 
-        if(dependenciesStartIndex == -1 || dependenciesEndIndex == -1) {
+        if (dependenciesStartIndex == -1 || dependenciesEndIndex == -1) {
             return false;
         }
 
@@ -55,7 +55,7 @@ public class GradleBuildFileHelper {
             }
         }
 
-        if(!dependencyRequired) {
+        if (!dependencyRequired) {
             return false;
         }
         list.add(dependenciesEndIndex, "    implementation '" + groupId + ":" + packageName + ":" + version + "'");
@@ -76,14 +76,14 @@ public class GradleBuildFileHelper {
     }
 
     public static Boolean isUsingKotlin(Module module){
-        if(!isGradleModule(module)) {
+        if (!isGradleModule(module)) {
             return false;
         }
         File buildFile = getGradleBuildFile(module);
-        if(buildFile == null) {
+        if (buildFile == null) {
             return false;
         }
-        Boolean result = false;
+        boolean result = false;
         try {
             BufferedReader br = new BufferedReader(new FileReader(buildFile));
             for (String line; (line = br.readLine()) != null; ) {

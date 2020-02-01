@@ -23,18 +23,7 @@ import java.util.Map;
 
 public class AddServiceStackRefHandler {
 
-    private static final String dependencyGroupId = "net.servicestack";
-    private static final String androidPackageId = "android";
-    //Fallback version of dependencies if GitHub tags can't be checked.
-    private static String dependencyVersion = "1.0.38";
-    private static final String clientPackageId = "client";
-
     private static INativeTypesHandler defaultNativeTypesHandler;
-
-    public static void setDependencyVersion(String version) {
-        dependencyVersion = version;
-    }
-
 
     public static void handleOk(String addressUrl, String qualifiedPackageName,
                                 String fileName, String selectedDirectory,
@@ -53,7 +42,7 @@ public class AddServiceStackRefHandler {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 String message = "Failed to update build.gradle with '" +
-                        dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion +
+                        DepConfig.getClientVersionString() +
                         "'. " + e.getLocalizedMessage();
                 Notification notification = new Notification(
                         "ServiceStackIDEA",
@@ -95,13 +84,9 @@ public class AddServiceStackRefHandler {
                 return null;
             }
         }
-        catch (URISyntaxException e) {
+        catch (URISyntaxException | MalformedURLException e) {
             e.printStackTrace();
-            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
-            return null;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
+            DialogErrorMessages.appendInvalidEndpoint(errorMessage, addressUrl, e);
             return null;
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,7 +107,7 @@ public class AddServiceStackRefHandler {
     private static boolean tryAddMavenDependency(Module module) {
         boolean showDto;
         String message = "Unable to locate module pom.xml file. Can't add required dependency '" +
-                dependencyGroupId + ":" + clientPackageId + ":" + dependencyVersion +
+                DepConfig.getClientVersionString() +
                 "'.";
         Notification notification = new Notification(
                 "ServiceStackIDEA",
@@ -137,7 +122,8 @@ public class AddServiceStackRefHandler {
                 return false;
             }
             File pomLibFile = new File(pomFilePath);
-            showDto = pomFileHelper.addMavenDependency(module,pomLibFile, dependencyGroupId, clientPackageId, dependencyVersion);
+            showDto = pomFileHelper.addMavenDependency(module,pomLibFile, DepConfig.servicestackGroupId, DepConfig.clientPackageId, DepConfig.servicestackVersion) ||
+                      pomFileHelper.addMavenDependency(module,pomLibFile, DepConfig.gsonGroupId, DepConfig.gsonPackageId, DepConfig.gsonVersion);
             IDEAUtils.refreshFile(module,pomFilePath,showDto);
         } catch(Exception e) {
             showDto = false;
@@ -153,12 +139,12 @@ public class AddServiceStackRefHandler {
     }
 
     private static boolean addGradleDependencyIfRequired(Module module) throws FileNotFoundException {
-        boolean result = false;
-        if(GradleBuildFileHelper.addDependency(module,dependencyGroupId, androidPackageId, dependencyVersion)) {
-            result = true;
+        if (GradleBuildFileHelper.addDependency(module, DepConfig.servicestackGroupId, DepConfig.androidPackageId, DepConfig.servicestackVersion) ||
+            GradleBuildFileHelper.addDependency(module, DepConfig.gsonGroupId, DepConfig.gsonPackageId, DepConfig.gsonVersion)) {
             IDEAUtils.refreshBuildFile(module);
+            return true;
         }
-        return result;
+        return false;
     }
 
     private static String getDtoPath(Module module, String qualifiedPackageName, String selectedDirectory, String fileName, StringBuilder errorMessage) throws FileNotFoundException {
@@ -199,8 +185,7 @@ public class AddServiceStackRefHandler {
     public static String getDtoFileName(String name) {
         INativeTypesHandler nativeTypesHandler = getNativeTypesHandler(name);
         int p = name.lastIndexOf(".");
-        String e = name.substring(p);
-        if (p == -1 || !e.equals(nativeTypesHandler.getFileExtension())) {
+        if (p == -1 || !name.substring(p).equals(nativeTypesHandler.getFileExtension())) {
             /* file has no extension */
             return name + nativeTypesHandler.getFileExtension();
         } else {
@@ -212,8 +197,7 @@ public class AddServiceStackRefHandler {
     public static String getDtoNameWithoutExtension(String name) {
         INativeTypesHandler nativeTypesHandler = getNativeTypesHandler(name);
         int p = name.lastIndexOf(".");
-        String e = name.substring(p);
-        if (p == -1 || !e.equals(nativeTypesHandler.getFileExtension())) {
+        if (p == -1 || !name.substring(p).equals(nativeTypesHandler.getFileExtension())) {
             /* file has no extension */
             return name;
         } else {

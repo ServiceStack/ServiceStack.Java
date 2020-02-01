@@ -53,21 +53,11 @@ public class AddTypeScriptRefHandler {
                 errorMessage.append("The address url is not a valid ServiceStack endpoint.");
                 return null;
             }
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | MalformedURLException | FileNotFoundException e) {
             e.printStackTrace();
-            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
+            DialogErrorMessages.appendInvalidEndpoint(errorMessage, addressUrl, e);
             return null;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
-            return null;
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-            DialogErrorMessages.appendInvalidEnpoint(errorMessage, addressUrl, e);
-            return null;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             DialogErrorMessages.appendReadResponseError(errorMessage, addressUrl, e);
             return null;
