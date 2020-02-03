@@ -55,7 +55,7 @@ public class AddServiceStackRefHandler {
 
         String dtoPath;
         try {
-            dtoPath = getDtoPath(module,qualifiedPackageName,selectedDirectory, fileName,errorMessage);
+            dtoPath = getDtoPath(module,qualifiedPackageName, selectedDirectory, fileName, errorMessage);
         } catch (Exception e) {
             return;
         }
@@ -160,15 +160,15 @@ public class AddServiceStackRefHandler {
         String fullDtoPath;
 
         PsiPackage mainPackage = JavaPsiFacade.getInstance(module.getProject()).findPackage(qualifiedPackageName);
-        if(mainPackage != null && mainPackage.isValid() && mainPackage.getDirectories().length > 0) {
+        if (mainPackage != null && mainPackage.isValid() && mainPackage.getDirectories().length > 0) {
             File file = new File(selectedDirectory);
             VirtualFile selectedFolder = LocalFileSystem.getInstance().findFileByIoFile(file);
-            if(selectedFolder == null) {
+            if (selectedFolder == null) {
                 errorMessage.append("Unable to determine path for DTO file.");
                 throw new FileNotFoundException();
             }
             PsiDirectory rootPackageDir = PsiManager.getInstance(module.getProject()).findDirectory(selectedFolder);
-            if(rootPackageDir == null) {
+            if (rootPackageDir == null) {
                 errorMessage.append("Unable to determine path for DTO file.");
                 throw new FileNotFoundException();
             }

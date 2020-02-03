@@ -19,6 +19,7 @@ import com.intellij.psi.*;
 import com.intellij.util.PlatformUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,14 +156,14 @@ public class AddServiceStackAction extends AnAction {
             return;
         }
 
-        if (!(PlatformUtils.isIntelliJ() || isAndroidProject(module))) {
+        if (!(PlatformUtils.isIntelliJ() || isAndroidProject(module) || isDartProject(module))) {
             e.getPresentation().setVisible(false);
             return;
         }
 
         boolean isMavenModule =  IDEAPomFileHelper.isMavenModule(module);
 
-        if (isAndroidProject(module) || isMavenModule) {
+        if (isAndroidProject(module) || isMavenModule || isDartProject(module)) {
             e.getPresentation().setEnabled(true);
         } else {
             e.getPresentation().setEnabled(false);
@@ -192,6 +193,10 @@ public class AddServiceStackAction extends AnAction {
         return false;
     }
 
+    private static boolean isDartProject(@NotNull Module module) {
+        return GradleBuildFileHelper.isDartProject(module);
+    }
+
     static Module getModule(AnActionEvent e) {
         Module module = e.getData(LangDataKeys.MODULE);
         if (module == null) {
@@ -201,4 +206,5 @@ public class AddServiceStackAction extends AnAction {
             return module;
         }
     }
+
 }

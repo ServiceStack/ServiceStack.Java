@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/DartNativeTypesHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/GradleBuildFileHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/IDEAUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/NativeTypesLanguage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/NativeTypesLanguage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/UpdateServiceStackUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -589,14 +584,18 @@
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
     <state x="634" y="700" key="FileChooserDialogImpl/0.0.3413.1880@0.0.3413.1880" timestamp="1580597977595" />
+    <state x="362" y="584" key="SettingsEditor" timestamp="1580764271578">
+      <screen x="0" y="0" width="3413" height="1880" />
+    </state>
+    <state x="362" y="584" key="SettingsEditor/0.0.3413.1880@0.0.3413.1880" timestamp="1580764271578" />
     <state x="556" y="766" key="com.intellij.ide.util.TipDialog" timestamp="1580761527123">
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
     <state x="556" y="766" key="com.intellij.ide.util.TipDialog/0.0.3413.1880@0.0.3413.1880" timestamp="1580761527123" />
-    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580763406349">
+    <state x="547" y="541" width="612" height="804" key="find.popup" timestamp="1580763584161">
       <screen x="0" y="0" width="3413" height="1880" />
     </state>
-    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580763406349" />
+    <state x="547" y="541" width="612" height="804" key="find.popup/0.0.3413.1880@0.0.3413.1880" timestamp="1580763584161" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
