@@ -12,13 +12,16 @@ if(System.env.BUILD_NUMBER != null && System.env.SERVICESTACKIDEA_PUBLISH_NIGHTL
     // Append build number to version for a new nightly build version to be published.
     version = "${version}.$System.env.BUILD_NUMBER"
 }
-
 String jbToken;
+String publishChannel;
 
 if (properties.getProperty("jetbrains.plugins.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
 jbToken = properties.getProperty("jetbrains.plugins.token");
+if (properties.getProperty("jetbrains.plugins.publishChannel", null) != null) {
+    publishChannel = properties.getProperty("jetbrains.plugins.publishChannel");
+}
 
 intellij {
     version 'IC-14.1.4'
@@ -28,6 +31,6 @@ intellij {
 
     publishPlugin {
       token jbToken
-      channels 'beta'
+      channels publishChannel
     } 
 }
