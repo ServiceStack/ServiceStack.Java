@@ -11,6 +11,7 @@ import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.PlatformUtils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -54,16 +55,11 @@ public class IDEAUtils {
         VirtualFileManager.getInstance().syncRefresh();
     }
 
-    public static void refreshFile(String filePath, boolean openFile) {
-
-    }
-
     public static boolean writeDtoFile(List<String> codeLines, String path, StringBuilder errorMessage) {
         BufferedWriter writer = null;
         boolean result = true;
         try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(path), "utf-8"));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path), StandardCharsets.UTF_8));
             for (String item : codeLines) {
                 writer.write(item);
                 writer.newLine();
@@ -100,6 +96,10 @@ public class IDEAUtils {
             return new KotlinNativeTypesHandler();
         }
 
+        if (GradleBuildFileHelper.isDartProject(module)) {
+            return new DartNativeTypesHandler();
+        }
+
         if (PlatformUtils.isWebStorm()) {
             return new TypeScriptConcreteNativeTypesHandler();
         }
@@ -109,10 +109,11 @@ public class IDEAUtils {
 
     public static INativeTypesHandler getNativeTypesHandler(String fileName) {
         INativeTypesHandler result = null;
-        if (fileName.endsWith(".kt")) result =  new KotlinNativeTypesHandler();
+        if (fileName.endsWith(".kt")) result = new KotlinNativeTypesHandler();
         if (fileName.endsWith(".java")) result =  new JavaNativeTypesHandler();
-        if (fileName.endsWith(".dtos.ts")) result = new TypeScriptConcreteNativeTypesHandler();
-        if (fileName.endsWith(".dtos.d.ts")) result = new TypeScriptNativeTypesHandler();
+        if (fileName.endsWith("dtos.dart")) result = new DartNativeTypesHandler();
+        if (fileName.endsWith("dtos.ts")) result = new TypeScriptConcreteNativeTypesHandler();
+        if (fileName.endsWith("dtos.d.ts")) result = new TypeScriptNativeTypesHandler();
         return result;
     }
 }

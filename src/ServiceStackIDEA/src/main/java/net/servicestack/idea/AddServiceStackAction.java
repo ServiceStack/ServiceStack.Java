@@ -52,7 +52,7 @@ public class AddServiceStackAction extends AnAction {
                 if (mainPackage != null) {
                     dialog.setSelectedPackage(mainPackage);
                 }
-            } else if(module.getModuleFile() != null) {
+            } else if (module.getModuleFile() != null) {
                 try {
                     PsiDirectory selectedDir = (PsiDirectory) element;
                     String packageName = "";
@@ -122,13 +122,16 @@ public class AddServiceStackAction extends AnAction {
     }
 
     private void ShowDialog(Module module, AddRef dialog) {
-        if(GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
+        if (GradleBuildFileHelper.isGradleModule(module) && GradleBuildFileHelper.isUsingKotlin(module)) {
             dialog.setFileName("dtos.kt");
+        }
+        else if (IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
+            dialog.setFileName("dtos.kt");
+        }
+        else if (GradleBuildFileHelper.isDartProject(module)) {
+            dialog.setFileName("dtos.dart");
         }
 
-        if(IDEAPomFileHelper.isMavenProjectWithKotlin(module)) {
-            dialog.setFileName("dtos.kt");
-        }
         dialog.setVisible(true);
     }
 
@@ -152,7 +155,7 @@ public class AddServiceStackAction extends AnAction {
             return;
         }
 
-        if(!(PlatformUtils.isIntelliJ() || isAndroidProject(module))) {
+        if (!(PlatformUtils.isIntelliJ() || isAndroidProject(module))) {
             e.getPresentation().setVisible(false);
             return;
         }

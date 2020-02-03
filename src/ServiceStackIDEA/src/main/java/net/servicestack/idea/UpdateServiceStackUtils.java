@@ -31,25 +31,25 @@ public class UpdateServiceStackUtils {
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             linesOfCode.add(line);
-            if(line.startsWith("*/")) break;
+            if (line.startsWith("*/")) break;
         }
         scanner.close();
 
         int startParamsIndex = 0;
         String baseUrl = null;
-        for(String item : linesOfCode) {
+        for (String item : linesOfCode) {
             startParamsIndex++;
-            if(item.startsWith("BaseUrl:")) {
+            if (item.startsWith("BaseUrl:")) {
                 baseUrl = item.split(":",2)[1].trim();
                 break;
             }
         }
-        if(baseUrl == null) {
+        if (baseUrl == null) {
             Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "BaseUrl property not found.", NotificationType.ERROR);
             Notifications.Bus.notify(notification);
             return;
         }
-        if(!baseUrl.endsWith("/")) {
+        if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
 
@@ -66,16 +66,16 @@ public class UpdateServiceStackUtils {
         INativeTypesHandler nativeTypesHandler = IDEAUtils.getNativeTypesHandler(psiFile.getName());
 
         String existingPath = builder.getPath();
-        if(existingPath == null || existingPath.equals("/")) {
+        if (existingPath == null || existingPath.equals("/")) {
             builder.setPath(combinePath("", nativeTypesHandler.getRelativeTypesUrl()));
         } else {
             builder.setPath(combinePath(existingPath, nativeTypesHandler.getRelativeTypesUrl()));
         }
 
         Map<String,String> options = new HashMap<String,String>();
-        for(int i = startParamsIndex; i < linesOfCode.size(); i++) {
+        for (int i = startParamsIndex; i < linesOfCode.size(); i++) {
             String configLine = linesOfCode.get(i);
-            if(!configLine.startsWith("//") && configLine.contains(":")) {
+            if (!configLine.startsWith("//") && configLine.contains(":")) {
                 String[] keyVal = configLine.split(":");
                 options.put(keyVal[0], keyVal[1].trim());
             }
@@ -86,7 +86,7 @@ public class UpdateServiceStackUtils {
             int count = 0;
             // Using URIBuilder with 'addParameter' URL encodes query values..
             // Append manually below to avoid issues https://github.com/ServiceStack/ServiceStack.Java/issues/6
-            for(Map.Entry<String,String> option : options.entrySet()) {
+            for (Map.Entry<String,String> option : options.entrySet()) {
                 if(count == 0) {
                     serverUrl += "?";
                 } else {
@@ -113,7 +113,7 @@ public class UpdateServiceStackUtils {
             }
 
             String javaCode = javaCodeResponse.toString();
-            if(!javaCode.startsWith("/* Options:")) {
+            if (!javaCode.startsWith("/* Options:")) {
                 Notification notification = new Notification("ServiceStackIDEA", "Error Updating Reference", "Invalid response from provided BaseUrl - " + baseUrl, NotificationType.ERROR);
                 Notifications.Bus.notify(notification);
                 return;

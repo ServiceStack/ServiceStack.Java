@@ -75,6 +75,10 @@ public class GradleBuildFileHelper {
         return getGradleBuildFile(module) != null;
     }
 
+    public static Boolean isDartProject(Module module) {
+        return getDartPubspec(module) != null;
+    }
+
     public static Boolean isUsingKotlin(Module module){
         if (!isGradleModule(module)) {
             return false;
@@ -102,20 +106,27 @@ public class GradleBuildFileHelper {
 
     public static File getGradleBuildFile(Module module) {
         VirtualFile moduleFile = module.getModuleFile();
-        if(moduleFile == null) {
+        if (moduleFile == null) {
             return null;
         }
         String moduleDirectory = moduleFile.getParent().getPath();
         File file = new File(moduleDirectory);
-        File[] matchingFiles = file.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.startsWith("build.gradle");
-            }
-        });
-        if(matchingFiles == null || matchingFiles.length == 0) {
+        File[] matchingFiles = file.listFiles((dir, name) -> name.startsWith("build.gradle"));
+        return matchingFiles == null || matchingFiles.length == 0
+            ? null
+            : matchingFiles[0];
+    }
+
+    public static File getDartPubspec(Module module) {
+        VirtualFile moduleFile = module.getModuleFile();
+        if (moduleFile == null) {
             return null;
         }
-        return matchingFiles[0];
+        String moduleDirectory = moduleFile.getParent().getPath();
+        File file = new File(moduleDirectory);
+        File[] matchingFiles = file.listFiles((dir, name) -> name.startsWith("pubspec.yaml"));
+        return matchingFiles == null || matchingFiles.length == 0
+            ? null
+            : matchingFiles[0];
     }
 }
