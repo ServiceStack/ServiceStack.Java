@@ -3,28 +3,56 @@
 
 package net.servicestack.android;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
-import net.servicestack.client.AsyncComplete;
 import net.servicestack.client.AsyncError;
 import net.servicestack.client.AsyncResult;
 import net.servicestack.client.AsyncResultVoid;
 import net.servicestack.client.AsyncServiceClient;
+import net.servicestack.client.AsyncSuccess;
 import net.servicestack.client.AsyncSuccessVoid;
 import net.servicestack.client.IReturn;
 import net.servicestack.client.IReturnVoid;
 import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.AsyncSuccess;
 import net.servicestack.client.Utils;
+import net.servicestack.cookies.SerializableCookieStore;
 
 import java.lang.reflect.Type;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.util.Map;
 
 public class AndroidServiceClient extends JsonServiceClient implements AsyncServiceClient {
 
+    Context context;
+
     public AndroidServiceClient(String baseUrl) {
         super(baseUrl);
+    }
+
+    public AndroidServiceClient(String baseUrl, Context context) {
+        super(baseUrl, false);
+        this.context = context;
+        this.initCookieHandler();
+    }
+
+    @Override
+    public void initCookieHandler() {
+        //Automatically populate response cookies
+        if (CookieHandler.getDefault() == null) {
+            if (this.context != null) {
+                SerializableCookieStore cookieStore = new SerializableCookieStore(context);
+                CookieManager cookieManager = new CookieManager(cookieStore, CookiePolicy.ACCEPT_ALL);
+                CookieHandler.setDefault(cookieManager);
+            } else {
+                //Doesn't support getCookieStore() throws UnsupportedOperationException
+                CookieManager cookieManager = new CookieManager(null, CookiePolicy.ACCEPT_ALL);
+                CookieHandler.setDefault(cookieManager);
+            }
+        }
     }
 
     // Override to customize execution of AsyncTask
