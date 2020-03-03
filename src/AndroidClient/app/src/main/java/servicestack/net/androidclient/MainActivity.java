@@ -30,6 +30,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.servicestack.android.AndroidServiceClient;
+import net.servicestack.client.AsyncSuccess;
+import net.servicestack.client.Log;
+
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
     /**
@@ -172,6 +176,37 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             externalActivityIntent.addFlags(
                                     Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                             startActivity(externalActivityIntent);
+                        }
+                    });
+
+            rootView.findViewById(R.id.btn_test_cookie)
+                    .setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+//                            final AndroidServiceClient client = new AndroidServiceClient("http://validation.web-app.io", getContext());
+                            final AndroidServiceClient client = new AndroidServiceClient("http://validation.web-app.io");
+                            client.postAsync(new validationdtos.Authenticate()
+                                    .setProvider("credentials")
+                                    .setUserName("admin@email.com")
+                                    .setPassword("p@55wOrd")
+                                    , new AsyncSuccess<validationdtos.AuthenticateResponse>() {
+                                @Override
+                                public void success(validationdtos.AuthenticateResponse response) {
+                                    try {
+                                        client.setTokenCookie(response.getBearerToken());
+                                    } catch (Exception e) {
+                                        Log.e(e);
+                                    }
+                                    client.getAsync(new validationdtos.GetContacts(), new AsyncSuccess<validationdtos.GetContactsResponse>() {
+                                        @Override
+                                        public void success(validationdtos.GetContactsResponse response) {
+                                            for (validationdtos.Contact contact : response.results) {
+                                                Log.d("CONTACT: " + contact.name);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
 
