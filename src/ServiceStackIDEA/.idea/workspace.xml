@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="76e5b4da-d2d1-4cc1-aa75-36afe3b6ccb4" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackAction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/servicestack/idea/AddServiceStackRefHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

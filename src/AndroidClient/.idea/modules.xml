@@ -2,14 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidClient.iml" filepath="$PROJECT_DIR$/AndroidClient.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/android.iml" filepath="$PROJECT_DIR$/android/android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/androidchat/androidchat.iml" filepath="$PROJECT_DIR$/androidchat/androidchat.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/kotlin/kotlin.iml" filepath="$PROJECT_DIR$/kotlin/kotlin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/techstacks/techstacks.iml" filepath="$PROJECT_DIR$/techstacks/techstacks.iml" />
-      <module fileurl="file://$PROJECT_DIR$/techstackskotlin/techstackskotlin.iml" filepath="$PROJECT_DIR$/techstackskotlin/techstackskotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidClient.iml" filepath="$PROJECT_DIR$/AndroidClient.iml" group="AndroidClient" />
+      <module fileurl="file://$PROJECT_DIR$/android/android.iml" filepath="$PROJECT_DIR$/android/android.iml" group="AndroidClient/android" />
+      <module fileurl="file://$PROJECT_DIR$/androidchat/androidchat.iml" filepath="$PROJECT_DIR$/androidchat/androidchat.iml" group="AndroidClient/androidchat" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="AndroidClient/app" />
+      <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" group="AndroidClient/client" />
+      <module fileurl="file://$PROJECT_DIR$/kotlin/kotlin.iml" filepath="$PROJECT_DIR$/kotlin/kotlin.iml" group="AndroidClient/kotlin" />
+      <module fileurl="file://$PROJECT_DIR$/techstacks/techstacks.iml" filepath="$PROJECT_DIR$/techstacks/techstacks.iml" group="AndroidClient/techstacks" />
+      <module fileurl="file://$PROJECT_DIR$/techstackskotlin/techstackskotlin.iml" filepath="$PROJECT_DIR$/techstackskotlin/techstackskotlin.iml" group="AndroidClient/techstackskotlin" />
     </modules>
   </component>
 </project>
