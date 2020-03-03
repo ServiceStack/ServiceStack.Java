@@ -9,6 +9,9 @@ import java.util.Map;
 
 public interface ServiceClient {
     boolean getAlwaysSendBasicAuthHeaders();
+    void setBearerToken(String value);
+    String getBearerToken();
+    void setTokenCookie(String value);
     void setAlwaysSendBasicAuthHeaders(boolean value);
     void setCredentials(String userName, String password);
 

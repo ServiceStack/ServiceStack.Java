@@ -20,6 +20,8 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -30,11 +32,13 @@ import java.util.UUID;
 public class JsonServiceClient implements ServiceClient {
     static Charset UTF8 = Charset.forName("UTF-8");
     String baseUrl;
+    URI baseUri;
     String replyUrl;
 
     boolean alwaysSendBasicAuthHeaders;
     String userName;
     String password;
+    String bearerToken;
 
     Integer timeoutMs;
     public ConnectionFilter RequestFilter;
@@ -47,8 +51,16 @@ public class JsonServiceClient implements ServiceClient {
     Gson gson;
 
     public JsonServiceClient(String baseUrl) {
+        this(baseUrl, true);
+    }
+    public JsonServiceClient(String baseUrl, boolean initCookies) {
         setBaseUrl(baseUrl);
+        if (initCookies) {
+            initCookieHandler();
+        }
+    }
 
+    public void initCookieHandler() {
         //Automatically populate response cookies
         if (CookieHandler.getDefault() == null){
             CookieHandler.setDefault(new CookieManager());
@@ -57,6 +69,11 @@ public class JsonServiceClient implements ServiceClient {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
+        try {
+            this.baseUri = new URI(this.baseUrl);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         this.replyUrl = this.baseUrl + "json/reply/";
     }
 
@@ -66,13 +83,13 @@ public class JsonServiceClient implements ServiceClient {
 
     public GsonBuilder getGsonBuilder() {
         return new GsonBuilder()
-            .registerTypeAdapterFactory(JsonSerializers.getCaseInsensitiveEnumTypeAdapterFactory())
-            .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
-            .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
-            .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
-            .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
-            .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
-            .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer());
+                .registerTypeAdapterFactory(JsonSerializers.getCaseInsensitiveEnumTypeAdapterFactory())
+                .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
+                .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
+                .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
+                .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
+                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
+                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer());
     }
 
     public Gson getGson() {
@@ -137,10 +154,10 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     public HttpURLConnection createRequest(String requestUrl, String httpMethod, byte[] requestBody, String requestType) {
-    	return createRequest(requestUrl, httpMethod, requestBody, requestType, false);
-    
+        return createRequest(requestUrl, httpMethod, requestBody, requestType, false);
+
     }
-    
+
     public HttpURLConnection createRequest(String requestUrl, String httpMethod, byte[] requestBody, String requestType, Boolean forceAuthentication) {
         try {
             URL url = new URL(requestUrl);
@@ -159,8 +176,12 @@ public class JsonServiceClient implements ServiceClient {
                 req.setRequestProperty(HttpHeaders.ContentType, requestType);
             }
 
-            if (forceAuthentication || alwaysSendBasicAuthHeaders) {
-                addBasicAuth(req, userName, password);
+            if (bearerToken != null) {
+                req.setRequestProperty(HttpHeaders.Authorization, "Bearer " + bearerToken);
+                req.setRequestProperty("X-Auth", "Bearer"); // HttpURLConnection doesn't allow re-reading Authorization Header
+            } else if (forceAuthentication || alwaysSendBasicAuthHeaders) {
+                req.setRequestProperty(HttpHeaders.Authorization, "Basic " + Utils.toBase64String(userName + ":" + password));
+                req.setRequestProperty("X-Auth", "Basic"); // HttpURLConnection doesn't allow re-reading Authorization Header
             }
 
             if (RequestFilter != null) {
@@ -187,18 +208,12 @@ public class JsonServiceClient implements ServiceClient {
         }
     }
 
-    private static void addBasicAuth(HttpURLConnection req, String userName, String password) {
-        req.setRequestProperty(HttpHeaders.Authorization,
-            "Basic " + Utils.toBase64String(userName + ":" + password));
-        req.setRequestProperty("X-Auth", "Basic"); // HttpURLConnection doesn't allow re-reading Authorization Header
-    }
-
     private static boolean shouldAuthenticate(HttpURLConnection req, String userName, String password){
         try {
             return req.getResponseCode() == 401
-                && req.getRequestProperty("X-Auth") == null //only auth if auth never attempted
-                && userName != null
-                && password != null;
+                    && req.getRequestProperty("X-Auth") == null //only auth if auth never attempted
+                    && userName != null
+                    && password != null;
         } catch (IOException e) {
             return false;
         }
@@ -211,8 +226,8 @@ public class JsonServiceClient implements ServiceClient {
             InputStream errorStream = res.getErrorStream();
 
             String responseBody = errorStream != null
-                ? Utils.readToEnd(errorStream, UTF8.name())
-                : null;
+                    ? Utils.readToEnd(errorStream, UTF8.name())
+                    : null;
 
             webEx = new WebServiceException(responseCode, res.getResponseMessage(), responseBody);
 
@@ -243,16 +258,16 @@ public class JsonServiceClient implements ServiceClient {
     public static String GetSendMethod(Object request)
     {
         return request instanceof IGet ?
-              HttpMethods.Get
-            : request instanceof IPost ?
-              HttpMethods.Post
-            : request instanceof IPut ?
-              HttpMethods.Put
-            : request instanceof IDelete ?
-              HttpMethods.Delete
-            : request instanceof IPatch ?
-              HttpMethods.Patch :
-              HttpMethods.Post;
+                HttpMethods.Get
+                : request instanceof IPost ?
+                HttpMethods.Post
+                : request instanceof IPut ?
+                HttpMethods.Put
+                : request instanceof IDelete ?
+                HttpMethods.Delete
+                : request instanceof IPatch ?
+                HttpMethods.Patch :
+                HttpMethods.Post;
     }
 
     public static boolean hasRequestBody(String httpMethod)
@@ -276,6 +291,21 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public void setAlwaysSendBasicAuthHeaders(boolean value) {
         this.alwaysSendBasicAuthHeaders = value;
+    }
+
+    @Override
+    public void setBearerToken(String bearerToken) {
+        this.bearerToken = bearerToken;
+    }
+
+    @Override
+    public String getBearerToken() {
+        return bearerToken;
+    }
+
+    @Override
+    public void setTokenCookie(String value) {
+        setCookie("ss-tok", value, (long) (365 * 24 * 60 * 60)); //1 year
     }
 
     @Override
@@ -303,7 +333,7 @@ public class JsonServiceClient implements ServiceClient {
     public void send(IReturnVoid request) {
         String httpMethod = GetSendMethod(request);
         send(Utils.combinePath(replyUrl, typeName(request)), httpMethod, request,
-            IReturnVoid.class);
+                IReturnVoid.class);
     }
 
     public <TResponse> TResponse send(String url, String httpMethod, Object responseClass) {
@@ -343,7 +373,7 @@ public class JsonServiceClient implements ServiceClient {
                 if (shouldAuthenticate(req, userName, password)){
                     req.disconnect();
                     req = createRequest(requestUrl, httpMethod, requestBody, requestType, true);
-                  
+
                     success = req.getResponseCode() < 400;
                 }
 
@@ -384,16 +414,16 @@ public class JsonServiceClient implements ServiceClient {
                 Log.d(json);
 
                 TResponse response = resClass != null
-                    ? (TResponse) getGson().fromJson(json, resClass)
-                    : (TResponse) getGson().fromJson(json, resType);
+                        ? (TResponse) getGson().fromJson(json, resClass)
+                        : (TResponse) getGson().fromJson(json, resType);
 
                 return response;
             }
             else {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 TResponse response = resClass != null
-                    ? (TResponse) getGson().fromJson(reader, resClass)
-                    : (TResponse) getGson().fromJson(reader, resType);
+                        ? (TResponse) getGson().fromJson(reader, resClass)
+                        : (TResponse) getGson().fromJson(reader, resType);
 
                 Utils.closeQuietly(reader);
                 return response;
@@ -413,9 +443,9 @@ public class JsonServiceClient implements ServiceClient {
 
     private String resolveUrl(String relativeOrAbsoluteUrl) {
         return relativeOrAbsoluteUrl.startsWith("http:")
-            || relativeOrAbsoluteUrl.startsWith("https:")
-            ? relativeOrAbsoluteUrl
-            : Utils.combinePath(baseUrl, relativeOrAbsoluteUrl);
+                || relativeOrAbsoluteUrl.startsWith("https:")
+                ? relativeOrAbsoluteUrl
+                : Utils.combinePath(baseUrl, relativeOrAbsoluteUrl);
     }
 
     @Override
@@ -451,8 +481,8 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public <TResponse> TResponse post(IReturn<TResponse> request) {
         return send(
-            Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request,
-            request.getResponseType());
+                Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Post, request,
+                request.getResponseType());
     }
 
     @Override
@@ -488,14 +518,14 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public <TResponse> TResponse put(IReturn<TResponse> request) {
         return send(
-            Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request,
-            request.getResponseType());
+                Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request,
+                request.getResponseType());
     }
 
     @Override
     public void put(IReturnVoid request) {
         send(Utils.combinePath(replyUrl, typeName(request)), HttpMethods.Put, request,
-            IReturnVoid.class);
+                IReturnVoid.class);
     }
 
     @Override
@@ -562,10 +592,11 @@ public class JsonServiceClient implements ServiceClient {
     public void setCookie(String name, String value, Long expiresInSecs) {
         CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
         HttpCookie cookie = new HttpCookie(name, value);
+        cookie.setVersion(0); // Required otherwise it quotes values https://stackoverflow.com/a/20204076/85785
         if (expiresInSecs != null){
             cookie.setMaxAge(expiresInSecs);
         }
-        cookieManager.getCookieStore().getCookies().add(cookie);
+        cookieManager.getCookieStore().add(baseUri, cookie);
     }
 
     @Override
