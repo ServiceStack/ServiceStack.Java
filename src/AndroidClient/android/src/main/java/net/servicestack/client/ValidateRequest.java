@@ -15,4 +15,9 @@ public @interface ValidateRequest {
     /// FluentValidation Error Message
     /// </summary>
     public String Message() default "";
+
+    /// <summary>
+    /// Error StatusCode
+    /// </summary>
+    public int StatusCode() default 400;
 }
