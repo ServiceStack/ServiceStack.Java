@@ -2,6 +2,11 @@ package net.servicestack.client;
 
 public @interface ValidateRequest {
     /// <summary>
+    /// Expression to create a validator registered in Validators.Types
+    /// </summary>
+    public String Validator() default "";
+
+    /// <summary>
     /// Boolean #Script Code Expression to Test
     /// </summary>
     public String Condition() default "";
