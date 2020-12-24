@@ -122,11 +122,10 @@ public class AddRef extends JDialog {
             }
 
             public void warn() {
-                if (nameTextField.getInputVerifier().verify(nameTextField) && addressUrlTextField.getInputVerifier().verify(addressUrlTextField)) {
-                    buttonOK.setEnabled(true);
-                } else {
-                    buttonOK.setEnabled(false);
-                }
+                buttonOK.setEnabled(
+                    nameTextField.getInputVerifier().verify(nameTextField) &&
+                    addressUrlTextField.getInputVerifier().verify(addressUrlTextField)
+                );
             }
         });
 
@@ -147,27 +146,18 @@ public class AddRef extends JDialog {
             }
 
             public void warn() {
-                if (nameTextField.getInputVerifier().verify(nameTextField) && addressUrlTextField.getInputVerifier().verify(addressUrlTextField)) {
-                    buttonOK.setEnabled(true);
-                } else {
-                    buttonOK.setEnabled(false);
-                }
+                buttonOK.setEnabled(
+                    nameTextField.getInputVerifier().verify(nameTextField) &&
+                    addressUrlTextField.getInputVerifier().verify(addressUrlTextField)
+                );
             }
         });
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                processOK();
-            }
-        });
+        buttonOK.addActionListener(e -> processOK());
 
         packageBrowse.addActionListener(new BrowsePackageListener(packageBrowse, module.getProject(), "Browse packages"));
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        buttonCancel.addActionListener(e -> onCancel());
 
 // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -178,11 +168,7 @@ public class AddRef extends JDialog {
         });
 
 // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     public void setSelectedPackage(@NotNull PsiPackage selectedPackage) {
@@ -241,24 +227,18 @@ public class AddRef extends JDialog {
         }
 
 
-        Runnable r = new Runnable() {
-            public void run() {
-                try {
-                    onOK();
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                    errorMessage = errorMessage != null ? errorMessage : "An error occurred adding reference - " + e1.getMessage();
-                }
-                if (errorMessage != null) {
-                    errorTextPane.setVisible(true);
-                    errorTextPane.setText(errorMessage);
-                }
-                buttonOK.setEnabled(true);
-                buttonCancel.setEnabled(true);
-
-            }
-        };
-        SwingUtilities.invokeLater(r);
+        try {
+            onOK();
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            errorMessage = errorMessage != null ? errorMessage : "An error occurred adding reference - " + e1.getMessage();
+        }
+        if (errorMessage != null) {
+            errorTextPane.setVisible(true);
+            errorTextPane.setText(errorMessage);
+        }
+        buttonOK.setEnabled(true);
+        buttonCancel.setEnabled(true);
     }
 
     private void setPackageBrowseText(String packageName) {
@@ -375,7 +355,6 @@ public class AddRef extends JDialog {
     }
 
     /**
-     * @noinspection ALL
      */
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
