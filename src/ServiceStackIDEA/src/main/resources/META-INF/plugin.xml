@@ -1,0 +1,72 @@
+<idea-plugin>
+  <id>net.servicestack.ideaplugin</id>
+  <name>ServiceStack</name>
+  <!--Change build version in build.gradle-->
+  <version>1.0.15</version>
+  <vendor email="team@servicestack.net" url="https://servicestack.net/">ServiceStack</vendor>
+
+  <description><![CDATA[
+      Integration with ServiceStack Web Services, includes support for Java, Kotlin and TypeScript Add ServiceStack Reference.
+    ]]></description>
+
+  <change-notes><![CDATA[
+    <ul>
+      <li>1.0.15 - Add Dart ServiceStack Reference support.</li>
+      <li>1.0.14 - Fix adding Android dependencies.</li>
+      <li>1.0.12 - Fix TypeScript dialog defaults to use classes over definitions only.</li>
+      <li>1.0.11 - Small UI fixes.</li>
+      <li>1.0.10 - Add TypeScript support. Fix issue with resolving URL to match behavior of other extensions.</li>
+      <li>1.0.9 - Fix plugin to support Android Studio 2.0.</li>
+      <li>1.0.8 - Add support for Kotlin projects with Add/Update ServiceStack reference.</li>
+      <li>1.0.7 - Bug fixes and client now gets dependency version from ServiceStack.Java tags, falls back to 1.0.15 if it fails.</li>
+      <li>1.0.6 - Update client and android dependency versions to 1.0.13.</li>
+      <li>1.0.5 - Update client and android dependency versions to 1.0.12.</li>
+      <li>1.0.4 - Bug fixes for Maven project support and new versions of net.servicestack:client.</li>
+      <li>1.0.3 - Added support to detect Maven pom.xml and inject net.servicestack:client dependency for IntelliJ + Maven modules.</li>
+      <li>1.0.2 - Fix plugin.xml template bug to enable search from IDE.</li>
+      <li>1.0 - Initial release.</li>
+    </ul>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="192.0"/>
+
+  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <depends>com.intellij.modules.lang</depends>
+  <depends>com.intellij.modules.platform</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+    <intentionAction>
+      <className>net.servicestack.idea.UpdateServiceStackReferenceIntention</className>
+    </intentionAction>
+
+    <applicationService serviceImplementation="net.servicestack.idea.PluginSettingsService"
+                        id="ServiceStackIDEASettingsService" />
+
+    <applicationConfigurable groupId="ServiceStackIDEA"
+                             displayName="ServiceStack"
+                             id="ServiceStackIDEAConfig"
+                             instance="net.servicestack.idea.PluginSettingsConfigurable" />
+
+    <notification.group groupId="ServiceStackIDEA" id="ServiceStackIDEA" />
+  </extensions>
+
+  <actions>
+    <action id="AddServiceStackReference" class="net.servicestack.idea.AddServiceStackAction" text="ServiceStack Reference..." icon="/logo-16.png"
+            description="Adds a ServiceStack reference to the selected module">
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift ctrl alt R"/>
+    </action>
+    <action id="UpdateServiceStackReference" class="net.servicestack.idea.UpdateServiceStackReference" text="Update ServiceStack Reference" icon="/logo-16.png"
+            description="Updates the selected ServiceStack reference.">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
+    <action id="AddTypeScriptReference" class="net.servicestack.idea.AddTypeScriptAction" text="TypeScript Reference..." icon="/logo-16.png"
+            description="Adds a ServiceStack TypeScript reference to the selected folder">
+      <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewAction"/>
+    </action>
+  </actions>
+</idea-plugin>

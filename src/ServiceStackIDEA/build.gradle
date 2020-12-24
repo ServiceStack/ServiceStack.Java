@@ -5,6 +5,9 @@ version = '1.0.41'
 repositories {
     mavenCentral()
 }
+tasks.buildSearchableOptions {
+    enabled = false
+}
 apply plugin: 'org.jetbrains.intellij'
 dependencies {
 
