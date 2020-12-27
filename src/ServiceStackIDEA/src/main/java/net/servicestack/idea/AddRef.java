@@ -6,6 +6,7 @@ import com.intellij.ide.util.PackageChooserDialog;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
@@ -226,19 +227,21 @@ public class AddRef extends JDialog {
             Notifications.Bus.notify(notification);
         }
 
+        ApplicationManager.getApplication().invokeLater(() -> {
+            try {
+                onOK();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                errorMessage = errorMessage != null ? errorMessage : "An error occurred adding reference - " + e1.getMessage();
+            }
+            if (errorMessage != null) {
+                errorTextPane.setVisible(true);
+                errorTextPane.setText(errorMessage);
+            }
+            buttonOK.setEnabled(true);
+            buttonCancel.setEnabled(true);
+        });
 
-        try {
-            onOK();
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            errorMessage = errorMessage != null ? errorMessage : "An error occurred adding reference - " + e1.getMessage();
-        }
-        if (errorMessage != null) {
-            errorTextPane.setVisible(true);
-            errorTextPane.setText(errorMessage);
-        }
-        buttonOK.setEnabled(true);
-        buttonCancel.setEnabled(true);
     }
 
     private void setPackageBrowseText(String packageName) {
