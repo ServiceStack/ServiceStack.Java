@@ -27,7 +27,7 @@ jbToken = properties.getProperty("jetbrains.plugins.token")
 
 intellij {
     version '2019.2'
-    plugins 'maven','java'
+    plugins = ['maven','com.intellij.java']
     pluginName 'ServiceStackIDEA'
     updateSinceUntilBuild false
 
