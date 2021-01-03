@@ -1,28 +1,33 @@
 plugins {
-    id "org.jetbrains.intellij" version "0.4.15"
+    id "org.jetbrains.intellij" version "0.6.5"
 }
-version = '1.0.40'
-
+version = '1.0.41'
+repositories {
+    mavenCentral()
+}
+tasks.buildSearchableOptions {
+    enabled = false
+}
 apply plugin: 'org.jetbrains.intellij'
 dependencies {
 
 }
-Properties properties = System.properties;
+Properties properties = System.properties
 if(System.env.BUILD_NUMBER != null && System.env.SERVICESTACKIDEA_PUBLISH_NIGHTLY != null) {
     // Append build number to version for a new nightly build version to be published.
     version = "${version}.$System.env.BUILD_NUMBER"
 }
 
-String jbToken;
+String jbToken
 
 if (properties.getProperty("jetbrains.plugins.user", null) == null) {
     properties.load(project.file('./local.properties').newDataInputStream())
 }
-jbToken = properties.getProperty("jetbrains.plugins.token");
+jbToken = properties.getProperty("jetbrains.plugins.token")
 
 intellij {
-    version 'IC-14.1.4'
-    plugins 'maven'
+    version '2019.2'
+    plugins = ['maven','java']
     pluginName 'ServiceStackIDEA'
     updateSinceUntilBuild false
 

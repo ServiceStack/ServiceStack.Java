@@ -37,3 +37,17 @@ The ServiceStack IDEA is now available to install directly from within a support
  4. Restart to load the installed ServiceStack IDEA plugin
 
 ![](https://raw.githubusercontent.com/ServiceStack/Assets/master/img/servicestackidea/android-plugin-download.gif)
+
+### Development
+Local development of the plugin requires:
+ - Java SDK 1.8
+ - IntelliJ Ultimate/Community 2019.2+ (ideally 2020.3+)
+ 
+Once loaded into IntelliJ for the first time, `import gradle` project by right clicking on `build.gradle` in the Project menu.
+
+Once imported, run the `build` task, this should try to resolve the gradle version to use.
+
+#### Debugging
+Use the gradle task `runIde` on Debug, this should launch 2019.2 of IntelliJ Community edition which is the ealiest version supported after ServiceStackIDEA 1.0.40.
+
+This breaking change came from 2019.2+ separation of Java lang features in the `com.intellij.psi.*` packages which SSIDEA uses for IntelliJ + Android studio Java support.

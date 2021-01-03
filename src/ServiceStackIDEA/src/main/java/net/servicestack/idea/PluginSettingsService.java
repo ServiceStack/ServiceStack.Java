@@ -2,12 +2,13 @@ package net.servicestack.idea;
 
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by Layoric on 27/05/2016.
  */
-@State(name = "PluginSettingsService", storages = @Storage(id = "default", file = StoragePathMacros.APP_CONFIG + "/servicestack-settings.xml"))
+@State(name = "PluginSettingsService", storages = @Storage("servicestack-settings.xml"))
 public class PluginSettingsService implements PersistentStateComponent<PluginSettingsService> {
     public Boolean optOutOfStats = false;
 
@@ -18,7 +19,7 @@ public class PluginSettingsService implements PersistentStateComponent<PluginSet
     }
 
     @Override
-    public void loadState(PluginSettingsService pluginSettingsService) {
+    public void loadState(@NotNull PluginSettingsService pluginSettingsService) {
         XmlSerializerUtil.copyBean(pluginSettingsService, this);
     }
 
