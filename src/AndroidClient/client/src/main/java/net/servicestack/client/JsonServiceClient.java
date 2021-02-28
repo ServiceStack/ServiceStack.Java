@@ -26,6 +26,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,6 +40,7 @@ public class JsonServiceClient implements ServiceClient {
     String userName;
     String password;
     String bearerToken;
+    String refreshToken;
 
     Integer timeoutMs;
     public ConnectionFilter RequestFilter;
@@ -179,7 +181,7 @@ public class JsonServiceClient implements ServiceClient {
             if (bearerToken != null) {
                 req.setRequestProperty(HttpHeaders.Authorization, "Bearer " + bearerToken);
                 req.setRequestProperty("X-Auth", "Bearer"); // HttpURLConnection doesn't allow re-reading Authorization Header
-            } else if (forceAuthentication || alwaysSendBasicAuthHeaders) {
+            } else if (getTokenCookie() == null && (forceAuthentication || alwaysSendBasicAuthHeaders)) {
                 req.setRequestProperty(HttpHeaders.Authorization, "Basic " + Utils.toBase64String(userName + ":" + password));
                 req.setRequestProperty("X-Auth", "Basic"); // HttpURLConnection doesn't allow re-reading Authorization Header
             }
@@ -208,12 +210,11 @@ public class JsonServiceClient implements ServiceClient {
         }
     }
 
-    private static boolean shouldAuthenticate(HttpURLConnection req, String userName, String password){
+    private static boolean shouldAuthenticate(HttpURLConnection req, boolean hasAuthInfo){
         try {
             return req.getResponseCode() == 401
-                    && req.getRequestProperty("X-Auth") == null //only auth if auth never attempted
-                    && userName != null
-                    && password != null;
+                && req.getRequestProperty("X-Auth") == null //only auth if auth never attempted
+                && hasAuthInfo;
         } catch (IOException e) {
             return false;
         }
@@ -309,6 +310,21 @@ public class JsonServiceClient implements ServiceClient {
     }
 
     @Override
+    public void setRefreshToken(String bearerToken) {
+        this.refreshToken = bearerToken;
+    }
+
+    @Override
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    @Override
+    public void setRefreshTokenCookie(String value) {
+        setCookie("ss-reftok", value, (long) (365 * 24 * 60 * 60)); //1 year
+    }
+
+    @Override
     public void setCredentials(String userName, String password) {
         this.userName = userName;
         this.password = password;
@@ -370,8 +386,26 @@ public class JsonServiceClient implements ServiceClient {
             if (responseCode >= 400){
                 boolean success = false;
 
-                if (shouldAuthenticate(req, userName, password)){
+                boolean hasRefreshTokenCookie = getRefreshTokenCookie() != null;
+                boolean hasRefreshToken = refreshToken != null || hasRefreshTokenCookie;
+                if (shouldAuthenticate(req, (userName !=null && password != null)
+                    || bearerToken != null
+                    || hasRefreshToken)) {
                     req.disconnect();
+
+                    if (hasRefreshToken) {
+                        GetAccessToken refreshRequest = new GetAccessToken()
+                            .setRefreshToken(refreshToken);
+                        try {
+                            GetAccessTokenResponse response = post(refreshRequest);
+                            if (response.getAccessToken() != null) {
+                                this.setBearerToken(response.getAccessToken());
+                            }
+                        } catch (WebServiceException e) {
+                            throw new RefreshTokenException(e);
+                        }
+                    }
+
                     req = createRequest(requestUrl, httpMethod, requestBody, requestType, true);
 
                     success = req.getResponseCode() < 400;
@@ -581,6 +615,28 @@ public class JsonServiceClient implements ServiceClient {
     @Override
     public HttpURLConnection delete(String path) {
         return createRequest(resolveUrl(path), HttpMethods.Delete, null, null);
+    }
+
+    public List<HttpCookie> getCookies() {
+        CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
+        return cookieManager.getCookieStore().getCookies();
+    }
+
+    public String getCookieValue(String name) {
+        CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
+        for (HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
+            if (cookie.getName().equals(name)) {
+                return cookie.getValue();
+            }
+        }
+        return null;
+    }
+
+    public String getTokenCookie() {
+        return getCookieValue("ss-tok");
+    }
+    public String getRefreshTokenCookie() {
+        return getCookieValue("ss-reftok");
     }
 
     @Override

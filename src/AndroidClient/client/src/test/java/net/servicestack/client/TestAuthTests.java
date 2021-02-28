@@ -82,4 +82,30 @@ public class TestAuthTests extends TestCase {
         assertEquals("test DisplayName", response.getDisplayName());
         assertNotNull(response.getSessionId());
     }
+
+    public void test_Does_fetch_AccessToken_using_RefreshTokenCookies(){
+        ServiceClient client = CreateClient();
+
+        testdtos.AuthenticateResponse authResponse = client.post(new testdtos.Authenticate()
+            .setProvider("credentials")
+            .setUserName("test")
+            .setPassword("test"));
+
+        String initialAccessToken = client.getTokenCookie();
+        String initialRefreshToken = client.getRefreshTokenCookie();
+        assertNotNull(initialAccessToken);
+        assertNotNull(initialRefreshToken);
+
+        testdtos.Secured request = new testdtos.Secured()
+            .setName("test");
+        testdtos.SecuredResponse response = client.send(request);
+        assertEquals(response.getResult(), request.getName());
+
+        client.post(new testdtos.InvalidateLastAccessToken());
+
+        response = client.send(request);
+        assertEquals(response.getResult(), request.getName());
+        String latestAccessToken = client.getTokenCookie();
+        assertNotSame(latestAccessToken, initialAccessToken);
+    }
 }

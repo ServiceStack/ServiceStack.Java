@@ -9,9 +9,15 @@ import java.util.Map;
 
 public interface ServiceClient {
     boolean getAlwaysSendBasicAuthHeaders();
+
     void setBearerToken(String value);
     String getBearerToken();
     void setTokenCookie(String value);
+
+    void setRefreshToken(String bearerToken);
+    String getRefreshToken();
+    void setRefreshTokenCookie(String value);
+
     void setAlwaysSendBasicAuthHeaders(boolean value);
     void setCredentials(String userName, String password);
 
@@ -51,4 +57,7 @@ public interface ServiceClient {
     void setCookie(String name, String value);
     void setCookie(String name, String value, Long expiresInSecs);
     void clearCookies();
+    String getCookieValue(String name);
+    String getTokenCookie();
+    String getRefreshTokenCookie();
 }
