@@ -2,7 +2,7 @@ package test.servicestack.net.kotlin;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.

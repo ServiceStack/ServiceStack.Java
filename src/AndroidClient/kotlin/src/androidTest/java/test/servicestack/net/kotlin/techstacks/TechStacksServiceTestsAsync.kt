@@ -2,9 +2,9 @@
 
 package test.servicestack.net.kotlin.techstacks
 
-import android.app.Application
-import android.test.ApplicationTestCase
-import junit.framework.Assert
+import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNotNull
 import net.servicestack.android.AndroidLogProvider
 import net.servicestack.android.AndroidServiceClient
 import net.servicestack.client.AsyncSuccess
@@ -12,7 +12,7 @@ import net.servicestack.client.Log
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application::class.java) {
+class TechStacksServiceTestsAsync {
     init {
         Log.Instance = AndroidLogProvider("ZZZ")
     }
@@ -28,7 +28,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -36,13 +36,13 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
         val signal = CountDownLatch(1)
 
         client.getAsync<AppOverviewResponse>(AppOverview(), AsyncSuccess<AppOverviewResponse> {
-            Assert.assertNotNull(it)
-            Assert.assertTrue(it.topTechnologies.size > 0)
-            Assert.assertTrue(it.allTiers.size > 0)
+            assertNotNull(it)
+            assertTrue(it.topTechnologies.size > 0)
+            assertTrue(it.allTiers.size > 0)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -54,7 +54,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -66,7 +66,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -81,7 +81,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -93,7 +93,7 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -104,11 +104,11 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
         val signal = CountDownLatch(1)
 
         client.getAsync<QueryResponse<Technology>>(request, AsyncSuccess<QueryResponse<Technology>> {
-            Assert.assertEquals(1, it.results.size)
+            assertEquals(1, it.results.size)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -120,28 +120,28 @@ class TechStacksServiceTestsAsync : ApplicationTestCase<Application>(Application
 
         client.getAsync<QueryResponse<Technology>>(request, hashMapOf(Pair("DescriptionContains", "framework")),
             AsyncSuccess<QueryResponse<Technology>> {
-                Assert.assertEquals(5, it.results.size)
+                assertEquals(5, it.results.size)
                 signal.countDown()
             })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     companion object {
 
         fun assertOverviewResponse(r: OverviewResponse) {
-            Assert.assertNotNull(r)
-            Assert.assertTrue(r.topUsers.size > 0)
-            Assert.assertTrue(r.topTechnologies.size > 0)
-            Assert.assertTrue(r.latestTechStacks.size > 0)
-            Assert.assertTrue(r.latestTechStacks[0].technologyChoices.size > 0)
-            Assert.assertTrue(r.topTechnologiesByTier.size > 0)
+            assertNotNull(r)
+            assertTrue(r.topUsers.size > 0)
+            assertTrue(r.topTechnologies.size > 0)
+            assertTrue(r.latestTechStacks.size > 0)
+            assertTrue(r.latestTechStacks[0].technologyChoices.size > 0)
+            assertTrue(r.topTechnologiesByTier.size > 0)
         }
 
         fun assertGetTechnologyResponse(r: GetTechnologyResponse) {
-            Assert.assertNotNull(r)
-            Assert.assertEquals("ServiceStack", r.technology?.name)
-            Assert.assertTrue(r.technologyStacks.size > 0)
+            assertNotNull(r)
+            assertEquals("ServiceStack", r.technology?.name)
+            assertTrue(r.technologyStacks.size > 0)
         }
     }
 }

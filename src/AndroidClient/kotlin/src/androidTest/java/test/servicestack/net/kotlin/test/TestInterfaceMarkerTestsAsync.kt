@@ -2,16 +2,15 @@
 
 package test.servicestack.net.kotlin.test
 
-import android.app.Application
-import android.test.ApplicationTestCase
-import junit.framework.Assert
+import junit.framework.TestCase.assertTrue
+import junit.framework.TestCase.assertEquals
 import net.servicestack.android.AndroidServiceClient
 import net.servicestack.client.AsyncSuccess
 import net.servicestack.client.HttpMethods
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class TestInterfaceMarkerTestsAsync : ApplicationTestCase<Application>(Application::class.java) {
+class TestInterfaceMarkerTestsAsync {
 
     internal var client = AndroidServiceClient("http://test.servicestack.net")
 
@@ -23,13 +22,13 @@ class TestInterfaceMarkerTestsAsync : ApplicationTestCase<Application>(Applicati
         request.id = 1
 
         client.sendAsync<SendVerbResponse>(request, AsyncSuccess<SendVerbResponse> {
-            Assert.assertEquals(1, it.id)
-            Assert.assertEquals(HttpMethods.Post, it.requestMethod)
-            Assert.assertEquals("/json/reply/SendDefault", it.pathInfo)
+            assertEquals(1, it.id)
+            assertEquals(HttpMethods.Post, it.requestMethod)
+            assertEquals("/json/reply/SendDefault", it.pathInfo)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -39,13 +38,13 @@ class TestInterfaceMarkerTestsAsync : ApplicationTestCase<Application>(Applicati
         var request = SendRestGet()
         request.id = 1
         client.sendAsync<SendVerbResponse>(request,AsyncSuccess<SendVerbResponse> {
-            Assert.assertEquals(1, it.id!!)
-            Assert.assertEquals(HttpMethods.Get, it?.requestMethod)
-            Assert.assertEquals("/json/reply/SendRestGet", it?.pathInfo)
+            assertEquals(1, it.id!!)
+            assertEquals(HttpMethods.Get, it?.requestMethod)
+            assertEquals("/json/reply/SendRestGet", it?.pathInfo)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -55,13 +54,13 @@ class TestInterfaceMarkerTestsAsync : ApplicationTestCase<Application>(Applicati
         var request = SendGet()
         request.id = 1
         client.sendAsync<SendVerbResponse>(request,AsyncSuccess<SendVerbResponse> {
-            Assert.assertEquals(1, it.id!!)
-            Assert.assertEquals(HttpMethods.Get, it.requestMethod!!)
-            Assert.assertEquals("/json/reply/SendGet", it.pathInfo!!)
+            assertEquals(1, it.id!!)
+            assertEquals(HttpMethods.Get, it.requestMethod!!)
+            assertEquals("/json/reply/SendGet", it.pathInfo!!)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(500, TimeUnit.SECONDS))
+        assertTrue(signal.await(500, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -71,13 +70,13 @@ class TestInterfaceMarkerTestsAsync : ApplicationTestCase<Application>(Applicati
         var request = SendPost()
         request.id = 1
         client.sendAsync<SendVerbResponse>(request,AsyncSuccess<SendVerbResponse> {
-            Assert.assertEquals(1, it.id!!)
-            Assert.assertEquals(HttpMethods.Post, it.requestMethod)
-            Assert.assertEquals("/json/reply/SendPost", it.pathInfo)
+            assertEquals(1, it.id!!)
+            assertEquals(HttpMethods.Post, it.requestMethod)
+            assertEquals("/json/reply/SendPost", it.pathInfo)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -87,12 +86,12 @@ class TestInterfaceMarkerTestsAsync : ApplicationTestCase<Application>(Applicati
         var request = SendPut()
         request.id = 1
         client.sendAsync<SendVerbResponse>(request,AsyncSuccess<SendVerbResponse> {
-            Assert.assertEquals(1, it.id!!)
-            Assert.assertEquals(HttpMethods.Put, it.requestMethod)
-            Assert.assertEquals("/json/reply/SendPut", it.pathInfo)
+            assertEquals(1, it.id!!)
+            assertEquals(HttpMethods.Put, it.requestMethod)
+            assertEquals("/json/reply/SendPut", it.pathInfo)
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 }

@@ -21,7 +21,7 @@ class TestServiceTests : TestCase() {
 
         val response = client.get<HelloResponse>(request)
 
-        Assert.assertEquals("Hello, World!", response.result)
+        assertEquals("Hello, World!", response.result)
     }
 
     fun test_does_fire_Request_and_Response_Filters() {
@@ -41,17 +41,17 @@ class TestServiceTests : TestCase() {
 
         val response = client.get<HelloResponse>(request)
 
-        Assert.assertEquals("Hello, World!", response.result)
+        assertEquals("Hello, World!", response.result)
 
         val results = strJoin(", ", events)
 
-        Assert.assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results)
+        assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results)
     }
 
     fun test_Can_GET_Hello_with_CustomPath() {
         val response = client.get<HelloResponse>("/hello/World", HelloResponse::class.java)
 
-        Assert.assertEquals("Hello, World!", response.result)
+        assertEquals("Hello, World!", response.result)
     }
 
     fun test_Can_POST_Hello_with_CustomPath() {
@@ -60,21 +60,21 @@ class TestServiceTests : TestCase() {
 
         val response = client.post<HelloResponse>("/hello", request, HelloResponse::class.java)
 
-        Assert.assertEquals("Hello, World!", response.result)
+        assertEquals("Hello, World!", response.result)
     }
 
     fun test_Can_GET_Hello_with_CustomPath_raw() {
         val response = client.get("/hello/World")
         val json = Utils.readToEnd(response)
 
-        Assert.assertEquals("{\"result\":\"Hello, World!\"}", json)
+        assertEquals("{\"result\":\"Hello, World!\"}", json)
     }
 
     fun test_Can_POST_Hello_with_CustomPath_raw() {
         val response = client.post("/hello", Utils.toUtf8Bytes("Name=World"), MimeTypes.FormUrlEncoded)
         val json = Utils.readToEnd(response)
 
-        Assert.assertEquals("{\"result\":\"Hello, World!\"}", json)
+        assertEquals("{\"result\":\"Hello, World!\"}", json)
     }
 
     fun test_Can_POST_test_HelloAllTypes() {
@@ -115,15 +115,15 @@ class TestServiceTests : TestCase() {
             thrownError = webEx
         }
 
-        Assert.assertNotNull(globalError)
-        Assert.assertNotNull(localError)
-        Assert.assertNotNull(thrownError)
+        assertNotNull(globalError)
+        assertNotNull(localError)
+        assertNotNull(thrownError)
 
         val status = thrownError!!.responseStatus
 
-        Assert.assertEquals("NotFound", status.errorCode)
-        Assert.assertEquals("not here", status.message)
-        Assert.assertNotNull(status.stackTrace)
+        assertEquals("NotFound", status.errorCode)
+        assertEquals("not here", status.message)
+        assertNotNull(status.stackTrace)
     }
 
     fun test_Does_handle_ValidationException() {
@@ -132,27 +132,27 @@ class TestServiceTests : TestCase() {
 
         try {
             client.post<ThrowValidationResponse>(request)
-            Assert.fail("Should throw")
+            fail("Should throw")
         } catch (webEx: WebServiceException) {
             val status = webEx.responseStatus
 
-            Assert.assertNotNull(status)
-            Assert.assertEquals(3, status.getErrors().size)
+            assertNotNull(status)
+            assertEquals(3, status.getErrors().size)
 
-            Assert.assertEquals(status.errors[0].errorCode, status.errorCode)
-            Assert.assertEquals(status.errors[0].message, status.message)
+            assertEquals(status.errors[0].errorCode, status.errorCode)
+            assertEquals(status.errors[0].message, status.message)
 
-            Assert.assertEquals("InclusiveBetween", status.errors[0].errorCode)
-            Assert.assertEquals("'Age' must be between 1 and 120. You entered 0.", status.errors[0].message)
-            Assert.assertEquals("Age", status.errors[0].fieldName)
+            assertEquals("InclusiveBetween", status.errors[0].errorCode)
+            assertEquals("'Age' must be between 1 and 120. You entered 0.", status.errors[0].message)
+            assertEquals("Age", status.errors[0].fieldName)
 
-            Assert.assertEquals("NotEmpty", status.errors[1].errorCode)
-            Assert.assertEquals("'Required' should not be empty.", status.errors[1].message)
-            Assert.assertEquals("Required", status.errors[1].fieldName)
+            assertEquals("NotEmpty", status.errors[1].errorCode)
+            assertEquals("'Required' must not be empty.", status.errors[1].message)
+            assertEquals("Required", status.errors[1].fieldName)
 
-            Assert.assertEquals("Email", status.errors[2].errorCode)
-            Assert.assertEquals("'Email' is not a valid email address.", status.errors[2].message)
-            Assert.assertEquals("Email", status.errors[2].fieldName)
+            assertEquals("Email", status.errors[2].errorCode)
+            assertEquals("'Email' is not a valid email address.", status.errors[2].message)
+            assertEquals("Email", status.errors[2].fieldName)
         }
 
     }
@@ -165,26 +165,26 @@ class TestServiceTests : TestCase() {
 
         val response = client.post<ThrowValidationResponse>(request)
 
-        Assert.assertNotNull(response)
-        Assert.assertEquals(request.age, response.age)
-        Assert.assertEquals(request.required, response.required)
-        Assert.assertEquals(request.email, response.email)
+        assertNotNull(response)
+        assertEquals(request.age, response.age)
+        assertEquals(request.required, response.required)
+        assertEquals(request.email, response.email)
     }
 
     fun test_does_handle_auth_failure() {
-        val techStacksClient = JsonServiceClient("http://techstacks.io/")
+        val techStacksClient = JsonServiceClient("https://techstacks.io")
         var errorCode = 0
         try {
             val request = LockTechStack()
             request.technologyStackId = 6.toLong()
             val res = techStacksClient.post(request)
-            Assert.fail("Should throw")
+            fail("Should throw")
         } catch (ex: WebServiceException) {
             //private StatusCode has correct code, response status is null due to empty response body.
             errorCode = ex.statusCode
         }
 
-        Assert.assertEquals(errorCode, 401)
+        assertEquals(errorCode, 401)
     }
 
     fun test_Can_send_ReturnVoid() {
@@ -195,31 +195,31 @@ class TestServiceTests : TestCase() {
         request.id = 1
 
         client.send(request)
-        Assert.assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
+        assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
         request.id = 2
         client.get(request)
-        Assert.assertEquals(HttpMethods.Get, sentMethods[sentMethods.size - 1])
+        assertEquals(HttpMethods.Get, sentMethods[sentMethods.size - 1])
         request.id = 3
         client.post(request)
-        Assert.assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
+        assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
         request.id = 4
         client.put(request)
-        Assert.assertEquals(HttpMethods.Put, sentMethods[sentMethods.size - 1])
+        assertEquals(HttpMethods.Put, sentMethods[sentMethods.size - 1])
         request.id = 5
         client.delete(request)
-        Assert.assertEquals(HttpMethods.Delete, sentMethods[sentMethods.size - 1])
+        assertEquals(HttpMethods.Delete, sentMethods[sentMethods.size - 1])
     }
 
     fun test_Can_get_response_as_Raw_String() {
         val request = HelloString()
         request.name = "World"
         val response = client.get(request)
-        Assert.assertEquals("World", response)
+        assertEquals("World", response)
     }
 
     fun test_Can_get_response_as_Raw_Bytes() {
         val response = client.get<ByteArray>("/json/reply/HelloString?Name=World", ByteArray::class.java)
-        Assert.assertEquals("World", Utils.fromUtf8Bytes(response))
+        assertEquals("World", Utils.fromUtf8Bytes(response))
     }
 
     companion object {
@@ -235,7 +235,7 @@ class TestServiceTests : TestCase() {
         }
 
         fun assertHelloAllTypesResponse(actual: HelloAllTypesResponse, expected: HelloAllTypes) {
-            Assert.assertNotNull(actual)
+            assertNotNull(actual)
             assertAllTypes(actual.allTypes!!, expected.allTypes!!)
             assertAllCollectionTypes(actual.allCollectionTypes!!, expected.allCollectionTypes!!)
         }
@@ -290,36 +290,36 @@ class TestServiceTests : TestCase() {
         }
 
         fun assertAllTypes(actual: AllTypes, expected: AllTypes) {
-            Assert.assertEquals(expected.id, actual.id)
-            Assert.assertEquals(expected.Byte, actual.Byte)
-            Assert.assertEquals(expected.Short, actual.Short)
-            Assert.assertEquals(expected.Int, actual.Int)
-            Assert.assertEquals(expected.Long, actual.Long)
-            Assert.assertEquals(expected.uShort, actual.uShort)
-            Assert.assertEquals(expected.uLong, actual.uLong)
-            Assert.assertEquals(expected.Float, actual.Float)
-            Assert.assertEquals(expected.Double, actual.Double)
-            Assert.assertEquals(expected.decimal, actual.decimal)
-            Assert.assertEquals(expected.string, actual.string)
-            Assert.assertEquals(expected.dateTime, actual.dateTime)
-            Assert.assertEquals(expected.timeSpan, actual.timeSpan)
-            Assert.assertEquals(expected.guid, actual.guid)
-            Assert.assertEquals(expected.Char, actual.Char)
-            Assert.assertEquals(expected.stringArray, actual.stringArray)
-            Assert.assertEquals(expected.stringList, actual.stringList)
+            assertEquals(expected.id, actual.id)
+            assertEquals(expected.Byte, actual.Byte)
+            assertEquals(expected.Short, actual.Short)
+            assertEquals(expected.Int, actual.Int)
+            assertEquals(expected.Long, actual.Long)
+            assertEquals(expected.uShort, actual.uShort)
+            assertEquals(expected.uLong, actual.uLong)
+            assertEquals(expected.Float, actual.Float)
+            assertEquals(expected.Double, actual.Double)
+            assertEquals(expected.decimal, actual.decimal)
+            assertEquals(expected.string, actual.string)
+            assertEquals(expected.dateTime, actual.dateTime)
+            assertEquals(expected.timeSpan, actual.timeSpan)
+            assertEquals(expected.guid, actual.guid)
+            assertEquals(expected.Char, actual.Char)
+            assertEquals(expected.stringArray, actual.stringArray)
+            assertEquals(expected.stringList, actual.stringList)
 
-            Assert.assertEquals(expected.stringMap, actual.stringMap)
-            Assert.assertEquals(expected.intStringMap, actual.intStringMap)
+            assertEquals(expected.stringMap, actual.stringMap)
+            assertEquals(expected.intStringMap, actual.intStringMap)
 
-            Assert.assertEquals(expected.subType?.id, actual.subType?.id)
-            Assert.assertEquals(expected.subType?.name, actual.subType?.name)
+            assertEquals(expected.subType?.id, actual.subType?.id)
+            assertEquals(expected.subType?.name, actual.subType?.name)
         }
 
         fun assertAllCollectionTypes(actual: AllCollectionTypes, expected: AllCollectionTypes) {
-            Assert.assertEquals(expected.intArray, actual.intArray)
-            Assert.assertEquals(expected.intList, actual.intList)
-            Assert.assertEquals(expected.stringArray, actual.stringArray)
-            Assert.assertEquals(expected.stringList, actual.stringList)
+            assertEquals(expected.intArray, actual.intArray)
+            assertEquals(expected.intList, actual.intList)
+            assertEquals(expected.stringArray, actual.stringArray)
+            assertEquals(expected.stringList, actual.stringList)
             assertPocoEquals(expected.pocoArray!!, actual.pocoArray!!)
             assertPocoEquals(expected.pocoList!!, actual.pocoList!!)
 
@@ -328,43 +328,43 @@ class TestServiceTests : TestCase() {
         }
 
         fun assertPocoEquals(expected: List<Poco>, actual: List<Poco>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (i in actual.indices) {
                 assertPocoEquals(expected[i], actual[i])
             }
         }
 
         fun assertPocoLookupEquals(expected: HashMap<String, ArrayList<Poco>>, actual: HashMap<String, ArrayList<Poco>>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (key in actual.keys) {
                 assertPocoEquals(expected[key]!!, actual[key]!!)
             }
         }
 
         fun assertPocoLookupMapEquals(expected: HashMap<String, ArrayList<HashMap<String, Poco>>>, actual: HashMap<String, ArrayList<HashMap<String, Poco>>>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (key in actual.keys) {
                 assertPocoEquals(expected[key]!!, actual[key]!!)
             }
         }
 
         fun assertPocoEquals(expected: ArrayList<HashMap<String, Poco>>, actual: ArrayList<HashMap<String, Poco>>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (i in actual.indices) {
                 assertPocoEquals(expected[i], actual[i])
             }
         }
 
         fun assertPocoEquals(expected: HashMap<String, Poco>, actual: HashMap<String, Poco>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (key in actual.keys) {
                 assertPocoEquals(expected[key]!!, actual[key]!!)
             }
         }
 
         fun assertPocoEquals(expected: Poco, actual: Poco) {
-            Assert.assertNotNull(actual)
-            Assert.assertEquals(actual.name, expected.name)
+            assertNotNull(actual)
+            assertEquals(actual.name, expected.name)
         }
 
         fun strJoin(sSep: String, aArr: ArrayList<String>): String {

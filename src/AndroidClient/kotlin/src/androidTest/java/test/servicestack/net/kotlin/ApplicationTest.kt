@@ -1,34 +1,33 @@
 package test.servicestack.net.kotlinapp
 
-import android.app.Application
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.test.ApplicationTestCase
 import com.google.gson.Gson
-import junit.framework.Assert
+import junit.framework.TestCase.assertTrue
 import net.servicestack.android.AndroidLogProvider
 import net.servicestack.android.AndroidServiceClient
-import net.servicestack.client.*
-import test.servicestack.net.kotlin.techstacks.*
-import java.net.HttpURLConnection
-import java.util.*
+import net.servicestack.client.Log
+import org.junit.BeforeClass
+import org.junit.Test
+import test.servicestack.net.kotlin.techstacks.Technology
+import test.servicestack.net.kotlin.techstacks.TechnologyTier
 
 /**
  * [Testing Fundamentals](http://d.android.com/tools/testing/testing_android.html)
  */
-class ApplicationTest : ApplicationTestCase<Application>(Application::class.java) {
+public class AndroidServiceClientTests {
 
-    override fun setUp() {
-        super.setUp()
+    @BeforeClass
+    fun setUp() {
         Log.Instance = AndroidLogProvider("ZZZ");
 
         val client = AndroidServiceClient("https://www.techstacks.io")
     }
 
+    @Test
     fun test_Fail() {
-        Assert.assertTrue(true)
+        assertTrue(true)
     }
 
+    @Test
     fun test_Can_Serialize_Technology(){
         val dto = Technology();
         dto.name = "Test";

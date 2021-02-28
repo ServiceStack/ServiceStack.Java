@@ -113,7 +113,7 @@ class TechStacksServiceTests : TestCase() {
     fun test_Can_deserialize_Overview() {
 
         //Latest Android Update broke test resources
-        val stream = this.javaClass.classLoader.getResourceAsStream("assets/overview.json");
+        val stream = this.javaClass.classLoader!!.getResourceAsStream("assets/overview.json");
         val json = Utils.readToEnd(stream, "UTF-8");
 
         val dto = client.fromJson(json, OverviewResponse::class.java) as OverviewResponse

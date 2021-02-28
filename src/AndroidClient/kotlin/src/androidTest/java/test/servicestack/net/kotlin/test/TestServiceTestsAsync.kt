@@ -2,10 +2,8 @@
 
 package test.servicestack.net.kotlin.test
 
-import android.app.Application
-import android.test.ApplicationTestCase
 import android.text.TextUtils
-import junit.framework.Assert
+import junit.framework.TestCase.*
 import net.servicestack.android.AndroidLogProvider
 import net.servicestack.android.AndroidServiceClient
 import net.servicestack.client.*
@@ -15,7 +13,7 @@ import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::class.java) {
+class TestServiceTestsAsync {
     init {
         Log.Instance = AndroidLogProvider("ZZZ")
     }
@@ -41,18 +39,18 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         val signal = CountDownLatch(1)
 
         client.getAsync<HelloResponse>(request, AsyncSuccess<HelloResponse> {
-            Assert.assertEquals("Hello, World!", it.result)
+            assertEquals("Hello, World!", it.result)
 
             val results = TextUtils.join(", ", events)
 
-            Assert.assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results)
+            assertEquals("RequestFilter, GlobalRequestFilter, ResponseFilter, GlobalResponseFilter", results)
 
             AndroidServiceClient.GlobalRequestFilter = null
             AndroidServiceClient.GlobalResponseFilter = null
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -66,7 +64,7 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -80,7 +78,7 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
     }
 
     @Throws(InterruptedException::class)
@@ -103,23 +101,23 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         val signal = CountDownLatch(1)
 
         testClient.putAsync<ThrowTypeResponse>(request, AsyncSuccess<ThrowTypeResponse> {
-            Assert.fail("should not succeed")
+            fail("should not succeed")
         }, AsyncError {
             thrownError = it as WebServiceException
             signal.countDown()
         })
 
-        Assert.assertTrue(signal.await(5, TimeUnit.SECONDS))
+        assertTrue(signal.await(5, TimeUnit.SECONDS))
 
-        Assert.assertNotNull(globalError)
-        Assert.assertNotNull(localError)
-        Assert.assertNotNull(thrownError)
+        assertNotNull(globalError)
+        assertNotNull(localError)
+        assertNotNull(thrownError)
 
         val status = thrownError!!.responseStatus!!
 
-        Assert.assertEquals("NotFound", status.errorCode)
-        Assert.assertEquals("not here", status.message)
-        Assert.assertNotNull(status.stackTrace)
+        assertEquals("NotFound", status.errorCode)
+        assertEquals("not here", status.message)
+        assertNotNull(status.stackTrace)
     }
 
     fun test_Does_handle_ValidationException_Async() {
@@ -129,27 +127,27 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         val signal = CountDownLatch(1)
 
         client.postAsync<ThrowValidationResponse>(request, AsyncSuccess<ThrowValidationResponse> {
-            Assert.fail("should not succeed")
+            fail("should not succeed")
         }, AsyncError {
             val webEx = it as WebServiceException
             val status = webEx.responseStatus!!
 
-            Assert.assertEquals(3, status.errors.size)
+            assertEquals(3, status.errors.size)
 
-            Assert.assertEquals(status.errors[0].errorCode, status.errorCode)
-            Assert.assertEquals(status.errors[0].message, status.message)
+            assertEquals(status.errors[0].errorCode, status.errorCode)
+            assertEquals(status.errors[0].message, status.message)
 
-            Assert.assertEquals("InclusiveBetween", status.errors[0].errorCode)
-            Assert.assertEquals("'Age' must be between 1 and 120. You entered 0.", status.errors[0].message)
-            Assert.assertEquals("Age", status.errors[0].fieldName)
+            assertEquals("InclusiveBetween", status.errors[0].errorCode)
+            assertEquals("'Age' must be between 1 and 120. You entered 0.", status.errors[0].message)
+            assertEquals("Age", status.errors[0].fieldName)
 
-            Assert.assertEquals("NotEmpty", status.errors[1].errorCode)
-            Assert.assertEquals("'Required' should not be empty.", status.errors[1].message)
-            Assert.assertEquals("Required", status.errors[1].fieldName)
+            assertEquals("NotEmpty", status.errors[1].errorCode)
+            assertEquals("'Required' should not be empty.", status.errors[1].message)
+            assertEquals("Required", status.errors[1].fieldName)
 
-            Assert.assertEquals("Email", status.errors[2].errorCode)
-            Assert.assertEquals("'Email' is not a valid email address.", status.errors[2].message)
-            Assert.assertEquals("Email", status.errors[2].fieldName)
+            assertEquals("Email", status.errors[2].errorCode)
+            assertEquals("'Email' is not a valid email address.", status.errors[2].message)
+            assertEquals("Email", status.errors[2].fieldName)
             signal.countDown()
         })
     }
@@ -163,10 +161,10 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         var request = HelloReturnVoid()
         request.id = 1
 
-        client.sendAsync(request, {
-            Assert.assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
+        client.sendAsync(request) {
+            assertEquals(HttpMethods.Post, sentMethods[sentMethods.size - 1])
             signal.countDown()
-        })
+        }
     }
 
     fun test_Can_delete_ReturnVoid_Async() {
@@ -178,10 +176,10 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         var request = HelloReturnVoid()
         request.id = 1
 
-        client.deleteAsync(request, {
-            Assert.assertEquals(HttpMethods.Delete, sentMethods[sentMethods.size - 1])
+        client.deleteAsync(request) {
+            assertEquals(HttpMethods.Delete, sentMethods[sentMethods.size - 1])
             signal.countDown()
-        })
+        }
     }
 
     companion object {
@@ -197,7 +195,7 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         }
 
         fun assertHelloAllTypesResponse(actual: HelloAllTypesResponse, expected: HelloAllTypes) {
-            Assert.assertNotNull(actual)
+            assertNotNull(actual)
             assertAllTypes(actual.allTypes!!, expected.allTypes!!)
             assertAllCollectionTypes(actual.allCollectionTypes!!, expected.allCollectionTypes!!)
         }
@@ -252,36 +250,36 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         }
 
         fun assertAllTypes(actual: AllTypes, expected: AllTypes) {
-            Assert.assertEquals(expected.id, actual.id)
-            Assert.assertEquals(expected.Byte, actual.Byte)
-            Assert.assertEquals(expected.Short, actual.Short)
-            Assert.assertEquals(expected.Int, actual.Int)
-            Assert.assertEquals(expected.Long, actual.Long)
-            Assert.assertEquals(expected.uShort, actual.uShort)
-            Assert.assertEquals(expected.uLong, actual.uLong)
-            Assert.assertEquals(expected.Float, actual.Float)
-            Assert.assertEquals(expected.Double, actual.Double)
-            Assert.assertEquals(expected.decimal, actual.decimal)
-            Assert.assertEquals(expected.string, actual.string)
-            Assert.assertEquals(expected.dateTime, actual.dateTime)
-            Assert.assertEquals(expected.timeSpan, actual.timeSpan)
-            Assert.assertEquals(expected.guid, actual.guid)
-            Assert.assertEquals(expected.Char, actual.Char)
-            Assert.assertEquals(expected.stringArray, actual.stringArray)
-            Assert.assertEquals(expected.stringList, actual.stringList)
+            assertEquals(expected.id, actual.id)
+            assertEquals(expected.Byte, actual.Byte)
+            assertEquals(expected.Short, actual.Short)
+            assertEquals(expected.Int, actual.Int)
+            assertEquals(expected.Long, actual.Long)
+            assertEquals(expected.uShort, actual.uShort)
+            assertEquals(expected.uLong, actual.uLong)
+            assertEquals(expected.Float, actual.Float)
+            assertEquals(expected.Double, actual.Double)
+            assertEquals(expected.decimal, actual.decimal)
+            assertEquals(expected.string, actual.string)
+            assertEquals(expected.dateTime, actual.dateTime)
+            assertEquals(expected.timeSpan, actual.timeSpan)
+            assertEquals(expected.guid, actual.guid)
+            assertEquals(expected.Char, actual.Char)
+            assertEquals(expected.stringArray, actual.stringArray)
+            assertEquals(expected.stringList, actual.stringList)
 
-            Assert.assertEquals(expected.stringMap, actual.stringMap)
-            Assert.assertEquals(expected.intStringMap, actual.intStringMap)
+            assertEquals(expected.stringMap, actual.stringMap)
+            assertEquals(expected.intStringMap, actual.intStringMap)
 
-            Assert.assertEquals(expected.subType?.id, actual.subType?.id)
-            Assert.assertEquals(expected.subType?.name, actual.subType?.name)
+            assertEquals(expected.subType?.id, actual.subType?.id)
+            assertEquals(expected.subType?.name, actual.subType?.name)
         }
 
         fun assertAllCollectionTypes(actual: AllCollectionTypes, expected: AllCollectionTypes) {
-            Assert.assertEquals(expected.intArray, actual.intArray)
-            Assert.assertEquals(expected.intList, actual.intList)
-            Assert.assertEquals(expected.stringArray, actual.stringArray)
-            Assert.assertEquals(expected.stringList, actual.stringList)
+            assertEquals(expected.intArray, actual.intArray)
+            assertEquals(expected.intList, actual.intList)
+            assertEquals(expected.stringArray, actual.stringArray)
+            assertEquals(expected.stringList, actual.stringList)
             assertPocoEquals(expected.pocoArray!!, actual.pocoArray!!)
             assertPocoEquals(expected.pocoList!!, actual.pocoList!!)
 
@@ -290,43 +288,43 @@ class TestServiceTestsAsync : ApplicationTestCase<Application>(Application::clas
         }
 
         fun assertPocoEquals(expected: List<Poco>, actual: List<Poco>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (i in actual.indices) {
                 assertPocoEquals(expected[i], actual[i])
             }
         }
 
         fun assertPocoLookupEquals(expected: HashMap<String, ArrayList<Poco>>, actual: HashMap<String, ArrayList<Poco>>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (key in actual.keys) {
                 assertPocoEquals(expected[key]!!, actual[key]!!)
             }
         }
 
         fun assertPocoLookupMapEquals(expected: HashMap<String, ArrayList<HashMap<String, Poco>>>, actual: HashMap<String, ArrayList<HashMap<String, Poco>>>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (key in actual.keys) {
                 assertPocoEquals(expected[key]!!, actual[key]!!)
             }
         }
 
         fun assertPocoEquals(expected: ArrayList<HashMap<String, Poco>>, actual: ArrayList<HashMap<String, Poco>>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (i in actual.indices) {
                 assertPocoEquals(expected[i], actual[i])
             }
         }
 
         fun assertPocoEquals(expected: HashMap<String, Poco>, actual: HashMap<String, Poco>) {
-            Assert.assertEquals(expected.size, actual.size)
+            assertEquals(expected.size, actual.size)
             for (key in actual.keys) {
                 assertPocoEquals(expected[key]!!, actual[key]!!)
             }
         }
 
         fun assertPocoEquals(expected: Poco, actual: Poco) {
-            Assert.assertNotNull(actual)
-            Assert.assertEquals(actual.name, expected.name)
+            assertNotNull(actual)
+            assertEquals(actual.name, expected.name)
         }
     }
 }

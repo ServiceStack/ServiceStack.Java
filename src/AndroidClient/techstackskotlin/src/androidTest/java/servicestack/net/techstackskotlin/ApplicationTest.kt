@@ -1,9 +1,5 @@
 package servicestack.net.techstackskotlin
 
-import android.app.Application
-import android.test.ApplicationTestCase
+class ApplicationTest {
 
-/**
- * [Testing Fundamentals](http://d.android.com/tools/testing/testing_android.html)
- */
-class ApplicationTest : ApplicationTestCase<Application>(Application::class.java)
+}
