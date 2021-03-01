@@ -1,10 +1,10 @@
 package net.servicestack.android;
 
+import static net.servicestack.android.test.dtos.*;
 import net.servicestack.client.JsonUtils;
 import net.servicestack.client.sse.ServerEventMessage;
 import net.servicestack.client.sse.ServerEventReceiver;
 
-import static chat.chatdtos.*;
 
 /**
  * Created by mythz on 2/11/2017.

@@ -150,7 +150,7 @@ public class TechStacksServiceTests extends TestCase {
 
     @Test
     public void test_does_handle_auth_failure() {
-        JsonServiceClient techStacksClient = new JsonServiceClient("http://techstacks.io/");
+        JsonServiceClient techStacksClient = new JsonServiceClient("https://techstacks.io/");
         int errorCode = 0;
         try {
             LockTechStack request = new LockTechStack();
@@ -197,7 +197,7 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals("TechStacks Website", techstacks.getName());
         assertEquals("ServiceStack", techstacks.getVendorName());
         assertTrue(techstacks.description.startsWith("This Website! "));
-        assertEquals("http://techstacks.io", techstacks.getAppUrl());
+        assertEquals("https://techstacks.io", techstacks.getAppUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.getScreenshotUrl());
         assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.getCreated());
         assertEquals("layoric", techstacks.getCreatedBy());

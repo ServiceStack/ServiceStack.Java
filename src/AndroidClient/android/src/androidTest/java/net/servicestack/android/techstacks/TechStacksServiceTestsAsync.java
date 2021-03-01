@@ -98,7 +98,7 @@ public class TechStacksServiceTestsAsync {
     public void test_Can_GET_TechStacks_Overview_with_absolute_url_Async() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        client.getAsync("http://techstacks.io/overview", OverviewResponse.class, new AsyncResult<OverviewResponse>() {
+        client.getAsync("https://techstacks.io/overview", OverviewResponse.class, new AsyncResult<OverviewResponse>() {
             @Override
             public void success(OverviewResponse response) {
                 assertOverviewResponse(response);

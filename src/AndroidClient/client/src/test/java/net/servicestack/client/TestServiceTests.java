@@ -247,7 +247,7 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_does_handle_auth_failure() {
-        JsonServiceClient techStacksClient = new JsonServiceClient("http://techstacks.io/");
+        JsonServiceClient techStacksClient = new JsonServiceClient("https://techstacks.io/");
         int errorCode = 0;
         try {
             dto.LockTechStack request = new dto.LockTechStack();

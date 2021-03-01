@@ -2,7 +2,7 @@
 Date: 2017-02-19 23:57:28
 Version: 4.00
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://chat.servicestack.net
+BaseUrl: https://chat.netcore.io
 
 Package: servicestack.net.androidchat
 GlobalNamespace: dtos

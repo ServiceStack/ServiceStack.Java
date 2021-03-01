@@ -24,17 +24,20 @@ import static chat.chatdtos.ChatMessage;
 import static chat.chatdtos.PostChatToChannel;
 import static chat.chatdtos.ResetServerEvents;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  * Created by mythz on 2/10/2017.
  */
 
-public class ServerEventClientTests extends TestCase {
+public class ServerEventClientTests extends TestCase
+{
 
     public ServerEventClientTests() {
         Log.setInstance(new LogProvider("", true));
     }
+
+    public static String ChatUrl = "http://test.servicestack.net";
+//    public static String ChatUrl = "http://localhost:5000";
 
     public ServerEventsClient createServerEventsClient(String baseUrl, String... channels){
         return new ServerEventsClient(baseUrl, channels);
@@ -42,8 +45,8 @@ public class ServerEventClientTests extends TestCase {
 
     public void renameto_test_leave_running() throws InterruptedException {
         final CountDownLatch signal = new CountDownLatch(1);
-
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", "home")
+        
+        try (ServerEventsClient client = createServerEventsClient(ChatUrl, "home")
                 .setOnConnect(e -> {
                     System.out.print("onConnect: " + e);
                 }).start())
@@ -55,24 +58,24 @@ public class ServerEventClientTests extends TestCase {
     public void test_Can_connect_to_ServerEventsStream() throws Exception {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", "home")
+        try (ServerEventsClient client = createServerEventsClient(ChatUrl, "home")
                 .setOnConnect(e -> {
                     System.out.print("onConnect: " + e);
                     signal.countDown();
                 }).start())
         {
-            assertTrue(signal.await(5, TimeUnit.SECONDS));
+            assertTrue(signal.await(10, TimeUnit.SECONDS));
         }
     }
 
     public void test_Does_fire_onJoin_events() throws Exception {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        try(ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", "home"))
+        try(ServerEventsClient client = createServerEventsClient(ChatUrl, "home"))
         {
             client
                 .setOnConnect(e -> {
-                    assertTrue(e.getHeartbeatUrl().startsWith("http://chat.servicestack.net"));
+                    assertTrue(e.getHeartbeatUrl().startsWith(ChatUrl));
                 })
                 .setOnCommand(e -> {
                     System.out.print("onCommand: " + e);
@@ -83,7 +86,7 @@ public class ServerEventClientTests extends TestCase {
                 })
                 .start();
 
-            assertTrue(signal.await(5, TimeUnit.SECONDS));
+            assertTrue(signal.await(10, TimeUnit.SECONDS));
         }
     }
 
@@ -93,7 +96,7 @@ public class ServerEventClientTests extends TestCase {
         String[] channels = new String[] { "A", "B", "C" };
         List<ServerEventJoin> joinMsgs = new ArrayList<>();
 
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", channels))
+        try (ServerEventsClient client = createServerEventsClient(ChatUrl, channels))
         {
             client
                 .setOnJoin(e -> {
@@ -108,20 +111,20 @@ public class ServerEventClientTests extends TestCase {
                 })
                 .start();
 
-            assertTrue(signal.await(5, TimeUnit.SECONDS));
+            assertTrue(signal.await(10, TimeUnit.SECONDS));
         }
     }
 
     private void clearPreviousRun(String[] channels) throws Exception {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", channels)
+        try (ServerEventsClient client = createServerEventsClient(ChatUrl, channels)
                 .setOnConnect(e -> {
                     signal.countDown();
                 })
                 .start())
         {
-            assertTrue(signal.await(5, TimeUnit.SECONDS));
+            assertTrue(signal.await(10, TimeUnit.SECONDS));
         }
     }
 
@@ -137,7 +140,7 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventMessage> commands = new ArrayList<>();
         List<Exception> errors = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
             .setOnConnect(connectMsgs::add)
             .setOnCommand(commands::add)
             .setOnMessage(msgs::add)
@@ -160,7 +163,7 @@ public class ServerEventClientTests extends TestCase {
             connectMsgs.clear();
             commands.clear();
 
-            try(ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+            try(ServerEventsClient client2 = createServerEventsClient(ChatUrl)
                 .setOnConnect(connectMsgs::add)
                 .start())
             {
@@ -238,12 +241,12 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventMessage> msgs2 = new ArrayList<>();
 
         try (
-            ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+            ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .setOnConnect(connectMsgs::add)
                 .setOnCommand(commands::add)
                 .setOnMessage(msgs1::add);
 
-            ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+            ServerEventsClient client2 = createServerEventsClient(ChatUrl)
                 .setOnConnect(connectMsgs::add)
                 .setOnMessage(msgs2::add))
         {
@@ -314,7 +317,7 @@ public class ServerEventClientTests extends TestCase {
         final CountDownLatch signal = new CountDownLatch(1);
 
         List<ServerEventMessage> heartbeats = new ArrayList<>();
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
             .setOnConnect(e -> e.setHeartbeatIntervalMs(1000)) //change to 1s
             .setOnHeartbeat(e -> {
                 heartbeats.add(e);
@@ -323,7 +326,7 @@ public class ServerEventClientTests extends TestCase {
             })
             .start()) {
 
-            assertTrue(signal.await(5, TimeUnit.SECONDS));
+            assertTrue(signal.await(10, TimeUnit.SECONDS));
 
             assertTrue(heartbeats.size() >= 3);
         }
@@ -333,7 +336,7 @@ public class ServerEventClientTests extends TestCase {
 
         List<ServerEventConnect> connectMsgs = new ArrayList<>();
         List<ServerEventMessage> msgs1 = new ArrayList<>();
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
             .setOnConnect(connectMsgs::add)
             .setOnMessage(msgs1::add)
             .start()) {
@@ -350,7 +353,7 @@ public class ServerEventClientTests extends TestCase {
 
             client1.getServiceClient().post(new ResetServerEvents());
 
-            try(ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+            try(ServerEventsClient client2 = createServerEventsClient(ChatUrl)
                 .setOnConnect(connectMsgs::add)
                 .start()) {
 
@@ -378,7 +381,7 @@ public class ServerEventClientTests extends TestCase {
         List<ChatMessage> chatMsgs = new ArrayList<>();
         List<String> paintMsgs = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .registerHandler("paint", (client, e) -> {
                     String color = JsonUtils.fromJson(e.getJson(), String.class);
                     paintMsgs.add(color);
@@ -421,7 +424,7 @@ public class ServerEventClientTests extends TestCase {
     public void test_Does_send_message_to_named_receiver() throws Exception {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .registerNamedReceiver("test", TestNamedReceiver.class)
                 .setOnMessage(msgs1::add)
                 .start()
@@ -485,7 +488,7 @@ public class ServerEventClientTests extends TestCase {
     public void test_Does_send_message_to_global_receiver() throws Exception {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .registerReceiver(TestGlobalReceiver.class)
                 .setOnMessage(msgs1::add)
                 .start()
@@ -509,7 +512,7 @@ public class ServerEventClientTests extends TestCase {
     public void test_Does_set_properties_on_global_receiver() throws Exception {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .registerReceiver(TestGlobalReceiver.class)
                 .setOnMessage(msgs1::add)
                 .start()
@@ -533,7 +536,7 @@ public class ServerEventClientTests extends TestCase {
     public void test_Does_send_raw_string_messages() throws Exception {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .registerReceiver(TestJavaScriptReceiver.class)
                 .registerNamedReceiver("css", TestJavaScriptReceiver.class)
                 .setOnMessage(msgs1::add)
@@ -592,7 +595,7 @@ public class ServerEventClientTests extends TestCase {
     public void test_Can_reuse_same_instance() throws Exception {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .registerReceiver(TestJavaScriptReceiver.class)
                 .registerNamedReceiver("css", TestJavaScriptReceiver.class)
                 .setResolver(new SingletonInstanceResolver())
@@ -630,16 +633,16 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventMessage> msgsABC = new ArrayList<>();
         List<ServerEventMessage> msgsABCD = new ArrayList<>();
 
-        try(ServerEventsClient clientA = createServerEventsClient("http://chat.servicestack.net", "A")
+        try(ServerEventsClient clientA = createServerEventsClient(ChatUrl, "A")
                 .setOnMessage(msgsA::add)
                 .start();
-            ServerEventsClient clientAB = createServerEventsClient("http://chat.servicestack.net", "A", "B")
+            ServerEventsClient clientAB = createServerEventsClient(ChatUrl, "A", "B")
                 .setOnMessage(msgsAB::add)
                 .start();
-            ServerEventsClient clientABC = createServerEventsClient("http://chat.servicestack.net", "A", "B", "C")
+            ServerEventsClient clientABC = createServerEventsClient(ChatUrl, "A", "B", "C")
                 .setOnMessage(msgsABC::add)
                 .start();
-            ServerEventsClient clientABCD = createServerEventsClient("http://chat.servicestack.net", "A", "B", "C", "D")
+            ServerEventsClient clientABCD = createServerEventsClient(ChatUrl, "A", "B", "C", "D")
                 .setOnMessage(msgsABCD::add)
                 .start()) {
 
@@ -691,7 +694,7 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventLeave> leaveB = new ArrayList<>();
         List<ServerEventLeave> leaveAB = new ArrayList<>();
 
-        try(ServerEventsClient clientA = createServerEventsClient("http://chat.servicestack.net", "A")
+        try(ServerEventsClient clientA = createServerEventsClient(ChatUrl, "A")
                 .setOnCommand(e -> {
                     if (e instanceof ServerEventJoin){
                         joinA.add((ServerEventJoin)e);
@@ -699,7 +702,7 @@ public class ServerEventClientTests extends TestCase {
                         leaveA.add((ServerEventLeave)e);
                     }
                 });
-            ServerEventsClient clientB = createServerEventsClient("http://chat.servicestack.net", "B")
+            ServerEventsClient clientB = createServerEventsClient(ChatUrl, "B")
                 .setOnCommand(e -> {
                     if (e instanceof ServerEventJoin){
                         joinB.add((ServerEventJoin)e);
@@ -707,7 +710,7 @@ public class ServerEventClientTests extends TestCase {
                         leaveB.add((ServerEventLeave)e);
                     }
                 });
-            ServerEventsClient clientAB = createServerEventsClient("http://chat.servicestack.net", "A", "B")
+            ServerEventsClient clientAB = createServerEventsClient(ChatUrl, "A", "B")
                 .setOnCommand(e -> {
                     if (e instanceof ServerEventJoin){
                         joinAB.add((ServerEventJoin)e);
@@ -739,11 +742,11 @@ public class ServerEventClientTests extends TestCase {
             assertEquals(3, channelABsubscribers.size());
 
             ArrayList<HashMap<String,String>> usersA = clientA.getServiceClient().get(new GetEventSubscribers()
-                    .setChannels(Func.toList("A")));
+                .setChannels(Func.toList("A")));
             ArrayList<HashMap<String,String>> usersB = clientA.getServiceClient().get(new GetEventSubscribers()
-                    .setChannels(Func.toList("B")));
+                .setChannels(Func.toList("B")));
             ArrayList<HashMap<String,String>> usersAB = clientA.getServiceClient().get(new GetEventSubscribers()
-                    .setChannels(Func.toList("A", "B")));
+                .setChannels(Func.toList("A", "B")));
 
             assertEquals(2, usersA.size());
             assertEquals(2, usersB.size());
@@ -774,7 +777,7 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventLeave> leaveAB = new ArrayList<>();
 
         try(
-            ServerEventsClient clientAB = createServerEventsClient("http://chat.servicestack.net", "A", "B")
+            ServerEventsClient clientAB = createServerEventsClient(ChatUrl, "A", "B")
                 .setOnCommand(e -> {
                     if (e instanceof ServerEventJoin){
                         joinAB.add((ServerEventJoin)e);
@@ -782,7 +785,7 @@ public class ServerEventClientTests extends TestCase {
                         leaveAB.add((ServerEventLeave)e);
                     }
                 });
-            ServerEventsClient clientA = createServerEventsClient("http://chat.servicestack.net", "A")
+            ServerEventsClient clientA = createServerEventsClient(ChatUrl, "A")
                 .setOnCommand(e -> {
                     if (e instanceof ServerEventJoin){
                         joinA.add((ServerEventJoin)e);
@@ -790,7 +793,7 @@ public class ServerEventClientTests extends TestCase {
                         leaveA.add((ServerEventLeave)e);
                     }
                 });
-            ServerEventsClient clientB = createServerEventsClient("http://chat.servicestack.net", "B")
+            ServerEventsClient clientB = createServerEventsClient(ChatUrl, "B")
                 .setOnCommand(e -> {
                     if (e instanceof ServerEventJoin){
                         joinB.add((ServerEventJoin)e);
@@ -826,10 +829,10 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
         List<ServerEventMessage> msgs2 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net", "A")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl, "A")
                 .setOnMessage(msgs1::add)
                 .start();
-            ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net", "B")
+            ServerEventsClient client2 = createServerEventsClient(ChatUrl, "B")
                 .setOnMessage(msgs2::add)
                 .start()) {
 
@@ -878,11 +881,11 @@ public class ServerEventClientTests extends TestCase {
         List<ServerEventMessage> msgs1 = new ArrayList<>();
         List<ServerEventMessage> msgs2 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net", "A","B","C")
+        try(ServerEventsClient client1 = createServerEventsClient(ChatUrl, "A","B","C")
                 .setOnMessage(msgs1::add)
                 .start()
                 .waitTillConnected();
-            ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net", "B","C")
+            ServerEventsClient client2 = createServerEventsClient(ChatUrl, "B","C")
                 .setOnMessage(msgs2::add)
                 .start()
                 .waitTillConnected()) {
@@ -932,12 +935,12 @@ public class ServerEventClientTests extends TestCase {
 
         Action<ServerEventMessage> handler = msgs1::add;
 
-        try (ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try (ServerEventsClient client1 = createServerEventsClient(ChatUrl)
                 .addListener("customEvent", handler)
                 .addListener("customEvent", msgs2::add)
                 .start()
                 .waitTillConnected();
-             ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+             ServerEventsClient client2 = createServerEventsClient(ChatUrl)
                  .start()
                  .waitTillConnected()) {
 

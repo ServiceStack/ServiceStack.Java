@@ -61,7 +61,7 @@ class TechStacksServiceTestsAsync {
     fun test_Can_GET_TechStacks_Overview_with_absolute_url_Async() {
         val signal = CountDownLatch(1)
 
-        client.getAsync("http://techstacks.io/overview", OverviewResponse::class.java, AsyncSuccess<OverviewResponse> {
+        client.getAsync("https://techstacks.io/overview", OverviewResponse::class.java, AsyncSuccess<OverviewResponse> {
             assertOverviewResponse(it)
             signal.countDown()
         })

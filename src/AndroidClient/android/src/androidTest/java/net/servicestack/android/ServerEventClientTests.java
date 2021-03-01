@@ -2,32 +2,18 @@ package net.servicestack.android;
 
 import android.os.Build;
 import android.support.test.runner.AndroidJUnit4;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import junit.framework.TestCase;
+import static net.servicestack.android.test.dtos.*;
 import static org.junit.Assert.assertArrayEquals;
 
 import net.servicestack.client.JsonUtils;
 import net.servicestack.client.Log;
-import net.servicestack.client.Utils;
-import net.servicestack.client.sse.ExceptionCallback;
-import net.servicestack.client.sse.GetEventSubscribers;
-import net.servicestack.client.sse.ServerEventCallback;
-import net.servicestack.client.sse.ServerEventConnect;
-import net.servicestack.client.sse.ServerEventConnectCallback;
-import net.servicestack.client.sse.ServerEventJoin;
-import net.servicestack.client.sse.ServerEventLeave;
-import net.servicestack.client.sse.ServerEventMessage;
-import net.servicestack.client.sse.ServerEventMessageCallback;
-import net.servicestack.client.sse.ServerEventUser;
-import net.servicestack.client.sse.ServerEventsClient;
-import net.servicestack.client.sse.SingletonInstanceResolver;
+import net.servicestack.client.sse.*;
 import net.servicestack.func.Action;
 import net.servicestack.func.Func;
 import net.servicestack.func.Predicate;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +21,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static chat.chatdtos.ChatMessage;
-import static chat.chatdtos.CustomType;
-import static chat.chatdtos.PostChatToChannel;
-import static chat.chatdtos.PostObjectToChannel;
-import static chat.chatdtos.PostRawToChannel;
-import static chat.chatdtos.ResetServerEvents;
-import static chat.chatdtos.SetterType;
 
 /**
  * Created by mythz on 2/10/2017.
@@ -49,7 +28,7 @@ import static chat.chatdtos.SetterType;
 
 @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.KITKAT)
 @RunWith(AndroidJUnit4.class)
-public class ServerEventClientTests {
+public class ServerEventClientTests extends TestCase  {
 
     public ServerEventClientTests() {
         Log.setInstance(new AndroidLogProvider("ZZZ", true));
@@ -65,7 +44,7 @@ public class ServerEventClientTests {
     public void Can_connect_to_ServerEventsStream() throws Exception {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", "home")
+        try (ServerEventsClient client = createServerEventsClient("https://chat.netcore.io", "home")
                 .setOnConnect(new ServerEventConnectCallback() {
                     @Override
                     public void execute(ServerEventConnect e) {
@@ -82,13 +61,13 @@ public class ServerEventClientTests {
     public void Does_fire_onJoin_events() throws Exception {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        try(ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", "home"))
+        try(ServerEventsClient client = createServerEventsClient("https://chat.netcore.io", "home"))
         {
             client
                 .setOnConnect(new ServerEventConnectCallback() {
                     @Override
                     public void execute(ServerEventConnect e) {
-                        assertTrue(e.getHeartbeatUrl().startsWith("http://chat.servicestack.net"));
+                        assertTrue(e.getHeartbeatUrl().startsWith("https://chat.netcore.io"));
                     }
                 })
                 .setOnCommand(new ServerEventMessageCallback() {
@@ -114,7 +93,7 @@ public class ServerEventClientTests {
         final String[] channels = new String[] { "A", "B", "C" };
         final List<ServerEventJoin> joinMsgs = new ArrayList<>();
 
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", channels))
+        try (ServerEventsClient client = createServerEventsClient("https://chat.netcore.io", channels))
         {
             client
                 .setOnCommand(new ServerEventMessageCallback() {
@@ -143,7 +122,7 @@ public class ServerEventClientTests {
     private void clearPreviousRun(String[] channels) throws Exception {
         final CountDownLatch signal = new CountDownLatch(1);
 
-        try (ServerEventsClient client = createServerEventsClient("http://chat.servicestack.net", channels)
+        try (ServerEventsClient client = createServerEventsClient("https://chat.netcore.io", channels)
                 .setOnConnect(new ServerEventConnectCallback() {
                     @Override
                     public void execute(ServerEventConnect e) {
@@ -170,7 +149,7 @@ public class ServerEventClientTests {
         final List<ServerEventMessage> commands = new ArrayList<>();
         final List<Exception> errors = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
             .setOnConnect(new ServerEventConnectCallback() {
                 @Override
                 public void execute(ServerEventConnect e) {
@@ -213,7 +192,7 @@ public class ServerEventClientTests {
             connectMsgs.clear();
             commands.clear();
 
-            try(ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+            try(ServerEventsClient client2 = createServerEventsClient("https://chat.netcore.io")
                     .setOnConnect(new ServerEventConnectCallback() {
                         @Override
                         public void execute(ServerEventConnect e) {
@@ -297,7 +276,7 @@ public class ServerEventClientTests {
         final List<ServerEventMessage> msgs2 = new ArrayList<>();
 
         try (
-                ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+                ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
                 .setOnConnect(new ServerEventConnectCallback() {
                     @Override
                     public void execute(ServerEventConnect e) {
@@ -317,7 +296,7 @@ public class ServerEventClientTests {
                     }
                 });
 
-                ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+                ServerEventsClient client2 = createServerEventsClient("https://chat.netcore.io")
                 .setOnConnect(new ServerEventConnectCallback() {
                     @Override
                     public void execute(ServerEventConnect e) {
@@ -399,7 +378,7 @@ public class ServerEventClientTests {
         final CountDownLatch signal = new CountDownLatch(1);
 
         final List<ServerEventMessage> heartbeats = new ArrayList<>();
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
             .setOnConnect(new ServerEventConnectCallback() {
                 @Override
                 public void execute(ServerEventConnect e) {
@@ -427,7 +406,7 @@ public class ServerEventClientTests {
 
         final List<ServerEventConnect> connectMsgs = new ArrayList<>();
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
             .setOnConnect(new ServerEventConnectCallback() {
                 @Override
                 public void execute(ServerEventConnect e) {
@@ -454,7 +433,7 @@ public class ServerEventClientTests {
 
             client1.getServiceClient().post(new ResetServerEvents());
 
-            try(ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+            try(ServerEventsClient client2 = createServerEventsClient("https://chat.netcore.io")
                     .setOnConnect(new ServerEventConnectCallback() {
                         @Override
                         public void execute(ServerEventConnect e) {
@@ -487,7 +466,7 @@ public class ServerEventClientTests {
 
         final List<ChatMessage> chatMsgs = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
                 .registerHandler("chat", new ServerEventCallback() {
                     @Override
                     public void execute(ServerEventsClient client, ServerEventMessage e) {
@@ -522,7 +501,7 @@ public class ServerEventClientTests {
     public void Does_send_message_to_named_receiver() throws Exception {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
             .registerNamedReceiver("test", TestNamedReceiver.class)
             .setOnMessage(new ServerEventMessageCallback() {
                 @Override
@@ -592,7 +571,7 @@ public class ServerEventClientTests {
     public void Does_send_message_to_global_receiver() throws Exception {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
                 .registerReceiver(TestGlobalReceiver.class)
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
@@ -622,7 +601,7 @@ public class ServerEventClientTests {
     public void Does_set_properties_on_global_receiver() throws Exception {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
                 .registerReceiver(TestGlobalReceiver.class)
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
@@ -652,7 +631,7 @@ public class ServerEventClientTests {
     public void Does_send_raw_string_messages() throws Exception {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
             .registerReceiver(TestJavaScriptReceiver.class)
             .registerNamedReceiver("css", TestJavaScriptReceiver.class)
             .setOnMessage(new ServerEventMessageCallback() {
@@ -717,7 +696,7 @@ public class ServerEventClientTests {
     public void Can_reuse_same_instance() throws Exception {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
                 .registerReceiver(TestJavaScriptReceiver.class)
                 .registerNamedReceiver("css", TestJavaScriptReceiver.class)
                 .setResolver(new SingletonInstanceResolver())
@@ -761,7 +740,7 @@ public class ServerEventClientTests {
         final List<ServerEventMessage> msgsABC = new ArrayList<>();
         final List<ServerEventMessage> msgsABCD = new ArrayList<>();
 
-        try(ServerEventsClient clientA = createServerEventsClient("http://chat.servicestack.net", "A")
+        try(ServerEventsClient clientA = createServerEventsClient("https://chat.netcore.io", "A")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -769,7 +748,7 @@ public class ServerEventClientTests {
                     }
                 })
                 .start();
-            ServerEventsClient clientAB = createServerEventsClient("http://chat.servicestack.net", "A", "B")
+            ServerEventsClient clientAB = createServerEventsClient("https://chat.netcore.io", "A", "B")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -777,7 +756,7 @@ public class ServerEventClientTests {
                     }
                 })
                 .start();
-            ServerEventsClient clientABC = createServerEventsClient("http://chat.servicestack.net", "A", "B", "C")
+            ServerEventsClient clientABC = createServerEventsClient("https://chat.netcore.io", "A", "B", "C")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -785,7 +764,7 @@ public class ServerEventClientTests {
                     }
                 })
                 .start();
-            ServerEventsClient clientABCD = createServerEventsClient("http://chat.servicestack.net", "A", "B", "C", "D")
+            ServerEventsClient clientABCD = createServerEventsClient("https://chat.netcore.io", "A", "B", "C", "D")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -843,7 +822,7 @@ public class ServerEventClientTests {
         final List<ServerEventLeave> leaveB = new ArrayList<>();
         final List<ServerEventLeave> leaveAB = new ArrayList<>();
 
-        try(ServerEventsClient clientA = createServerEventsClient("http://chat.servicestack.net", "A")
+        try(ServerEventsClient clientA = createServerEventsClient("https://chat.netcore.io", "A")
                 .setOnCommand(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -854,7 +833,7 @@ public class ServerEventClientTests {
                         }
                     }
                 });
-            ServerEventsClient clientB = createServerEventsClient("http://chat.servicestack.net", "B")
+            ServerEventsClient clientB = createServerEventsClient("https://chat.netcore.io", "B")
                 .setOnCommand(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -865,7 +844,7 @@ public class ServerEventClientTests {
                         }
                     }
                 });
-            ServerEventsClient clientAB = createServerEventsClient("http://chat.servicestack.net", "A", "B")
+            ServerEventsClient clientAB = createServerEventsClient("https://chat.netcore.io", "A", "B")
                 .setOnCommand(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -935,7 +914,7 @@ public class ServerEventClientTests {
         final List<ServerEventLeave> leaveB = new ArrayList<>();
         final List<ServerEventLeave> leaveAB = new ArrayList<>();
 
-        try(ServerEventsClient clientAB = createServerEventsClient("http://chat.servicestack.net", "A", "B")
+        try(ServerEventsClient clientAB = createServerEventsClient("https://chat.netcore.io", "A", "B")
                 .setOnCommand(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -946,7 +925,7 @@ public class ServerEventClientTests {
                         }
                     }
                 });
-            ServerEventsClient clientA = createServerEventsClient("http://chat.servicestack.net", "A")
+            ServerEventsClient clientA = createServerEventsClient("https://chat.netcore.io", "A")
                 .setOnCommand(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -957,7 +936,7 @@ public class ServerEventClientTests {
                         }
                     }
                 });
-            ServerEventsClient clientB = createServerEventsClient("http://chat.servicestack.net", "B")
+            ServerEventsClient clientB = createServerEventsClient("https://chat.netcore.io", "B")
                 .setOnCommand(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -997,7 +976,7 @@ public class ServerEventClientTests {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
         final List<ServerEventMessage> msgs2 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net", "A")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io", "A")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -1005,7 +984,7 @@ public class ServerEventClientTests {
                     }
                 })
                 .start();
-            ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net", "B")
+            ServerEventsClient client2 = createServerEventsClient("https://chat.netcore.io", "B")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -1060,7 +1039,7 @@ public class ServerEventClientTests {
         final List<ServerEventMessage> msgs1 = new ArrayList<>();
         final List<ServerEventMessage> msgs2 = new ArrayList<>();
 
-        try(ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net", "A","B","C")
+        try(ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io", "A","B","C")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -1069,7 +1048,7 @@ public class ServerEventClientTests {
                 })
                 .start()
                 .waitTillConnected();
-            ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net", "B","C")
+            ServerEventsClient client2 = createServerEventsClient("https://chat.netcore.io", "B","C")
                 .setOnMessage(new ServerEventMessageCallback() {
                     @Override
                     public void execute(ServerEventMessage e) {
@@ -1130,7 +1109,7 @@ public class ServerEventClientTests {
             }
         };
 
-        try (ServerEventsClient client1 = createServerEventsClient("http://chat.servicestack.net")
+        try (ServerEventsClient client1 = createServerEventsClient("https://chat.netcore.io")
                 .addListener("customEvent", handler)
                 .addListener("customEvent", new Action<ServerEventMessage>() {
                     @Override
@@ -1140,7 +1119,7 @@ public class ServerEventClientTests {
                 })
                 .start()
                 .waitTillConnected();
-             ServerEventsClient client2 = createServerEventsClient("http://chat.servicestack.net")
+             ServerEventsClient client2 = createServerEventsClient("https://chat.netcore.io")
                      .start()
                      .waitTillConnected()) {
 

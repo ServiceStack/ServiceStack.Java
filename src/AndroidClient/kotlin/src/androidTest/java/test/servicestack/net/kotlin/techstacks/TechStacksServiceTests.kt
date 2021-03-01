@@ -34,7 +34,7 @@ class TechStacksServiceTests : TestCase() {
     }
 
     fun test_Can_GET_TechStacks_Overview_with_absolute_url() {
-        val response = client.get<OverviewResponse>("http://techstacks.io/overview", OverviewResponse::class.java)
+        val response = client.get<OverviewResponse>("https://techstacks.io/overview", OverviewResponse::class.java)
         assertOverviewResponse(response)
     }
 

@@ -40,7 +40,7 @@ public class TechStacksServiceTests extends TestCase {
     }
 
     public void test_Can_GET_TechStacks_Overview_with_absolute_url() {
-        OverviewResponse response = client.get("http://techstacks.io/overview", OverviewResponse.class);
+        OverviewResponse response = client.get("https://techstacks.io/overview", OverviewResponse.class);
         assertOverviewResponse(response);
     }
 

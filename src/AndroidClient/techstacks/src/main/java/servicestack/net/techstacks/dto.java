@@ -1,7 +1,7 @@
 /* Options:
 Date: 2015-04-10 12:41:14
 Version: 1
-BaseUrl: http://techstacks.io
+BaseUrl: https://techstacks.io
 
 Package: servicestack.net.techstacks
 //GlobalNamespace: dto

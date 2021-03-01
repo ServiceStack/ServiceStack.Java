@@ -31,7 +31,7 @@ public class App {
     }
 
     public App() {
-        client = new AndroidServiceClient("http://techstacks.io");
+        client = new AndroidServiceClient("https://techstacks.io");
         appData = new AppData(client);
     }
 

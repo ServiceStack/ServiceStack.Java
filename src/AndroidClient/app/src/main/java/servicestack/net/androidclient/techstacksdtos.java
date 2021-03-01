@@ -1,7 +1,7 @@
 /* Options:
 Date: 2015-03-30 01:26:23
 Version: 1
-BaseUrl: http://techstacks.io
+BaseUrl: https://techstacks.io
 
 Package: servicestack.net.androidclient
 GlobalNamespace: techstacksdtos

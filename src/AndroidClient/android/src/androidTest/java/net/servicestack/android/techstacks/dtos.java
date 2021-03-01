@@ -1,6 +1,6 @@
 /* Options:
-Date: 2018-10-17 14:36:01
-Version: 5.10
+Date: 2021-03-01 09:48:32
+Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://www.techstacks.io
 
@@ -11,31 +11,20 @@ Package: net.servicestack.android.techstacks
 //AddServiceStackTypes: True
 //AddResponseStatus: False
 //AddDescriptionAsComments: True
-//AddImplicitVersion:
-//IncludeTypes:
-//ExcludeTypes:
-//TreatTypesAsStrings:
+//AddImplicitVersion: 
+//IncludeTypes: 
+//ExcludeTypes: 
+//TreatTypesAsStrings: 
 //DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
 */
 
 package net.servicestack.android.techstacks;
 
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
-
-import net.servicestack.client.AutoQueryViewer;
-import net.servicestack.client.DataContract;
-import net.servicestack.client.DataMember;
-import net.servicestack.client.IPost;
-import net.servicestack.client.IReturn;
-import net.servicestack.client.IReturnVoid;
-import net.servicestack.client.ResponseStatus;
-import net.servicestack.client.Route;
-import net.servicestack.client.StringLength;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.math.*;
+import java.util.*;
+import net.servicestack.client.*;
+import com.google.gson.annotations.*;
+import com.google.gson.reflect.*;
 
 public class dtos
 {
@@ -43,22 +32,22 @@ public class dtos
     @Route("/ping")
     public static class Ping
     {
-
+        
     }
 
     public static class DummyTypes
     {
         public ArrayList<Post> post = null;
-
+        
         public ArrayList<Post> getPost() { return post; }
         public DummyTypes setPost(ArrayList<Post> value) { this.post = value; return this; }
     }
 
     @Route(Path="/orgs/{Id}", Verbs="GET")
-    public static class GetOrganization implements IReturn<GetOrganizationResponse>
+    public static class GetOrganization implements IReturn<GetOrganizationResponse>, IGet
     {
         public Integer id = null;
-
+        
         public Integer getId() { return id; }
         public GetOrganization setId(Integer value) { this.id = value; return this; }
         private static Object responseType = GetOrganizationResponse.class;
@@ -66,10 +55,10 @@ public class dtos
     }
 
     @Route(Path="/organizations/{Slug}", Verbs="GET")
-    public static class GetOrganizationBySlug implements IReturn<GetOrganizationResponse>
+    public static class GetOrganizationBySlug implements IReturn<GetOrganizationResponse>, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetOrganizationBySlug setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetOrganizationResponse.class;
@@ -77,10 +66,10 @@ public class dtos
     }
 
     @Route(Path="/orgs/{Id}/members", Verbs="GET")
-    public static class GetOrganizationMembers implements IReturn<GetOrganizationMembersResponse>
+    public static class GetOrganizationMembers implements IReturn<GetOrganizationMembersResponse>, IGet
     {
         public Integer id = null;
-
+        
         public Integer getId() { return id; }
         public GetOrganizationMembers setId(Integer value) { this.id = value; return this; }
         private static Object responseType = GetOrganizationMembersResponse.class;
@@ -88,10 +77,10 @@ public class dtos
     }
 
     @Route(Path="/orgs/{Id}/admin", Verbs="GET")
-    public static class GetOrganizationAdmin implements IReturn<GetOrganizationAdminResponse>
+    public static class GetOrganizationAdmin implements IReturn<GetOrganizationAdminResponse>, IGet
     {
         public Integer id = null;
-
+        
         public Integer getId() { return id; }
         public GetOrganizationAdmin setId(Integer value) { this.id = value; return this; }
         private static Object responseType = GetOrganizationAdminResponse.class;
@@ -99,11 +88,11 @@ public class dtos
     }
 
     @Route(Path="/orgs/posts/new", Verbs="POST")
-    public static class CreateOrganizationForTechnology implements IReturn<CreateOrganizationForTechnologyResponse>
+    public static class CreateOrganizationForTechnology implements IReturn<CreateOrganizationForTechnologyResponse>, IPost
     {
         public Long technologyId = null;
         public Long techStackId = null;
-
+        
         public Long getTechnologyId() { return technologyId; }
         public CreateOrganizationForTechnology setTechnologyId(Long value) { this.technologyId = value; return this; }
         public Long getTechStackId() { return techStackId; }
@@ -113,7 +102,7 @@ public class dtos
     }
 
     @Route(Path="/orgs", Verbs="POST")
-    public static class CreateOrganization implements IReturn<CreateOrganizationResponse>
+    public static class CreateOrganization implements IReturn<CreateOrganizationResponse>, IPost
     {
         public String name = null;
         public String slug = null;
@@ -121,7 +110,7 @@ public class dtos
         public Long refId = null;
         public String refSource = null;
         public String refUrn = null;
-
+        
         public String getName() { return name; }
         public CreateOrganization setName(String value) { this.name = value; return this; }
         public String getSlug() { return slug; }
@@ -139,7 +128,7 @@ public class dtos
     }
 
     @Route(Path="/orgs/{Id}", Verbs="PUT")
-    public static class UpdateOrganization implements IReturn<UpdateOrganizationResponse>
+    public static class UpdateOrganization implements IReturn<UpdateOrganizationResponse>, IPut
     {
         public Integer id = null;
         public String slug = null;
@@ -160,7 +149,7 @@ public class dtos
         public ArrayList<String> postTypes = null;
         public ArrayList<String> moderatorPostTypes = null;
         public ArrayList<Integer> technologyIds = null;
-
+        
         public Integer getId() { return id; }
         public UpdateOrganization setId(Integer value) { this.id = value; return this; }
         public String getSlug() { return slug; }
@@ -204,21 +193,21 @@ public class dtos
     }
 
     @Route(Path="/orgs/{Id}", Verbs="DELETE")
-    public static class DeleteOrganization implements IReturnVoid
+    public static class DeleteOrganization implements IReturnVoid, IDelete
     {
         public Integer id = null;
-
+        
         public Integer getId() { return id; }
         public DeleteOrganization setId(Integer value) { this.id = value; return this; }
     }
 
     @Route(Path="/orgs/{Id}/lock", Verbs="PUT")
-    public static class LockOrganization implements IReturnVoid
+    public static class LockOrganization implements IReturnVoid, IPut
     {
         public Integer id = null;
         public Boolean lock = null;
         public String reason = null;
-
+        
         public Integer getId() { return id; }
         public LockOrganization setId(Integer value) { this.id = value; return this; }
         public Boolean isLock() { return lock; }
@@ -228,13 +217,13 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/labels", Verbs="POST")
-    public static class AddOrganizationLabel implements IReturn<OrganizationLabelResponse>
+    public static class AddOrganizationLabel implements IReturn<OrganizationLabelResponse>, IPost
     {
         public Integer organizationId = null;
         public String slug = null;
         public String description = null;
         public String color = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public AddOrganizationLabel setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getSlug() { return slug; }
@@ -248,13 +237,13 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/members/{Slug}", Verbs="PUT")
-    public static class UpdateOrganizationLabel implements IReturn<OrganizationLabelResponse>
+    public static class UpdateOrganizationLabel implements IReturn<OrganizationLabelResponse>, IPut
     {
         public Integer organizationId = null;
         public String slug = null;
         public String description = null;
         public String color = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public UpdateOrganizationLabel setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getSlug() { return slug; }
@@ -268,11 +257,11 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/labels/{Slug}", Verbs="DELETE")
-    public static class RemoveOrganizationLabel implements IReturnVoid
+    public static class RemoveOrganizationLabel implements IReturnVoid, IDelete
     {
         public Integer organizationId = null;
         public String slug = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public RemoveOrganizationLabel setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getSlug() { return slug; }
@@ -280,14 +269,14 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/categories", Verbs="POST")
-    public static class AddOrganizationCategory implements IReturn<AddOrganizationCategoryResponse>
+    public static class AddOrganizationCategory implements IReturn<AddOrganizationCategoryResponse>, IPost
     {
         public Integer organizationId = null;
         public String slug = null;
         public String name = null;
         public String description = null;
         public ArrayList<Integer> technologyIds = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public AddOrganizationCategory setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getSlug() { return slug; }
@@ -303,7 +292,7 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/categories/{Id}", Verbs="PUT")
-    public static class UpdateOrganizationCategory implements IReturn<UpdateOrganizationCategoryResponse>
+    public static class UpdateOrganizationCategory implements IReturn<UpdateOrganizationCategoryResponse>, IPut
     {
         public Integer organizationId = null;
         public Integer id = null;
@@ -311,7 +300,7 @@ public class dtos
         public String slug = null;
         public String description = null;
         public ArrayList<Integer> technologyIds = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public UpdateOrganizationCategory setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public Integer getId() { return id; }
@@ -329,11 +318,11 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/categories/{Id}", Verbs="DELETE")
-    public static class DeleteOrganizationCategory implements IReturnVoid
+    public static class DeleteOrganizationCategory implements IReturnVoid, IDelete
     {
         public Integer organizationId = null;
         public Integer id = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public DeleteOrganizationCategory setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public Integer getId() { return id; }
@@ -341,7 +330,7 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/members", Verbs="POST")
-    public static class AddOrganizationMember implements IReturn<AddOrganizationMemberResponse>
+    public static class AddOrganizationMember implements IReturn<AddOrganizationMemberResponse>, IPost
     {
         public Integer organizationId = null;
         public String userName = null;
@@ -351,7 +340,7 @@ public class dtos
         public Boolean denyComments = null;
         public Boolean denyAll = null;
         public String notes = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public AddOrganizationMember setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getUserName() { return userName; }
@@ -373,7 +362,7 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/members/{Id}", Verbs="PUT")
-    public static class UpdateOrganizationMember implements IReturn<UpdateOrganizationMemberResponse>
+    public static class UpdateOrganizationMember implements IReturn<UpdateOrganizationMemberResponse>, IPut
     {
         public Integer organizationId = null;
         public Integer userId = null;
@@ -383,7 +372,7 @@ public class dtos
         public Boolean denyComments = null;
         public Boolean denyAll = null;
         public String notes = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public UpdateOrganizationMember setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public Integer getUserId() { return userId; }
@@ -405,11 +394,11 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/members/{UserId}", Verbs="DELETE")
-    public static class RemoveOrganizationMember implements IReturnVoid
+    public static class RemoveOrganizationMember implements IReturnVoid, IDelete
     {
         public Integer organizationId = null;
         public Integer userId = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public RemoveOrganizationMember setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public Integer getUserId() { return userId; }
@@ -417,7 +406,7 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/members/set", Verbs="POST")
-    public static class SetOrganizationMembers implements IReturn<SetOrganizationMembersResponse>
+    public static class SetOrganizationMembers implements IReturn<SetOrganizationMembersResponse>, IPost
     {
         public Integer organizationId = null;
         public ArrayList<String> githubUserNames = null;
@@ -429,7 +418,7 @@ public class dtos
         public Boolean denyPosts = null;
         public Boolean denyComments = null;
         public Boolean denyAll = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public SetOrganizationMembers setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public ArrayList<String> getGithubUserNames() { return githubUserNames; }
@@ -455,10 +444,10 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/invites", Verbs="GET")
-    public static class GetOrganizationMemberInvites implements IReturn<GetOrganizationMemberInvitesResponse>
+    public static class GetOrganizationMemberInvites implements IReturn<GetOrganizationMemberInvitesResponse>, IGet
     {
         public Integer organizationId = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public GetOrganizationMemberInvites setOrganizationId(Integer value) { this.organizationId = value; return this; }
         private static Object responseType = GetOrganizationMemberInvitesResponse.class;
@@ -466,10 +455,10 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/invites", Verbs="POST")
-    public static class RequestOrganizationMemberInvite implements IReturn<RequestOrganizationMemberInviteResponse>
+    public static class RequestOrganizationMemberInvite implements IReturn<RequestOrganizationMemberInviteResponse>, IPost
     {
         public Integer organizationId = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public RequestOrganizationMemberInvite setOrganizationId(Integer value) { this.organizationId = value; return this; }
         private static Object responseType = RequestOrganizationMemberInviteResponse.class;
@@ -477,13 +466,13 @@ public class dtos
     }
 
     @Route(Path="/orgs/{OrganizationId}/invites/{UserId}", Verbs="PUT")
-    public static class UpdateOrganizationMemberInvite implements IReturn<UpdateOrganizationMemberInviteResponse>
+    public static class UpdateOrganizationMemberInvite implements IReturn<UpdateOrganizationMemberInviteResponse>, IPut
     {
         public Integer organizationId = null;
         public String userName = null;
         public Boolean approve = null;
         public Boolean dismiss = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public UpdateOrganizationMemberInvite setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getUserName() { return userName; }
@@ -497,7 +486,7 @@ public class dtos
     }
 
     @Route(Path="/posts", Verbs="GET")
-    public static class QueryPosts extends QueryDb<Post> implements IReturn<QueryResponse<Post>>
+    public static class QueryPosts extends QueryDb<Post> implements IReturn<QueryResponse<Post>>, IGet
     {
         public ArrayList<Integer> ids = null;
         public Integer organizationId = null;
@@ -505,7 +494,7 @@ public class dtos
         public ArrayList<String> types = null;
         public ArrayList<Integer> anyTechnologyIds = null;
         public ArrayList<String> is = null;
-
+        
         public ArrayList<Integer> getIds() { return ids; }
         public QueryPosts setIds(ArrayList<Integer> value) { this.ids = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -523,11 +512,11 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}", Verbs="GET")
-    public static class GetPost implements IReturn<GetPostResponse>
+    public static class GetPost implements IReturn<GetPostResponse>, IGet
     {
         public Long id = null;
         public String include = null;
-
+        
         public Long getId() { return id; }
         public GetPost setId(Long value) { this.id = value; return this; }
         public String getInclude() { return include; }
@@ -537,7 +526,7 @@ public class dtos
     }
 
     @Route(Path="/posts", Verbs="POST")
-    public static class CreatePost implements IReturn<CreatePostResponse>
+    public static class CreatePost implements IReturn<CreatePostResponse>, IPost
     {
         public Integer organizationId = null;
         public PostType type = null;
@@ -556,7 +545,7 @@ public class dtos
         public Long refId = null;
         public String refSource = null;
         public String refUrn = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public CreatePost setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public PostType getType() { return type; }
@@ -596,7 +585,7 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}", Verbs="PUT")
-    public static class UpdatePost implements IReturn<UpdatePostResponse>
+    public static class UpdatePost implements IReturn<UpdatePostResponse>, IPut
     {
         public Long id = null;
         public Integer organizationId = null;
@@ -613,7 +602,7 @@ public class dtos
         public Date toDate = null;
         public String metaType = null;
         public String meta = null;
-
+        
         public Long getId() { return id; }
         public UpdatePost setId(Long value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -649,10 +638,10 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}", Verbs="DELETE")
-    public static class DeletePost implements IReturn<DeletePostResponse>
+    public static class DeletePost implements IReturn<DeletePostResponse>, IDelete
     {
         public Long id = null;
-
+        
         public Long getId() { return id; }
         public DeletePost setId(Long value) { this.id = value; return this; }
         private static Object responseType = DeletePostResponse.class;
@@ -660,12 +649,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}/lock", Verbs="PUT")
-    public static class LockPost implements IReturnVoid
+    public static class LockPost implements IReturnVoid, IPut
     {
         public Long id = null;
         public Boolean lock = null;
         public String reason = null;
-
+        
         public Long getId() { return id; }
         public LockPost setId(Long value) { this.id = value; return this; }
         public Boolean isLock() { return lock; }
@@ -675,12 +664,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}/hide", Verbs="PUT")
-    public static class HidePost implements IReturnVoid
+    public static class HidePost implements IReturnVoid, IPut
     {
         public Long id = null;
         public Boolean hide = null;
         public String reason = null;
-
+        
         public Long getId() { return id; }
         public HidePost setId(Long value) { this.id = value; return this; }
         public Boolean isHide() { return hide; }
@@ -690,12 +679,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}/status/{Status}", Verbs="PUT")
-    public static class ChangeStatusPost implements IReturnVoid
+    public static class ChangeStatusPost implements IReturnVoid, IPut
     {
         public Long id = null;
         public String status = null;
         public String reason = null;
-
+        
         public Long getId() { return id; }
         public ChangeStatusPost setId(Long value) { this.id = value; return this; }
         public String getStatus() { return status; }
@@ -705,12 +694,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/report/{Id}", Verbs="POST")
-    public static class ActionPostReport implements IReturnVoid
+    public static class ActionPostReport implements IReturnVoid, IPost
     {
         public Long postId = null;
         public Long id = null;
         public ReportAction reportAction = null;
-
+        
         public Long getPostId() { return postId; }
         public ActionPostReport setPostId(Long value) { this.postId = value; return this; }
         public Long getId() { return id; }
@@ -720,12 +709,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/comments", Verbs="POST")
-    public static class CreatePostComment implements IReturn<CreatePostCommentResponse>
+    public static class CreatePostComment implements IReturn<CreatePostCommentResponse>, IPost
     {
         public Long postId = null;
         public Long replyId = null;
         public String content = null;
-
+        
         public Long getPostId() { return postId; }
         public CreatePostComment setPostId(Long value) { this.postId = value; return this; }
         public Long getReplyId() { return replyId; }
@@ -737,12 +726,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/comments/{Id}", Verbs="PUT")
-    public static class UpdatePostComment implements IReturn<UpdatePostCommentResponse>
+    public static class UpdatePostComment implements IReturn<UpdatePostCommentResponse>, IPut
     {
         public Long id = null;
         public Long postId = null;
         public String content = null;
-
+        
         public Long getId() { return id; }
         public UpdatePostComment setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -754,11 +743,11 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/comments/{Id}", Verbs="DELETE")
-    public static class DeletePostComment implements IReturn<DeletePostCommentResponse>
+    public static class DeletePostComment implements IReturn<DeletePostCommentResponse>, IDelete
     {
         public Long id = null;
         public Long postId = null;
-
+        
         public Long getId() { return id; }
         public DeletePostComment setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -768,13 +757,13 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/comments/{PostCommentId}/report/{Id}", Verbs="POST")
-    public static class ActionPostCommentReport implements IReturnVoid
+    public static class ActionPostCommentReport implements IReturnVoid, IPost
     {
         public Long id = null;
         public Long postCommentId = null;
         public Long postId = null;
         public ReportAction reportAction = null;
-
+        
         public Long getId() { return id; }
         public ActionPostCommentReport setId(Long value) { this.id = value; return this; }
         public Long getPostCommentId() { return postCommentId; }
@@ -786,23 +775,23 @@ public class dtos
     }
 
     @Route("/user/comments/votes")
-    public static class GetUserPostCommentVotes implements IReturn<GetUserPostCommentVotesResponse>
+    public static class GetUserPostCommentVotes implements IReturn<GetUserPostCommentVotesResponse>, IGet
     {
         public Long postId = null;
-
+        
         public Long getPostId() { return postId; }
         public GetUserPostCommentVotes setPostId(Long value) { this.postId = value; return this; }
         private static Object responseType = GetUserPostCommentVotesResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
-    @Route(Path="/posts/{PostId}/comments/{Id}/pin", Verbs="UPDATE")
-    public static class PinPostComment implements IReturn<PinPostCommentResponse>
+    @Route(Path="/posts/{PostId}/comments/{Id}/pin", Verbs="PUT")
+    public static class PinPostComment implements IReturn<PinPostCommentResponse>, IPut
     {
         public Long id = null;
         public Long postId = null;
         public Boolean pin = null;
-
+        
         public Long getId() { return id; }
         public PinPostComment setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -814,10 +803,10 @@ public class dtos
     }
 
     @Route("/users/by-email")
-    public static class GetUsersByEmails implements IReturn<GetUsersByEmailsResponse>
+    public static class GetUsersByEmails implements IReturn<GetUsersByEmailsResponse>, IGet
     {
         public ArrayList<String> emails = null;
-
+        
         public ArrayList<String> getEmails() { return emails; }
         public GetUsersByEmails setEmails(ArrayList<String> value) { this.emails = value; return this; }
         private static Object responseType = GetUsersByEmailsResponse.class;
@@ -825,27 +814,27 @@ public class dtos
     }
 
     @Route("/user/posts/activity")
-    public static class GetUserPostActivity implements IReturn<GetUserPostActivityResponse>
+    public static class GetUserPostActivity implements IReturn<GetUserPostActivityResponse>, IGet
     {
-
+        
         private static Object responseType = GetUserPostActivityResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/user/organizations")
-    public static class GetUserOrganizations implements IReturn<GetUserOrganizationsResponse>
+    public static class GetUserOrganizations implements IReturn<GetUserOrganizationsResponse>, IGet
     {
-
+        
         private static Object responseType = GetUserOrganizationsResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/posts/{Id}/vote", Verbs="PUT")
-    public static class UserPostVote implements IReturn<UserPostVoteResponse>
+    public static class UserPostVote implements IReturn<UserPostVoteResponse>, IPut
     {
         public Long id = null;
         public Integer weight = null;
-
+        
         public Long getId() { return id; }
         public UserPostVote setId(Long value) { this.id = value; return this; }
         public Integer getWeight() { return weight; }
@@ -855,10 +844,10 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}/favorite", Verbs="PUT")
-    public static class UserPostFavorite implements IReturn<UserPostFavoriteResponse>
+    public static class UserPostFavorite implements IReturn<UserPostFavoriteResponse>, IPut
     {
         public Long id = null;
-
+        
         public Long getId() { return id; }
         public UserPostFavorite setId(Long value) { this.id = value; return this; }
         private static Object responseType = UserPostFavoriteResponse.class;
@@ -866,12 +855,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{Id}/report", Verbs="PUT")
-    public static class UserPostReport implements IReturn<UserPostReportResponse>
+    public static class UserPostReport implements IReturn<UserPostReportResponse>, IPut
     {
         public Long id = null;
         public FlagType flagType = null;
         public String reportNotes = null;
-
+        
         public Long getId() { return id; }
         public UserPostReport setId(Long value) { this.id = value; return this; }
         public FlagType getFlagType() { return flagType; }
@@ -883,12 +872,12 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/comments/{Id}", Verbs="GET")
-    public static class UserPostCommentVote implements IReturn<UserPostCommentVoteResponse>
+    public static class UserPostCommentVote implements IReturn<UserPostCommentVoteResponse>, IGet
     {
         public Long id = null;
         public Long postId = null;
         public Integer weight = null;
-
+        
         public Long getId() { return id; }
         public UserPostCommentVote setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -900,13 +889,13 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/comments/{Id}/report", Verbs="PUT")
-    public static class UserPostCommentReport implements IReturn<UserPostCommentReportResponse>
+    public static class UserPostCommentReport implements IReturn<UserPostCommentReportResponse>, IPut
     {
         public Long id = null;
         public Long postId = null;
         public FlagType flagType = null;
         public String reportNotes = null;
-
+        
         public Long getId() { return id; }
         public UserPostCommentReport setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -920,19 +909,19 @@ public class dtos
     }
 
     @Route(Path="/prerender/{Path*}", Verbs="PUT")
-    public static class StorePreRender implements IReturnVoid
+    public static class StorePreRender implements IReturnVoid, IPut
     {
         public String path = null;
-
+        
         public String getPath() { return path; }
         public StorePreRender setPath(String value) { this.path = value; return this; }
     }
 
     @Route(Path="/prerender/{Path*}", Verbs="GET")
-    public static class GetPreRender implements IReturn<String>
+    public static class GetPreRender implements IReturn<String>, IGet
     {
         public String path = null;
-
+        
         public String getPath() { return path; }
         public GetPreRender setPath(String value) { this.path = value; return this; }
         private static Object responseType = String.class;
@@ -940,20 +929,20 @@ public class dtos
     }
 
     @Route("/my-session")
-    public static class SessionInfo implements IReturn<SessionInfoResponse>
+    public static class SessionInfo implements IReturn<SessionInfoResponse>, IGet
     {
-
+        
         private static Object responseType = SessionInfoResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/orgs/{OrganizationId}/subscribe", Verbs="PUT")
-    public static class SubscribeToOrganization implements IReturnVoid
+    public static class SubscribeToOrganization implements IReturnVoid, IPut
     {
         public Integer organizationId = null;
         public ArrayList<PostType> postTypes = null;
         public Frequency frequency = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public SubscribeToOrganization setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public ArrayList<PostType> getPostTypes() { return postTypes; }
@@ -963,37 +952,37 @@ public class dtos
     }
 
     @Route(Path="/posts/{PostId}/subscribe", Verbs="PUT")
-    public static class SubscribeToPost implements IReturnVoid
+    public static class SubscribeToPost implements IReturnVoid, IPut
     {
         public Long postId = null;
-
+        
         public Long getPostId() { return postId; }
         public SubscribeToPost setPostId(Long value) { this.postId = value; return this; }
     }
 
     @Route(Path="/orgs/{OrganizationId}/subscribe", Verbs="DELETE")
-    public static class DeleteOrganizationSubscription implements IReturnVoid
+    public static class DeleteOrganizationSubscription implements IReturnVoid, IDelete
     {
         public Long organizationId = null;
-
+        
         public Long getOrganizationId() { return organizationId; }
         public DeleteOrganizationSubscription setOrganizationId(Long value) { this.organizationId = value; return this; }
     }
 
     @Route(Path="/posts/{PostId}/subscribe", Verbs="DELETE")
-    public static class DeletePostSubscription implements IReturnVoid
+    public static class DeletePostSubscription implements IReturnVoid, IDelete
     {
         public Long postId = null;
-
+        
         public Long getPostId() { return postId; }
         public DeletePostSubscription setPostId(Long value) { this.postId = value; return this; }
     }
 
     @Route(Path="/technology/{Slug}/previous-versions", Verbs="GET")
-    public static class GetTechnologyPreviousVersions implements IReturn<GetTechnologyPreviousVersionsResponse>
+    public static class GetTechnologyPreviousVersions implements IReturn<GetTechnologyPreviousVersionsResponse>, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetTechnologyPreviousVersions setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetTechnologyPreviousVersionsResponse.class;
@@ -1001,20 +990,20 @@ public class dtos
     }
 
     @Route(Path="/technology", Verbs="GET")
-    public static class GetAllTechnologies implements IReturn<GetAllTechnologiesResponse>
+    public static class GetAllTechnologies implements IReturn<GetAllTechnologiesResponse>, IGet
     {
-
+        
         private static Object responseType = GetAllTechnologiesResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/technology/search")
     @AutoQueryViewer(DefaultSearchField="Tier", DefaultSearchText="Data", DefaultSearchType="=", Description="Explore different Technologies", IconUrl="octicon:database", Title="Find Technologies")
-    public static class FindTechnologies extends QueryDb<Technology> implements IReturn<QueryResponse<Technology>>
+    public static class FindTechnologies extends QueryDb<Technology> implements IReturn<QueryResponse<Technology>>, IGet
     {
         public String name = null;
         public String nameContains = null;
-
+        
         public String getName() { return name; }
         public FindTechnologies setName(String value) { this.name = value; return this; }
         public String getNameContains() { return nameContains; }
@@ -1024,18 +1013,18 @@ public class dtos
     }
 
     @Route("/technology/query")
-    public static class QueryTechnology extends QueryDb<Technology> implements IReturn<QueryResponse<Technology>>
+    public static class QueryTechnology extends QueryDb<Technology> implements IReturn<QueryResponse<Technology>>, IGet
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<Technology>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/technology/{Slug}")
-    public static class GetTechnology implements IReturn<GetTechnologyResponse>, IRegisterStats
+    public static class GetTechnology implements IReturn<GetTechnologyResponse>, IRegisterStats, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetTechnology setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetTechnologyResponse.class;
@@ -1043,10 +1032,10 @@ public class dtos
     }
 
     @Route("/technology/{Slug}/favorites")
-    public static class GetTechnologyFavoriteDetails implements IReturn<GetTechnologyFavoriteDetailsResponse>
+    public static class GetTechnologyFavoriteDetails implements IReturn<GetTechnologyFavoriteDetailsResponse>, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetTechnologyFavoriteDetails setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetTechnologyFavoriteDetailsResponse.class;
@@ -1054,7 +1043,7 @@ public class dtos
     }
 
     @Route(Path="/technology", Verbs="POST")
-    public static class CreateTechnology implements IReturn<CreateTechnologyResponse>
+    public static class CreateTechnology implements IReturn<CreateTechnologyResponse>, IPost
     {
         public String name = null;
         public String slug = null;
@@ -1065,7 +1054,7 @@ public class dtos
         public String description = null;
         public Boolean isLocked = null;
         public TechnologyTier tier = null;
-
+        
         public String getName() { return name; }
         public CreateTechnology setName(String value) { this.name = value; return this; }
         public String getSlug() { return slug; }
@@ -1089,7 +1078,7 @@ public class dtos
     }
 
     @Route(Path="/technology/{Id}", Verbs="PUT")
-    public static class UpdateTechnology implements IReturn<UpdateTechnologyResponse>
+    public static class UpdateTechnology implements IReturn<UpdateTechnologyResponse>, IPut
     {
         public Long id = null;
         public String name = null;
@@ -1100,7 +1089,7 @@ public class dtos
         public String description = null;
         public Boolean isLocked = null;
         public TechnologyTier tier = null;
-
+        
         public Long getId() { return id; }
         public UpdateTechnology setId(Long value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1124,10 +1113,10 @@ public class dtos
     }
 
     @Route(Path="/technology/{Id}", Verbs="DELETE")
-    public static class DeleteTechnology implements IReturn<DeleteTechnologyResponse>
+    public static class DeleteTechnology implements IReturn<DeleteTechnologyResponse>, IDelete
     {
         public Long id = null;
-
+        
         public Long getId() { return id; }
         public DeleteTechnology setId(Long value) { this.id = value; return this; }
         private static Object responseType = DeleteTechnologyResponse.class;
@@ -1135,10 +1124,10 @@ public class dtos
     }
 
     @Route(Path="/techstacks/{Slug}/previous-versions", Verbs="GET")
-    public static class GetTechnologyStackPreviousVersions implements IReturn<GetTechnologyStackPreviousVersionsResponse>
+    public static class GetTechnologyStackPreviousVersions implements IReturn<GetTechnologyStackPreviousVersionsResponse>, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetTechnologyStackPreviousVersions setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetTechnologyStackPreviousVersionsResponse.class;
@@ -1146,12 +1135,12 @@ public class dtos
     }
 
     @Route("/pagestats/{Type}/{Slug}")
-    public static class GetPageStats implements IReturn<GetPageStatsResponse>
+    public static class GetPageStats implements IReturn<GetPageStatsResponse>, IGet
     {
         public String type = null;
         public String slug = null;
         public Integer id = null;
-
+        
         public String getType() { return type; }
         public GetPageStats setType(String value) { this.type = value; return this; }
         public String getSlug() { return slug; }
@@ -1163,18 +1152,18 @@ public class dtos
     }
 
     @Route("/cache/clear")
-    public static class ClearCache implements IReturn<String>
+    public static class ClearCache implements IReturn<String>, IGet
     {
-
+        
         private static Object responseType = String.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/tasks/hourly")
-    public static class HourlyTask implements IReturn<HourlyTaskResponse>
+    public static class HourlyTask implements IReturn<HourlyTaskResponse>, IGet
     {
         public Boolean force = null;
-
+        
         public Boolean isForce() { return force; }
         public HourlyTask setForce(Boolean value) { this.force = value; return this; }
         private static Object responseType = HourlyTaskResponse.class;
@@ -1183,10 +1172,10 @@ public class dtos
 
     @Route("/techstacks/search")
     @AutoQueryViewer(DefaultSearchField="Description", DefaultSearchText="ServiceStack", DefaultSearchType="Contains", Description="Explore different Technology Stacks", IconUrl="material-icons:cloud", Title="Find Technology Stacks")
-    public static class FindTechStacks extends QueryDb<TechnologyStack> implements IReturn<QueryResponse<TechnologyStack>>
+    public static class FindTechStacks extends QueryDb<TechnologyStack> implements IReturn<QueryResponse<TechnologyStack>>, IGet
     {
         public String nameContains = null;
-
+        
         public String getNameContains() { return nameContains; }
         public FindTechStacks setNameContains(String value) { this.nameContains = value; return this; }
         private static Object responseType = new TypeToken<QueryResponse<TechnologyStack>>(){}.getType();
@@ -1194,18 +1183,18 @@ public class dtos
     }
 
     @Route("/techstacks/query")
-    public static class QueryTechStacks extends QueryDb<TechnologyStack> implements IReturn<QueryResponse<TechnologyStack>>
+    public static class QueryTechStacks extends QueryDb<TechnologyStack> implements IReturn<QueryResponse<TechnologyStack>>, IGet
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<TechnologyStack>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/overview")
-    public static class Overview implements IReturn<OverviewResponse>
+    public static class Overview implements IReturn<OverviewResponse>, IGet
     {
         public Boolean reload = null;
-
+        
         public Boolean isReload() { return reload; }
         public Overview setReload(Boolean value) { this.reload = value; return this; }
         private static Object responseType = OverviewResponse.class;
@@ -1213,10 +1202,10 @@ public class dtos
     }
 
     @Route("/app-overview")
-    public static class AppOverview implements IReturn<AppOverviewResponse>
+    public static class AppOverview implements IReturn<AppOverviewResponse>, IGet
     {
         public Boolean reload = null;
-
+        
         public Boolean isReload() { return reload; }
         public AppOverview setReload(Boolean value) { this.reload = value; return this; }
         private static Object responseType = AppOverviewResponse.class;
@@ -1224,18 +1213,18 @@ public class dtos
     }
 
     @Route(Path="/techstacks", Verbs="GET")
-    public static class GetAllTechnologyStacks implements IReturn<GetAllTechnologyStacksResponse>
+    public static class GetAllTechnologyStacks implements IReturn<GetAllTechnologyStacksResponse>, IGet
     {
-
+        
         private static Object responseType = GetAllTechnologyStacksResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks/{Slug}", Verbs="GET")
-    public static class GetTechnologyStack implements IReturn<GetTechnologyStackResponse>, IRegisterStats
+    public static class GetTechnologyStack implements IReturn<GetTechnologyStackResponse>, IRegisterStats, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetTechnologyStack setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetTechnologyStackResponse.class;
@@ -1243,10 +1232,10 @@ public class dtos
     }
 
     @Route("/techstacks/{Slug}/favorites")
-    public static class GetTechnologyStackFavoriteDetails implements IReturn<GetTechnologyStackFavoriteDetailsResponse>
+    public static class GetTechnologyStackFavoriteDetails implements IReturn<GetTechnologyStackFavoriteDetailsResponse>, IGet
     {
         public String slug = null;
-
+        
         public String getSlug() { return slug; }
         public GetTechnologyStackFavoriteDetails setSlug(String value) { this.slug = value; return this; }
         private static Object responseType = GetTechnologyStackFavoriteDetailsResponse.class;
@@ -1254,15 +1243,15 @@ public class dtos
     }
 
     @Route("/config")
-    public static class GetConfig implements IReturn<GetConfigResponse>
+    public static class GetConfig implements IReturn<GetConfigResponse>, IGet
     {
-
+        
         private static Object responseType = GetConfigResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/techstacks", Verbs="POST")
-    public static class CreateTechnologyStack implements IReturn<CreateTechnologyStackResponse>
+    public static class CreateTechnologyStack implements IReturn<CreateTechnologyStackResponse>, IPost
     {
         public String name = null;
         public String slug = null;
@@ -1273,7 +1262,7 @@ public class dtos
         public String details = null;
         public Boolean isLocked = null;
         public ArrayList<Long> technologyIds = null;
-
+        
         public String getName() { return name; }
         public CreateTechnologyStack setName(String value) { this.name = value; return this; }
         public String getSlug() { return slug; }
@@ -1297,7 +1286,7 @@ public class dtos
     }
 
     @Route(Path="/techstacks/{Id}", Verbs="PUT")
-    public static class UpdateTechnologyStack implements IReturn<UpdateTechnologyStackResponse>
+    public static class UpdateTechnologyStack implements IReturn<UpdateTechnologyStackResponse>, IPut
     {
         public Long id = null;
         public String name = null;
@@ -1308,7 +1297,7 @@ public class dtos
         public String details = null;
         public Boolean isLocked = null;
         public ArrayList<Long> technologyIds = null;
-
+        
         public Long getId() { return id; }
         public UpdateTechnologyStack setId(Long value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1332,10 +1321,10 @@ public class dtos
     }
 
     @Route(Path="/techstacks/{Id}", Verbs="DELETE")
-    public static class DeleteTechnologyStack implements IReturn<DeleteTechnologyStackResponse>
+    public static class DeleteTechnologyStack implements IReturn<DeleteTechnologyStackResponse>, IDelete
     {
         public Long id = null;
-
+        
         public Long getId() { return id; }
         public DeleteTechnologyStack setId(Long value) { this.id = value; return this; }
         private static Object responseType = DeleteTechnologyStackResponse.class;
@@ -1343,10 +1332,10 @@ public class dtos
     }
 
     @Route(Path="/favorites/techtacks", Verbs="GET")
-    public static class GetFavoriteTechStack implements IReturn<GetFavoriteTechStackResponse>
+    public static class GetFavoriteTechStack implements IReturn<GetFavoriteTechStackResponse>, IGet
     {
         public Integer technologyStackId = null;
-
+        
         public Integer getTechnologyStackId() { return technologyStackId; }
         public GetFavoriteTechStack setTechnologyStackId(Integer value) { this.technologyStackId = value; return this; }
         private static Object responseType = GetFavoriteTechStackResponse.class;
@@ -1354,10 +1343,10 @@ public class dtos
     }
 
     @Route(Path="/favorites/techtacks/{TechnologyStackId}", Verbs="PUT")
-    public static class AddFavoriteTechStack implements IReturn<FavoriteTechStackResponse>
+    public static class AddFavoriteTechStack implements IReturn<FavoriteTechStackResponse>, IPut
     {
         public Integer technologyStackId = null;
-
+        
         public Integer getTechnologyStackId() { return technologyStackId; }
         public AddFavoriteTechStack setTechnologyStackId(Integer value) { this.technologyStackId = value; return this; }
         private static Object responseType = FavoriteTechStackResponse.class;
@@ -1365,10 +1354,10 @@ public class dtos
     }
 
     @Route(Path="/favorites/techtacks/{TechnologyStackId}", Verbs="DELETE")
-    public static class RemoveFavoriteTechStack implements IReturn<FavoriteTechStackResponse>
+    public static class RemoveFavoriteTechStack implements IReturn<FavoriteTechStackResponse>, IDelete
     {
         public Integer technologyStackId = null;
-
+        
         public Integer getTechnologyStackId() { return technologyStackId; }
         public RemoveFavoriteTechStack setTechnologyStackId(Integer value) { this.technologyStackId = value; return this; }
         private static Object responseType = FavoriteTechStackResponse.class;
@@ -1376,10 +1365,10 @@ public class dtos
     }
 
     @Route(Path="/favorites/technology", Verbs="GET")
-    public static class GetFavoriteTechnologies implements IReturn<GetFavoriteTechnologiesResponse>
+    public static class GetFavoriteTechnologies implements IReturn<GetFavoriteTechnologiesResponse>, IGet
     {
         public Integer technologyId = null;
-
+        
         public Integer getTechnologyId() { return technologyId; }
         public GetFavoriteTechnologies setTechnologyId(Integer value) { this.technologyId = value; return this; }
         private static Object responseType = GetFavoriteTechnologiesResponse.class;
@@ -1387,10 +1376,10 @@ public class dtos
     }
 
     @Route(Path="/favorites/technology/{TechnologyId}", Verbs="PUT")
-    public static class AddFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>
+    public static class AddFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>, IPut
     {
         public Integer technologyId = null;
-
+        
         public Integer getTechnologyId() { return technologyId; }
         public AddFavoriteTechnology setTechnologyId(Integer value) { this.technologyId = value; return this; }
         private static Object responseType = FavoriteTechnologyResponse.class;
@@ -1398,10 +1387,10 @@ public class dtos
     }
 
     @Route(Path="/favorites/technology/{TechnologyId}", Verbs="DELETE")
-    public static class RemoveFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>
+    public static class RemoveFavoriteTechnology implements IReturn<FavoriteTechnologyResponse>, IDelete
     {
         public Integer technologyId = null;
-
+        
         public Integer getTechnologyId() { return technologyId; }
         public RemoveFavoriteTechnology setTechnologyId(Integer value) { this.technologyId = value; return this; }
         private static Object responseType = FavoriteTechnologyResponse.class;
@@ -1409,18 +1398,18 @@ public class dtos
     }
 
     @Route("/my-feed")
-    public static class GetUserFeed implements IReturn<GetUserFeedResponse>
+    public static class GetUserFeed implements IReturn<GetUserFeedResponse>, IGet
     {
-
+        
         private static Object responseType = GetUserFeedResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/users/karma", Verbs="GET")
-    public static class GetUsersKarma implements IReturn<GetUsersKarmaResponse>
+    public static class GetUsersKarma implements IReturn<GetUsersKarmaResponse>, IGet
     {
         public ArrayList<Integer> userIds = null;
-
+        
         public ArrayList<Integer> getUserIds() { return userIds; }
         public GetUsersKarma setUserIds(ArrayList<Integer> value) { this.userIds = value; return this; }
         private static Object responseType = GetUsersKarmaResponse.class;
@@ -1428,10 +1417,10 @@ public class dtos
     }
 
     @Route("/userinfo/{UserName}")
-    public static class GetUserInfo implements IReturn<GetUserInfoResponse>
+    public static class GetUserInfo implements IReturn<GetUserInfoResponse>, IGet
     {
         public String userName = null;
-
+        
         public String getUserName() { return userName; }
         public GetUserInfo setUserName(String value) { this.userName = value; return this; }
         private static Object responseType = GetUserInfoResponse.class;
@@ -1439,10 +1428,10 @@ public class dtos
     }
 
     @Route(Path="/users/{UserName}/avatar", Verbs="GET")
-    public static class UserAvatar
+    public static class UserAvatar implements IGet
     {
         public String userName = null;
-
+        
         public String getUserName() { return userName; }
         public UserAvatar setUserName(String value) { this.userName = value; return this; }
     }
@@ -1450,7 +1439,7 @@ public class dtos
     @Route("/mq/start")
     public static class MqStart implements IReturn<String>
     {
-
+        
         private static Object responseType = String.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1458,7 +1447,7 @@ public class dtos
     @Route("/mq/stop")
     public static class MqStop implements IReturn<String>
     {
-
+        
         private static Object responseType = String.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1466,7 +1455,7 @@ public class dtos
     @Route("/mq/stats")
     public static class MqStats implements IReturn<String>
     {
-
+        
         private static Object responseType = String.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1474,16 +1463,16 @@ public class dtos
     @Route("/mq/status")
     public static class MqStatus implements IReturn<String>
     {
-
+        
         private static Object responseType = String.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/sync/discourse/{Site}")
-    public static class SyncDiscourseSite implements IReturn<SyncDiscourseSiteResponse>
+    public static class SyncDiscourseSite implements IReturn<SyncDiscourseSiteResponse>, IPost
     {
         public String site = null;
-
+        
         public String getSite() { return site; }
         public SyncDiscourseSite setSite(String value) { this.site = value; return this; }
         private static Object responseType = SyncDiscourseSiteResponse.class;
@@ -1491,11 +1480,11 @@ public class dtos
     }
 
     @Route("/admin/technology/{TechnologyId}/logo")
-    public static class LogoUrlApproval implements IReturn<LogoUrlApprovalResponse>
+    public static class LogoUrlApproval implements IReturn<LogoUrlApprovalResponse>, IPut
     {
         public Long technologyId = null;
         public Boolean approved = null;
-
+        
         public Long getTechnologyId() { return technologyId; }
         public LogoUrlApproval setTechnologyId(Long value) { this.technologyId = value; return this; }
         public Boolean isApproved() { return approved; }
@@ -1505,11 +1494,11 @@ public class dtos
     }
 
     @Route("/admin/techstacks/{TechnologyStackId}/lock")
-    public static class LockTechStack implements IReturn<LockStackResponse>
+    public static class LockTechStack implements IReturn<LockStackResponse>, IPut
     {
         public Long technologyStackId = null;
         public Boolean isLocked = null;
-
+        
         public Long getTechnologyStackId() { return technologyStackId; }
         public LockTechStack setTechnologyStackId(Long value) { this.technologyStackId = value; return this; }
         public Boolean getIsLocked() { return isLocked; }
@@ -1519,11 +1508,11 @@ public class dtos
     }
 
     @Route("/admin/technology/{TechnologyId}/lock")
-    public static class LockTech implements IReturn<LockStackResponse>
+    public static class LockTech implements IReturn<LockStackResponse>, IPut
     {
         public Long technologyId = null;
         public Boolean isLocked = null;
-
+        
         public Long getTechnologyId() { return technologyId; }
         public LockTech setTechnologyId(Long value) { this.technologyId = value; return this; }
         public Boolean getIsLocked() { return isLocked; }
@@ -1536,14 +1525,14 @@ public class dtos
     public static class EmailTest implements IReturn<EmailTestRespoonse>
     {
         public Integer postId = null;
-
+        
         public Integer getPostId() { return postId; }
         public EmailTest setPostId(Integer value) { this.postId = value; return this; }
         private static Object responseType = EmailTestRespoonse.class;
         public Object getResponseType() { return responseType; }
     }
 
-    public static class ImportUser implements IReturn<ImportUserResponse>
+    public static class ImportUser implements IReturn<ImportUserResponse>, IPost
     {
         public String userName = null;
         public String email = null;
@@ -1557,7 +1546,7 @@ public class dtos
         public String refUrn = null;
         public String defaultProfileUrl = null;
         public HashMap<String,String> meta = null;
-
+        
         public String getUserName() { return userName; }
         public ImportUser setUserName(String value) { this.userName = value; return this; }
         public String getEmail() { return email; }
@@ -1587,7 +1576,7 @@ public class dtos
     }
 
     @Route("/import/uservoice/suggestion")
-    public static class ImportUserVoiceSuggestion implements IReturn<ImportUserVoiceSuggestionResponse>
+    public static class ImportUserVoiceSuggestion implements IReturn<ImportUserVoiceSuggestionResponse>, IPost
     {
         public Integer organizationId = null;
         public String url = null;
@@ -1608,7 +1597,7 @@ public class dtos
         public UserVoiceComment response = null;
         public Date createdAt = null;
         public Date updatedAt = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public ImportUserVoiceSuggestion setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getUrl() { return url; }
@@ -1653,8 +1642,6 @@ public class dtos
 
     @Route("/auth")
     // @Route("/auth/{provider}")
-    // @Route("/authenticate")
-    // @Route("/authenticate/{provider}")
     @DataContract
     public static class Authenticate implements IReturn<AuthenticateResponse>, IPost
     {
@@ -1679,39 +1666,42 @@ public class dtos
         @DataMember(Order=7)
         public Boolean rememberMe = null;
 
-        @DataMember(Order=8)
-        @SerializedName("continue") public String Continue = null;
-
         @DataMember(Order=9)
-        public String nonce = null;
+        public String errorView = null;
 
         @DataMember(Order=10)
-        public String uri = null;
+        public String nonce = null;
 
         @DataMember(Order=11)
-        public String response = null;
+        public String uri = null;
 
         @DataMember(Order=12)
-        public String qop = null;
+        public String response = null;
 
         @DataMember(Order=13)
-        public String nc = null;
+        public String qop = null;
 
         @DataMember(Order=14)
-        public String cnonce = null;
+        public String nc = null;
 
         @DataMember(Order=15)
-        public Boolean useTokenCookie = null;
+        public String cnonce = null;
 
         @DataMember(Order=16)
-        public String accessToken = null;
+        public Boolean useTokenCookie = null;
 
         @DataMember(Order=17)
-        public String accessTokenSecret = null;
+        public String accessToken = null;
 
         @DataMember(Order=18)
-        public HashMap<String,String> meta = null;
+        public String accessTokenSecret = null;
 
+        @DataMember(Order=19)
+        public String scope = null;
+
+        @DataMember(Order=20)
+        public HashMap<String,String> meta = null;
+        
         public String getProvider() { return provider; }
         public Authenticate setProvider(String value) { this.provider = value; return this; }
         public String getState() { return state; }
@@ -1726,8 +1716,8 @@ public class dtos
         public Authenticate setPassword(String value) { this.password = value; return this; }
         public Boolean isRememberMe() { return rememberMe; }
         public Authenticate setRememberMe(Boolean value) { this.rememberMe = value; return this; }
-        public String getContinue() { return Continue; }
-        public Authenticate setContinue(String value) { this.Continue = value; return this; }
+        public String getErrorView() { return errorView; }
+        public Authenticate setErrorView(String value) { this.errorView = value; return this; }
         public String getNonce() { return nonce; }
         public Authenticate setNonce(String value) { this.nonce = value; return this; }
         public String getUri() { return uri; }
@@ -1746,6 +1736,8 @@ public class dtos
         public Authenticate setAccessToken(String value) { this.accessToken = value; return this; }
         public String getAccessTokenSecret() { return accessTokenSecret; }
         public Authenticate setAccessTokenSecret(String value) { this.accessTokenSecret = value; return this; }
+        public String getScope() { return scope; }
+        public Authenticate setScope(String value) { this.scope = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
         public Authenticate setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = AuthenticateResponse.class;
@@ -1765,12 +1757,17 @@ public class dtos
         @DataMember(Order=3)
         public ArrayList<String> roles = null;
 
+        @DataMember(Order=4)
+        public HashMap<String,String> meta = null;
+        
         public String getUserName() { return userName; }
         public AssignRoles setUserName(String value) { this.userName = value; return this; }
         public ArrayList<String> getPermissions() { return permissions; }
         public AssignRoles setPermissions(ArrayList<String> value) { this.permissions = value; return this; }
         public ArrayList<String> getRoles() { return roles; }
         public AssignRoles setRoles(ArrayList<String> value) { this.roles = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public AssignRoles setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = AssignRolesResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1788,12 +1785,17 @@ public class dtos
         @DataMember(Order=3)
         public ArrayList<String> roles = null;
 
+        @DataMember(Order=4)
+        public HashMap<String,String> meta = null;
+        
         public String getUserName() { return userName; }
         public UnAssignRoles setUserName(String value) { this.userName = value; return this; }
         public ArrayList<String> getPermissions() { return permissions; }
         public UnAssignRoles setPermissions(ArrayList<String> value) { this.permissions = value; return this; }
         public ArrayList<String> getRoles() { return roles; }
         public UnAssignRoles setRoles(ArrayList<String> value) { this.roles = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public UnAssignRoles setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = UnAssignRolesResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1805,8 +1807,13 @@ public class dtos
         @DataMember(Order=1)
         public Boolean preserveSession = null;
 
+        @DataMember(Order=2)
+        public HashMap<String,String> meta = null;
+        
         public Boolean isPreserveSession() { return preserveSession; }
         public ConvertSessionToToken setPreserveSession(Boolean value) { this.preserveSession = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public ConvertSessionToToken setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = ConvertSessionToTokenResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1818,18 +1825,28 @@ public class dtos
         @DataMember(Order=1)
         public String refreshToken = null;
 
+        @DataMember(Order=2)
+        public Boolean useTokenCookie = null;
+
+        @DataMember(Order=3)
+        public HashMap<String,String> meta = null;
+        
         public String getRefreshToken() { return refreshToken; }
         public GetAccessToken setRefreshToken(String value) { this.refreshToken = value; return this; }
+        public Boolean isUseTokenCookie() { return useTokenCookie; }
+        public GetAccessToken setUseTokenCookie(Boolean value) { this.useTokenCookie = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public GetAccessToken setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         private static Object responseType = GetAccessTokenResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route(Path="/posts/comment", Verbs="GET")
-    public static class QueryPostComments extends QueryDb<PostComment> implements IReturn<QueryResponse<PostComment>>
+    public static class QueryPostComments extends QueryDb<PostComment> implements IReturn<QueryResponse<PostComment>>, IGet
     {
         public Integer userId = null;
         public Integer postId = null;
-
+        
         public Integer getUserId() { return userId; }
         public QueryPostComments setUserId(Integer value) { this.userId = value; return this; }
         public Integer getPostId() { return postId; }
@@ -1843,7 +1860,7 @@ public class dtos
     public static class FindTechnologiesAdmin extends QueryDb<Technology> implements IReturn<QueryResponse<Technology>>
     {
         public String name = null;
-
+        
         public String getName() { return name; }
         public FindTechnologiesAdmin setName(String value) { this.name = value; return this; }
         private static Object responseType = new TypeToken<QueryResponse<Technology>>(){}.getType();
@@ -1862,7 +1879,7 @@ public class dtos
         public ArrayList<OrganizationMember> moderators = null;
         public Long membersCount = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getCache() { return cache; }
         public GetOrganizationResponse setCache(Long value) { this.cache = value; return this; }
         public Integer getId() { return id; }
@@ -1890,7 +1907,7 @@ public class dtos
         public Integer organizationId = null;
         public ArrayList<OrganizationMember> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public GetOrganizationMembersResponse setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public ArrayList<OrganizationMember> getResults() { return results; }
@@ -1907,7 +1924,7 @@ public class dtos
         public ArrayList<PostReportInfo> reportedPosts = null;
         public ArrayList<PostCommentReportInfo> reportedPostComments = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<OrganizationLabel> getLabels() { return labels; }
         public GetOrganizationAdminResponse setLabels(ArrayList<OrganizationLabel> value) { this.labels = value; return this; }
         public ArrayList<OrganizationMember> getMembers() { return members; }
@@ -1929,7 +1946,7 @@ public class dtos
         public Long commentsPostId = null;
         public String commentsPostSlug = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public CreateOrganizationForTechnologyResponse setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public String getOrganizationSlug() { return organizationSlug; }
@@ -1947,7 +1964,7 @@ public class dtos
         public Integer id = null;
         public String slug = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getId() { return id; }
         public CreateOrganizationResponse setId(Integer value) { this.id = value; return this; }
         public String getSlug() { return slug; }
@@ -1959,7 +1976,7 @@ public class dtos
     public static class UpdateOrganizationResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UpdateOrganizationResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -1967,7 +1984,7 @@ public class dtos
     public static class OrganizationLabelResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public OrganizationLabelResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -1977,7 +1994,7 @@ public class dtos
         public Integer id = null;
         public String slug = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getId() { return id; }
         public AddOrganizationCategoryResponse setId(Integer value) { this.id = value; return this; }
         public String getSlug() { return slug; }
@@ -1989,7 +2006,7 @@ public class dtos
     public static class UpdateOrganizationCategoryResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UpdateOrganizationCategoryResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -1997,7 +2014,7 @@ public class dtos
     public static class AddOrganizationMemberResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public AddOrganizationMemberResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2005,7 +2022,7 @@ public class dtos
     public static class UpdateOrganizationMemberResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UpdateOrganizationMemberResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2015,7 +2032,7 @@ public class dtos
         public ArrayList<Integer> userIdsAdded = null;
         public ArrayList<Integer> userIdsRemoved = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<Integer> getUserIdsAdded() { return userIdsAdded; }
         public SetOrganizationMembersResponse setUserIdsAdded(ArrayList<Integer> value) { this.userIdsAdded = value; return this; }
         public ArrayList<Integer> getUserIdsRemoved() { return userIdsRemoved; }
@@ -2028,7 +2045,7 @@ public class dtos
     {
         public ArrayList<OrganizationMemberInvite> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<OrganizationMemberInvite> getResults() { return results; }
         public GetOrganizationMemberInvitesResponse setResults(ArrayList<OrganizationMemberInvite> value) { this.results = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2039,7 +2056,7 @@ public class dtos
     {
         public Integer organizationId = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getOrganizationId() { return organizationId; }
         public RequestOrganizationMemberInviteResponse setOrganizationId(Integer value) { this.organizationId = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2049,7 +2066,7 @@ public class dtos
     public static class UpdateOrganizationMemberInviteResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UpdateOrganizationMemberInviteResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2071,7 +2088,7 @@ public class dtos
 
         @DataMember(Order=5)
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getOffset() { return offset; }
         public QueryResponse<T> setOffset(Integer value) { this.offset = value; return this; }
         public Integer getTotal() { return total; }
@@ -2090,7 +2107,7 @@ public class dtos
         public Post post = null;
         public ArrayList<PostComment> comments = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getCache() { return cache; }
         public GetPostResponse setCache(Long value) { this.cache = value; return this; }
         public Post getPost() { return post; }
@@ -2106,7 +2123,7 @@ public class dtos
         public Long id = null;
         public String slug = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getId() { return id; }
         public CreatePostResponse setId(Long value) { this.id = value; return this; }
         public String getSlug() { return slug; }
@@ -2118,7 +2135,7 @@ public class dtos
     public static class UpdatePostResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UpdatePostResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2127,7 +2144,7 @@ public class dtos
     {
         public Long id = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getId() { return id; }
         public DeletePostResponse setId(Long value) { this.id = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2139,7 +2156,7 @@ public class dtos
         public Long id = null;
         public Long postId = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getId() { return id; }
         public CreatePostCommentResponse setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -2151,7 +2168,7 @@ public class dtos
     public static class UpdatePostCommentResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UpdatePostCommentResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2161,7 +2178,7 @@ public class dtos
         public Long id = null;
         public Long postId = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getId() { return id; }
         public DeletePostCommentResponse setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -2175,7 +2192,7 @@ public class dtos
         public Long postId = null;
         public ArrayList<Long> upVotedCommentIds = null;
         public ArrayList<Long> downVotedCommentIds = null;
-
+        
         public Long getPostId() { return postId; }
         public GetUserPostCommentVotesResponse setPostId(Long value) { this.postId = value; return this; }
         public ArrayList<Long> getUpVotedCommentIds() { return upVotedCommentIds; }
@@ -2187,7 +2204,7 @@ public class dtos
     public static class PinPostCommentResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public PinPostCommentResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2196,7 +2213,7 @@ public class dtos
     {
         public ArrayList<UserRef> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<UserRef> getResults() { return results; }
         public GetUsersByEmailsResponse setResults(ArrayList<UserRef> value) { this.results = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2209,7 +2226,7 @@ public class dtos
         public ArrayList<Long> downVotedPostIds = null;
         public ArrayList<Long> favoritePostIds = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<Long> getUpVotedPostIds() { return upVotedPostIds; }
         public GetUserPostActivityResponse setUpVotedPostIds(ArrayList<Long> value) { this.upVotedPostIds = value; return this; }
         public ArrayList<Long> getDownVotedPostIds() { return downVotedPostIds; }
@@ -2225,7 +2242,7 @@ public class dtos
         public ArrayList<OrganizationMember> members = null;
         public ArrayList<OrganizationMemberInvite> memberInvites = null;
         public ArrayList<OrganizationSubscription> subscriptions = null;
-
+        
         public ArrayList<OrganizationMember> getMembers() { return members; }
         public GetUserOrganizationsResponse setMembers(ArrayList<OrganizationMember> value) { this.members = value; return this; }
         public ArrayList<OrganizationMemberInvite> getMemberInvites() { return memberInvites; }
@@ -2237,7 +2254,7 @@ public class dtos
     public static class UserPostVoteResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UserPostVoteResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2245,7 +2262,7 @@ public class dtos
     public static class UserPostFavoriteResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UserPostFavoriteResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2253,7 +2270,7 @@ public class dtos
     public static class UserPostReportResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UserPostReportResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2261,7 +2278,7 @@ public class dtos
     public static class UserPostCommentVoteResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UserPostCommentVoteResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2269,7 +2286,7 @@ public class dtos
     public static class UserPostCommentReportResponse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UserPostCommentReportResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2305,7 +2322,7 @@ public class dtos
         public ArrayList<OrganizationMemberInvite> memberInvites = null;
         public ArrayList<OrganizationSubscription> subscriptions = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Date getCreated() { return created; }
         public SessionInfoResponse setCreated(Date value) { this.created = value; return this; }
         public String getId() { return id; }
@@ -2369,7 +2386,7 @@ public class dtos
     public static class GetTechnologyPreviousVersionsResponse
     {
         public ArrayList<TechnologyHistory> results = null;
-
+        
         public ArrayList<TechnologyHistory> getResults() { return results; }
         public GetTechnologyPreviousVersionsResponse setResults(ArrayList<TechnologyHistory> value) { this.results = value; return this; }
     }
@@ -2378,7 +2395,7 @@ public class dtos
     {
         public ArrayList<Technology> results = null;
         public Long total = null;
-
+        
         public ArrayList<Technology> getResults() { return results; }
         public GetAllTechnologiesResponse setResults(ArrayList<Technology> value) { this.results = value; return this; }
         public Long getTotal() { return total; }
@@ -2391,7 +2408,7 @@ public class dtos
         public Technology technology = null;
         public ArrayList<TechnologyStack> technologyStacks = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Date getCreated() { return created; }
         public GetTechnologyResponse setCreated(Date value) { this.created = value; return this; }
         public Technology getTechnology() { return technology; }
@@ -2406,7 +2423,7 @@ public class dtos
     {
         public ArrayList<String> users = null;
         public Integer favoriteCount = null;
-
+        
         public ArrayList<String> getUsers() { return users; }
         public GetTechnologyFavoriteDetailsResponse setUsers(ArrayList<String> value) { this.users = value; return this; }
         public Integer getFavoriteCount() { return favoriteCount; }
@@ -2417,7 +2434,7 @@ public class dtos
     {
         public Technology result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Technology getResult() { return result; }
         public CreateTechnologyResponse setResult(Technology value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2428,7 +2445,7 @@ public class dtos
     {
         public Technology result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Technology getResult() { return result; }
         public UpdateTechnologyResponse setResult(Technology value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2439,7 +2456,7 @@ public class dtos
     {
         public Technology result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Technology getResult() { return result; }
         public DeleteTechnologyResponse setResult(Technology value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2449,7 +2466,7 @@ public class dtos
     public static class GetTechnologyStackPreviousVersionsResponse
     {
         public ArrayList<TechnologyStackHistory> results = null;
-
+        
         public ArrayList<TechnologyStackHistory> getResults() { return results; }
         public GetTechnologyStackPreviousVersionsResponse setResults(ArrayList<TechnologyStackHistory> value) { this.results = value; return this; }
     }
@@ -2460,7 +2477,7 @@ public class dtos
         public String slug = null;
         public Long viewCount = null;
         public Long favCount = null;
-
+        
         public String getType() { return type; }
         public GetPageStatsResponse setType(String value) { this.type = value; return this; }
         public String getSlug() { return slug; }
@@ -2475,7 +2492,7 @@ public class dtos
     {
         public HashMap<String,String> meta = null;
         public ResponseStatus responseStatus = null;
-
+        
         public HashMap<String,String> getMeta() { return meta; }
         public HourlyTaskResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2492,7 +2509,7 @@ public class dtos
         public ArrayList<OrganizationInfo> allOrganizations = null;
         public HashMap<String,ArrayList<TechnologyInfo>> topTechnologiesByTier = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Date getCreated() { return created; }
         public OverviewResponse setCreated(Date value) { this.created = value; return this; }
         public ArrayList<UserInfo> getTopUsers() { return topUsers; }
@@ -2517,7 +2534,7 @@ public class dtos
         public ArrayList<Option> allTiers = null;
         public ArrayList<TechnologyInfo> topTechnologies = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Date getCreated() { return created; }
         public AppOverviewResponse setCreated(Date value) { this.created = value; return this; }
         public ArrayList<Option> getAllTiers() { return allTiers; }
@@ -2532,7 +2549,7 @@ public class dtos
     {
         public ArrayList<TechnologyStack> results = null;
         public Long total = null;
-
+        
         public ArrayList<TechnologyStack> getResults() { return results; }
         public GetAllTechnologyStacksResponse setResults(ArrayList<TechnologyStack> value) { this.results = value; return this; }
         public Long getTotal() { return total; }
@@ -2544,7 +2561,7 @@ public class dtos
         public Date created = null;
         public TechStackDetails result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Date getCreated() { return created; }
         public GetTechnologyStackResponse setCreated(Date value) { this.created = value; return this; }
         public TechStackDetails getResult() { return result; }
@@ -2557,7 +2574,7 @@ public class dtos
     {
         public ArrayList<String> users = null;
         public Integer favoriteCount = null;
-
+        
         public ArrayList<String> getUsers() { return users; }
         public GetTechnologyStackFavoriteDetailsResponse setUsers(ArrayList<String> value) { this.users = value; return this; }
         public Integer getFavoriteCount() { return favoriteCount; }
@@ -2569,7 +2586,7 @@ public class dtos
         public ArrayList<Option> allTiers = null;
         public ArrayList<Option> allPostTypes = null;
         public ArrayList<Option> allFlagTypes = null;
-
+        
         public ArrayList<Option> getAllTiers() { return allTiers; }
         public GetConfigResponse setAllTiers(ArrayList<Option> value) { this.allTiers = value; return this; }
         public ArrayList<Option> getAllPostTypes() { return allPostTypes; }
@@ -2582,7 +2599,7 @@ public class dtos
     {
         public TechStackDetails result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public TechStackDetails getResult() { return result; }
         public CreateTechnologyStackResponse setResult(TechStackDetails value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2593,7 +2610,7 @@ public class dtos
     {
         public TechStackDetails result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public TechStackDetails getResult() { return result; }
         public UpdateTechnologyStackResponse setResult(TechStackDetails value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2604,7 +2621,7 @@ public class dtos
     {
         public TechStackDetails result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public TechStackDetails getResult() { return result; }
         public DeleteTechnologyStackResponse setResult(TechStackDetails value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2614,7 +2631,7 @@ public class dtos
     public static class GetFavoriteTechStackResponse
     {
         public ArrayList<TechnologyStack> results = null;
-
+        
         public ArrayList<TechnologyStack> getResults() { return results; }
         public GetFavoriteTechStackResponse setResults(ArrayList<TechnologyStack> value) { this.results = value; return this; }
     }
@@ -2622,7 +2639,7 @@ public class dtos
     public static class FavoriteTechStackResponse
     {
         public TechnologyStack result = null;
-
+        
         public TechnologyStack getResult() { return result; }
         public FavoriteTechStackResponse setResult(TechnologyStack value) { this.result = value; return this; }
     }
@@ -2630,7 +2647,7 @@ public class dtos
     public static class GetFavoriteTechnologiesResponse
     {
         public ArrayList<Technology> results = null;
-
+        
         public ArrayList<Technology> getResults() { return results; }
         public GetFavoriteTechnologiesResponse setResults(ArrayList<Technology> value) { this.results = value; return this; }
     }
@@ -2638,7 +2655,7 @@ public class dtos
     public static class FavoriteTechnologyResponse
     {
         public Technology result = null;
-
+        
         public Technology getResult() { return result; }
         public FavoriteTechnologyResponse setResult(Technology value) { this.result = value; return this; }
     }
@@ -2646,7 +2663,7 @@ public class dtos
     public static class GetUserFeedResponse
     {
         public ArrayList<TechStackDetails> results = null;
-
+        
         public ArrayList<TechStackDetails> getResults() { return results; }
         public GetUserFeedResponse setResults(ArrayList<TechStackDetails> value) { this.results = value; return this; }
     }
@@ -2655,7 +2672,7 @@ public class dtos
     {
         public HashMap<Integer,Integer> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public HashMap<Integer,Integer> getResults() { return results; }
         public GetUsersKarmaResponse setResults(HashMap<Integer,Integer> value) { this.results = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2673,7 +2690,7 @@ public class dtos
         public ArrayList<Technology> favoriteTechnologies = null;
         public UserActivity userActivity = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getId() { return id; }
         public GetUserInfoResponse setId(Integer value) { this.id = value; return this; }
         public String getUserName() { return userName; }
@@ -2700,7 +2717,7 @@ public class dtos
         public ArrayList<String> userLogs = null;
         public ArrayList<String> postsLogs = null;
         public ResponseStatus responseStatus = null;
-
+        
         public String getTimeTaken() { return timeTaken; }
         public SyncDiscourseSiteResponse setTimeTaken(String value) { this.timeTaken = value; return this; }
         public ArrayList<String> getUserLogs() { return userLogs; }
@@ -2714,20 +2731,20 @@ public class dtos
     public static class LogoUrlApprovalResponse
     {
         public Technology result = null;
-
+        
         public Technology getResult() { return result; }
         public LogoUrlApprovalResponse setResult(Technology value) { this.result = value; return this; }
     }
 
     public static class LockStackResponse
     {
-
+        
     }
 
     public static class EmailTestRespoonse
     {
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public EmailTestRespoonse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2736,7 +2753,7 @@ public class dtos
     {
         public Integer id = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getId() { return id; }
         public ImportUserResponse setId(Integer value) { this.id = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -2748,7 +2765,7 @@ public class dtos
         public Long postId = null;
         public String postSlug = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getPostId() { return postId; }
         public ImportUserVoiceSuggestionResponse setPostId(Long value) { this.postId = value; return this; }
         public String getPostSlug() { return postSlug; }
@@ -2758,7 +2775,7 @@ public class dtos
     }
 
     @DataContract
-    public static class AuthenticateResponse
+    public static class AuthenticateResponse implements IHasSessionId, IHasBearerToken
     {
         @DataMember(Order=1)
         public String userId = null;
@@ -2782,11 +2799,20 @@ public class dtos
         public String refreshToken = null;
 
         @DataMember(Order=8)
-        public ResponseStatus responseStatus = null;
+        public String profileUrl = null;
 
         @DataMember(Order=9)
-        public HashMap<String,String> meta = null;
+        public ArrayList<String> roles = null;
 
+        @DataMember(Order=10)
+        public ArrayList<String> permissions = null;
+
+        @DataMember(Order=11)
+        public ResponseStatus responseStatus = null;
+
+        @DataMember(Order=12)
+        public HashMap<String,String> meta = null;
+        
         public String getUserId() { return userId; }
         public AuthenticateResponse setUserId(String value) { this.userId = value; return this; }
         public String getSessionId() { return sessionId; }
@@ -2801,6 +2827,12 @@ public class dtos
         public AuthenticateResponse setBearerToken(String value) { this.bearerToken = value; return this; }
         public String getRefreshToken() { return refreshToken; }
         public AuthenticateResponse setRefreshToken(String value) { this.refreshToken = value; return this; }
+        public String getProfileUrl() { return profileUrl; }
+        public AuthenticateResponse setProfileUrl(String value) { this.profileUrl = value; return this; }
+        public ArrayList<String> getRoles() { return roles; }
+        public AuthenticateResponse setRoles(ArrayList<String> value) { this.roles = value; return this; }
+        public ArrayList<String> getPermissions() { return permissions; }
+        public AuthenticateResponse setPermissions(ArrayList<String> value) { this.permissions = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public AuthenticateResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
@@ -2817,12 +2849,17 @@ public class dtos
         public ArrayList<String> allPermissions = null;
 
         @DataMember(Order=3)
-        public ResponseStatus responseStatus = null;
+        public HashMap<String,String> meta = null;
 
+        @DataMember(Order=4)
+        public ResponseStatus responseStatus = null;
+        
         public ArrayList<String> getAllRoles() { return allRoles; }
         public AssignRolesResponse setAllRoles(ArrayList<String> value) { this.allRoles = value; return this; }
         public ArrayList<String> getAllPermissions() { return allPermissions; }
         public AssignRolesResponse setAllPermissions(ArrayList<String> value) { this.allPermissions = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public AssignRolesResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public AssignRolesResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2837,12 +2874,17 @@ public class dtos
         public ArrayList<String> allPermissions = null;
 
         @DataMember(Order=3)
-        public ResponseStatus responseStatus = null;
+        public HashMap<String,String> meta = null;
 
+        @DataMember(Order=4)
+        public ResponseStatus responseStatus = null;
+        
         public ArrayList<String> getAllRoles() { return allRoles; }
         public UnAssignRolesResponse setAllRoles(ArrayList<String> value) { this.allRoles = value; return this; }
         public ArrayList<String> getAllPermissions() { return allPermissions; }
         public UnAssignRolesResponse setAllPermissions(ArrayList<String> value) { this.allPermissions = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public UnAssignRolesResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public UnAssignRolesResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2857,12 +2899,17 @@ public class dtos
         public String accessToken = null;
 
         @DataMember(Order=3)
-        public ResponseStatus responseStatus = null;
+        public String refreshToken = null;
 
+        @DataMember(Order=4)
+        public ResponseStatus responseStatus = null;
+        
         public HashMap<String,String> getMeta() { return meta; }
         public ConvertSessionToTokenResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public String getAccessToken() { return accessToken; }
         public ConvertSessionToTokenResponse setAccessToken(String value) { this.accessToken = value; return this; }
+        public String getRefreshToken() { return refreshToken; }
+        public ConvertSessionToTokenResponse setRefreshToken(String value) { this.refreshToken = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public ConvertSessionToTokenResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2874,10 +2921,15 @@ public class dtos
         public String accessToken = null;
 
         @DataMember(Order=2)
-        public ResponseStatus responseStatus = null;
+        public HashMap<String,String> meta = null;
 
+        @DataMember(Order=3)
+        public ResponseStatus responseStatus = null;
+        
         public String getAccessToken() { return accessToken; }
         public GetAccessTokenResponse setAccessToken(String value) { this.accessToken = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public GetAccessTokenResponse setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public GetAccessTokenResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -2946,7 +2998,7 @@ public class dtos
         public Long refId = null;
         public String refSource = null;
         public String refUrn = null;
-
+        
         public Long getId() { return id; }
         public Post setId(Long value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3107,7 +3159,7 @@ public class dtos
         public String createdBy = null;
         public Date modified = null;
         public String modifiedBy = null;
-
+        
         public Integer getId() { return id; }
         public Organization setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -3196,7 +3248,7 @@ public class dtos
         public Integer organizationId = null;
         public String description = null;
         public String color = null;
-
+        
         public String getSlug() { return slug; }
         public OrganizationLabel setSlug(String value) { this.slug = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3220,7 +3272,7 @@ public class dtos
         public Integer postsCount = null;
         public Integer score = null;
         public Integer rank = null;
-
+        
         public Integer getId() { return id; }
         public Category setId(Integer value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3257,7 +3309,7 @@ public class dtos
         public Boolean denyPosts = null;
         public Boolean denyComments = null;
         public String notes = null;
-
+        
         public Integer getId() { return id; }
         public OrganizationMember setId(Integer value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3287,7 +3339,7 @@ public class dtos
         public Integer userId = null;
         public String userName = null;
         public Date dismissed = null;
-
+        
         public Integer getId() { return id; }
         public OrganizationMemberInvite setId(Integer value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3317,7 +3369,7 @@ public class dtos
         public String title = null;
         public Integer reportCount = null;
         public String createdBy = null;
-
+        
         public Long getId() { return id; }
         public PostReportInfo setId(Long value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3368,7 +3420,7 @@ public class dtos
         public String contentHtml = null;
         public Integer reportCount = null;
         public String createdBy = null;
-
+        
         public Long getId() { return id; }
         public PostCommentReportInfo setId(Long value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3405,7 +3457,7 @@ public class dtos
 
     public static class QueryDb<T> extends QueryBase
     {
-
+        
     }
 
     public static class PostComment
@@ -3435,7 +3487,7 @@ public class dtos
         public Long refId = null;
         public String refSource = null;
         public String refUrn = null;
-
+        
         public Long getId() { return id; }
         public PostComment setId(Long value) { this.id = value; return this; }
         public Long getPostId() { return postId; }
@@ -3503,7 +3555,7 @@ public class dtos
         public Integer refId = null;
         public String refSource = null;
         public String refUrn = null;
-
+        
         public Integer getId() { return id; }
         public UserRef setId(Integer value) { this.id = value; return this; }
         public String getUserName() { return userName; }
@@ -3529,7 +3581,7 @@ public class dtos
         public Long lastSyncedId = null;
         public Date lastSynced = null;
         public Date created = null;
-
+        
         public Long getId() { return id; }
         public OrganizationSubscription setId(Long value) { this.id = value; return this; }
         public Integer getOrganizationId() { return organizationId; }
@@ -3562,12 +3614,12 @@ public class dtos
 
     public static class TechnologyStack extends TechnologyStackBase
     {
-
+        
     }
 
     public static class Technology extends TechnologyBase
     {
-
+        
     }
 
     public static class UserActivity
@@ -3588,7 +3640,7 @@ public class dtos
         public Integer postCommentReportCount = null;
         public Date created = null;
         public Date modified = null;
-
+        
         public Integer getId() { return id; }
         public UserActivity setId(Integer value) { this.id = value; return this; }
         public String getUserName() { return userName; }
@@ -3639,7 +3691,7 @@ public class dtos
     {
         public Long technologyId = null;
         public String operation = null;
-
+        
         public Long getTechnologyId() { return technologyId; }
         public TechnologyHistory setTechnologyId(Long value) { this.technologyId = value; return this; }
         public String getOperation() { return operation; }
@@ -3668,7 +3720,7 @@ public class dtos
         public Long technologyStackId = null;
         public String operation = null;
         public ArrayList<Long> technologyIds = null;
-
+        
         public Long getTechnologyStackId() { return technologyStackId; }
         public TechnologyStackHistory setTechnologyStackId(Long value) { this.technologyStackId = value; return this; }
         public String getOperation() { return operation; }
@@ -3682,7 +3734,7 @@ public class dtos
         public String userName = null;
         public String avatarUrl = null;
         public Integer stacksCount = null;
-
+        
         public String getUserName() { return userName; }
         public UserInfo setUserName(String value) { this.userName = value; return this; }
         public String getAvatarUrl() { return avatarUrl; }
@@ -3698,7 +3750,7 @@ public class dtos
         public String name = null;
         public String logoUrl = null;
         public Integer stacksCount = null;
-
+        
         public TechnologyTier getTier() { return tier; }
         public TechnologyInfo setTier(TechnologyTier value) { this.tier = value; return this; }
         public String getSlug() { return slug; }
@@ -3714,7 +3766,7 @@ public class dtos
     public static class TechStackDetails extends TechnologyStackBase
     {
         public ArrayList<TechnologyInStack> technologyChoices = null;
-
+        
         public ArrayList<TechnologyInStack> getTechnologyChoices() { return technologyChoices; }
         public TechStackDetails setTechnologyChoices(ArrayList<TechnologyInStack> value) { this.technologyChoices = value; return this; }
     }
@@ -3737,7 +3789,7 @@ public class dtos
         public Date locked = null;
         public ArrayList<LabelInfo> labels = null;
         public ArrayList<CategoryInfo> categories = null;
-
+        
         public Integer getId() { return id; }
         public OrganizationInfo setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -3786,7 +3838,7 @@ public class dtos
         @DataMember(Name="value")
         @SerializedName("value")
         public TechnologyTier value = null;
-
+        
         public String getName() { return name; }
         public Option setName(String value) { this.name = value; return this; }
         public String getTitle() { return title; }
@@ -3803,7 +3855,7 @@ public class dtos
         public String avatarUrl = null;
         public Date createdAt = null;
         public Date updatedAt = null;
-
+        
         public Integer getId() { return id; }
         public UserVoiceUser setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -3824,7 +3876,7 @@ public class dtos
         public String formattedText = null;
         public Date createdAt = null;
         public UserVoiceUser creator = null;
-
+        
         public String getText() { return text; }
         public UserVoiceComment setText(String value) { this.text = value; return this; }
         public String getFormattedText() { return formattedText; }
@@ -3835,6 +3887,7 @@ public class dtos
         public UserVoiceComment setCreator(UserVoiceUser value) { this.creator = value; return this; }
     }
 
+    @DataContract
     public static class QueryBase
     {
         @DataMember(Order=1)
@@ -3857,7 +3910,7 @@ public class dtos
 
         @DataMember(Order=7)
         public HashMap<String,String> meta = null;
-
+        
         public Integer getSkip() { return skip; }
         public QueryBase setSkip(Integer value) { this.skip = value; return this; }
         public Integer getTake() { return take; }
@@ -3900,7 +3953,7 @@ public class dtos
         public Long commentsPostId = null;
         public Integer viewCount = null;
         public Integer favCount = null;
-
+        
         public Long getId() { return id; }
         public TechnologyStackBase setId(Long value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -3966,7 +4019,7 @@ public class dtos
         public Long commentsPostId = null;
         public Integer viewCount = null;
         public Integer favCount = null;
-
+        
         public Long getId() { return id; }
         public TechnologyBase setId(Long value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -4016,7 +4069,7 @@ public class dtos
         public Long technologyId = null;
         public Long technologyStackId = null;
         public String justification = null;
-
+        
         public Long getTechnologyId() { return technologyId; }
         public TechnologyInStack setTechnologyId(Long value) { this.technologyId = value; return this; }
         public Long getTechnologyStackId() { return technologyStackId; }
@@ -4029,7 +4082,7 @@ public class dtos
     {
         public String slug = null;
         public String color = null;
-
+        
         public String getSlug() { return slug; }
         public LabelInfo setSlug(String value) { this.slug = value; return this; }
         public String getColor() { return color; }
@@ -4041,7 +4094,7 @@ public class dtos
         public Integer id = null;
         public String name = null;
         public String slug = null;
-
+        
         public Integer getId() { return id; }
         public CategoryInfo setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }

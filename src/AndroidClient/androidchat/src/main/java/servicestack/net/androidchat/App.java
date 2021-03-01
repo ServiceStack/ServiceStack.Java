@@ -20,7 +20,7 @@ import net.servicestack.client.AsyncSuccess;
  */
 
 public class App extends Application {
-    public static final String BaseUrl = "http://chat.servicestack.net/";
+    public static final String BaseUrl = "https://chat.netcore.io/";
 
     private Context context;
     private SharedPreferences prefs;

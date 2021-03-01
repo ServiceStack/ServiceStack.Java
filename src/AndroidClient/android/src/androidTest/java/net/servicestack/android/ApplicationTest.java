@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class ApplicationTest {
 
-    AndroidServiceClient client = new AndroidServiceClient("http://techstacks.io");
+    AndroidServiceClient client = new AndroidServiceClient("https://techstacks.io");
 
     @Test
     public void test_Can_download_image_bytes(){
