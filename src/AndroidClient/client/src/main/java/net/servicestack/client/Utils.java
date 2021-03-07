@@ -635,6 +635,12 @@ public class Utils {
         return status;
     }
 
+    public static <T> ArrayList<T> asList(T... params) {
+        ArrayList<T> to = new ArrayList<>();
+        to.addAll(Arrays.asList(params));
+        return to;
+    }
+
     public static <T> ArrayList<T> createList(T... params) {
         ArrayList<T> to = new ArrayList<>();
         to.addAll(Arrays.asList(params));
