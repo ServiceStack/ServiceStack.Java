@@ -1,5 +1,5 @@
 /* Options:
-Date: 2021-02-28 17:45:25
+Date: 2021-03-08 20:21:44
 Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
@@ -29,6 +29,108 @@ import java.io.*;
 
 public class dtos
 {
+
+    @Route("/channels/{Channel}/raw")
+    public static class PostRawToChannel implements IReturnVoid
+    {
+        public String from = null;
+        public String toUserId = null;
+        public String channel = null;
+        public String message = null;
+        public String selector = null;
+        
+        public String getFrom() { return from; }
+        public PostRawToChannel setFrom(String value) { this.from = value; return this; }
+        public String getToUserId() { return toUserId; }
+        public PostRawToChannel setToUserId(String value) { this.toUserId = value; return this; }
+        public String getChannel() { return channel; }
+        public PostRawToChannel setChannel(String value) { this.channel = value; return this; }
+        public String getMessage() { return message; }
+        public PostRawToChannel setMessage(String value) { this.message = value; return this; }
+        public String getSelector() { return selector; }
+        public PostRawToChannel setSelector(String value) { this.selector = value; return this; }
+    }
+
+    @Route("/channels/{Channel}/chat")
+    public static class PostChatToChannel implements IReturn<ChatMessage>
+    {
+        public String from = null;
+        public String toUserId = null;
+        public String channel = null;
+        public String message = null;
+        public String selector = null;
+        
+        public String getFrom() { return from; }
+        public PostChatToChannel setFrom(String value) { this.from = value; return this; }
+        public String getToUserId() { return toUserId; }
+        public PostChatToChannel setToUserId(String value) { this.toUserId = value; return this; }
+        public String getChannel() { return channel; }
+        public PostChatToChannel setChannel(String value) { this.channel = value; return this; }
+        public String getMessage() { return message; }
+        public PostChatToChannel setMessage(String value) { this.message = value; return this; }
+        public String getSelector() { return selector; }
+        public PostChatToChannel setSelector(String value) { this.selector = value; return this; }
+        private static Object responseType = ChatMessage.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/chathistory")
+    public static class GetChatHistory implements IReturn<GetChatHistoryResponse>
+    {
+        public ArrayList<String> channels = null;
+        public Long afterId = null;
+        public Integer take = null;
+        
+        public ArrayList<String> getChannels() { return channels; }
+        public GetChatHistory setChannels(ArrayList<String> value) { this.channels = value; return this; }
+        public Long getAfterId() { return afterId; }
+        public GetChatHistory setAfterId(Long value) { this.afterId = value; return this; }
+        public Integer getTake() { return take; }
+        public GetChatHistory setTake(Integer value) { this.take = value; return this; }
+        private static Object responseType = GetChatHistoryResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    @Route("/reset")
+    public static class ClearChatHistory implements IReturnVoid
+    {
+        
+    }
+
+    @Route("/reset-serverevents")
+    public static class ResetServerEvents implements IReturnVoid
+    {
+        
+    }
+
+    @Route("/channels/{Channel}/object")
+    public static class PostObjectToChannel implements IReturnVoid
+    {
+        public String toUserId = null;
+        public String channel = null;
+        public String selector = null;
+        public CustomType customType = null;
+        public SetterType setterType = null;
+        
+        public String getToUserId() { return toUserId; }
+        public PostObjectToChannel setToUserId(String value) { this.toUserId = value; return this; }
+        public String getChannel() { return channel; }
+        public PostObjectToChannel setChannel(String value) { this.channel = value; return this; }
+        public String getSelector() { return selector; }
+        public PostObjectToChannel setSelector(String value) { this.selector = value; return this; }
+        public CustomType getCustomType() { return customType; }
+        public PostObjectToChannel setCustomType(CustomType value) { this.customType = value; return this; }
+        public SetterType getSetterType() { return setterType; }
+        public PostObjectToChannel setSetterType(SetterType value) { this.setterType = value; return this; }
+    }
+
+    @Route("/account")
+    public static class GetUserDetails implements IReturn<GetUserDetailsResponse>
+    {
+        
+        private static Object responseType = GetUserDetailsResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
 
     public static class CustomHttpError implements IReturn<CustomHttpErrorResponse>
     {
@@ -171,46 +273,46 @@ public class dtos
     }
 
     @Route("/image-bytes")
-    public static class ImageAsBytes implements IReturn<ArrayList<Short>>
+    public static class ImageAsBytes implements IReturn<byte[]>
     {
         public String format = null;
         
         public String getFormat() { return format; }
         public ImageAsBytes setFormat(String value) { this.format = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/image-custom")
-    public static class ImageAsCustomResult implements IReturn<ArrayList<Short>>
+    public static class ImageAsCustomResult implements IReturn<byte[]>
     {
         public String format = null;
         
         public String getFormat() { return format; }
         public ImageAsCustomResult setFormat(String value) { this.format = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/image-response")
-    public static class ImageWriteToResponse implements IReturn<ArrayList<Short>>
+    public static class ImageWriteToResponse implements IReturn<byte[]>
     {
         public String format = null;
         
         public String getFormat() { return format; }
         public ImageWriteToResponse setFormat(String value) { this.format = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/image-file")
-    public static class ImageAsFile implements IReturn<ArrayList<Short>>
+    public static class ImageAsFile implements IReturn<byte[]>
     {
         public String format = null;
         
         public String getFormat() { return format; }
         public ImageAsFile setFormat(String value) { this.format = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
@@ -224,7 +326,7 @@ public class dtos
     }
 
     @Route("/hello-image/{Name}")
-    public static class HelloImage implements IReturn<ArrayList<Short>>
+    public static class HelloImage implements IReturn<byte[]>
     {
         public String name = null;
         public String format = null;
@@ -251,7 +353,7 @@ public class dtos
         public HelloImage setForeground(String value) { this.foreground = value; return this; }
         public String getBackground() { return background; }
         public HelloImage setBackground(String value) { this.background = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
@@ -606,6 +708,52 @@ public class dtos
         public Object getResponseType() { return responseType; }
     }
 
+    public static class AllCollectionTypes implements IReturn<AllCollectionTypes>
+    {
+        public ArrayList<Integer> intArray = null;
+        public ArrayList<Integer> intList = null;
+        public ArrayList<String> stringArray = null;
+        public ArrayList<String> stringList = null;
+        public ArrayList<Float> floatArray = null;
+        public ArrayList<Double> doubleList = null;
+        public byte[] byteArray = null;
+        public ArrayList<String> charArray = null;
+        public ArrayList<BigDecimal> decimalList = null;
+        public ArrayList<Poco> pocoArray = null;
+        public ArrayList<Poco> pocoList = null;
+        public HashMap<String,ArrayList<Poco>> pocoLookup = null;
+        public HashMap<String,ArrayList<HashMap<String,Poco>>> pocoLookupMap = null;
+        
+        public ArrayList<Integer> getIntArray() { return intArray; }
+        public AllCollectionTypes setIntArray(ArrayList<Integer> value) { this.intArray = value; return this; }
+        public ArrayList<Integer> getIntList() { return intList; }
+        public AllCollectionTypes setIntList(ArrayList<Integer> value) { this.intList = value; return this; }
+        public ArrayList<String> getStringArray() { return stringArray; }
+        public AllCollectionTypes setStringArray(ArrayList<String> value) { this.stringArray = value; return this; }
+        public ArrayList<String> getStringList() { return stringList; }
+        public AllCollectionTypes setStringList(ArrayList<String> value) { this.stringList = value; return this; }
+        public ArrayList<Float> getFloatArray() { return floatArray; }
+        public AllCollectionTypes setFloatArray(ArrayList<Float> value) { this.floatArray = value; return this; }
+        public ArrayList<Double> getDoubleList() { return doubleList; }
+        public AllCollectionTypes setDoubleList(ArrayList<Double> value) { this.doubleList = value; return this; }
+        public byte[] getByteArray() { return byteArray; }
+        public AllCollectionTypes setByteArray(byte[] value) { this.byteArray = value; return this; }
+        public ArrayList<String> getCharArray() { return charArray; }
+        public AllCollectionTypes setCharArray(ArrayList<String> value) { this.charArray = value; return this; }
+        public ArrayList<BigDecimal> getDecimalList() { return decimalList; }
+        public AllCollectionTypes setDecimalList(ArrayList<BigDecimal> value) { this.decimalList = value; return this; }
+        public ArrayList<Poco> getPocoArray() { return pocoArray; }
+        public AllCollectionTypes setPocoArray(ArrayList<Poco> value) { this.pocoArray = value; return this; }
+        public ArrayList<Poco> getPocoList() { return pocoList; }
+        public AllCollectionTypes setPocoList(ArrayList<Poco> value) { this.pocoList = value; return this; }
+        public HashMap<String,ArrayList<Poco>> getPocoLookup() { return pocoLookup; }
+        public AllCollectionTypes setPocoLookup(HashMap<String,ArrayList<Poco>> value) { this.pocoLookup = value; return this; }
+        public HashMap<String,ArrayList<HashMap<String,Poco>>> getPocoLookupMap() { return pocoLookupMap; }
+        public AllCollectionTypes setPocoLookupMap(HashMap<String,ArrayList<HashMap<String,Poco>>> value) { this.pocoLookupMap = value; return this; }
+        private static Object responseType = AllCollectionTypes.class;
+        public Object getResponseType() { return responseType; }
+    }
+
     public static class HelloString implements IReturn<String>
     {
         public String name = null;
@@ -891,23 +1039,23 @@ public class dtos
     }
 
     @Route("/return/bytes")
-    public static class ReturnBytes implements IReturn<ArrayList<Short>>
+    public static class ReturnBytes implements IReturn<byte[]>
     {
-        public ArrayList<Short> data = null;
+        public byte[] data = null;
         
-        public ArrayList<Short> getData() { return data; }
-        public ReturnBytes setData(ArrayList<Short> value) { this.data = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        public byte[] getData() { return data; }
+        public ReturnBytes setData(byte[] value) { this.data = value; return this; }
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
     @Route("/return/stream")
     public static class ReturnStream implements IReturn<InputStream>
     {
-        public ArrayList<Short> data = null;
+        public byte[] data = null;
         
-        public ArrayList<Short> getData() { return data; }
-        public ReturnStream setData(ArrayList<Short> value) { this.data = value; return this; }
+        public byte[] getData() { return data; }
+        public ReturnStream setData(byte[] value) { this.data = value; return this; }
         private static Object responseType = InputStream.class;
         public Object getResponseType() { return responseType; }
     }
@@ -960,7 +1108,7 @@ public class dtos
     }
 
     @Route("/sendraw")
-    public static class SendRaw implements IReturn<ArrayList<Short>>
+    public static class SendRaw implements IReturn<byte[]>
     {
         public Integer id = null;
         public String name = null;
@@ -972,7 +1120,7 @@ public class dtos
         public SendRaw setName(String value) { this.name = value; return this; }
         public String getContentType() { return contentType; }
         public SendRaw setContentType(String value) { this.contentType = value; return this; }
-        private static Object responseType = new TypeToken<ArrayList<Short>>(){}.getType();
+        private static Object responseType = byte[].class;
         public Object getResponseType() { return responseType; }
     }
 
@@ -1517,6 +1665,123 @@ public class dtos
         public Object getResponseType() { return responseType; }
     }
 
+    public static class ChatMessage
+    {
+        public Long id = null;
+        public String channel = null;
+        public String fromUserId = null;
+        public String fromName = null;
+        public String displayName = null;
+        public String message = null;
+        public String userAuthId = null;
+        @SerializedName("private") public Boolean Private = null;
+        
+        public Long getId() { return id; }
+        public ChatMessage setId(Long value) { this.id = value; return this; }
+        public String getChannel() { return channel; }
+        public ChatMessage setChannel(String value) { this.channel = value; return this; }
+        public String getFromUserId() { return fromUserId; }
+        public ChatMessage setFromUserId(String value) { this.fromUserId = value; return this; }
+        public String getFromName() { return fromName; }
+        public ChatMessage setFromName(String value) { this.fromName = value; return this; }
+        public String getDisplayName() { return displayName; }
+        public ChatMessage setDisplayName(String value) { this.displayName = value; return this; }
+        public String getMessage() { return message; }
+        public ChatMessage setMessage(String value) { this.message = value; return this; }
+        public String getUserAuthId() { return userAuthId; }
+        public ChatMessage setUserAuthId(String value) { this.userAuthId = value; return this; }
+        public Boolean isPrivate() { return Private; }
+        public ChatMessage setPrivate(Boolean value) { this.Private = value; return this; }
+    }
+
+    public static class GetChatHistoryResponse
+    {
+        public ArrayList<ChatMessage> results = null;
+        public ResponseStatus responseStatus = null;
+        
+        public ArrayList<ChatMessage> getResults() { return results; }
+        public GetChatHistoryResponse setResults(ArrayList<ChatMessage> value) { this.results = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public GetChatHistoryResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class GetUserDetailsResponse
+    {
+        public String provider = null;
+        public String userId = null;
+        public String userName = null;
+        public String fullName = null;
+        public String displayName = null;
+        public String firstName = null;
+        public String lastName = null;
+        public String company = null;
+        public String email = null;
+        public String phoneNumber = null;
+        public Date birthDate = null;
+        public String birthDateRaw = null;
+        public String address = null;
+        public String address2 = null;
+        public String city = null;
+        public String state = null;
+        public String country = null;
+        public String culture = null;
+        public String gender = null;
+        public String language = null;
+        public String mailAddress = null;
+        public String nickname = null;
+        public String postalCode = null;
+        public String timeZone = null;
+        
+        public String getProvider() { return provider; }
+        public GetUserDetailsResponse setProvider(String value) { this.provider = value; return this; }
+        public String getUserId() { return userId; }
+        public GetUserDetailsResponse setUserId(String value) { this.userId = value; return this; }
+        public String getUserName() { return userName; }
+        public GetUserDetailsResponse setUserName(String value) { this.userName = value; return this; }
+        public String getFullName() { return fullName; }
+        public GetUserDetailsResponse setFullName(String value) { this.fullName = value; return this; }
+        public String getDisplayName() { return displayName; }
+        public GetUserDetailsResponse setDisplayName(String value) { this.displayName = value; return this; }
+        public String getFirstName() { return firstName; }
+        public GetUserDetailsResponse setFirstName(String value) { this.firstName = value; return this; }
+        public String getLastName() { return lastName; }
+        public GetUserDetailsResponse setLastName(String value) { this.lastName = value; return this; }
+        public String getCompany() { return company; }
+        public GetUserDetailsResponse setCompany(String value) { this.company = value; return this; }
+        public String getEmail() { return email; }
+        public GetUserDetailsResponse setEmail(String value) { this.email = value; return this; }
+        public String getPhoneNumber() { return phoneNumber; }
+        public GetUserDetailsResponse setPhoneNumber(String value) { this.phoneNumber = value; return this; }
+        public Date getBirthDate() { return birthDate; }
+        public GetUserDetailsResponse setBirthDate(Date value) { this.birthDate = value; return this; }
+        public String getBirthDateRaw() { return birthDateRaw; }
+        public GetUserDetailsResponse setBirthDateRaw(String value) { this.birthDateRaw = value; return this; }
+        public String getAddress() { return address; }
+        public GetUserDetailsResponse setAddress(String value) { this.address = value; return this; }
+        public String getAddress2() { return address2; }
+        public GetUserDetailsResponse setAddress2(String value) { this.address2 = value; return this; }
+        public String getCity() { return city; }
+        public GetUserDetailsResponse setCity(String value) { this.city = value; return this; }
+        public String getState() { return state; }
+        public GetUserDetailsResponse setState(String value) { this.state = value; return this; }
+        public String getCountry() { return country; }
+        public GetUserDetailsResponse setCountry(String value) { this.country = value; return this; }
+        public String getCulture() { return culture; }
+        public GetUserDetailsResponse setCulture(String value) { this.culture = value; return this; }
+        public String getGender() { return gender; }
+        public GetUserDetailsResponse setGender(String value) { this.gender = value; return this; }
+        public String getLanguage() { return language; }
+        public GetUserDetailsResponse setLanguage(String value) { this.language = value; return this; }
+        public String getMailAddress() { return mailAddress; }
+        public GetUserDetailsResponse setMailAddress(String value) { this.mailAddress = value; return this; }
+        public String getNickname() { return nickname; }
+        public GetUserDetailsResponse setNickname(String value) { this.nickname = value; return this; }
+        public String getPostalCode() { return postalCode; }
+        public GetUserDetailsResponse setPostalCode(String value) { this.postalCode = value; return this; }
+        public String getTimeZone() { return timeZone; }
+        public GetUserDetailsResponse setTimeZone(String value) { this.timeZone = value; return this; }
+    }
+
     public static class CustomHttpErrorResponse
     {
         public String custom = null;
@@ -1538,19 +1803,19 @@ public class dtos
 
     public static class ThrowValidationResponse
     {
-        public ResponseStatus responseStatus = null;
         public Integer age = null;
         public String required = null;
         public String email = null;
+        public ResponseStatus responseStatus = null;
         
-        public ResponseStatus getResponseStatus() { return responseStatus; }
-        public ThrowValidationResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
         public Integer getAge() { return age; }
         public ThrowValidationResponse setAge(Integer value) { this.age = value; return this; }
         public String getRequired() { return required; }
         public ThrowValidationResponse setRequired(String value) { this.required = value; return this; }
         public String getEmail() { return email; }
         public ThrowValidationResponse setEmail(String value) { this.email = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public ThrowValidationResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
     public static class ThrowBusinessErrorResponse
@@ -1903,35 +2168,6 @@ public class dtos
         public TestAuthResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
-    public static class AllCollectionTypes
-    {
-        public ArrayList<Integer> intArray = null;
-        public ArrayList<Integer> intList = null;
-        public ArrayList<String> stringArray = null;
-        public ArrayList<String> stringList = null;
-        public ArrayList<Poco> pocoArray = null;
-        public ArrayList<Poco> pocoList = null;
-        public HashMap<String,ArrayList<Poco>> pocoLookup = null;
-        public HashMap<String,ArrayList<HashMap<String,Poco>>> pocoLookupMap = null;
-        
-        public ArrayList<Integer> getIntArray() { return intArray; }
-        public AllCollectionTypes setIntArray(ArrayList<Integer> value) { this.intArray = value; return this; }
-        public ArrayList<Integer> getIntList() { return intList; }
-        public AllCollectionTypes setIntList(ArrayList<Integer> value) { this.intList = value; return this; }
-        public ArrayList<String> getStringArray() { return stringArray; }
-        public AllCollectionTypes setStringArray(ArrayList<String> value) { this.stringArray = value; return this; }
-        public ArrayList<String> getStringList() { return stringList; }
-        public AllCollectionTypes setStringList(ArrayList<String> value) { this.stringList = value; return this; }
-        public ArrayList<Poco> getPocoArray() { return pocoArray; }
-        public AllCollectionTypes setPocoArray(ArrayList<Poco> value) { this.pocoArray = value; return this; }
-        public ArrayList<Poco> getPocoList() { return pocoList; }
-        public AllCollectionTypes setPocoList(ArrayList<Poco> value) { this.pocoList = value; return this; }
-        public HashMap<String,ArrayList<Poco>> getPocoLookup() { return pocoLookup; }
-        public AllCollectionTypes setPocoLookup(HashMap<String,ArrayList<Poco>> value) { this.pocoLookup = value; return this; }
-        public HashMap<String,ArrayList<HashMap<String,Poco>>> getPocoLookupMap() { return pocoLookupMap; }
-        public AllCollectionTypes setPocoLookupMap(HashMap<String,ArrayList<HashMap<String,Poco>>> value) { this.pocoLookupMap = value; return this; }
-    }
-
     @DataContract
     public static class AuthenticateResponse implements IHasSessionId, IHasBearerToken
     {
@@ -2120,6 +2356,28 @@ public class dtos
         public QueryResponse<T> setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public QueryResponse<T> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class CustomType
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public CustomType setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public CustomType setName(String value) { this.name = value; return this; }
+    }
+
+    public static class SetterType
+    {
+        public Integer id = null;
+        public String name = null;
+        
+        public Integer getId() { return id; }
+        public SetterType setId(Integer value) { this.id = value; return this; }
+        public String getName() { return name; }
+        public SetterType setName(String value) { this.name = value; return this; }
     }
 
     public static interface IAuthTokens
@@ -2599,6 +2857,14 @@ public class dtos
         public AllTypesBase setSubType(SubType value) { this.subType = value; return this; }
     }
 
+    public static class Poco
+    {
+        public String name = null;
+        
+        public String getName() { return name; }
+        public Poco setName(String value) { this.name = value; return this; }
+    }
+
     public static class HelloBase
     {
         public Integer id = null;
@@ -2613,14 +2879,6 @@ public class dtos
         
         public Integer getRefId() { return refId; }
         public HelloResponseBase setRefId(Integer value) { this.refId = value; return this; }
-    }
-
-    public static class Poco
-    {
-        public String name = null;
-        
-        public String getName() { return name; }
-        public Poco setName(String value) { this.name = value; return this; }
     }
 
     public static class HelloBase_1<T>

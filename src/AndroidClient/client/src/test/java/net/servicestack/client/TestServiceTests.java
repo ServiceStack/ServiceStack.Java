@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.util.*;
 
+import static org.junit.Assert.assertArrayEquals;
+
 public class TestServiceTests extends TestCase {
     public TestServiceTests() {
         //Log.Instance = new AndroidLogProvider("ZZZ");
@@ -303,11 +305,7 @@ public class TestServiceTests extends TestCase {
 
     public void test_Can_post_data_and_read_as_Stream() throws IOException {
         testdtos.ReturnStream req = new testdtos.ReturnStream();
-        ArrayList<Short> data = new ArrayList<>();
-        data.add((short) 65);
-        data.add((short) 66);
-        data.add((short) 67);
-        req.setData(data);
+        req.setData(ByteArray.parse("QUJD")); // base64("ABC")
 
         InputStream is = client.post(req);
         byte[] response = Utils.readBytesToEnd(is);
@@ -366,6 +364,7 @@ public class TestServiceTests extends TestCase {
             .setIntList(Utils.createList(4, 5, 6))
             .setStringArray(Utils.createList("A", "B", "C"))
             .setStringList(Utils.createList("D","E","F"))
+            .setByteArray(ByteArray.parse("QUJD")) //ABC
             .setPocoArray(Utils.createList(createPoco("pocoArray")))
             .setPocoList(Utils.createList(createPoco("pocoList")))
             .setPocoLookup(Utils.createMap("A", Utils.createList(createPoco("B"), createPoco("C"))))
@@ -410,6 +409,7 @@ public class TestServiceTests extends TestCase {
         assertEquals(expected.getIntList(), actual.getIntList());
         assertEquals(expected.getStringArray(), actual.getStringArray());
         assertEquals(expected.getStringList(), actual.getStringList());
+        assertArrayEquals(expected.getByteArray(), actual.getByteArray());
         assertPocoEquals(expected.getPocoArray(), actual.getPocoArray());
         assertPocoEquals(expected.getPocoList(), actual.getPocoList());
 

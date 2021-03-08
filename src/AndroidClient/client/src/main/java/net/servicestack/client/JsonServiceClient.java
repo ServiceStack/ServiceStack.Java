@@ -91,7 +91,9 @@ public class JsonServiceClient implements ServiceClient {
                 .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
                 .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
                 .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
-                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer());
+                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer())
+                .registerTypeAdapter(byte[].class, JsonSerializers.getByteArraySerializer())
+                .registerTypeAdapter(byte[].class, JsonSerializers.getByteArrayDeserializer());
     }
 
     public Gson getGson() {

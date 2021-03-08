@@ -194,6 +194,10 @@ public class TimeSpan {
         return new TimeSpan(interval);
     }
 
+    public static String toString(TimeSpan timeSpan) {
+        return timeSpan.toXsdDuration();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

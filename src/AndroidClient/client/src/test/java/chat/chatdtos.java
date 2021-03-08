@@ -1,6 +1,6 @@
 /* Options:
-Date: 2017-02-12 03:54:05
-Version: 4.00
+Date: 2021-03-08 19:21:43
+Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://chat.netcore.io
 
