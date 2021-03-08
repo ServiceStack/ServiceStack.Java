@@ -29,7 +29,7 @@ dependencies {
     implementation project(':android')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'net.servicestack:android:1.0.45'
+    implementation 'net.servicestack:android:1.0.46'
 }
 repositories {
     mavenCentral()
