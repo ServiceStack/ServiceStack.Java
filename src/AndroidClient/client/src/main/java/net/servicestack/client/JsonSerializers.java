@@ -10,39 +10,80 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class JsonSerializers {
     public static JsonSerializer<Date> getDateSerializer(){
-        return (src, typeOfSrc, context) -> src == null ? null : new JsonPrimitive(Utils.toJsonDate(src));
+        return new JsonSerializer<Date>() {
+            @Override
+            public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
+                return src == null ? null : new JsonPrimitive(Utils.toJsonDate(src));
+            }
+        };
     }
 
     public static JsonDeserializer<Date> getDateDeserializer(){
-        return (json, typeOfT, context) -> json == null ? null : Utils.parseDate(json.getAsString());
+        return new JsonDeserializer<Date>() {
+            @Override
+            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                return json == null ? null : Utils.parseDate(json.getAsString());
+            }
+        };
     }
 
     public static JsonSerializer<TimeSpan> getTimeSpanSerializer(){
-        return (src, typeOfSrc, context) -> src == null ? null : new JsonPrimitive(src.toXsdDuration());
+        return new JsonSerializer<TimeSpan>() {
+            @Override
+            public JsonElement serialize(TimeSpan src, Type typeOfSrc, JsonSerializationContext context) {
+                return src == null ? null : new JsonPrimitive(src.toXsdDuration());
+            }
+        };
     }
 
     public static JsonDeserializer<TimeSpan> getTimeSpanDeserializer(){
-        return (json, typeOfT, context) -> json == null ? null : TimeSpan.parse(json.getAsString());
+        return new JsonDeserializer<TimeSpan>() {
+            @Override
+            public TimeSpan deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                return json == null ? null : TimeSpan.parse(json.getAsString());
+            }
+        };
     }
 
     public static JsonSerializer<UUID> getGuidSerializer(){
-        return (src, typeOfSrc, context) -> src == null ? null : new JsonPrimitive(Utils.toGuidString(src));
+        return new JsonSerializer<UUID>() {
+            @Override
+            public JsonElement serialize(UUID src, Type typeOfSrc, JsonSerializationContext context) {
+                return src == null ? null : new JsonPrimitive(Utils.toGuidString(src));
+            }
+        };
     }
 
     public static JsonDeserializer<UUID> getGuidDeserializer(){
-        return (json, typeOfT, context) -> json == null ? null : Utils.fromGuidString(json.getAsString());
+        return new JsonDeserializer<UUID>() {
+            @Override
+            public UUID deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                return json == null ? null : Utils.fromGuidString(json.getAsString());
+            }
+        };
     }
 
     public static JsonSerializer<byte[]> getByteArraySerializer(){
-        return (src, typeOfSrc, context) -> src == null ? null : new JsonPrimitive(Base64.getEncoder().encodeToString(src));
+        return new JsonSerializer<byte[]>() {
+            @Override
+            public JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
+                return src == null ? null : new JsonPrimitive(Base64.getEncoder().encodeToString(src));
+            }
+        };
     }
 
     public static JsonDeserializer<byte[]> getByteArrayDeserializer(){
-        return (json, typeOfT, context) -> json == null ? null : Base64.getDecoder().decode(json.getAsString());
+        return new JsonDeserializer<byte[]>() {
+            @Override
+            public byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                return json == null ? null : Base64.getDecoder().decode(json.getAsString());
+            }
+        };
     }
 
     public static class CaseInsensitiveEnumTypeAdapterFactory implements TypeAdapterFactory {
