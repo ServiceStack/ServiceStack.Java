@@ -7,38 +7,18 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
 import net.servicestack.func.Function;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static net.servicestack.func.Func.last;
 
@@ -635,6 +615,14 @@ public class Utils {
         return status;
     }
 
+    public static <T> ArrayList<T> toList(Iterable<T> iterable) {
+        ArrayList<T> to = new ArrayList<>();
+        for (T item : iterable) {
+            to.add(item);
+        }
+        return to;
+    }
+
     public static <T> ArrayList<T> asList(T... params) {
         ArrayList<T> to = new ArrayList<>();
         to.addAll(Arrays.asList(params));
@@ -905,6 +893,42 @@ public class Utils {
             }
         }
         return buf.toString();
+    }
+
+    public static String repeat(String string, int count) {
+
+        if (count <= 1) {
+            return (count == 0) ? "" : string;
+        }
+
+        final int len = string.length();
+        final long longSize = (long) len * (long) count;
+        final int size = (int) longSize;
+        if (size != longSize) {
+            throw new ArrayIndexOutOfBoundsException("Required array size too large: " + longSize);
+        }
+
+        final char[] array = new char[size];
+        string.getChars(0, len, array, 0);
+        int n;
+        for (n = len; n < size - n; n <<= 1) {
+            System.arraycopy(array, 0, array, n, n);
+        }
+        System.arraycopy(array, 0, array, n, size - n);
+        return new String(array);
+    }
+
+    public static int sum(Collection<Integer> nums) {
+        int sum = 0;
+        for (int number : nums) {
+            sum += number;
+        }
+        return sum;
+    }
+
+    public static StringBuilder appendLine(StringBuilder sb) {
+        sb.append(System.lineSeparator());
+        return sb;
     }
 
     public static String getStackTrace(Exception ex) {
