@@ -562,6 +562,7 @@ public class Utils {
         }
         return null;
     }
+
     public static ResponseStatus createResponseStatus(JsonObject obj) {
         ResponseStatus status = new ResponseStatus();
         for (Map.Entry<String, JsonElement> jsonElementEntry : obj.entrySet()) {
@@ -613,6 +614,10 @@ public class Utils {
         }
 
         return status;
+    }
+
+    private static String getAsStringOrNull(JsonElement jsonElement) {
+        return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
     }
 
     public static <T> ArrayList<T> toList(Iterable<T> iterable) {
@@ -710,118 +715,40 @@ public class Utils {
         return to;
     }
 
-    //From: http://iharder.sourceforge.net/current/java/base64/ (Public Domain)
+    public static String fromDateTime(Date date) {
+        return DateTime.toString(date);
+    }
+
+    public static Date toDateTime(String jsonDate) {
+        return DateTime.parse(jsonDate);
+    }
+
+    public static String fromTimeSpan(TimeSpan timeSpan) {
+        return TimeSpan.toString(timeSpan);
+    }
+
+    public static TimeSpan toTimeSpan(String xsdDuration) {
+        return TimeSpan.parse(xsdDuration);
+    }
+
+    public static String fromGuid(UUID uuid) {
+        return Guid.toString(uuid);
+    }
+
+    public static UUID toGuid(String guid) {
+        return Guid.parse(guid);
+    }
+
+    public static byte[] toByteArray(String base64) {
+        return ByteArray.parse(base64);
+    }
+
     public static String toBase64String(String source) {
-        return toBase64String(toUtf8Bytes(source));
+        return ByteArray.toString(source);
     }
 
-    public static String toBase64String(byte[] source) {
-        byte[] encoded = toBase64Bytes(source);
-        try {
-            return new String(encoded, "US-ASCII");
-        } catch (UnsupportedEncodingException e) {
-            return new String(encoded);
-        }
-    }
-
-    public static byte[] toBase64Bytes(byte[] source) {
-        return toBase64Bytes(source, 0, source.length);
-    }
-
-    public static byte[] toBase64Bytes(byte[] source, int off, int len) {
-        if (source == null)
-            throw new NullPointerException("Cannot serialize a null array.");
-
-        if (off < 0)
-            throw new IllegalArgumentException("Cannot have negative offset: " + off);
-
-        if (len < 0)
-            throw new IllegalArgumentException("Cannot have length offset: " + len);
-
-        if (off + len > source.length)
-            throw new IllegalArgumentException(String.format(
-                "Cannot have offset of %d and length of %d with array of length %d", off, len, source.length));
-
-        int encLen = (len / 3) * 4 + (len % 3 > 0 ? 4 : 0); // Bytes needed for actual encoding
-        byte[] outBuff = new byte[encLen];
-
-        int d = 0;
-        int e = 0;
-        int len2 = len - 2;
-        for (; d < len2; d += 3, e += 4) {
-            encode3to4(source, d + off, 3, outBuff, e);
-        }
-
-        if (d < len) {
-            encode3to4(source, d + off, len - d, outBuff, e);
-            e += 4;
-        }
-
-        // Only resize array if we didn't guess it right.
-        if (e <= outBuff.length - 1) {
-            byte[] finalOut = new byte[e];
-            System.arraycopy(outBuff, 0, finalOut, 0, e);
-            return finalOut;
-        } else {
-            return outBuff;
-        }
-    }
-
-    private static String getAsStringOrNull(JsonElement jsonElement) {
-        return jsonElement.isJsonNull() ? null : jsonElement.getAsString();
-    }
-
-    private final static byte EQUALS_SIGN = (byte)'=';
-
-    private final static byte[] _STANDARD_ALPHABET = {
-        (byte)'A', (byte)'B', (byte)'C', (byte)'D', (byte)'E', (byte)'F', (byte)'G',
-        (byte)'H', (byte)'I', (byte)'J', (byte)'K', (byte)'L', (byte)'M', (byte)'N',
-        (byte)'O', (byte)'P', (byte)'Q', (byte)'R', (byte)'S', (byte)'T', (byte)'U',
-        (byte)'V', (byte)'W', (byte)'X', (byte)'Y', (byte)'Z',
-        (byte)'a', (byte)'b', (byte)'c', (byte)'d', (byte)'e', (byte)'f', (byte)'g',
-        (byte)'h', (byte)'i', (byte)'j', (byte)'k', (byte)'l', (byte)'m', (byte)'n',
-        (byte)'o', (byte)'p', (byte)'q', (byte)'r', (byte)'s', (byte)'t', (byte)'u',
-        (byte)'v', (byte)'w', (byte)'x', (byte)'y', (byte)'z',
-        (byte)'0', (byte)'1', (byte)'2', (byte)'3', (byte)'4', (byte)'5',
-        (byte)'6', (byte)'7', (byte)'8', (byte)'9', (byte)'+', (byte)'/'
-    };
-
-    private static byte[] encode3to4(
-        byte[] source, int srcOffset, int numSigBytes,
-        byte[] destination, int destOffset) {
-
-        byte[] ALPHABET = _STANDARD_ALPHABET;
-
-        int inBuff =   ( numSigBytes > 0 ? ((source[ srcOffset     ] << 24) >>>  8) : 0 )
-            | ( numSigBytes > 1 ? ((source[ srcOffset + 1 ] << 24) >>> 16) : 0 )
-            | ( numSigBytes > 2 ? ((source[ srcOffset + 2 ] << 24) >>> 24) : 0 );
-
-        switch (numSigBytes)
-        {
-            case 3:
-                destination[ destOffset     ] = ALPHABET[ (inBuff >>> 18)        ];
-                destination[ destOffset + 1 ] = ALPHABET[ (inBuff >>> 12) & 0x3f ];
-                destination[ destOffset + 2 ] = ALPHABET[ (inBuff >>>  6) & 0x3f ];
-                destination[ destOffset + 3 ] = ALPHABET[ (inBuff       ) & 0x3f ];
-                return destination;
-
-            case 2:
-                destination[ destOffset     ] = ALPHABET[ (inBuff >>> 18)        ];
-                destination[ destOffset + 1 ] = ALPHABET[ (inBuff >>> 12) & 0x3f ];
-                destination[ destOffset + 2 ] = ALPHABET[ (inBuff >>>  6) & 0x3f ];
-                destination[ destOffset + 3 ] = EQUALS_SIGN;
-                return destination;
-
-            case 1:
-                destination[ destOffset     ] = ALPHABET[ (inBuff >>> 18)        ];
-                destination[ destOffset + 1 ] = ALPHABET[ (inBuff >>> 12) & 0x3f ];
-                destination[ destOffset + 2 ] = EQUALS_SIGN;
-                destination[ destOffset + 3 ] = EQUALS_SIGN;
-                return destination;
-
-            default:
-                return destination;
-        }
+    public static String fromByteArray(byte[] bytes) {
+        return ByteArray.toString(bytes);
     }
 
     public static String addQueryParam(String url, String key, String value) {

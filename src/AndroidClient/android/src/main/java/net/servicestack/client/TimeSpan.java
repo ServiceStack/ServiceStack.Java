@@ -184,10 +184,10 @@ public class TimeSpan {
         }
 
         double totalSecs = 0
-                + (days * 24 * 60 * 60)
-                + (hours * 60 * 60)
-                + (minutes * 60)
-                + (seconds);
+            + (days * 24 * 60 * 60)
+            + (hours * 60 * 60)
+            + (minutes * 60)
+            + (seconds);
 
         double interval = totalSecs + ms;
 
