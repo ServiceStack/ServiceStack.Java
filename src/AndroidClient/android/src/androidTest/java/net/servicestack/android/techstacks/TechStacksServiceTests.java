@@ -199,14 +199,14 @@ public class TechStacksServiceTests extends TestCase {
         assertTrue(techstacks.description.startsWith("This Website! "));
         assertEquals("https://techstacks.io", techstacks.getAppUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.getScreenshotUrl());
-        assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.getCreated());
+        assertEquals(Utils.fromDateTime("2015-01-01T17:33:58.9892560"), techstacks.getCreated());
         assertEquals("layoric", techstacks.getCreatedBy());
-        assertEquals(Utils.parseDate("2015-01-12T23:34:12.4516410"), techstacks.getLastModified());
+        assertEquals(Utils.fromDateTime("2015-01-12T23:34:12.4516410"), techstacks.getLastModified());
         assertEquals("layoric", techstacks.getLastModifiedBy());
         assertTrue(techstacks.getIsLocked());
         assertEquals("2", techstacks.getOwnerId());
         assertEquals("techstacks-website", techstacks.getSlug());
-        assertEquals(Utils.parseDate("2015-01-12T23:34:12.4516410"), techstacks.getLastStatusUpdate());
+        assertEquals(Utils.fromDateTime("2015-01-12T23:34:12.4516410"), techstacks.getLastStatusUpdate());
 
         ArrayList<TechnologyInStack> techstackChoices = techstacks.getTechnologyChoices();
         assertEquals(10, techstackChoices.size());
@@ -219,9 +219,9 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals("https://servicestack.net", techChoice.getVendorUrl());
         assertEquals("https://servicestack.net", techChoice.getProductUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/servicestack-logo.png", techChoice.getLogoUrl());
-        assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.getCreated());
+        assertEquals(Utils.fromDateTime("2014-12-28T08:49:20.9542550"), techChoice.getCreated());
         assertEquals("demisbellot", techChoice.getCreatedBy());
-        assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.getLastModified());
+        assertEquals(Utils.fromDateTime("2014-12-28T08:49:20.9542550"), techChoice.getLastModified());
         assertEquals("demisbellot", techChoice.getLastModifiedBy());
         assertEquals("1", techChoice.getOwnerId());
         assertEquals("servicestack", techChoice.getSlug());
