@@ -214,26 +214,6 @@ public class Utils {
         }
     };
 
-    public static String toJsonDate(Date date) {
-        return "/Date(" + date.getTime() + "-0000)/";
-    }
-
-    public static Date parseDate(String string) {
-        String str = string.startsWith("\\")
-            ? string.substring(1)
-            : string;
-
-        if (str.startsWith(wcfJsonPrefix)) {
-            String body = splitOnLast(splitOnFirst(str, '(')[1], ')')[0];
-            String unixTimeStr = splitOnFirst(body,'-', 1)[0];
-            unixTimeStr = splitOnFirst(unixTimeStr,'+', 1)[0];
-            long unixTime = Long.parseLong(unixTimeStr);
-            return new Date(unixTime);
-        }
-
-        return fromIsoDateString(string);
-    }
-
     public final static int isoDateLength = "YYYY-MM-DDT00:00:00+00:00".length();
     public final static int isoDateWithMsLength = "YYYY-MM-DDT00:00:00.000+00:00".length();
 
@@ -715,40 +695,60 @@ public class Utils {
         return to;
     }
 
-    public static String fromDateTime(Date date) {
-        return DateTime.toString(date);
+    // From .NET DateTime (WCF JSON or ISO Date) to JVM Date
+    public static Date fromDateTime(String jsonDate) {
+        String str = jsonDate.startsWith("\\")
+                ? jsonDate.substring(1)
+                : jsonDate;
+
+        if (str.startsWith(wcfJsonPrefix)) {
+            String body = splitOnLast(splitOnFirst(str, '(')[1], ')')[0];
+            String unixTimeStr = splitOnFirst(body,'-', 1)[0];
+            unixTimeStr = splitOnFirst(unixTimeStr,'+', 1)[0];
+            long unixTime = Long.parseLong(unixTimeStr);
+            return new Date(unixTime);
+        }
+
+        return fromIsoDateString(jsonDate);
     }
 
-    public static Date toDateTime(String jsonDate) {
-        return DateTime.parse(jsonDate);
+    // From JVM Date to .NET DateTime (WCF JSON Date)
+    public static String toDateTime(Date date) {
+        return "/Date(" + date.getTime() + "-0000)/";
     }
 
-    public static String fromTimeSpan(TimeSpan timeSpan) {
-        return TimeSpan.toString(timeSpan);
-    }
-
-    public static TimeSpan toTimeSpan(String xsdDuration) {
+    // From .NET TimeSpan (XSD Duration) to Java TimeSpan
+    public static TimeSpan fromTimeSpan(String xsdDuration) {
         return TimeSpan.parse(xsdDuration);
     }
 
-    public static String fromGuid(UUID uuid) {
-        return Guid.toString(uuid);
+    // From Java TimeSpan to .NET TimeSpan (XSD Duration)
+    public static String toTimeSpan(TimeSpan timeSpan) {
+        return TimeSpan.toString(timeSpan);
     }
 
-    public static UUID toGuid(String guid) {
+    // From .NET Guid to JVM UUID
+    public static UUID fromGuid(String guid) {
         return Guid.parse(guid);
     }
 
-    public static byte[] toByteArray(String base64) {
-        return ByteArray.parse(base64);
+    // From JVM UUID to .NET Guid
+    public static String toGuid(UUID uuid) {
+        return Guid.toString(uuid);
+    }
+
+    // From .NET byte[] (Base64 String) to JVM signed byte[]
+    public static byte[] fromByteArray(String base64) {
+        return Base64.getDecoder().decode(base64);
+    }
+
+    // From JVM signed byte[] to .NET byte[] (Base64 String)
+    public static String toByteArray(byte[] bytes) {
+        return Base64.getEncoder().encodeToString(bytes);
     }
 
     public static String toBase64String(String source) {
-        return ByteArray.toString(source);
-    }
-
-    public static String fromByteArray(byte[] bytes) {
-        return ByteArray.toString(bytes);
+        return toByteArray(Utils.toUtf8Bytes(source));
     }
 
     public static String addQueryParam(String url, String key, String value) {

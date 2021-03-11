@@ -305,7 +305,7 @@ public class TestServiceTests extends TestCase {
 
     public void test_Can_post_data_and_read_as_Stream() throws IOException {
         testdtos.ReturnStream req = new testdtos.ReturnStream();
-        req.setData(ByteArray.parse("QUJD")); // base64("ABC")
+        req.setData(Utils.fromByteArray("QUJD")); // base64("ABC")
 
         InputStream is = client.post(req);
         byte[] response = Utils.readBytesToEnd(is);
@@ -364,7 +364,7 @@ public class TestServiceTests extends TestCase {
             .setIntList(Utils.createList(4, 5, 6))
             .setStringArray(Utils.createList("A", "B", "C"))
             .setStringList(Utils.createList("D","E","F"))
-            .setByteArray(ByteArray.parse("QUJD")) //ABC
+            .setByteArray(Utils.fromByteArray("QUJD")) //ABC
             .setPocoArray(Utils.createList(createPoco("pocoArray")))
             .setPocoList(Utils.createList(createPoco("pocoList")))
             .setPocoLookup(Utils.createMap("A", Utils.createList(createPoco("B"), createPoco("C"))))

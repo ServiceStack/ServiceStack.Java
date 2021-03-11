@@ -41,7 +41,7 @@ public class JsonTests extends TestCase {
     public void test_Does_serialize_DateTime_in_QueryString() throws UnsupportedEncodingException {
         JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
         testDateDtos.HelloDateTime request = new testDateDtos.HelloDateTime()
-                .setDateTime(Utils.parseDate("2001-01-01T01:01:01Z"));
+                .setDateTime(Utils.fromDateTime("2001-01-01T01:01:01Z"));
 
         String url = client.createUrl(request);
 

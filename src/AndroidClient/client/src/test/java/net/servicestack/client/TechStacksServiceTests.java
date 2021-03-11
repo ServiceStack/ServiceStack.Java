@@ -1,11 +1,7 @@
 package net.servicestack.client;
 
 import junit.framework.TestCase;
-import net.servicestack.client.JsonServiceClient;
-import net.servicestack.client.Utils;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -152,14 +148,14 @@ public class TechStacksServiceTests extends TestCase {
         assertTrue(techstacks.description.startsWith("The original TechStacks Website"));
         assertEquals("http://angular.techstacks.io", techstacks.getAppUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/screenshots/techstacks.png", techstacks.getScreenshotUrl());
-        assertEquals(Utils.parseDate("2015-01-01T17:33:58.9892560"), techstacks.getCreated());
+        assertEquals(Utils.fromDateTime("2015-01-01T17:33:58.9892560"), techstacks.getCreated());
         assertEquals("layoric", techstacks.getCreatedBy());
-        assertEquals(Utils.parseDate("2018-03-23T03:18:38.9958030"), techstacks.getLastModified());
+        assertEquals(Utils.fromDateTime("2018-03-23T03:18:38.9958030"), techstacks.getLastModified());
         assertEquals("mythz", techstacks.getLastModifiedBy());
         assertTrue(techstacks.getIsLocked());
         assertEquals("2", techstacks.getOwnerId());
         assertEquals("techstacks-website", techstacks.getSlug());
-        assertEquals(Utils.parseDate("2018-03-23T03:12:44.0426320"), techstacks.getLastStatusUpdate());
+        assertEquals(Utils.fromDateTime("2018-03-23T03:12:44.0426320"), techstacks.getLastStatusUpdate());
 
         ArrayList<TechnologyInStack> techstackChoices = techstacks.getTechnologyChoices();
         assertEquals(11, techstackChoices.size());
@@ -172,9 +168,9 @@ public class TechStacksServiceTests extends TestCase {
         assertEquals("https://servicestack.net", techChoice.getVendorUrl());
         assertEquals("https://servicestack.net", techChoice.getProductUrl());
         assertEquals("https://raw.githubusercontent.com/ServiceStack/Assets/master/img/livedemos/techstacks/servicestack-logo.png", techChoice.getLogoUrl());
-        assertEquals(Utils.parseDate("2014-12-28T08:49:20.9542550"), techChoice.getCreated());
+        assertEquals(Utils.fromDateTime("2014-12-28T08:49:20.9542550"), techChoice.getCreated());
         assertEquals("demisbellot", techChoice.getCreatedBy());
-        assertEquals(Utils.parseDate("2018-03-14T06:01:13.9571660"), techChoice.getLastModified());
+        assertEquals(Utils.fromDateTime("2018-03-14T06:01:13.9571660"), techChoice.getLastModified());
         assertEquals("mythz", techChoice.getLastModifiedBy());
         assertEquals("1", techChoice.getOwnerId());
         assertEquals("servicestack", techChoice.getSlug());

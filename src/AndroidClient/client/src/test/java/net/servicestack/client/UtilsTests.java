@@ -2,8 +2,6 @@ package net.servicestack.client;
 
 import com.google.gson.*;
 import junit.framework.TestCase;
-import net.servicestack.client.ResponseStatus;
-import net.servicestack.client.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +13,7 @@ public class UtilsTests extends TestCase {
     }
 
     public void test_Can_parse_Date_with_SubMillis(){
-        Date date = Utils.parseDate("2015-03-27T03:41:41.987375+00:00");
+        Date date = Utils.fromDateTime("2015-03-27T03:41:41.987375+00:00");
 
         SimpleDateFormat dateFmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         assertEquals("2015-03-27T03:41:41.987", dateFmt.format(date));
@@ -41,7 +39,7 @@ public class UtilsTests extends TestCase {
     }
 
     public void test_Can_parse_pre_UnixTime(){
-        Date date = Utils.parseDate("\\/Date(-30610224000)\\/");
+        Date date = Utils.fromDateTime("\\/Date(-30610224000)\\/");
         assertEquals(new Date(-30610224000L), date);
     }
 

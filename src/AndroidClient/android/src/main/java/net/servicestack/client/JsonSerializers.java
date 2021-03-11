@@ -18,7 +18,7 @@ public class JsonSerializers {
         return new JsonSerializer<Date>() {
             @Override
             public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-                return src == null ? null : new JsonPrimitive(Utils.toJsonDate(src));
+                return src == null ? null : new JsonPrimitive(Utils.toDateTime(src));
             }
         };
     }
@@ -27,7 +27,7 @@ public class JsonSerializers {
         return new JsonDeserializer<Date>() {
             @Override
             public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                return json == null ? null : Utils.parseDate(json.getAsString());
+                return json == null ? null : Utils.fromDateTime(json.getAsString());
             }
         };
     }
