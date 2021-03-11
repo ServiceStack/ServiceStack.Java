@@ -1,5 +1,5 @@
 /* Options:
-Date: 2021-03-08 20:21:44
+Date: 2021-03-11 05:48:39
 Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
@@ -142,6 +142,30 @@ public class dtos
         public String getStatusDescription() { return statusDescription; }
         public CustomHttpError setStatusDescription(String value) { this.statusDescription = value; return this; }
         private static Object responseType = CustomHttpErrorResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class AltQueryItems implements IReturn<QueryResponseAlt<Item>>
+    {
+        public String name = null;
+        
+        public String getName() { return name; }
+        public AltQueryItems setName(String value) { this.name = value; return this; }
+        private static Object responseType = new TypeToken<QueryResponseAlt<Item>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class GetItems implements IReturn<Items>
+    {
+        
+        private static Object responseType = Items.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class GetNakedItems implements IReturn<ArrayList<Item>>
+    {
+        
+        private static Object responseType = new TypeToken<ArrayList<Item>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
@@ -550,15 +574,70 @@ public class dtos
     public static class HelloWithEnum
     {
         public EnumType enumProp = null;
+        public EnumTypeFlags enumTypeFlags = null;
+        public EnumWithValues enumWithValues = null;
         public EnumType nullableEnumProp = null;
         public EnumFlags enumFlags = null;
+        public EnumAsInt enumAsInt = null;
+        public EnumStyle enumStyle = null;
+        public EnumStyleMembers enumStyleMembers = null;
         
         public EnumType getEnumProp() { return enumProp; }
         public HelloWithEnum setEnumProp(EnumType value) { this.enumProp = value; return this; }
+        public EnumTypeFlags getEnumTypeFlags() { return enumTypeFlags; }
+        public HelloWithEnum setEnumTypeFlags(EnumTypeFlags value) { this.enumTypeFlags = value; return this; }
+        public EnumWithValues getEnumWithValues() { return enumWithValues; }
+        public HelloWithEnum setEnumWithValues(EnumWithValues value) { this.enumWithValues = value; return this; }
         public EnumType getNullableEnumProp() { return nullableEnumProp; }
         public HelloWithEnum setNullableEnumProp(EnumType value) { this.nullableEnumProp = value; return this; }
         public EnumFlags getEnumFlags() { return enumFlags; }
         public HelloWithEnum setEnumFlags(EnumFlags value) { this.enumFlags = value; return this; }
+        public EnumAsInt getEnumAsInt() { return enumAsInt; }
+        public HelloWithEnum setEnumAsInt(EnumAsInt value) { this.enumAsInt = value; return this; }
+        public EnumStyle getEnumStyle() { return enumStyle; }
+        public HelloWithEnum setEnumStyle(EnumStyle value) { this.enumStyle = value; return this; }
+        public EnumStyleMembers getEnumStyleMembers() { return enumStyleMembers; }
+        public HelloWithEnum setEnumStyleMembers(EnumStyleMembers value) { this.enumStyleMembers = value; return this; }
+    }
+
+    public static class HelloWithEnumList
+    {
+        public ArrayList<EnumType> enumProp = null;
+        public ArrayList<EnumWithValues> enumWithValues = null;
+        public ArrayList<EnumType> nullableEnumProp = null;
+        public ArrayList<EnumFlags> enumFlags = null;
+        public ArrayList<EnumStyle> enumStyle = null;
+        
+        public ArrayList<EnumType> getEnumProp() { return enumProp; }
+        public HelloWithEnumList setEnumProp(ArrayList<EnumType> value) { this.enumProp = value; return this; }
+        public ArrayList<EnumWithValues> getEnumWithValues() { return enumWithValues; }
+        public HelloWithEnumList setEnumWithValues(ArrayList<EnumWithValues> value) { this.enumWithValues = value; return this; }
+        public ArrayList<EnumType> getNullableEnumProp() { return nullableEnumProp; }
+        public HelloWithEnumList setNullableEnumProp(ArrayList<EnumType> value) { this.nullableEnumProp = value; return this; }
+        public ArrayList<EnumFlags> getEnumFlags() { return enumFlags; }
+        public HelloWithEnumList setEnumFlags(ArrayList<EnumFlags> value) { this.enumFlags = value; return this; }
+        public ArrayList<EnumStyle> getEnumStyle() { return enumStyle; }
+        public HelloWithEnumList setEnumStyle(ArrayList<EnumStyle> value) { this.enumStyle = value; return this; }
+    }
+
+    public static class HelloWithEnumMap
+    {
+        public HashMap<EnumType,EnumType> enumProp = null;
+        public HashMap<EnumWithValues,EnumWithValues> enumWithValues = null;
+        public HashMap<EnumType,EnumType> nullableEnumProp = null;
+        public HashMap<EnumFlags,EnumFlags> enumFlags = null;
+        public HashMap<EnumStyle,EnumStyle> enumStyle = null;
+        
+        public HashMap<EnumType,EnumType> getEnumProp() { return enumProp; }
+        public HelloWithEnumMap setEnumProp(HashMap<EnumType,EnumType> value) { this.enumProp = value; return this; }
+        public HashMap<EnumWithValues,EnumWithValues> getEnumWithValues() { return enumWithValues; }
+        public HelloWithEnumMap setEnumWithValues(HashMap<EnumWithValues,EnumWithValues> value) { this.enumWithValues = value; return this; }
+        public HashMap<EnumType,EnumType> getNullableEnumProp() { return nullableEnumProp; }
+        public HelloWithEnumMap setNullableEnumProp(HashMap<EnumType,EnumType> value) { this.nullableEnumProp = value; return this; }
+        public HashMap<EnumFlags,EnumFlags> getEnumFlags() { return enumFlags; }
+        public HelloWithEnumMap setEnumFlags(HashMap<EnumFlags,EnumFlags> value) { this.enumFlags = value; return this; }
+        public HashMap<EnumStyle,EnumStyle> getEnumStyle() { return enumStyle; }
+        public HelloWithEnumMap setEnumStyle(HashMap<EnumStyle,EnumStyle> value) { this.enumStyle = value; return this; }
     }
 
     public static class RestrictedAttributes
@@ -1637,6 +1716,29 @@ public class dtos
         public Object getResponseType() { return responseType; }
     }
 
+    public static class QueryRockstarAudit extends QueryDbTenant_2<RockstarAuditTenant, RockstarAuto> implements IReturn<QueryResponse<RockstarAuto>>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public QueryRockstarAudit setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = new TypeToken<QueryResponse<RockstarAuto>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class QueryRockstarAuditSubOr extends QueryDb_2<RockstarAuditTenant, RockstarAuto> implements IReturn<QueryResponse<RockstarAuto>>
+    {
+        public String firstNameStartsWith = null;
+        public Integer ageOlderThan = null;
+        
+        public String getFirstNameStartsWith() { return firstNameStartsWith; }
+        public QueryRockstarAuditSubOr setFirstNameStartsWith(String value) { this.firstNameStartsWith = value; return this; }
+        public Integer getAgeOlderThan() { return ageOlderThan; }
+        public QueryRockstarAuditSubOr setAgeOlderThan(Integer value) { this.ageOlderThan = value; return this; }
+        private static Object responseType = new TypeToken<QueryResponse<RockstarAuto>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
     public static class QueryPocoBase extends QueryDb_1<OnlyDefinedInGenericType> implements IReturn<QueryResponse<OnlyDefinedInGenericType>>
     {
         public Integer id = null;
@@ -1662,6 +1764,122 @@ public class dtos
     {
         
         private static Object responseType = new TypeToken<QueryResponse<Rockstar>>(){}.getType();
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class CreateRockstarAudit extends RockstarBase implements IReturn<RockstarWithIdResponse>, ICreateDb<RockstarAudit>
+    {
+        
+        private static Object responseType = RockstarWithIdResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class CreateRockstarAuditTenant extends CreateAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse> implements IReturn<RockstarWithIdAndResultResponse>, IHasSessionId
+    {
+        public String sessionId = null;
+        public String firstName = null;
+        public String lastName = null;
+        public Integer age = null;
+        public Date dateOfBirth = null;
+        public Date dateDied = null;
+        public LivingStatus livingStatus = null;
+        
+        public String getSessionId() { return sessionId; }
+        public CreateRockstarAuditTenant setSessionId(String value) { this.sessionId = value; return this; }
+        public String getFirstName() { return firstName; }
+        public CreateRockstarAuditTenant setFirstName(String value) { this.firstName = value; return this; }
+        public String getLastName() { return lastName; }
+        public CreateRockstarAuditTenant setLastName(String value) { this.lastName = value; return this; }
+        public Integer getAge() { return age; }
+        public CreateRockstarAuditTenant setAge(Integer value) { this.age = value; return this; }
+        public Date getDateOfBirth() { return dateOfBirth; }
+        public CreateRockstarAuditTenant setDateOfBirth(Date value) { this.dateOfBirth = value; return this; }
+        public Date getDateDied() { return dateDied; }
+        public CreateRockstarAuditTenant setDateDied(Date value) { this.dateDied = value; return this; }
+        public LivingStatus getLivingStatus() { return livingStatus; }
+        public CreateRockstarAuditTenant setLivingStatus(LivingStatus value) { this.livingStatus = value; return this; }
+        private static Object responseType = RockstarWithIdAndResultResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class UpdateRockstarAuditTenant extends UpdateAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse> implements IReturn<RockstarWithIdAndResultResponse>, IHasSessionId
+    {
+        public String sessionId = null;
+        public Integer id = null;
+        public String firstName = null;
+        public LivingStatus livingStatus = null;
+        
+        public String getSessionId() { return sessionId; }
+        public UpdateRockstarAuditTenant setSessionId(String value) { this.sessionId = value; return this; }
+        public Integer getId() { return id; }
+        public UpdateRockstarAuditTenant setId(Integer value) { this.id = value; return this; }
+        public String getFirstName() { return firstName; }
+        public UpdateRockstarAuditTenant setFirstName(String value) { this.firstName = value; return this; }
+        public LivingStatus getLivingStatus() { return livingStatus; }
+        public UpdateRockstarAuditTenant setLivingStatus(LivingStatus value) { this.livingStatus = value; return this; }
+        private static Object responseType = RockstarWithIdAndResultResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class PatchRockstarAuditTenant extends PatchAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse> implements IReturn<RockstarWithIdAndResultResponse>, IHasSessionId
+    {
+        public String sessionId = null;
+        public Integer id = null;
+        public String firstName = null;
+        public LivingStatus livingStatus = null;
+        
+        public String getSessionId() { return sessionId; }
+        public PatchRockstarAuditTenant setSessionId(String value) { this.sessionId = value; return this; }
+        public Integer getId() { return id; }
+        public PatchRockstarAuditTenant setId(Integer value) { this.id = value; return this; }
+        public String getFirstName() { return firstName; }
+        public PatchRockstarAuditTenant setFirstName(String value) { this.firstName = value; return this; }
+        public LivingStatus getLivingStatus() { return livingStatus; }
+        public PatchRockstarAuditTenant setLivingStatus(LivingStatus value) { this.livingStatus = value; return this; }
+        private static Object responseType = RockstarWithIdAndResultResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class SoftDeleteAuditTenant extends SoftDeleteAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse> implements IReturn<RockstarWithIdAndResultResponse>
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public SoftDeleteAuditTenant setId(Integer value) { this.id = value; return this; }
+        private static Object responseType = RockstarWithIdAndResultResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class CreateRockstarAuditMqToken extends RockstarBase implements IReturn<RockstarWithIdResponse>, ICreateDb<RockstarAudit>, IHasBearerToken
+    {
+        public String bearerToken = null;
+        
+        public String getBearerToken() { return bearerToken; }
+        public CreateRockstarAuditMqToken setBearerToken(String value) { this.bearerToken = value; return this; }
+        private static Object responseType = RockstarWithIdResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class RealDeleteAuditTenant implements IReturn<RockstarWithIdAndCountResponse>, IDeleteDb<RockstarAuditTenant>, IHasSessionId
+    {
+        public String sessionId = null;
+        public Integer id = null;
+        public Integer age = null;
+        
+        public String getSessionId() { return sessionId; }
+        public RealDeleteAuditTenant setSessionId(String value) { this.sessionId = value; return this; }
+        public Integer getId() { return id; }
+        public RealDeleteAuditTenant setId(Integer value) { this.id = value; return this; }
+        public Integer getAge() { return age; }
+        public RealDeleteAuditTenant setAge(Integer value) { this.age = value; return this; }
+        private static Object responseType = RockstarWithIdAndCountResponse.class;
+        public Object getResponseType() { return responseType; }
+    }
+
+    public static class CreateRockstarVersion extends RockstarBase implements IReturn<RockstarWithIdAndRowVersionResponse>, ICreateDb<RockstarVersion>
+    {
+        
+        private static Object responseType = RockstarWithIdAndRowVersionResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
@@ -1791,6 +2009,34 @@ public class dtos
         public CustomHttpErrorResponse setCustom(String value) { this.custom = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public CustomHttpErrorResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class QueryResponseAlt<T>
+    {
+        public Integer offset = null;
+        public Integer total = null;
+        public ArrayList<T> results = null;
+        public HashMap<String,String> meta = null;
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getOffset() { return offset; }
+        public QueryResponseAlt<T> setOffset(Integer value) { this.offset = value; return this; }
+        public Integer getTotal() { return total; }
+        public QueryResponseAlt<T> setTotal(Integer value) { this.total = value; return this; }
+        public ArrayList<T> getResults() { return results; }
+        public QueryResponseAlt<T> setResults(ArrayList<T> value) { this.results = value; return this; }
+        public HashMap<String,String> getMeta() { return meta; }
+        public QueryResponseAlt<T> setMeta(HashMap<String,String> value) { this.meta = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public QueryResponseAlt<T> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class Items
+    {
+        public ArrayList<Item> results = null;
+        
+        public ArrayList<Item> getResults() { return results; }
+        public Items setResults(ArrayList<Item> value) { this.results = value; return this; }
     }
 
     public static class ThrowTypeResponse
@@ -2358,6 +2604,59 @@ public class dtos
         public QueryResponse<T> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
+    public static class RockstarWithIdResponse
+    {
+        public Integer id = null;
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getId() { return id; }
+        public RockstarWithIdResponse setId(Integer value) { this.id = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public RockstarWithIdResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class RockstarWithIdAndResultResponse
+    {
+        public Integer id = null;
+        public RockstarAuto result = null;
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getId() { return id; }
+        public RockstarWithIdAndResultResponse setId(Integer value) { this.id = value; return this; }
+        public RockstarAuto getResult() { return result; }
+        public RockstarWithIdAndResultResponse setResult(RockstarAuto value) { this.result = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public RockstarWithIdAndResultResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class RockstarWithIdAndCountResponse
+    {
+        public Integer id = null;
+        public Integer count = null;
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getId() { return id; }
+        public RockstarWithIdAndCountResponse setId(Integer value) { this.id = value; return this; }
+        public Integer getCount() { return count; }
+        public RockstarWithIdAndCountResponse setCount(Integer value) { this.count = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public RockstarWithIdAndCountResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
+    public static class RockstarWithIdAndRowVersionResponse
+    {
+        public Integer id = null;
+        public Long rowVersion = null;
+        public ResponseStatus responseStatus = null;
+        
+        public Integer getId() { return id; }
+        public RockstarWithIdAndRowVersionResponse setId(Integer value) { this.id = value; return this; }
+        public Long getRowVersion() { return rowVersion; }
+        public RockstarWithIdAndRowVersionResponse setRowVersion(Long value) { this.rowVersion = value; return this; }
+        public ResponseStatus getResponseStatus() { return responseStatus; }
+        public RockstarWithIdAndRowVersionResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+    }
+
     public static class CustomType
     {
         public Integer id = null;
@@ -2378,6 +2677,17 @@ public class dtos
         public SetterType setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
         public SetterType setName(String value) { this.name = value; return this; }
+    }
+
+    public static class Item
+    {
+        public String name = null;
+        public String description = null;
+        
+        public String getName() { return name; }
+        public Item setName(String value) { this.name = value; return this; }
+        public String getDescription() { return description; }
+        public Item setDescription(String value) { this.description = value; return this; }
     }
 
     public static interface IAuthTokens
@@ -2737,19 +3047,72 @@ public class dtos
     public static enum EnumType
     {
         Value1,
+        Value2,
+        Value3;
+    }
+
+    @Flags()
+    public static enum EnumTypeFlags
+    {
+        @SerializedName("0") Value1(0),
+        @SerializedName("1") Value2(1),
+        @SerializedName("2") Value3(2);
+
+        private final int value;
+        EnumTypeFlags(final int intValue) { value = intValue; }
+        public int getValue() { return value; }
+    }
+
+    public static enum EnumWithValues
+    {
+        None,
+        Value1,
         Value2;
     }
 
     @Flags()
     public static enum EnumFlags
     {
+        @SerializedName("0") Value0(0),
         @SerializedName("1") Value1(1),
         @SerializedName("2") Value2(2),
-        @SerializedName("4") Value3(4);
+        @SerializedName("4") Value3(4),
+        @SerializedName("7") Value123(7);
 
         private final int value;
         EnumFlags(final int intValue) { value = intValue; }
         public int getValue() { return value; }
+    }
+
+    public static enum EnumAsInt
+    {
+        Value1(1000),
+        Value2(2000),
+        Value3(3000);
+
+        private final int value;
+        EnumAsInt(final int intValue) { value = intValue; }
+        public int getValue() { return value; }
+    }
+
+    public static enum EnumStyle
+    {
+        Lower,
+        Upper,
+        PascalCase,
+        CamelCase,
+        CamelUPPER,
+        PascalUPPER;
+    }
+
+    public static enum EnumStyleMembers
+    {
+        Lower,
+        Upper,
+        PascalCase,
+        CamelCase,
+        CamelUpper,
+        PascalUpper;
     }
 
     public static class KeyValuePair<TKey, TValue>
@@ -2892,14 +3255,6 @@ public class dtos
         public HelloBase_1<T> setCounts(ArrayList<Integer> value) { this.counts = value; return this; }
     }
 
-    public static class Item
-    {
-        public String value = null;
-        
-        public String getValue() { return value; }
-        public Item setValue(String value) { this.value = value; return this; }
-    }
-
     public static class HelloWithReturnResponse
     {
         public String result = null;
@@ -3033,6 +3388,53 @@ public class dtos
         public Rockstar setAge(Integer value) { this.age = value; return this; }
     }
 
+    public static class QueryDbTenant_2<From, Into> extends QueryDb_2<From, Into>
+    {
+        
+    }
+
+    public static class RockstarAuditTenant extends AuditBase
+    {
+        public Integer tenantId = null;
+        public Integer id = null;
+        public String firstName = null;
+        public String lastName = null;
+        public Integer age = null;
+        public Date dateOfBirth = null;
+        public Date dateDied = null;
+        public LivingStatus livingStatus = null;
+        
+        public Integer getTenantId() { return tenantId; }
+        public RockstarAuditTenant setTenantId(Integer value) { this.tenantId = value; return this; }
+        public Integer getId() { return id; }
+        public RockstarAuditTenant setId(Integer value) { this.id = value; return this; }
+        public String getFirstName() { return firstName; }
+        public RockstarAuditTenant setFirstName(String value) { this.firstName = value; return this; }
+        public String getLastName() { return lastName; }
+        public RockstarAuditTenant setLastName(String value) { this.lastName = value; return this; }
+        public Integer getAge() { return age; }
+        public RockstarAuditTenant setAge(Integer value) { this.age = value; return this; }
+        public Date getDateOfBirth() { return dateOfBirth; }
+        public RockstarAuditTenant setDateOfBirth(Date value) { this.dateOfBirth = value; return this; }
+        public Date getDateDied() { return dateDied; }
+        public RockstarAuditTenant setDateDied(Date value) { this.dateDied = value; return this; }
+        public LivingStatus getLivingStatus() { return livingStatus; }
+        public RockstarAuditTenant setLivingStatus(LivingStatus value) { this.livingStatus = value; return this; }
+    }
+
+    public static class RockstarAuto extends RockstarBase
+    {
+        public Integer id = null;
+        
+        public Integer getId() { return id; }
+        public RockstarAuto setId(Integer value) { this.id = value; return this; }
+    }
+
+    public static class QueryDb_2<From, Into> extends QueryBase
+    {
+        
+    }
+
     public static class QueryDb_1<T> extends QueryBase
     {
         
@@ -3047,11 +3449,6 @@ public class dtos
         public OnlyDefinedInGenericType setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
         public OnlyDefinedInGenericType setName(String value) { this.name = value; return this; }
-    }
-
-    public static class QueryDb_2<From, Into> extends QueryBase
-    {
-        
     }
 
     public static class OnlyDefinedInGenericTypeFrom
@@ -3074,6 +3471,92 @@ public class dtos
         public OnlyDefinedInGenericTypeInto setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
         public OnlyDefinedInGenericTypeInto setName(String value) { this.name = value; return this; }
+    }
+
+    public static enum LivingStatus
+    {
+        Alive,
+        Dead;
+    }
+
+    public static class RockstarBase
+    {
+        public String firstName = null;
+        public String lastName = null;
+        public Integer age = null;
+        public Date dateOfBirth = null;
+        public Date dateDied = null;
+        public LivingStatus livingStatus = null;
+        
+        public String getFirstName() { return firstName; }
+        public RockstarBase setFirstName(String value) { this.firstName = value; return this; }
+        public String getLastName() { return lastName; }
+        public RockstarBase setLastName(String value) { this.lastName = value; return this; }
+        public Integer getAge() { return age; }
+        public RockstarBase setAge(Integer value) { this.age = value; return this; }
+        public Date getDateOfBirth() { return dateOfBirth; }
+        public RockstarBase setDateOfBirth(Date value) { this.dateOfBirth = value; return this; }
+        public Date getDateDied() { return dateDied; }
+        public RockstarBase setDateDied(Date value) { this.dateDied = value; return this; }
+        public LivingStatus getLivingStatus() { return livingStatus; }
+        public RockstarBase setLivingStatus(LivingStatus value) { this.livingStatus = value; return this; }
+    }
+
+    public static class RockstarAudit extends RockstarBase
+    {
+        public Integer id = null;
+        public Date createdDate = null;
+        public String createdBy = null;
+        public String createdInfo = null;
+        public Date modifiedDate = null;
+        public String modifiedBy = null;
+        public String modifiedInfo = null;
+        
+        public Integer getId() { return id; }
+        public RockstarAudit setId(Integer value) { this.id = value; return this; }
+        public Date getCreatedDate() { return createdDate; }
+        public RockstarAudit setCreatedDate(Date value) { this.createdDate = value; return this; }
+        public String getCreatedBy() { return createdBy; }
+        public RockstarAudit setCreatedBy(String value) { this.createdBy = value; return this; }
+        public String getCreatedInfo() { return createdInfo; }
+        public RockstarAudit setCreatedInfo(String value) { this.createdInfo = value; return this; }
+        public Date getModifiedDate() { return modifiedDate; }
+        public RockstarAudit setModifiedDate(Date value) { this.modifiedDate = value; return this; }
+        public String getModifiedBy() { return modifiedBy; }
+        public RockstarAudit setModifiedBy(String value) { this.modifiedBy = value; return this; }
+        public String getModifiedInfo() { return modifiedInfo; }
+        public RockstarAudit setModifiedInfo(String value) { this.modifiedInfo = value; return this; }
+    }
+
+    public static class CreateAuditTenantBase<Table, TResponse> extends CreateAuditBase<Table, TResponse>
+    {
+        
+    }
+
+    public static class UpdateAuditTenantBase<Table, TResponse> extends UpdateAuditBase<Table, TResponse>
+    {
+        
+    }
+
+    public static class PatchAuditTenantBase<Table, TResponse> extends PatchAuditBase<Table, TResponse>
+    {
+        
+    }
+
+    public static class SoftDeleteAuditTenantBase<Table, TResponse> extends SoftDeleteAuditBase<Table, TResponse>
+    {
+        
+    }
+
+    public static class RockstarVersion extends RockstarBase
+    {
+        public Integer id = null;
+        public BigInteger rowVersion = null;
+        
+        public Integer getId() { return id; }
+        public RockstarVersion setId(Integer value) { this.id = value; return this; }
+        public BigInteger getRowVersion() { return rowVersion; }
+        public RockstarVersion setRowVersion(BigInteger value) { this.rowVersion = value; return this; }
     }
 
     public static class MetadataTestNestedChild
@@ -3121,6 +3604,43 @@ public class dtos
     }
 
     @DataContract
+    public static class AuditBase
+    {
+        @DataMember(Order=1)
+        public Date createdDate = null;
+
+        @DataMember(Order=2)
+        @Required()
+        public String createdBy = null;
+
+        @DataMember(Order=3)
+        public Date modifiedDate = null;
+
+        @DataMember(Order=4)
+        @Required()
+        public String modifiedBy = null;
+
+        @DataMember(Order=5)
+        public Date deletedDate = null;
+
+        @DataMember(Order=6)
+        public String deletedBy = null;
+        
+        public Date getCreatedDate() { return createdDate; }
+        public AuditBase setCreatedDate(Date value) { this.createdDate = value; return this; }
+        public String getCreatedBy() { return createdBy; }
+        public AuditBase setCreatedBy(String value) { this.createdBy = value; return this; }
+        public Date getModifiedDate() { return modifiedDate; }
+        public AuditBase setModifiedDate(Date value) { this.modifiedDate = value; return this; }
+        public String getModifiedBy() { return modifiedBy; }
+        public AuditBase setModifiedBy(String value) { this.modifiedBy = value; return this; }
+        public Date getDeletedDate() { return deletedDate; }
+        public AuditBase setDeletedDate(Date value) { this.deletedDate = value; return this; }
+        public String getDeletedBy() { return deletedBy; }
+        public AuditBase setDeletedBy(String value) { this.deletedBy = value; return this; }
+    }
+
+    @DataContract
     public static class QueryBase
     {
         @DataMember(Order=1)
@@ -3158,6 +3678,26 @@ public class dtos
         public QueryBase setFields(String value) { this.fields = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
         public QueryBase setMeta(HashMap<String,String> value) { this.meta = value; return this; }
+    }
+
+    public static class CreateAuditBase<Table, TResponse> implements ICreateDb<Table>
+    {
+        
+    }
+
+    public static class UpdateAuditBase<Table, TResponse> implements IUpdateDb<Table>
+    {
+        
+    }
+
+    public static class PatchAuditBase<Table, TResponse> implements IPatchDb<Table>
+    {
+        
+    }
+
+    public static class SoftDeleteAuditBase<Table, TResponse> implements IUpdateDb<Table>
+    {
+        
     }
 
     public static class MenuItemExampleItem

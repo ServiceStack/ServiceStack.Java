@@ -1,19 +1,19 @@
 /* Options:
-Date: 2016-09-22 21:32:47
-Version: 4.00
+Date: 2021-03-11 05:48:19
+Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: http://test.servicestack.net
 
 Package: test.servicestack.net.kotlin.test
 //AddServiceStackTypes: True
 //AddResponseStatus: False
-//AddImplicitVersion:
+//AddImplicitVersion: 
 //AddDescriptionAsComments: True
-//IncludeTypes:
-//ExcludeTypes:
+//IncludeTypes: 
+//ExcludeTypes: 
 //InitializeCollections: True
-//TreatTypesAsStrings:
-//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*
+//TreatTypesAsStrings: 
+//DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*,java.io.*
 */
 
 package test.servicestack.net.kotlin.test
@@ -23,7 +23,67 @@ import java.util.*
 import net.servicestack.client.*
 import com.google.gson.annotations.*
 import com.google.gson.reflect.*
+import java.io.*
 
+
+@Route("/channels/{Channel}/raw")
+open class PostRawToChannel : IReturnVoid
+{
+    var from:String? = null
+    var toUserId:String? = null
+    var channel:String? = null
+    var message:String? = null
+    var selector:String? = null
+}
+
+@Route("/channels/{Channel}/chat")
+open class PostChatToChannel : IReturn<ChatMessage>
+{
+    var from:String? = null
+    var toUserId:String? = null
+    var channel:String? = null
+    var message:String? = null
+    var selector:String? = null
+    companion object { private val responseType = ChatMessage::class.java }
+    override fun getResponseType(): Any? = PostChatToChannel.responseType
+}
+
+@Route("/chathistory")
+open class GetChatHistory : IReturn<GetChatHistoryResponse>
+{
+    var channels:ArrayList<String>? = null
+    var afterId:Long? = null
+    var take:Int? = null
+    companion object { private val responseType = GetChatHistoryResponse::class.java }
+    override fun getResponseType(): Any? = GetChatHistory.responseType
+}
+
+@Route("/reset")
+open class ClearChatHistory : IReturnVoid
+{
+}
+
+@Route("/reset-serverevents")
+open class ResetServerEvents : IReturnVoid
+{
+}
+
+@Route("/channels/{Channel}/object")
+open class PostObjectToChannel : IReturnVoid
+{
+    var toUserId:String? = null
+    var channel:String? = null
+    var selector:String? = null
+    var customType:CustomType? = null
+    var setterType:SetterType? = null
+}
+
+@Route("/account")
+open class GetUserDetails : IReturn<GetUserDetailsResponse>
+{
+    companion object { private val responseType = GetUserDetailsResponse::class.java }
+    override fun getResponseType(): Any? = GetUserDetails.responseType
+}
 
 open class CustomHttpError : IReturn<CustomHttpErrorResponse>
 {
@@ -31,6 +91,32 @@ open class CustomHttpError : IReturn<CustomHttpErrorResponse>
     var statusDescription:String? = null
     companion object { private val responseType = CustomHttpErrorResponse::class.java }
     override fun getResponseType(): Any? = CustomHttpError.responseType
+}
+
+open class AltQueryItems : IReturn<QueryResponseAlt<Item>>
+{
+    var name:String? = null
+    companion object { private val responseType = object : TypeToken<QueryResponseAlt<Item>>(){}.type }
+    override fun getResponseType(): Any? = AltQueryItems.responseType
+}
+
+open class GetItems : IReturn<Items>
+{
+    companion object { private val responseType = Items::class.java }
+    override fun getResponseType(): Any? = GetItems.responseType
+}
+
+open class GetNakedItems : IReturn<ArrayList<Item>>
+{
+    companion object { private val responseType = object : TypeToken<ArrayList<Item>>(){}.type }
+    override fun getResponseType(): Any? = GetNakedItems.responseType
+}
+
+open class DummyTypes
+{
+    var helloResponses:ArrayList<HelloResponse> = ArrayList<HelloResponse>()
+    var listResult:ArrayList<ListResult> = ArrayList<ListResult>()
+    var arrayResult:ArrayList<ArrayResult>? = null
 }
 
 @Route("/throwhttperror/{Status}")
@@ -80,35 +166,6 @@ open class ThrowBusinessError : IReturn<ThrowBusinessErrorResponse>
     override fun getResponseType(): Any? = ThrowBusinessError.responseType
 }
 
-open class ExternalOperation : IReturn<ExternalOperationResponse>
-{
-    var id:Int? = null
-    var name:String? = null
-    var externalEnum:ExternalEnum? = null
-    companion object { private val responseType = ExternalOperationResponse::class.java }
-    override fun getResponseType(): Any? = ExternalOperation.responseType
-}
-
-open class ExternalOperation2 : IReturn<ExternalOperation2Response>
-{
-    var id:Int? = null
-    companion object { private val responseType = ExternalOperation2Response::class.java }
-    override fun getResponseType(): Any? = ExternalOperation2.responseType
-}
-
-open class ExternalOperation3 : IReturn<ExternalReturnTypeResponse>
-{
-    var id:Int? = null
-    companion object { private val responseType = ExternalReturnTypeResponse::class.java }
-    override fun getResponseType(): Any? = ExternalOperation3.responseType
-}
-
-open class ExternalOperation4
-{
-    var id:Int? = null
-}
-
-@Route("/{Path*}")
 open class RootPathRoutes
 {
     var path:String? = null
@@ -130,33 +187,43 @@ open class GetProject : IReturn<Project>
 }
 
 @Route("/image-stream")
-open class ImageAsStream
+open class ImageAsStream : IReturn<InputStream>
 {
     var format:String? = null
+    companion object { private val responseType = InputStream::class.java }
+    override fun getResponseType(): Any? = ImageAsStream.responseType
 }
 
 @Route("/image-bytes")
-open class ImageAsBytes
+open class ImageAsBytes : IReturn<ByteArray>
 {
     var format:String? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = ImageAsBytes.responseType
 }
 
 @Route("/image-custom")
-open class ImageAsCustomResult
+open class ImageAsCustomResult : IReturn<ByteArray>
 {
     var format:String? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = ImageAsCustomResult.responseType
 }
 
 @Route("/image-response")
-open class ImageWriteToResponse
+open class ImageWriteToResponse : IReturn<ByteArray>
 {
     var format:String? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = ImageWriteToResponse.responseType
 }
 
 @Route("/image-file")
-open class ImageAsFile
+open class ImageAsFile : IReturn<ByteArray>
 {
     var format:String? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = ImageAsFile.responseType
 }
 
 @Route("/image-redirect")
@@ -165,16 +232,60 @@ open class ImageAsRedirect
     var format:String? = null
 }
 
-@Route("/image-draw/{Name}")
-open class DrawImage
+@Route("/hello-image/{Name}")
+open class HelloImage : IReturn<ByteArray>
 {
     var name:String? = null
     var format:String? = null
     var width:Int? = null
     var height:Int? = null
     var fontSize:Int? = null
+    var fontFamily:String? = null
     var foreground:String? = null
     var background:String? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = HelloImage.responseType
+}
+
+@Route("/secured")
+@ValidateRequest(Validator="IsAuthenticated")
+open class Secured : IReturn<SecuredResponse>
+{
+    var name:String? = null
+    companion object { private val responseType = SecuredResponse::class.java }
+    override fun getResponseType(): Any? = Secured.responseType
+}
+
+@Route("/jwt")
+open class CreateJwt : AuthUserSession(), IReturn<CreateJwtResponse>
+{
+    var jwtExpiry:Date? = null
+    companion object { private val responseType = CreateJwtResponse::class.java }
+    override fun getResponseType(): Any? = CreateJwt.responseType
+}
+
+@Route("/jwt-refresh")
+open class CreateRefreshJwt : IReturn<CreateRefreshJwtResponse>
+{
+    var userAuthId:String? = null
+    var jwtExpiry:Date? = null
+    companion object { private val responseType = CreateRefreshJwtResponse::class.java }
+    override fun getResponseType(): Any? = CreateRefreshJwt.responseType
+}
+
+@Route("/jwt-invalidate")
+open class InvalidateLastAccessToken : IReturn<EmptyResponse>
+{
+    companion object { private val responseType = EmptyResponse::class.java }
+    override fun getResponseType(): Any? = InvalidateLastAccessToken.responseType
+}
+
+@Route("/logs")
+open class ViewLogs : IReturn<String>
+{
+    var clear:Boolean? = null
+    companion object { private val responseType = String::class.java }
+    override fun getResponseType(): Any? = ViewLogs.responseType
 }
 
 @Route("/metadatatest")
@@ -215,6 +326,18 @@ open class TextFileTest
     var asAttachment:Boolean? = null
 }
 
+@Route("/return/text")
+open class ReturnText
+{
+    var text:String? = null
+}
+
+@Route("/return/html")
+open class ReturnHtml
+{
+    var text:String? = null
+}
+
 @Route("/hello")
 // @Route("/hello/{Name}")
 open class Hello : IReturn<HelloResponse>
@@ -225,6 +348,18 @@ open class Hello : IReturn<HelloResponse>
     var title:String? = null
     companion object { private val responseType = HelloResponse::class.java }
     override fun getResponseType(): Any? = Hello.responseType
+}
+
+/**
+* Description on HelloAll type
+*/
+@DataContract
+open class HelloAnnotated : IReturn<HelloAnnotatedResponse>
+{
+    @DataMember
+    var name:String? = null
+    companion object { private val responseType = HelloAnnotatedResponse::class.java }
+    override fun getResponseType(): Any? = HelloAnnotated.responseType
 }
 
 open class HelloWithNestedClass : IReturn<HelloResponse>
@@ -252,30 +387,55 @@ open class HelloArray : IReturn<ArrayList<ArrayResult>>
 open class HelloWithEnum
 {
     var enumProp:EnumType? = null
+    var enumTypeFlags:EnumTypeFlags? = null
+    var enumWithValues:EnumWithValues? = null
     var nullableEnumProp:EnumType? = null
     var enumFlags:EnumFlags? = null
+    var enumAsInt:EnumAsInt? = null
+    var enumStyle:EnumStyle? = null
+    var enumStyleMembers:EnumStyleMembers? = null
 }
 
-open class HelloExternal
+open class HelloWithEnumList
 {
+    var enumProp:ArrayList<EnumType> = ArrayList<EnumType>()
+    var enumWithValues:ArrayList<EnumWithValues> = ArrayList<EnumWithValues>()
+    var nullableEnumProp:ArrayList<EnumType?> = ArrayList<EnumType?>()
+    var enumFlags:ArrayList<EnumFlags> = ArrayList<EnumFlags>()
+    var enumStyle:ArrayList<EnumStyle> = ArrayList<EnumStyle>()
+}
+
+open class HelloWithEnumMap
+{
+    var enumProp:HashMap<EnumType,EnumType> = HashMap<EnumType,EnumType>()
+    var enumWithValues:HashMap<EnumWithValues,EnumWithValues> = HashMap<EnumWithValues,EnumWithValues>()
+    var nullableEnumProp:HashMap<EnumType?,EnumType?> = HashMap<EnumType?,EnumType?>()
+    var enumFlags:HashMap<EnumFlags,EnumFlags> = HashMap<EnumFlags,EnumFlags>()
+    var enumStyle:HashMap<EnumStyle,EnumStyle> = HashMap<EnumStyle,EnumStyle>()
+}
+
+open class RestrictedAttributes
+{
+    var id:Int? = null
     var name:String? = null
+    var hello:Hello? = null
 }
 
 /**
- * AllowedAttributes Description
- */
+* AllowedAttributes Description
+*/
 @Route(Path="/allowed-attributes", Verbs="GET")
-@Api("AllowedAttributes Description")
-// @ApiResponse(400, "Your request was not understood")
+@Api(Description="AllowedAttributes Description")
+@ApiResponse(Description="Your request was not understood", StatusCode=400)
 @DataContract
 open class AllowedAttributes
 {
     /**
-     * Range Description
-     */
+    * Range Description
+    */
     @DataMember(Name="Aliased")
     @SerializedName("Aliased")
-    @ApiMember(ParameterType="path", Description="Range Description", DataType="double", IsRequired=true)
+    @ApiMember(DataType="double", Description="Range Description", IsRequired=true, ParameterType="path")
     var range:Double? = null
 }
 
@@ -289,7 +449,14 @@ open class HelloAllTypes : IReturn<HelloAllTypesResponse>
     override fun getResponseType(): Any? = HelloAllTypes.responseType
 }
 
-open class AllTypes
+open class HelloSubAllTypes : AllTypesBase(), IReturn<SubAllTypes>
+{
+    var hierarchy:Int? = null
+    companion object { private val responseType = SubAllTypes::class.java }
+    override fun getResponseType(): Any? = HelloSubAllTypes.responseType
+}
+
+open class AllTypes : IReturn<AllTypes>
 {
     var id:Int? = null
     var nullableId:Int? = null
@@ -309,6 +476,7 @@ open class AllTypes
     var dateTimeOffset:Date? = null
     var guid:UUID? = null
     @SerializedName("char") var Char:String? = null
+    var keyValuePair:KeyValuePair<String, String>? = null
     var nullableDateTime:Date? = null
     var nullableTimeSpan:TimeSpan? = null
     var stringList:ArrayList<String> = ArrayList<String>()
@@ -316,6 +484,27 @@ open class AllTypes
     var stringMap:HashMap<String,String> = HashMap<String,String>()
     var intStringMap:HashMap<Int,String> = HashMap<Int,String>()
     var subType:SubType? = null
+    companion object { private val responseType = AllTypes::class.java }
+    override fun getResponseType(): Any? = AllTypes.responseType
+}
+
+open class AllCollectionTypes : IReturn<AllCollectionTypes>
+{
+    var intArray:ArrayList<Int>? = null
+    var intList:ArrayList<Int> = ArrayList<Int>()
+    var stringArray:ArrayList<String>? = null
+    var stringList:ArrayList<String> = ArrayList<String>()
+    var floatArray:ArrayList<Float>? = null
+    var doubleList:ArrayList<Double> = ArrayList<Double>()
+    var byteArray:ByteArray? = null
+    var charArray:ArrayList<String>? = null
+    var decimalList:ArrayList<BigDecimal> = ArrayList<BigDecimal>()
+    var pocoArray:ArrayList<Poco>? = null
+    var pocoList:ArrayList<Poco> = ArrayList<Poco>()
+    var pocoLookup:HashMap<String,ArrayList<Poco>> = HashMap<String,ArrayList<Poco>>()
+    var pocoLookupMap:HashMap<String,ArrayList<HashMap<String,Poco>>> = HashMap<String,ArrayList<HashMap<String,Poco>>>()
+    companion object { private val responseType = AllCollectionTypes::class.java }
+    override fun getResponseType(): Any? = AllCollectionTypes.responseType
 }
 
 open class HelloString : IReturn<String>
@@ -352,8 +541,8 @@ open class HelloWithDataContract : IReturn<HelloWithDataContractResponse>
 }
 
 /**
- * Description on HelloWithDescription type
- */
+* Description on HelloWithDescription type
+*/
 open class HelloWithDescription : IReturn<HelloWithDescriptionResponse>
 {
     var name:String? = null
@@ -468,6 +657,29 @@ open class EnumRequest : IReturn<EnumResponse>, IPut
     override fun getResponseType(): Any? = EnumRequest.responseType
 }
 
+@Route("/hellotypes/{Name}")
+open class HelloTypes : IReturn<HelloTypes>
+{
+    var string:String? = null
+    var bool:Boolean? = null
+    @SerializedName("int") var Int:Int? = null
+    companion object { private val responseType = HelloTypes::class.java }
+    override fun getResponseType(): Any? = HelloTypes.responseType
+}
+
+@Route("/hellozip")
+@DataContract
+open class HelloZip : IReturn<HelloZipResponse>
+{
+    @DataMember
+    var name:String? = null
+
+    @DataMember
+    var test:ArrayList<String> = ArrayList<String>()
+    companion object { private val responseType = HelloZipResponse::class.java }
+    override fun getResponseType(): Any? = HelloZip.responseType
+}
+
 @Route("/ping")
 open class Ping : IReturn<PingResponse>
 {
@@ -485,6 +697,73 @@ open class RequiresRole : IReturn<RequiresRoleResponse>
 {
     companion object { private val responseType = RequiresRoleResponse::class.java }
     override fun getResponseType(): Any? = RequiresRole.responseType
+}
+
+@Route("/return/string")
+open class ReturnString : IReturn<String>
+{
+    @SerializedName("data") var Data:String? = null
+    companion object { private val responseType = String::class.java }
+    override fun getResponseType(): Any? = ReturnString.responseType
+}
+
+@Route("/return/bytes")
+open class ReturnBytes : IReturn<ByteArray>
+{
+    @SerializedName("data") var Data:ByteArray? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = ReturnBytes.responseType
+}
+
+@Route("/return/stream")
+open class ReturnStream : IReturn<InputStream>
+{
+    @SerializedName("data") var Data:ByteArray? = null
+    companion object { private val responseType = InputStream::class.java }
+    override fun getResponseType(): Any? = ReturnStream.responseType
+}
+
+@Route(Path="/Request1", Verbs="GET")
+open class GetRequest1 : IReturn<ArrayList<ReturnedDto>>, IGet
+{
+    companion object { private val responseType = object : TypeToken<ArrayList<ReturnedDto>>(){}.type }
+    override fun getResponseType(): Any? = GetRequest1.responseType
+}
+
+@Route(Path="/Request2", Verbs="GET")
+open class GetRequest2 : IReturn<ArrayList<ReturnedDto>>, IGet
+{
+    companion object { private val responseType = object : TypeToken<ArrayList<ReturnedDto>>(){}.type }
+    override fun getResponseType(): Any? = GetRequest2.responseType
+}
+
+@Route("/sendjson")
+open class SendJson : IReturn<String>
+{
+    var id:Int? = null
+    var name:String? = null
+    companion object { private val responseType = String::class.java }
+    override fun getResponseType(): Any? = SendJson.responseType
+}
+
+@Route("/sendtext")
+open class SendText : IReturn<String>
+{
+    var id:Int? = null
+    var name:String? = null
+    var contentType:String? = null
+    companion object { private val responseType = String::class.java }
+    override fun getResponseType(): Any? = SendText.responseType
+}
+
+@Route("/sendraw")
+open class SendRaw : IReturn<ByteArray>
+{
+    var id:Int? = null
+    var name:String? = null
+    var contentType:String? = null
+    companion object { private val responseType = ByteArray::class.java }
+    override fun getResponseType(): Any? = SendRaw.responseType
 }
 
 open class SendDefault : IReturn<SendVerbResponse>
@@ -523,6 +802,11 @@ open class SendPut : IReturn<SendVerbResponse>, IPut
     override fun getResponseType(): Any? = SendPut.responseType
 }
 
+open class SendReturnVoid : IReturnVoid
+{
+    var id:Int? = null
+}
+
 @Route("/session")
 open class GetSession : IReturn<GetSessionResponse>
 {
@@ -538,6 +822,33 @@ open class UpdateSession : IReturn<GetSessionResponse>
     override fun getResponseType(): Any? = UpdateSession.responseType
 }
 
+@Route("/Stuff")
+@DataContract(Namespace="http://schemas.servicestack.net/types")
+open class GetStuff : IReturn<GetStuffResponse>
+{
+    @DataMember
+    @ApiMember(DataType="DateTime", Name="Summary Date")
+    var summaryDate:Date? = null
+
+    @DataMember
+    @ApiMember(DataType="DateTime", Name="Summary End Date")
+    var summaryEndDate:Date? = null
+
+    @DataMember
+    @ApiMember(DataType="string", Name="Symbol")
+    var symbol:String? = null
+
+    @DataMember
+    @ApiMember(DataType="string", Name="Email")
+    var email:String? = null
+
+    @DataMember
+    @ApiMember(DataType="bool", Name="Is Enabled")
+    var isEnabled:Boolean? = null
+    companion object { private val responseType = GetStuffResponse::class.java }
+    override fun getResponseType(): Any? = GetStuff.responseType
+}
+
 open class StoreLogs : IReturn<StoreLogsResponse>
 {
     var loggers:ArrayList<Logger> = ArrayList<Logger>()
@@ -545,11 +856,48 @@ open class StoreLogs : IReturn<StoreLogsResponse>
     override fun getResponseType(): Any? = StoreLogs.responseType
 }
 
+open class HelloAuth : IReturn<HelloResponse>
+{
+    var name:String? = null
+    companion object { private val responseType = HelloResponse::class.java }
+    override fun getResponseType(): Any? = HelloAuth.responseType
+}
+
 @Route("/testauth")
 open class TestAuth : IReturn<TestAuthResponse>
 {
     companion object { private val responseType = TestAuthResponse::class.java }
     override fun getResponseType(): Any? = TestAuth.responseType
+}
+
+open class RequiresAdmin : IReturn<RequiresAdmin>
+{
+    var id:Int? = null
+    companion object { private val responseType = RequiresAdmin::class.java }
+    override fun getResponseType(): Any? = RequiresAdmin.responseType
+}
+
+@Route("/testdata/AllTypes")
+open class TestDataAllTypes : IReturn<AllTypes>
+{
+    companion object { private val responseType = AllTypes::class.java }
+    override fun getResponseType(): Any? = TestDataAllTypes.responseType
+}
+
+@Route("/testdata/AllCollectionTypes")
+open class TestDataAllCollectionTypes : IReturn<AllCollectionTypes>
+{
+    companion object { private val responseType = AllCollectionTypes::class.java }
+    override fun getResponseType(): Any? = TestDataAllCollectionTypes.responseType
+}
+
+@Route("/custom")
+// @Route("/custom/{Data}")
+open class CustomRoute : IReturn<CustomRoute>
+{
+    @SerializedName("data") var Data:String? = null
+    companion object { private val responseType = CustomRoute::class.java }
+    override fun getResponseType(): Any? = CustomRoute.responseType
 }
 
 @Route("/void-response")
@@ -604,86 +952,29 @@ open class EchoCollections : IReturn<EchoCollections>
     override fun getResponseType(): Any? = EchoCollections.responseType
 }
 
+@Route("/echo/complex")
 open class EchoComplexTypes : IReturn<EchoComplexTypes>
 {
     var subType:SubType? = null
+    var subTypes:ArrayList<SubType> = ArrayList<SubType>()
+    var subTypeMap:HashMap<String,SubType> = HashMap<String,SubType>()
+    var stringMap:HashMap<String,String> = HashMap<String,String>()
+    var intStringMap:HashMap<Int,String> = HashMap<Int,String>()
     companion object { private val responseType = EchoComplexTypes::class.java }
     override fun getResponseType(): Any? = EchoComplexTypes.responseType
 }
 
-@Route("/requestlogs")
-@DataContract
-open class RequestLogs : IReturn<RequestLogsResponse>
+@Route(Path="/rockstars", Verbs="POST")
+open class StoreRockstars : ArrayList<Rockstar>(), IReturn<StoreRockstars>
 {
-    @DataMember(Order=1)
-    var beforeSecs:Int? = null
-
-    @DataMember(Order=2)
-    var afterSecs:Int? = null
-
-    @DataMember(Order=3)
-    var ipAddress:String? = null
-
-    @DataMember(Order=4)
-    var forwardedFor:String? = null
-
-    @DataMember(Order=5)
-    var userAuthId:String? = null
-
-    @DataMember(Order=6)
-    var sessionId:String? = null
-
-    @DataMember(Order=7)
-    var referer:String? = null
-
-    @DataMember(Order=8)
-    var pathInfo:String? = null
-
-    @DataMember(Order=9)
-    var ids:ArrayList<Long>? = null
-
-    @DataMember(Order=10)
-    var beforeId:Int? = null
-
-    @DataMember(Order=11)
-    var afterId:Int? = null
-
-    @DataMember(Order=12)
-    var hasResponse:Boolean? = null
-
-    @DataMember(Order=13)
-    var withErrors:Boolean? = null
-
-    @DataMember(Order=14)
-    var skip:Int? = null
-
-    @DataMember(Order=15)
-    var take:Int? = null
-
-    @DataMember(Order=16)
-    var enableSessionTracking:Boolean? = null
-
-    @DataMember(Order=17)
-    var enableResponseTracking:Boolean? = null
-
-    @DataMember(Order=18)
-    var enableErrorTracking:Boolean? = null
-
-    @DataMember(Order=19)
-    var durationLongerThan:TimeSpan? = null
-
-    @DataMember(Order=20)
-    var durationLessThan:TimeSpan? = null
-    companion object { private val responseType = RequestLogsResponse::class.java }
-    override fun getResponseType(): Any? = RequestLogs.responseType
+    companion object { private val responseType = StoreRockstars::class.java }
+    override fun getResponseType(): Any? = StoreRockstars.responseType
 }
 
 @Route("/auth")
 // @Route("/auth/{provider}")
-// @Route("/authenticate")
-// @Route("/authenticate/{provider}")
 @DataContract
-open class Authenticate : IReturn<AuthenticateResponse>
+open class Authenticate : IReturn<AuthenticateResponse>, IPost
 {
     @DataMember(Order=1)
     var provider:String? = null
@@ -706,31 +997,40 @@ open class Authenticate : IReturn<AuthenticateResponse>
     @DataMember(Order=7)
     var rememberMe:Boolean? = null
 
-    @DataMember(Order=8)
-    @SerializedName("continue") var Continue:String? = null
-
     @DataMember(Order=9)
-    var nonce:String? = null
+    var errorView:String? = null
 
     @DataMember(Order=10)
-    var uri:String? = null
+    var nonce:String? = null
 
     @DataMember(Order=11)
-    var response:String? = null
+    var uri:String? = null
 
     @DataMember(Order=12)
-    var qop:String? = null
+    var response:String? = null
 
     @DataMember(Order=13)
-    var nc:String? = null
+    var qop:String? = null
 
     @DataMember(Order=14)
-    var cnonce:String? = null
+    var nc:String? = null
 
     @DataMember(Order=15)
-    var useTokenCookie:Boolean? = null
+    var cnonce:String? = null
 
     @DataMember(Order=16)
+    var useTokenCookie:Boolean? = null
+
+    @DataMember(Order=17)
+    var accessToken:String? = null
+
+    @DataMember(Order=18)
+    var accessTokenSecret:String? = null
+
+    @DataMember(Order=19)
+    var scope:String? = null
+
+    @DataMember(Order=20)
     var meta:HashMap<String,String> = HashMap<String,String>()
     companion object { private val responseType = AuthenticateResponse::class.java }
     override fun getResponseType(): Any? = Authenticate.responseType
@@ -738,7 +1038,7 @@ open class Authenticate : IReturn<AuthenticateResponse>
 
 @Route("/assignroles")
 @DataContract
-open class AssignRoles : IReturn<AssignRolesResponse>
+open class AssignRoles : IReturn<AssignRolesResponse>, IPost
 {
     @DataMember(Order=1)
     var userName:String? = null
@@ -748,13 +1048,16 @@ open class AssignRoles : IReturn<AssignRolesResponse>
 
     @DataMember(Order=3)
     var roles:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=4)
+    var meta:HashMap<String,String> = HashMap<String,String>()
     companion object { private val responseType = AssignRolesResponse::class.java }
     override fun getResponseType(): Any? = AssignRoles.responseType
 }
 
 @Route("/unassignroles")
 @DataContract
-open class UnAssignRoles : IReturn<UnAssignRolesResponse>
+open class UnAssignRoles : IReturn<UnAssignRolesResponse>, IPost
 {
     @DataMember(Order=1)
     var userName:String? = null
@@ -764,35 +1067,210 @@ open class UnAssignRoles : IReturn<UnAssignRolesResponse>
 
     @DataMember(Order=3)
     var roles:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=4)
+    var meta:HashMap<String,String> = HashMap<String,String>()
     companion object { private val responseType = UnAssignRolesResponse::class.java }
     override fun getResponseType(): Any? = UnAssignRoles.responseType
 }
 
-open class QueryPocoBase : QueryBase_1<OnlyDefinedInGenericType>(), IReturn<QueryResponse<OnlyDefinedInGenericType>>
+@Route("/session-to-token")
+@DataContract
+open class ConvertSessionToToken : IReturn<ConvertSessionToTokenResponse>, IPost
+{
+    @DataMember(Order=1)
+    var preserveSession:Boolean? = null
+
+    @DataMember(Order=2)
+    var meta:HashMap<String,String> = HashMap<String,String>()
+    companion object { private val responseType = ConvertSessionToTokenResponse::class.java }
+    override fun getResponseType(): Any? = ConvertSessionToToken.responseType
+}
+
+@Route("/access-token")
+@DataContract
+open class GetAccessToken : IReturn<GetAccessTokenResponse>, IPost
+{
+    @DataMember(Order=1)
+    var refreshToken:String? = null
+
+    @DataMember(Order=2)
+    var useTokenCookie:Boolean? = null
+
+    @DataMember(Order=3)
+    var meta:HashMap<String,String> = HashMap<String,String>()
+    companion object { private val responseType = GetAccessTokenResponse::class.java }
+    override fun getResponseType(): Any? = GetAccessToken.responseType
+}
+
+open class QueryRockstarAudit : QueryDbTenant_2<RockstarAuditTenant, RockstarAuto>(), IReturn<QueryResponse<RockstarAuto>>
+{
+    var id:Int? = null
+    companion object { private val responseType = object : TypeToken<QueryResponse<RockstarAuto>>(){}.type }
+    override fun getResponseType(): Any? = QueryRockstarAudit.responseType
+}
+
+open class QueryRockstarAuditSubOr : QueryDb_2<RockstarAuditTenant, RockstarAuto>(), IReturn<QueryResponse<RockstarAuto>>
+{
+    var firstNameStartsWith:String? = null
+    var ageOlderThan:Int? = null
+    companion object { private val responseType = object : TypeToken<QueryResponse<RockstarAuto>>(){}.type }
+    override fun getResponseType(): Any? = QueryRockstarAuditSubOr.responseType
+}
+
+open class QueryPocoBase : QueryDb_1<OnlyDefinedInGenericType>(), IReturn<QueryResponse<OnlyDefinedInGenericType>>
 {
     var id:Int? = null
     companion object { private val responseType = object : TypeToken<QueryResponse<OnlyDefinedInGenericType>>(){}.type }
     override fun getResponseType(): Any? = QueryPocoBase.responseType
 }
 
-open class QueryPocoIntoBase : QueryBase_2<OnlyDefinedInGenericTypeFrom, OnlyDefinedInGenericTypeInto>(), IReturn<QueryResponse<OnlyDefinedInGenericTypeInto>>
+open class QueryPocoIntoBase : QueryDb_2<OnlyDefinedInGenericTypeFrom, OnlyDefinedInGenericTypeInto>(), IReturn<QueryResponse<OnlyDefinedInGenericTypeInto>>
 {
     var id:Int? = null
     companion object { private val responseType = object : TypeToken<QueryResponse<OnlyDefinedInGenericTypeInto>>(){}.type }
     override fun getResponseType(): Any? = QueryPocoIntoBase.responseType
 }
 
-@Route("/rockstars")
-open class QueryRockstars : QueryBase_1<Rockstar>(), IReturn<QueryResponse<Rockstar>>
+@Route(Path="/rockstars", Verbs="GET")
+open class QueryRockstars : QueryDb_1<Rockstar>(), IReturn<QueryResponse<Rockstar>>
 {
     companion object { private val responseType = object : TypeToken<QueryResponse<Rockstar>>(){}.type }
     override fun getResponseType(): Any? = QueryRockstars.responseType
+}
+
+open class CreateRockstarAudit : RockstarBase(), IReturn<RockstarWithIdResponse>, ICreateDb<RockstarAudit>
+{
+    companion object { private val responseType = RockstarWithIdResponse::class.java }
+    override fun getResponseType(): Any? = CreateRockstarAudit.responseType
+}
+
+open class CreateRockstarAuditTenant : CreateAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse>(), IReturn<RockstarWithIdAndResultResponse>, IHasSessionId
+{
+    var sessionId:String? = null
+    var firstName:String? = null
+    var lastName:String? = null
+    var age:Int? = null
+    var dateOfBirth:Date? = null
+    var dateDied:Date? = null
+    var livingStatus:LivingStatus? = null
+    companion object { private val responseType = RockstarWithIdAndResultResponse::class.java }
+    override fun getResponseType(): Any? = CreateRockstarAuditTenant.responseType
+}
+
+open class UpdateRockstarAuditTenant : UpdateAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse>(), IReturn<RockstarWithIdAndResultResponse>, IHasSessionId
+{
+    var sessionId:String? = null
+    var id:Int? = null
+    var firstName:String? = null
+    var livingStatus:LivingStatus? = null
+    companion object { private val responseType = RockstarWithIdAndResultResponse::class.java }
+    override fun getResponseType(): Any? = UpdateRockstarAuditTenant.responseType
+}
+
+open class PatchRockstarAuditTenant : PatchAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse>(), IReturn<RockstarWithIdAndResultResponse>, IHasSessionId
+{
+    var sessionId:String? = null
+    var id:Int? = null
+    var firstName:String? = null
+    var livingStatus:LivingStatus? = null
+    companion object { private val responseType = RockstarWithIdAndResultResponse::class.java }
+    override fun getResponseType(): Any? = PatchRockstarAuditTenant.responseType
+}
+
+open class SoftDeleteAuditTenant : SoftDeleteAuditTenantBase<RockstarAuditTenant, RockstarWithIdAndResultResponse>(), IReturn<RockstarWithIdAndResultResponse>
+{
+    var id:Int? = null
+    companion object { private val responseType = RockstarWithIdAndResultResponse::class.java }
+    override fun getResponseType(): Any? = SoftDeleteAuditTenant.responseType
+}
+
+open class CreateRockstarAuditMqToken : RockstarBase(), IReturn<RockstarWithIdResponse>, ICreateDb<RockstarAudit>, IHasBearerToken
+{
+    var bearerToken:String? = null
+    companion object { private val responseType = RockstarWithIdResponse::class.java }
+    override fun getResponseType(): Any? = CreateRockstarAuditMqToken.responseType
+}
+
+open class RealDeleteAuditTenant : IReturn<RockstarWithIdAndCountResponse>, IDeleteDb<RockstarAuditTenant>, IHasSessionId
+{
+    var sessionId:String? = null
+    var id:Int? = null
+    var age:Int? = null
+    companion object { private val responseType = RockstarWithIdAndCountResponse::class.java }
+    override fun getResponseType(): Any? = RealDeleteAuditTenant.responseType
+}
+
+open class CreateRockstarVersion : RockstarBase(), IReturn<RockstarWithIdAndRowVersionResponse>, ICreateDb<RockstarVersion>
+{
+    companion object { private val responseType = RockstarWithIdAndRowVersionResponse::class.java }
+    override fun getResponseType(): Any? = CreateRockstarVersion.responseType
+}
+
+open class ChatMessage
+{
+    var id:Long? = null
+    var channel:String? = null
+    var fromUserId:String? = null
+    var fromName:String? = null
+    var displayName:String? = null
+    var message:String? = null
+    var userAuthId:String? = null
+    @SerializedName("private") var Private:Boolean? = null
+}
+
+open class GetChatHistoryResponse
+{
+    var results:ArrayList<ChatMessage> = ArrayList<ChatMessage>()
+    var responseStatus:ResponseStatus? = null
+}
+
+open class GetUserDetailsResponse
+{
+    var provider:String? = null
+    var userId:String? = null
+    var userName:String? = null
+    var fullName:String? = null
+    var displayName:String? = null
+    var firstName:String? = null
+    var lastName:String? = null
+    var company:String? = null
+    var email:String? = null
+    var phoneNumber:String? = null
+    var birthDate:Date? = null
+    var birthDateRaw:String? = null
+    var address:String? = null
+    var address2:String? = null
+    var city:String? = null
+    var state:String? = null
+    var country:String? = null
+    var culture:String? = null
+    var gender:String? = null
+    var language:String? = null
+    var mailAddress:String? = null
+    var nickname:String? = null
+    var postalCode:String? = null
+    var timeZone:String? = null
 }
 
 open class CustomHttpErrorResponse
 {
     var custom:String? = null
     var responseStatus:ResponseStatus? = null
+}
+
+open class QueryResponseAlt<T>
+{
+    var offset:Int? = null
+    var total:Int? = null
+    var results:ArrayList<T> = ArrayList<T>()
+    var meta:HashMap<String,String> = HashMap<String,String>()
+    var responseStatus:ResponseStatus? = null
+}
+
+open class Items
+{
+    var results:ArrayList<Item> = ArrayList<Item>()
 }
 
 open class ThrowTypeResponse
@@ -813,21 +1291,6 @@ open class ThrowBusinessErrorResponse
     var responseStatus:ResponseStatus? = null
 }
 
-open class ExternalOperationResponse
-{
-    var result:String? = null
-}
-
-open class ExternalOperation2Response
-{
-    var externalType:ExternalType? = null
-}
-
-open class ExternalReturnTypeResponse
-{
-    var externalEnum3:ExternalEnum3? = null
-}
-
 open class Account
 {
     var name:String? = null
@@ -837,6 +1300,31 @@ open class Project
 {
     var account:String? = null
     var name:String? = null
+}
+
+open class SecuredResponse
+{
+    var result:String? = null
+    var responseStatus:ResponseStatus? = null
+}
+
+open class CreateJwtResponse
+{
+    var token:String? = null
+    var responseStatus:ResponseStatus? = null
+}
+
+open class CreateRefreshJwtResponse
+{
+    var token:String? = null
+    var responseStatus:ResponseStatus? = null
+}
+
+@DataContract
+open class EmptyResponse
+{
+    @DataMember(Order=1)
+    var responseStatus:ResponseStatus? = null
 }
 
 open class MetadataTestResponse
@@ -866,11 +1354,26 @@ open class HelloResponse
     var result:String? = null
 }
 
+/**
+* Description on HelloAllResponse type
+*/
+@DataContract
+open class HelloAnnotatedResponse
+{
+    @DataMember
+    var result:String? = null
+}
+
 open class HelloAllTypesResponse
 {
     var result:String? = null
     var allTypes:AllTypes? = null
     var allCollectionTypes:AllCollectionTypes? = null
+}
+
+open class SubAllTypes : AllTypesBase()
+{
+    var hierarchy:Int? = null
 }
 
 @DataContract
@@ -882,8 +1385,8 @@ open class HelloWithDataContractResponse
 }
 
 /**
- * Description on HelloWithDescriptionResponse type
- */
+* Description on HelloWithDescriptionResponse type
+*/
 open class HelloWithDescriptionResponse
 {
     var result:String? = null
@@ -925,6 +1428,13 @@ open class EnumResponse
     @SerializedName("operator") var Operator:ScopeType? = null
 }
 
+@DataContract
+open class HelloZipResponse
+{
+    @DataMember
+    var result:String? = null
+}
+
 open class PingResponse
 {
     var responses:HashMap<String,ResponseStatus> = HashMap<String,ResponseStatus>()
@@ -951,6 +1461,25 @@ open class GetSessionResponse
     var responseStatus:ResponseStatus? = null
 }
 
+@DataContract(Namespace="http://schemas.servicestack.net/types")
+open class GetStuffResponse
+{
+    @DataMember
+    var summaryDate:Date? = null
+
+    @DataMember
+    var summaryEndDate:Date? = null
+
+    @DataMember
+    var symbol:String? = null
+
+    @DataMember
+    var email:String? = null
+
+    @DataMember
+    var isEnabled:Boolean? = null
+}
+
 open class StoreLogsResponse
 {
     var existingLogs:ArrayList<Logger> = ArrayList<Logger>()
@@ -967,20 +1496,7 @@ open class TestAuthResponse
 }
 
 @DataContract
-open class RequestLogsResponse
-{
-    @DataMember(Order=1)
-    var results:ArrayList<RequestLogEntry> = ArrayList<RequestLogEntry>()
-
-    @DataMember(Order=2)
-    var usage:HashMap<String,String> = HashMap<String,String>()
-
-    @DataMember(Order=3)
-    var responseStatus:ResponseStatus? = null
-}
-
-@DataContract
-open class AuthenticateResponse
+open class AuthenticateResponse : IHasSessionId, IHasBearerToken
 {
     @DataMember(Order=1)
     var userId:String? = null
@@ -1001,9 +1517,21 @@ open class AuthenticateResponse
     var bearerToken:String? = null
 
     @DataMember(Order=7)
-    var responseStatus:ResponseStatus? = null
+    var refreshToken:String? = null
 
     @DataMember(Order=8)
+    var profileUrl:String? = null
+
+    @DataMember(Order=9)
+    var roles:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=10)
+    var permissions:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=11)
+    var responseStatus:ResponseStatus? = null
+
+    @DataMember(Order=12)
     var meta:HashMap<String,String> = HashMap<String,String>()
 }
 
@@ -1017,6 +1545,9 @@ open class AssignRolesResponse
     var allPermissions:ArrayList<String> = ArrayList<String>()
 
     @DataMember(Order=3)
+    var meta:HashMap<String,String> = HashMap<String,String>()
+
+    @DataMember(Order=4)
     var responseStatus:ResponseStatus? = null
 }
 
@@ -1028,6 +1559,38 @@ open class UnAssignRolesResponse
 
     @DataMember(Order=2)
     var allPermissions:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=3)
+    var meta:HashMap<String,String> = HashMap<String,String>()
+
+    @DataMember(Order=4)
+    var responseStatus:ResponseStatus? = null
+}
+
+@DataContract
+open class ConvertSessionToTokenResponse
+{
+    @DataMember(Order=1)
+    var meta:HashMap<String,String> = HashMap<String,String>()
+
+    @DataMember(Order=2)
+    var accessToken:String? = null
+
+    @DataMember(Order=3)
+    var refreshToken:String? = null
+
+    @DataMember(Order=4)
+    var responseStatus:ResponseStatus? = null
+}
+
+@DataContract
+open class GetAccessTokenResponse
+{
+    @DataMember(Order=1)
+    var accessToken:String? = null
+
+    @DataMember(Order=2)
+    var meta:HashMap<String,String> = HashMap<String,String>()
 
     @DataMember(Order=3)
     var responseStatus:ResponseStatus? = null
@@ -1052,270 +1615,49 @@ open class QueryResponse<T>
     var responseStatus:ResponseStatus? = null
 }
 
-enum class ExternalEnum
+open class RockstarWithIdResponse
 {
-    Foo,
-    Bar,
-    Baz,
+    var id:Int? = null
+    var responseStatus:ResponseStatus? = null
 }
 
-open class ExternalType
+open class RockstarWithIdAndResultResponse
 {
-    var externalEnum2:ExternalEnum2? = null
+    var id:Int? = null
+    var result:RockstarAuto? = null
+    var responseStatus:ResponseStatus? = null
 }
 
-enum class ExternalEnum3
+open class RockstarWithIdAndCountResponse
 {
-    Un,
-    Deux,
-    Trois,
+    var id:Int? = null
+    var count:Int? = null
+    var responseStatus:ResponseStatus? = null
 }
 
-open class MetadataTestChild
+open class RockstarWithIdAndRowVersionResponse
 {
-    var name:String? = null
-    var results:ArrayList<MetadataTestNestedChild> = ArrayList<MetadataTestNestedChild>()
+    var id:Int? = null
+    var rowVersion:Long? = null
+    var responseStatus:ResponseStatus? = null
 }
 
-@DataContract
-open class MenuExample
-{
-    @DataMember(Order=1)
-    @ApiMember()
-    var menuItemExample1:MenuItemExample? = null
-}
-
-open class NestedClass
-{
-    var value:String? = null
-}
-
-open class ListResult
-{
-    var result:String? = null
-}
-
-open class ArrayResult
-{
-    var result:String? = null
-}
-
-enum class EnumType
-{
-    Value1,
-    Value2,
-}
-
-@Flags()
-enum class EnumFlags(val value:Int)
-{
-    @SerializedName("1") Value1(1),
-    @SerializedName("2") Value2(2),
-    @SerializedName("4") Value3(4),
-}
-
-open class AllCollectionTypes
-{
-    var intArray:ArrayList<Int>? = null
-    var intList:ArrayList<Int> = ArrayList<Int>()
-    var stringArray:ArrayList<String>? = null
-    var stringList:ArrayList<String> = ArrayList<String>()
-    var pocoArray:ArrayList<Poco>? = null
-    var pocoList:ArrayList<Poco> = ArrayList<Poco>()
-    var pocoLookup:HashMap<String,ArrayList<Poco>> = HashMap<String,ArrayList<Poco>>()
-    var pocoLookupMap:HashMap<String,ArrayList<HashMap<String,Poco>>> = HashMap<String,ArrayList<HashMap<String,Poco>>>()
-}
-
-open class SubType
+open class CustomType
 {
     var id:Int? = null
     var name:String? = null
 }
 
-open class HelloBase
+open class SetterType
 {
     var id:Int? = null
-}
-
-open class HelloResponseBase
-{
-    var refId:Int? = null
-}
-
-open class Poco
-{
     var name:String? = null
-}
-
-open class HelloBase_1<T>
-{
-    var items:ArrayList<T> = ArrayList<T>()
-    var counts:ArrayList<Int> = ArrayList<Int>()
 }
 
 open class Item
 {
-    var value:String? = null
-}
-
-open class HelloWithReturnResponse
-{
-    var result:String? = null
-}
-
-open class HelloType
-{
-    var result:String? = null
-}
-
-open interface IPoco
-{
-    var name:String?
-}
-
-open interface IEmptyInterface
-{
-}
-
-open class EmptyClass
-{
-}
-
-open class InnerType
-{
-    var id:Long? = null
     var name:String? = null
-}
-
-enum class InnerEnum
-{
-    Foo,
-    Bar,
-    Baz,
-}
-
-enum class DayOfWeek
-{
-    Sunday,
-    Monday,
-    Tuesday,
-    Wednesday,
-    Thursday,
-    Friday,
-    Saturday,
-}
-
-@DataContract
-enum class ScopeType(val value:Int)
-{
-    Global(1),
-    Sale(2),
-}
-
-open class PingService
-{
-}
-
-open class CustomUserSession : AuthUserSession()
-{
-    @DataMember
-    var customName:String? = null
-
-    @DataMember
-    var customInfo:String? = null
-}
-
-open class UnAuthInfo
-{
-    var customInfo:String? = null
-}
-
-open class Logger
-{
-    var id:Long? = null
-    var devices:ArrayList<Device> = ArrayList<Device>()
-}
-
-open class RequestLogEntry
-{
-    var id:Long? = null
-    var dateTime:Date? = null
-    var httpMethod:String? = null
-    var absoluteUri:String? = null
-    var pathInfo:String? = null
-    var requestBody:String? = null
-    var requestDto:Object? = null
-    var userAuthId:String? = null
-    var sessionId:String? = null
-    var ipAddress:String? = null
-    var forwardedFor:String? = null
-    var referer:String? = null
-    var headers:HashMap<String,String> = HashMap<String,String>()
-    var formData:HashMap<String,String> = HashMap<String,String>()
-    var items:HashMap<String,String> = HashMap<String,String>()
-    var session:Object? = null
-    var responseDto:Object? = null
-    var errorResponse:Object? = null
-    var requestDuration:TimeSpan? = null
-}
-
-open class QueryBase_1<T> : QueryBase()
-{
-}
-
-open class OnlyDefinedInGenericType
-{
-    var id:Int? = null
-    var name:String? = null
-}
-
-open class QueryBase_2<From, Into> : QueryBase()
-{
-}
-
-open class OnlyDefinedInGenericTypeFrom
-{
-    var id:Int? = null
-    var name:String? = null
-}
-
-open class OnlyDefinedInGenericTypeInto
-{
-    var id:Int? = null
-    var name:String? = null
-}
-
-open class Rockstar
-{
-    var id:Int? = null
-    var firstName:String? = null
-    var lastName:String? = null
-    var age:Int? = null
-}
-
-enum class ExternalEnum2
-{
-    Uno,
-    Due,
-    Tre,
-}
-
-open class MetadataTestNestedChild
-{
-    var name:String? = null
-}
-
-open class MenuItemExample
-{
-    @DataMember(Order=1)
-    @ApiMember()
-    var name1:String? = null
-
-    var menuItemExampleItem:MenuItemExampleItem? = null
-}
-
-open class TypesGroup
-{
+    var description:String? = null
 }
 
 open interface IAuthTokens
@@ -1458,7 +1800,411 @@ open class AuthUserSession
     var tag:Long? = null
 
     @DataMember(Order=42)
+    var authProvider:String? = null
+
+    @DataMember(Order=43)
     var providerOAuthAccess:ArrayList<IAuthTokens> = ArrayList<IAuthTokens>()
+
+    @DataMember(Order=44)
+    var meta:HashMap<String,String> = HashMap<String,String>()
+
+    @DataMember(Order=45)
+    var audiences:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=46)
+    var scopes:ArrayList<String> = ArrayList<String>()
+
+    @DataMember(Order=47)
+    var dns:String? = null
+
+    @DataMember(Order=48)
+    var rsa:String? = null
+
+    @DataMember(Order=49)
+    var sid:String? = null
+
+    @DataMember(Order=50)
+    var hash:String? = null
+
+    @DataMember(Order=51)
+    var homePhone:String? = null
+
+    @DataMember(Order=52)
+    var mobilePhone:String? = null
+
+    @DataMember(Order=53)
+    var webpage:String? = null
+
+    @DataMember(Order=54)
+    var emailConfirmed:Boolean? = null
+
+    @DataMember(Order=55)
+    var phoneNumberConfirmed:Boolean? = null
+
+    @DataMember(Order=56)
+    var twoFactorEnabled:Boolean? = null
+
+    @DataMember(Order=57)
+    var securityStamp:String? = null
+
+    @DataMember(Order=58)
+    @SerializedName("type") var Type:String? = null
+}
+
+open class MetadataTestChild
+{
+    var name:String? = null
+    var results:ArrayList<MetadataTestNestedChild> = ArrayList<MetadataTestNestedChild>()
+}
+
+@DataContract
+open class MenuExample
+{
+    @DataMember(Order=1)
+    @ApiMember()
+    var menuItemExample1:MenuItemExample? = null
+}
+
+open class NestedClass
+{
+    var value:String? = null
+}
+
+open class ListResult
+{
+    var result:String? = null
+}
+
+open class ArrayResult
+{
+    var result:String? = null
+}
+
+enum class EnumType
+{
+    Value1,
+    Value2,
+    Value3,
+}
+
+@Flags()
+enum class EnumTypeFlags(val value:Int)
+{
+    @SerializedName("0") Value1(0),
+    @SerializedName("1") Value2(1),
+    @SerializedName("2") Value3(2),
+}
+
+enum class EnumWithValues
+{
+    None,
+    Value1,
+    Value2,
+}
+
+@Flags()
+enum class EnumFlags(val value:Int)
+{
+    @SerializedName("0") Value0(0),
+    @SerializedName("1") Value1(1),
+    @SerializedName("2") Value2(2),
+    @SerializedName("4") Value3(4),
+    @SerializedName("7") Value123(7),
+}
+
+enum class EnumAsInt(val value:Int)
+{
+    Value1(1000),
+    Value2(2000),
+    Value3(3000),
+}
+
+enum class EnumStyle
+{
+    Lower,
+    Upper,
+    PascalCase,
+    CamelCase,
+    CamelUPPER,
+    PascalUPPER,
+}
+
+enum class EnumStyleMembers
+{
+    Lower,
+    Upper,
+    PascalCase,
+    CamelCase,
+    CamelUpper,
+    PascalUpper,
+}
+
+open class KeyValuePair<TKey, TValue>
+{
+    var key:TKey? = null
+    var value:TValue? = null
+}
+
+open class SubType
+{
+    var id:Int? = null
+    var name:String? = null
+}
+
+open class AllTypesBase
+{
+    var id:Int? = null
+    var nullableId:Int? = null
+    @SerializedName("byte") var Byte:Short? = null
+    @SerializedName("short") var Short:Short? = null
+    @SerializedName("int") var Int:Int? = null
+    @SerializedName("long") var Long:Long? = null
+    var uShort:Int? = null
+    var uInt:Long? = null
+    var uLong:BigInteger? = null
+    @SerializedName("float") var Float:Float? = null
+    @SerializedName("double") var Double:Double? = null
+    var decimal:BigDecimal? = null
+    var string:String? = null
+    var dateTime:Date? = null
+    var timeSpan:TimeSpan? = null
+    var dateTimeOffset:Date? = null
+    var guid:UUID? = null
+    @SerializedName("char") var Char:String? = null
+    var keyValuePair:KeyValuePair<String, String>? = null
+    var nullableDateTime:Date? = null
+    var nullableTimeSpan:TimeSpan? = null
+    var stringList:ArrayList<String> = ArrayList<String>()
+    var stringArray:ArrayList<String>? = null
+    var stringMap:HashMap<String,String> = HashMap<String,String>()
+    var intStringMap:HashMap<Int,String> = HashMap<Int,String>()
+    var subType:SubType? = null
+}
+
+open class Poco
+{
+    var name:String? = null
+}
+
+open class HelloBase
+{
+    var id:Int? = null
+}
+
+open class HelloResponseBase
+{
+    var refId:Int? = null
+}
+
+open class HelloBase_1<T>
+{
+    var items:ArrayList<T> = ArrayList<T>()
+    var counts:ArrayList<Int> = ArrayList<Int>()
+}
+
+open class HelloWithReturnResponse
+{
+    var result:String? = null
+}
+
+open class HelloType
+{
+    var result:String? = null
+}
+
+open interface IPoco
+{
+    var name:String?
+}
+
+open interface IEmptyInterface
+{
+}
+
+open class EmptyClass
+{
+}
+
+open class InnerType
+{
+    var id:Long? = null
+    var name:String? = null
+}
+
+enum class InnerEnum
+{
+    Foo,
+    Bar,
+    Baz,
+}
+
+enum class DayOfWeek
+{
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+}
+
+@DataContract
+enum class ScopeType(val value:Int)
+{
+    Global(1),
+    Sale(2),
+}
+
+open class PingService
+{
+}
+
+open class ReturnedDto
+{
+    var id:Int? = null
+}
+
+open class CustomUserSession : AuthUserSession()
+{
+    @DataMember
+    var customName:String? = null
+
+    @DataMember
+    var customInfo:String? = null
+}
+
+open class UnAuthInfo
+{
+    var customInfo:String? = null
+}
+
+open class Logger
+{
+    var id:Long? = null
+    var devices:ArrayList<Device> = ArrayList<Device>()
+}
+
+open class Rockstar
+{
+    var id:Int? = null
+    var firstName:String? = null
+    var lastName:String? = null
+    var age:Int? = null
+}
+
+open class QueryDbTenant_2<From, Into> : QueryDb_2<From, Into>()
+{
+}
+
+open class RockstarAuditTenant : AuditBase()
+{
+    var tenantId:Int? = null
+    var id:Int? = null
+    var firstName:String? = null
+    var lastName:String? = null
+    var age:Int? = null
+    var dateOfBirth:Date? = null
+    var dateDied:Date? = null
+    var livingStatus:LivingStatus? = null
+}
+
+open class RockstarAuto : RockstarBase()
+{
+    var id:Int? = null
+}
+
+open class QueryDb_2<From, Into> : QueryBase()
+{
+}
+
+open class QueryDb_1<T> : QueryBase()
+{
+}
+
+open class OnlyDefinedInGenericType
+{
+    var id:Int? = null
+    var name:String? = null
+}
+
+open class OnlyDefinedInGenericTypeFrom
+{
+    var id:Int? = null
+    var name:String? = null
+}
+
+open class OnlyDefinedInGenericTypeInto
+{
+    var id:Int? = null
+    var name:String? = null
+}
+
+enum class LivingStatus
+{
+    Alive,
+    Dead,
+}
+
+open class RockstarBase
+{
+    var firstName:String? = null
+    var lastName:String? = null
+    var age:Int? = null
+    var dateOfBirth:Date? = null
+    var dateDied:Date? = null
+    var livingStatus:LivingStatus? = null
+}
+
+open class RockstarAudit : RockstarBase()
+{
+    var id:Int? = null
+    var createdDate:Date? = null
+    var createdBy:String? = null
+    var createdInfo:String? = null
+    var modifiedDate:Date? = null
+    var modifiedBy:String? = null
+    var modifiedInfo:String? = null
+}
+
+open class CreateAuditTenantBase<Table, TResponse> : CreateAuditBase<Table, TResponse>()
+{
+}
+
+open class UpdateAuditTenantBase<Table, TResponse> : UpdateAuditBase<Table, TResponse>()
+{
+}
+
+open class PatchAuditTenantBase<Table, TResponse> : PatchAuditBase<Table, TResponse>()
+{
+}
+
+open class SoftDeleteAuditTenantBase<Table, TResponse> : SoftDeleteAuditBase<Table, TResponse>()
+{
+}
+
+open class RockstarVersion : RockstarBase()
+{
+    var id:Int? = null
+    var rowVersion:BigInteger? = null
+}
+
+open class MetadataTestNestedChild
+{
+    var name:String? = null
+}
+
+open class MenuItemExample
+{
+    @DataMember(Order=1)
+    @ApiMember()
+    var name1:String? = null
+
+    var menuItemExampleItem:MenuItemExampleItem? = null
+}
+
+open class TypesGroup
+{
 }
 
 open class Device
@@ -1469,6 +2215,31 @@ open class Device
     var channels:ArrayList<Channel> = ArrayList<Channel>()
 }
 
+@DataContract
+open class AuditBase
+{
+    @DataMember(Order=1)
+    var createdDate:Date? = null
+
+    @DataMember(Order=2)
+    @Required()
+    var createdBy:String? = null
+
+    @DataMember(Order=3)
+    var modifiedDate:Date? = null
+
+    @DataMember(Order=4)
+    @Required()
+    var modifiedBy:String? = null
+
+    @DataMember(Order=5)
+    var deletedDate:Date? = null
+
+    @DataMember(Order=6)
+    var deletedBy:String? = null
+}
+
+@DataContract
 open class QueryBase
 {
     @DataMember(Order=1)
@@ -1491,6 +2262,22 @@ open class QueryBase
 
     @DataMember(Order=7)
     var meta:HashMap<String,String> = HashMap<String,String>()
+}
+
+open class CreateAuditBase<Table, TResponse> : ICreateDb<Table>
+{
+}
+
+open class UpdateAuditBase<Table, TResponse> : IUpdateDb<Table>
+{
+}
+
+open class PatchAuditBase<Table, TResponse> : IPatchDb<Table>
+{
+}
+
+open class SoftDeleteAuditBase<Table, TResponse> : IUpdateDb<Table>
+{
 }
 
 open class MenuItemExampleItem
