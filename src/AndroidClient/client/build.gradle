@@ -1,99 +1,90 @@
-apply plugin: 'com.jfrog.bintray'
+// Apply necessary plugins
 apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-version = "1.0.49"
+// Define the version and group for the Maven package
+version = "1.0.50"
+group = "net.servicestack"
 
+// Specify dependencies
 dependencies {
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    testImplementation 'junit:junit:4.13.1'
     testImplementation 'pl.pragmatists:JUnitParams:1.1.1'
 }
 
-group = "net.servicestack"                                        // Maven Group ID for the artifact
-String packageId = "client"
-String groupID = group
-String versionNum = version
-
-String siteUrl = 'https://github.com/ServiceStack/ServiceStack.Java'      // Homepage URL of the library
-String gitUrl = 'https://github.com/ServiceStack/ServiceStack.Java.git'   // Git repository URL
-
-Properties properties = System.properties;
-if(properties.getProperty("bintray.user", null) == null) {
-    properties.load(project.file('./local.properties').newDataInputStream())
+// Additional tasks for generating source and Javadoc JARs
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier.set('sources')
 }
 
-install {
-    repositories.mavenInstaller {
-        pom {
-            project {
-                packaging 'jar'
-                groupId groupID
-                artifactId packageId
-                version versionNum
-                // Add your description here
-                name 'ServiceStack.Client'
-                description 'A client library to call your ServiceStack webservices.'
-                url siteUrl
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    archiveClassifier.set('javadoc')
+}
 
-                // Set your license
+// Configure the publishing block for Maven Central deployment
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            // Attach source and javadoc JARs
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'ServiceStack.Client'
+                description = 'A client library to call your ServiceStack webservices.'
+                url = 'https://github.com/ServiceStack/ServiceStack.Java'
+
+                version = version
                 licenses {
                     license {
-                        name 'The BSD 3-Clause License'
-                        url 'https://servicestack.net/bsd-license.txt'
+                        name = 'The BSD 3-Clause License'
+                        url = 'https://servicestack.net/bsd-license.txt'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'mythz'
-                        name 'Demis Bellot'
-                        email 'team@servicestack.net'
+                        id = 'mythz'
+                        name = 'Demis Bellot'
+                        email = 'team@servicestack.net'
                     }
                     developer {
-                        id 'layoric'
-                        name 'Darren Reid'
-                        email 'team@servicestack.net'
+                        id = 'layoric'
+                        name = 'Darren Reid'
+                        email = 'team@servicestack.net'
                     }
                 }
+
                 scm {
-                    connection 'https://github.com/ServiceStack/ServiceStack.Java'
-                    developerConnection 'https://github.com/ServiceStack/ServiceStack.Java'
-                    url 'https://github.com/ServiceStack/ServiceStack.Java'
+                    connection = 'https://github.com/ServiceStack/ServiceStack.Java.git'
+                    developerConnection = 'https://github.com/ServiceStack/ServiceStack.Java.git'
+                    url = 'https://github.com/ServiceStack/ServiceStack.Java'
                 }
             }
-        }.writeTo('pom.xml')
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'OSSRH'
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = project.findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+                password = project.findProperty("ossrhPassword") ?: System.getenv("OSSRH_TOKEN")
+            }
+        }
+        maven {
+            url = uri("file://${project.rootDir}/localRepo")
+        }
     }
 }
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apiKey")
-
-    configurations = ['archives']
-    pkg {
-        repo = "maven"
-        userOrg = 'servicestack'
-        name = "ServiceStack.Client"
-        websiteUrl = siteUrl
-        vcsUrl = gitUrl
-        licenses = ["BSD 3-Clause"]
-        publish = properties.getProperty('bintray.publish') == 'true'
-    }
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
