@@ -33,7 +33,7 @@ jobs:
         run: ./src/AndroidClient/client/gradlew build
 
       - name: Publish local client
-        run: ./src/AndroidClient/client/gradlew publicToMavenLocal
+        run: ./src/AndroidClient/client/gradlew publishToMavenLocal
 
       - name: Set up permissions android
         run: chmod +x ./src/AndroidClient/android/gradlew
@@ -42,7 +42,7 @@ jobs:
         run: ./src/AndroidClient/android/gradlew build
 
       - name: Publish local android
-        run: ./src/AndroidClient/android/gradlew publicToMavenLocal
+        run: ./src/AndroidClient/android/gradlew publishToMavenLocal
 
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
