@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +27,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Build
-        run: ./gradlew build
+        run: ./src/AndroidClient/client/gradlew build
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
 #          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
