@@ -26,11 +26,24 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Set up permissions
+      - name: Set up permissions client
         run: chmod +x ./src/AndroidClient/client/gradlew
 
-      - name: Build
+      - name: Build client
         run: ./src/AndroidClient/client/gradlew build
+
+      - name: Publish local client
+        run: ./src/AndroidClient/client/gradlew publicToMavenLocal
+
+      - name: Set up permissions android
+        run: chmod +x ./src/AndroidClient/android/gradlew
+
+      - name: Build android
+        run: ./src/AndroidClient/android/gradlew build
+
+      - name: Publish local android
+        run: ./src/AndroidClient/android/gradlew publicToMavenLocal
+
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
 #          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
