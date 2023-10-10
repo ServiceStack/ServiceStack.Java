@@ -26,6 +26,9 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
+      - name: Set up permissions
+        run: chmod +x ./src/AndroidClient/client/gradlew
+
       - name: Build
         run: ./src/AndroidClient/client/gradlew build
 #        env:
