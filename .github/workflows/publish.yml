@@ -36,7 +36,7 @@ jobs:
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        run: ./src/AndroidClient/client/gradlew publish
+        run: ./src/AndroidClient/client/gradlew publishAllPublicationsToGitHubPackagesRepository
 
       - name: Set up permissions android
         run: chmod +x ./src/AndroidClient/android/gradlew
@@ -48,7 +48,7 @@ jobs:
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        run: ./src/AndroidClient/android/gradlew publish
+        run: ./src/AndroidClient/android/gradlew publishAllPublicationsToGitHubPackagesRepository
 
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
