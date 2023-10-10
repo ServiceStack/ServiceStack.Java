@@ -30,25 +30,29 @@ jobs:
         run: chmod +x ./src/AndroidClient/client/gradlew
 
       - name: Build client
-        run: ./src/AndroidClient/client/gradlew build
+        working-directory: ./src/AndroidClient/client
+        run: ./gradlew build
 
       - name: Build and Publish
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        run: ./src/AndroidClient/client/gradlew publishAllPublicationsToGitHubPackagesRepository
+        working-directory: ./src/AndroidClient/client
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
 
       - name: Set up permissions android
         run: chmod +x ./src/AndroidClient/android/gradlew
 
       - name: Build android
-        run: ./src/AndroidClient/android/gradlew build
+        working-directory: ./src/AndroidClient/android
+        run: ./gradlew build
 
       - name: Build and Publish
+        working-directory: ./src/AndroidClient/android
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        run: ./src/AndroidClient/android/gradlew publishAllPublicationsToGitHubPackagesRepository
+        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
 
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
