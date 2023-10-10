@@ -97,5 +97,14 @@ publishing {
                 password = project.findProperty("ossrhPassword") ?: System.getenv("OSSRH_TOKEN")
             }
         }
+        maven {
+            name = 'GitHubPackages'
+            url = uri("https://maven.pkg.github.com/ServiceStack/ServiceStack.Java")
+
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME_GITHUB")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN_GITHUB")
+            }
+        }
     }
 }

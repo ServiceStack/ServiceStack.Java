@@ -32,8 +32,11 @@ jobs:
       - name: Build client
         run: ./src/AndroidClient/client/gradlew build
 
-      - name: Publish local client
-        run: ./src/AndroidClient/client/gradlew publishToMavenLocal
+      - name: Build and Publish
+        env:
+          USERNAME_GITHUB: ${{ github.actor }}
+          TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+        run: ./src/AndroidClient/client/gradlew publish
 
       - name: Set up permissions android
         run: chmod +x ./src/AndroidClient/android/gradlew
@@ -41,8 +44,11 @@ jobs:
       - name: Build android
         run: ./src/AndroidClient/android/gradlew build
 
-      - name: Publish local android
-        run: ./src/AndroidClient/android/gradlew publishToMavenLocal
+      - name: Build and Publish
+        env:
+          USERNAME_GITHUB: ${{ github.actor }}
+          TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+        run: ./src/AndroidClient/android/gradlew publish
 
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
