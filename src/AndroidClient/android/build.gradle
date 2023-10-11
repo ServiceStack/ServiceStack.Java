@@ -11,15 +11,6 @@ if (project.hasProperty('versionSuffix')) {
     version = "${version}-${versionSuffix}"
 }
 
-if (project.hasProperty('signing.keyId')) {
-    println "Signing enabled"
-    signing {
-        sign publishing.publications.mavenJava
-    }
-} else {
-    println "Signing disabled"
-}
-
 // Specify dependencies
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -57,6 +48,11 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 // Configure the publishing block for Maven Central deployment
@@ -122,4 +118,14 @@ publishing {
             }
         }
     }
+}
+
+
+if (project.hasProperty('signing.keyId')) {
+    println "Signing enabled"
+    signing {
+        sign publishing.publications.mavenJava
+    }
+} else {
+    println "Signing disabled"
 }

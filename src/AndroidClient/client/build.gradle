@@ -11,15 +11,6 @@ if (project.hasProperty('versionSuffix')) {
     version = "${version}-${versionSuffix}"
 }
 
-if (project.hasProperty('signing.keyId')) {
-    println "Signing enabled"
-    signing {
-        sign publishing.publications.mavenJava
-    }
-} else {
-    println "Signing disabled"
-}
-
 // Specify dependencies
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
@@ -28,14 +19,9 @@ dependencies {
 }
 
 // Additional tasks for generating source and Javadoc JARs
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier.set('sources')
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    from javadoc.destinationDir
-    archiveClassifier.set('javadoc')
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
 // Configure the publishing block for Maven Central deployment
@@ -103,6 +89,16 @@ publishing {
         }
     }
 }
+
+if (project.hasProperty('signing.keyId')) {
+    println "Signing enabled"
+    signing {
+        sign publishing.publications.mavenJava
+    }
+} else {
+    println "Signing disabled"
+}
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
