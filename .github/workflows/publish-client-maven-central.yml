@@ -17,6 +17,11 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Import GPG key
+        run: |
+          echo "${{ secrets.OSSRH_GPG }}" > private-key.asc
+          gpg --import --batch private-key.asc
+
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
@@ -35,5 +40,6 @@ jobs:
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
         working-directory: ./src/AndroidClient
         run: ./gradlew client:publishAllPublicationsToOSSRHRepository
