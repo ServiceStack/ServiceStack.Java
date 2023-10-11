@@ -18,15 +18,20 @@ dependencies {
     testImplementation 'pl.pragmatists:JUnitParams:1.1.1'
 }
 
-// Additional tasks for generating source and Javadoc JARs
-task sourcesJar(type: Jar) {
+task sourceJar(type: Jar) {
+    classifier "sources"
     from sourceSets.main.allJava
-    archiveClassifier.set('sources')
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier "javadoc"
     from javadoc.destinationDir
-    archiveClassifier.set('javadoc')
+}
+
+artifacts {
+    archives jar
+    archives sourceJar
+    archives javadocJar
 }
 
 // Configure the publishing block for Maven Central deployment
@@ -36,8 +41,12 @@ publishing {
             from components.java
 
             // Attach source and javadoc JARs
-            artifact sourcesJar
-            artifact javadocJar
+            artifact(sourceJar) {
+                classifier = 'sources'
+            }
+            artifact(javadocJar) {
+                classifier = 'javadoc'
+            }
 
             pom {
                 name = 'ServiceStack.Client'
@@ -95,11 +104,11 @@ publishing {
     }
 }
 
-if (project.hasProperty('signing.keyId')) {
+if (project.hasProperty('signing.key')) {
     println "Signing enabled"
     signing {
         sign publishing.publications.mavenJava
-        useInMemoryPgpKeys(findProperty("signing.keyId") as String, null)
+        useInMemoryPgpKeys(findProperty("signing.key") as String, null)
         //useGpgCmd(findProperty("signing.secretKeyRingFile"))
     }
 } else {
