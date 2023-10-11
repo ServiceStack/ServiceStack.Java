@@ -2,7 +2,7 @@
 Date: 2021-03-01 09:48:32
 Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: https://www.techstacks.io
+BaseUrl: https://techstacks.io
 
 Package: net.servicestack.android.techstacks
 //GlobalNamespace: dtos

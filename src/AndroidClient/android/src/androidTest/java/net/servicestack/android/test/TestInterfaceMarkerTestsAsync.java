@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class TestInterfaceMarkerTestsAsync {
 
-    AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
+    AndroidServiceClient client = new AndroidServiceClient("https://test.servicestack.net");
 
     @Test
     public void test_Does_SendDefault_as_POST() throws InterruptedException {

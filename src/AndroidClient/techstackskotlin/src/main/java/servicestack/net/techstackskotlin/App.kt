@@ -17,7 +17,7 @@ class App {
     var appData: AppData
 
     init {
-        client = AndroidServiceClient("https://www.techstacks.io")
+        client = AndroidServiceClient("https://techstacks.io")
         appData = AppData(client)
     }
 

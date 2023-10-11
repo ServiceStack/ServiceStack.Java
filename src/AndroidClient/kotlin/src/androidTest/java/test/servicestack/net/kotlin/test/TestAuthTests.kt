@@ -11,7 +11,7 @@ import net.servicestack.client.WebServiceException
 class TestAuthTests : TestCase() {
 
     fun CreateClient(): JsonServiceClient {
-        return JsonServiceClient("http://test.servicestack.net")
+        return JsonServiceClient("https://test.servicestack.net")
     }
 
     fun test_AuthRequired_returns_401() {

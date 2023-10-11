@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 class TestInterfaceMarkerTestsAsync {
 
-    internal var client = AndroidServiceClient("http://test.servicestack.net")
+    internal var client = AndroidServiceClient("https://test.servicestack.net")
 
     @Throws(InterruptedException::class)
     fun test_Does_SendDefault_as_POST() {

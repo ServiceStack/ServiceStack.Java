@@ -39,13 +39,13 @@ public class JsonTests extends TestCase {
     }
 
     public void test_Does_serialize_DateTime_in_QueryString() throws UnsupportedEncodingException {
-        JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+        JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net");
         testDateDtos.HelloDateTime request = new testDateDtos.HelloDateTime()
                 .setDateTime(Utils.fromDateTime("2001-01-01T01:01:01Z"));
 
         String url = client.createUrl(request);
 
-        assertEquals("http://test.servicestack.net/json/reply/HelloDateTime?dateTime=" + URLEncoder.encode("/Date(978310861000-0000)/", "UTF-8"), url);
+        assertEquals("https://test.servicestack.net/json/reply/HelloDateTime?dateTime=" + URLEncoder.encode("/Date(978310861000-0000)/", "UTF-8"), url);
     }
 
     public void test_Can_get_time_components(){

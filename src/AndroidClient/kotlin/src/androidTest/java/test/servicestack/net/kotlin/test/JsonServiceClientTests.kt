@@ -14,7 +14,7 @@ import java.util.*
 class JsonServiceClientTests : TestCase() {
     //10.0.2.2 = loopback
     //http://developer.android.com/tools/devices/emulator.html
-    internal var client = JsonServiceClient("http://test.servicestack.net")
+    internal var client = JsonServiceClient("https://test.servicestack.net")
 
     fun test_can_GET_HelloAll() {
         val request = Hello()
@@ -27,7 +27,7 @@ class JsonServiceClientTests : TestCase() {
 
     fun test_can_use_request_filter() {
         val passTest = arrayOf(false)
-        val localTestClient = JsonServiceClient("http://test.servicestack.net/")
+        val localTestClient = JsonServiceClient("https://test.servicestack.net/")
 
         localTestClient.RequestFilter = ConnectionFilter { passTest[0] = true }
 
@@ -53,7 +53,7 @@ class JsonServiceClientTests : TestCase() {
     }
 
     fun test_can_serialize_dates_correctly_via_get_request() {
-        val client = JsonServiceClient("http://test.servicestack.net/")
+        val client = JsonServiceClient("https://test.servicestack.net/")
 
         val request = EchoTypes()
         val cal = Calendar.getInstance()

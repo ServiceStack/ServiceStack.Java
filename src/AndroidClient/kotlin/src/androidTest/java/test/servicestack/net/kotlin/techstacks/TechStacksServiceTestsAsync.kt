@@ -17,7 +17,7 @@ class TechStacksServiceTestsAsync {
         Log.Instance = AndroidLogProvider("ZZZ")
     }
 
-    internal var client = AndroidServiceClient("https://www.techstacks.io")
+    internal var client = AndroidServiceClient("https://techstacks.io")
 
     @Throws(InterruptedException::class)
     fun test_Can_GET_TechStacks_Overview() {

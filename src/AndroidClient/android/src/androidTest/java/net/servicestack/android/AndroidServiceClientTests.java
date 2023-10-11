@@ -13,7 +13,7 @@ public class AndroidServiceClientTests {
         Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
-    AndroidServiceClient client = new AndroidServiceClient("https://www.techstacks.io");
+    AndroidServiceClient client = new AndroidServiceClient("https://techstacks.io");
 
     @Test
     public void test(){

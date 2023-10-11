@@ -13,7 +13,7 @@ public class TechStacksServiceTests extends TestCase {
 
     }
 
-    JsonServiceClient client = new JsonServiceClient("https://www.techstacks.io");
+    JsonServiceClient client = new JsonServiceClient("https://techstacks.io");
 
     public void test_Can_GET_TechStacks_Overview(){
         OverviewResponse response = client.get(new Overview());

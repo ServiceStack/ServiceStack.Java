@@ -33,7 +33,7 @@ public class TechStacksServiceTestsAsync {
         Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
-    AndroidServiceClient client = new AndroidServiceClient("https://www.techstacks.io");
+    AndroidServiceClient client = new AndroidServiceClient("https://techstacks.io");
 
     @Test
     public void test_Can_GET_TechStacks_Overview() throws InterruptedException {

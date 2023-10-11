@@ -9,7 +9,7 @@ import net.servicestack.client.JsonServiceClient
 
 class TestInterfaceMarkerTests : TestCase() {
 
-    internal var client = JsonServiceClient("http://test.servicestack.net")
+    internal var client = JsonServiceClient("https://test.servicestack.net")
 
     fun test_Does_SendDefault_as_POST() {
         val request = SendDefault()

@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 public class TestAuthTests extends TestCase {
 
     public JsonServiceClient CreateClient(){
-        return new JsonServiceClient("http://test.servicestack.net");
+        return new JsonServiceClient("https://test.servicestack.net");
     }
 
     public void test_AuthRequired_returns_401(){

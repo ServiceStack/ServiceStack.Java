@@ -12,7 +12,7 @@ import java.util.*
 
 class TestServiceTests : TestCase() {
 
-    internal var client = JsonServiceClient("http://test.servicestack.net")
+    internal var client = JsonServiceClient("https://test.servicestack.net")
     //    JsonServiceClient client = new JsonServiceClient("http://10.0.2.2:2020");
 
     fun test_Can_GET_Hello() {
@@ -26,7 +26,7 @@ class TestServiceTests : TestCase() {
 
     fun test_does_fire_Request_and_Response_Filters() {
 
-        val client = JsonServiceClient("http://test.servicestack.net")
+        val client = JsonServiceClient("https://test.servicestack.net")
 
         val events = ArrayList<String>()
 
@@ -95,7 +95,7 @@ class TestServiceTests : TestCase() {
     }
 
     fun test_Does_handle_404_Error() {
-        val testClient = JsonServiceClient("http://test.servicestack.net")
+        val testClient = JsonServiceClient("https://test.servicestack.net")
 
         var globalError:Exception? = null
         var localError:Exception? = null

@@ -19,7 +19,7 @@ public class AndroidServiceClientTests {
     fun setUp() {
         Log.Instance = AndroidLogProvider("ZZZ");
 
-        val client = AndroidServiceClient("https://www.techstacks.io")
+        val client = AndroidServiceClient("https://techstacks.io")
     }
 
     @Test

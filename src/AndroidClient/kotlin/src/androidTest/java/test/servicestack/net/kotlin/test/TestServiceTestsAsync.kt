@@ -18,12 +18,12 @@ class TestServiceTestsAsync {
         Log.Instance = AndroidLogProvider("ZZZ")
     }
 
-    internal var client = AndroidServiceClient("http://test.servicestack.net")
+    internal var client = AndroidServiceClient("https://test.servicestack.net")
 
     @Throws(InterruptedException::class)
     fun test_does_fire_Request_and_Response_Filters_Async() {
 
-        val client = AndroidServiceClient("http://test.servicestack.net")
+        val client = AndroidServiceClient("https://test.servicestack.net")
 
         val events = ArrayList<String>()
 
@@ -83,7 +83,7 @@ class TestServiceTestsAsync {
 
     @Throws(InterruptedException::class)
     fun test_Does_handle_404_Error_Async() {
-        val testClient = AndroidServiceClient("http://test.servicestack.net")
+        val testClient = AndroidServiceClient("https://test.servicestack.net")
 
         var globalError:Exception? = null
         var localError:Exception? = null

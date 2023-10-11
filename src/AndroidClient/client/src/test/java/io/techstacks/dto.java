@@ -2,7 +2,7 @@
 Date: 2018-04-15 04:43:13
 Version: 5.03
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: https://www.techstacks.io
+BaseUrl: https://techstacks.io
 
 Package: io.techstacks
 GlobalNamespace: dto

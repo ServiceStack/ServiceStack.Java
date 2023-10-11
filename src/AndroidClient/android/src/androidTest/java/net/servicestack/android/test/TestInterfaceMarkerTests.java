@@ -15,7 +15,7 @@ public class TestInterfaceMarkerTests  extends TestCase {
 
     }
 
-    JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+    JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net");
 
     public void test_Does_SendDefault_as_POST(){
         SendVerbResponse response = client.send(new SendDefault().setId(1));

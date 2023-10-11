@@ -21,7 +21,7 @@ public class JsonServiceClientTests extends TestCase {
     }
     //10.0.2.2 = loopback
     //http://developer.android.com/tools/devices/emulator.html
-    JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+    JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net");
 
     public void test_can_GET_HelloAll(){
         Hello request = new Hello()
@@ -34,7 +34,7 @@ public class JsonServiceClientTests extends TestCase {
 
     public void test_can_use_request_filter() {
         final Boolean[] passTest = {false};
-        JsonServiceClient localTestClient = new JsonServiceClient("http://test.servicestack.net/");
+        JsonServiceClient localTestClient = new JsonServiceClient("https://test.servicestack.net/");
 
         localTestClient.RequestFilter = new ConnectionFilter() {
             @Override
@@ -64,7 +64,7 @@ public class JsonServiceClientTests extends TestCase {
     }
 
     public void test_can_serialize_dates_correctly_via_get_request() {
-        JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net/");
+        JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net/");
 
         EchoTypes request = new EchoTypes();
         Calendar cal = Calendar.getInstance();

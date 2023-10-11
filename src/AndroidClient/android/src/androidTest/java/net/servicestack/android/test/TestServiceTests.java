@@ -30,7 +30,7 @@ public class TestServiceTests extends TestCase {
         //Log.Instance = new AndroidLogProvider("ZZZ");
     }
 
-    JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+    JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net");
 //    JsonServiceClient client = new JsonServiceClient("http://10.0.2.2:2020");
 
     public void test_Can_GET_Hello(){
@@ -44,7 +44,7 @@ public class TestServiceTests extends TestCase {
 
     public void test_does_fire_Request_and_Response_Filters(){
 
-        JsonServiceClient client = new JsonServiceClient("http://test.servicestack.net");
+        JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net");
 
         final ArrayList<String> events = new ArrayList<>();
 
@@ -126,7 +126,7 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Does_handle_404_Error() {
-        JsonServiceClient testClient = new JsonServiceClient("http://test.servicestack.net");
+        JsonServiceClient testClient = new JsonServiceClient("https://test.servicestack.net");
 
         final Exception[] globalError = new Exception[1]; //Wow Java, you suck.
         final Exception[] localError = new Exception[1];
@@ -169,7 +169,7 @@ public class TestServiceTests extends TestCase {
     }
 
     public void test_Does_handle_401_Error_with_empty_ResponseBody() {
-        JsonServiceClient testClient = new JsonServiceClient("http://test.servicestack.net");
+        JsonServiceClient testClient = new JsonServiceClient("https://test.servicestack.net");
 
         final Exception[] globalError = new Exception[1]; //Wow Java, you suck.
         final Exception[] localError = new Exception[1];

@@ -2,7 +2,7 @@
 Date: 2021-03-11 05:48:19
 Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://test.servicestack.net
+BaseUrl: https://test.servicestack.net
 
 Package: test.servicestack.net.kotlin.test
 //AddServiceStackTypes: True

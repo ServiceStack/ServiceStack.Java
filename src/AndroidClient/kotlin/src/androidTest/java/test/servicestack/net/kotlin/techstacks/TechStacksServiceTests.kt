@@ -11,7 +11,7 @@ import java.util.ArrayList
 
 class TechStacksServiceTests : TestCase() {
 
-    internal var client = JsonServiceClient("https://www.techstacks.io")
+    internal var client = JsonServiceClient("https://techstacks.io")
 
     fun test_Can_GET_TechStacks_Overview() {
         val response = client.get<OverviewResponse>(Overview())

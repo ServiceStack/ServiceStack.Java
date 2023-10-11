@@ -38,7 +38,7 @@ public class TechStacksServiceTests extends TestCase {
 
     }
 
-    JsonServiceClient client = new JsonServiceClient("https://www.techstacks.io");
+    JsonServiceClient client = new JsonServiceClient("https://techstacks.io");
 
     @Test
     public void test_Can_GET_TechStacks_Overview(){
@@ -65,7 +65,7 @@ public class TechStacksServiceTests extends TestCase {
 
     @Test
     public void test_Can_GET_TechStacks_Overview_with_absolute_url() {
-        OverviewResponse response = client.get("https://www.techstacks.io/overview", OverviewResponse.class);
+        OverviewResponse response = client.get("https://techstacks.io/overview", OverviewResponse.class);
         assertOverviewResponse(response);
     }
 

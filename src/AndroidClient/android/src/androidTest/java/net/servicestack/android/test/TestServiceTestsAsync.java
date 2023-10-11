@@ -49,12 +49,12 @@ import static org.junit.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class TestServiceTestsAsync {
 
-    AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
+    AndroidServiceClient client = new AndroidServiceClient("https://test.servicestack.net");
 
     @Test
     public void test_does_fire_Request_and_Response_Filters_Async() throws InterruptedException {
 
-        AndroidServiceClient client = new AndroidServiceClient("http://test.servicestack.net");
+        AndroidServiceClient client = new AndroidServiceClient("https://test.servicestack.net");
 
         final ArrayList<String> events = new ArrayList<>();
 
@@ -151,7 +151,7 @@ public class TestServiceTestsAsync {
 
     @Test
     public void test_Does_handle_404_Error_Async() throws InterruptedException {
-        AndroidServiceClient testClient = new AndroidServiceClient("http://test.servicestack.net");
+        AndroidServiceClient testClient = new AndroidServiceClient("https://test.servicestack.net");
 
         final Exception[] globalError = new Exception[1]; //Wow Java, you suck.
         final Exception[] localError = new Exception[1];

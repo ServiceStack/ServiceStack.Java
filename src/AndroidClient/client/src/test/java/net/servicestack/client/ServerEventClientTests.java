@@ -12,6 +12,7 @@ import net.servicestack.client.sse.ServerEventsClient;
 import net.servicestack.client.sse.SingletonInstanceResolver;
 import net.servicestack.func.Action;
 import net.servicestack.func.Func;
+import org.junit.Ignore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import static org.junit.Assert.assertArrayEquals;
  * Created by mythz on 2/10/2017.
  */
 
+@Ignore("Brittle tests when working with live server.")
 public class ServerEventClientTests extends TestCase
 {
 
@@ -36,7 +38,7 @@ public class ServerEventClientTests extends TestCase
         Log.setInstance(new LogProvider("", true));
     }
 
-    public static String ChatUrl = "http://test.servicestack.net";
+    public static String ChatUrl = "https://chat.netcore.io";
 //    public static String ChatUrl = "http://localhost:5000";
 
     public ServerEventsClient createServerEventsClient(String baseUrl, String... channels){

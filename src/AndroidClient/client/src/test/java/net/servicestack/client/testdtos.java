@@ -2,7 +2,7 @@
 Date: 2021-03-08 20:21:53
 Version: 5.105
 Tip: To override a DTO option, remove "//" prefix before updating
-BaseUrl: http://test.servicestack.net
+BaseUrl: https://test.servicestack.net
 
 Package: net.servicestack.client
 GlobalNamespace: testdtos
