@@ -19,9 +19,14 @@ dependencies {
 }
 
 // Additional tasks for generating source and Javadoc JARs
-java {
-    withJavadocJar()
-    withSourcesJar()
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier.set('sources')
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    archiveClassifier.set('javadoc')
 }
 
 // Configure the publishing block for Maven Central deployment
