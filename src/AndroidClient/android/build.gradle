@@ -14,7 +14,7 @@ if (project.hasProperty('versionSuffix')) {
 if (project.hasProperty('signing.keyId')) {
     println "Signing enabled"
     signing {
-        sign configurations.archives
+        sign publishing.publications.mavenJava
     }
 } else {
     println "Signing disabled"
