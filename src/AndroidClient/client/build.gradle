@@ -1,6 +1,7 @@
 // Apply necessary plugins
 apply plugin: 'java'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 // Define the version and group for the Maven package
 version = "1.0.50"
