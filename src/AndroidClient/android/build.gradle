@@ -121,7 +121,7 @@ if (project.hasProperty('signing.keyId')) {
     println "Signing enabled"
     signing {
         sign publishing.publications.mavenJava
-        useInMemoryPgpKeys(findProperty("signing.keyId") as String, findProperty("signing.password") as String)
+        useInMemoryPgpKeys(findProperty("signing.keyId") as String, null)
     }
 } else {
     println "Signing disabled"
