@@ -1,4 +1,4 @@
-name: Publish to OSSRH
+name: Build and Publish to GitHub Packages
 
 on:
   push:
@@ -33,23 +33,25 @@ jobs:
         working-directory: ./src/AndroidClient
         run: ./gradlew client:build
 
-      - name: Build and Publish
+      - name: Build and Publish Client
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+          VERSION_SUFFIX: ${{ github.run_number }}
         working-directory: ./src/AndroidClient
-        run: ./gradlew client:publishAllPublicationsToGitHubPackagesRepository
+        run: ./gradlew client:publishAllPublicationsToGitHubPackagesRepository -PversionSuffix=$VERSION_SUFFIX
 
       - name: Build android
         working-directory: ./src/AndroidClient
         run: ./gradlew android:build
 
-      - name: Build and Publish
-        working-directory: ./src/AndroidClient
+      - name: Build and Publish Android
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew android:publishAllPublicationsToGitHubPackagesRepository
+          VERSION_SUFFIX: ${{ github.run_number }}
+        working-directory: ./src/AndroidClient
+        run: ./gradlew android:publishAllPublicationsToGitHubPackagesRepository -PversionSuffix=$VERSION_SUFFIX
 
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
