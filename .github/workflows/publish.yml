@@ -27,32 +27,29 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Set up permissions client
-        run: chmod +x ./src/AndroidClient/client/gradlew
+        run: chmod +x ./src/AndroidClient/gradlew
 
       - name: Build client
-        working-directory: ./src/AndroidClient/client
-        run: ./gradlew build
+        working-directory: ./src/AndroidClient
+        run: ./gradlew client:build
 
       - name: Build and Publish
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./src/AndroidClient/client
-        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
-
-      - name: Set up permissions android
-        run: chmod +x ./src/AndroidClient/android/gradlew
+        working-directory: ./src/AndroidClient
+        run: ./gradlew client:publishAllPublicationsToGitHubPackagesRepository
 
       - name: Build android
-        working-directory: ./src/AndroidClient/android
-        run: ./gradlew build
+        working-directory: ./src/AndroidClient
+        run: ./gradlew android:build
 
       - name: Build and Publish
-        working-directory: ./src/AndroidClient/android
+        working-directory: ./src/AndroidClient
         env:
           USERNAME_GITHUB: ${{ github.actor }}
           TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew publishAllPublicationsToGitHubPackagesRepository
+        run: ./gradlew android:publishAllPublicationsToGitHubPackagesRepository
 
 #        env:
 #          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
