@@ -104,12 +104,13 @@ publishing {
     }
 }
 
-if (project.hasProperty('signing.key')) {
+if (findProperty('signingKeyId')) {
     println "Signing enabled"
     signing {
+        def signingKeyId = findProperty("signingKeyId")
+        def signingKey = findProperty("signingKey")
+        useInMemoryPgpKeys(signingKeyId, signingKey, null)
         sign publishing.publications.mavenJava
-        useInMemoryPgpKeys(findProperty("signing.key") as String, null)
-        //useGpgCmd(findProperty("signing.secretKeyRingFile"))
     }
 } else {
     println "Signing disabled"
