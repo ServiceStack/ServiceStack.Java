@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "${{ secrets.OSSRH_GPG }}" > private-key.asc
           gpg --import --batch private-key.asc
-          echo "SIGNING_KEY=`cat $(pwd)/private-key.asc`" >> $GITHUB_ENV
+          echo "SIGNING_KEY=$(cat ./private-key.asc)" >> $GITHUB_ENV
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
