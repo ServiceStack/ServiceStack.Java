@@ -17,11 +17,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - name: Import GPG key
-        run: |
-          echo "${{ secrets.OSSRH_GPG }}" > private-key.asc
-          gpg --import --batch private-key.asc
-
       - name: Cache Gradle packages
         uses: actions/cache@v2
         with:
