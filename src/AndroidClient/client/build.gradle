@@ -104,12 +104,15 @@ publishing {
     }
 }
 
-if (findProperty('signingKeyId')) {
+// Check if the environment variables are set
+def signingKey = System.getenv('SIGNING_KEY')
+def signingPassword = System.getenv('SIGNING_PASSWORD')
+
+// Conditionally apply the signing plugin and configuration
+if (signingKey && signingPassword) {
     println "Signing enabled"
     signing {
-        def signingKeyId = findProperty("signingKeyId")
-        def signingKey = findProperty("signingKey")
-        useInMemoryPgpKeys(signingKeyId, signingKey, null)
+        useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications.mavenJava
     }
 } else {
