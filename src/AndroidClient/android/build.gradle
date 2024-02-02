@@ -26,7 +26,6 @@ dependencies {
 // Android specific configurations
 android {
     compileSdkVersion 31
-    buildToolsVersion '29.0.2'
 
     lintOptions {
         abortOnError false
@@ -35,8 +34,6 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 31
-        versionCode 1
-        versionName version
 
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }

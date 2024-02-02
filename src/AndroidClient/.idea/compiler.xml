@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="AndroidClient.android" target="17" />
+      <module name="AndroidClient.app" target="17" />
+      <module name="AndroidClient.kotlin" target="17" />
+      <module name="AndroidClient.techstacks" target="17" />
+      <module name="AndroidClient.techstackskotlin" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

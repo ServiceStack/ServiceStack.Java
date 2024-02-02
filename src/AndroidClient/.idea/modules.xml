@@ -4,12 +4,29 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidClient.iml" filepath="$PROJECT_DIR$/AndroidClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.iml" filepath="$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.main.iml" filepath="$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/android/AndroidClient.android.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/androidchat/AndroidClient.androidchat.iml" filepath="$PROJECT_DIR$/.idea/modules/androidchat/AndroidClient.androidchat.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/AndroidClient.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/AndroidClient.client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/AndroidClient.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/AndroidClient.client.main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/AndroidClient.client.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/AndroidClient.client.test.iml" filepath="$PROJECT_DIR$/.idea/modules/client/AndroidClient.client.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/kotlin/AndroidClient.kotlin.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.iml" filepath="$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.main.iml" filepath="$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/techstacks/AndroidClient.techstacks.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/techstackskotlin/AndroidClient.techstackskotlin.unitTest.iml" />
     </modules>
   </component>
 </project>

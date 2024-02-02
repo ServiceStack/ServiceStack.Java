@@ -30,7 +30,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation project(':android')
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
 repositories {
     mavenCentral()

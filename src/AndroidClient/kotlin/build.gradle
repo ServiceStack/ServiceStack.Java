@@ -7,8 +7,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
     }
     buildTypes {
         release {
@@ -19,19 +17,18 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-    buildToolsVersion = '28.0.3'
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation 'junit:junit:4.12'
-    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':android')
-    androidTestImplementation 'com.google.code.gson:gson:2.8.6'
+    androidTestImplementation 'com.google.code.gson:gson:2.8.9'
 }
 buildscript {
-    ext.kotlin_version = '1.4.31'
+    ext.kotlin_version = '1.6.21'
     repositories {
         mavenCentral()
     }
