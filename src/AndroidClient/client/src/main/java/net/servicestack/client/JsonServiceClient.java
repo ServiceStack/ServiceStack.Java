@@ -25,16 +25,19 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class JsonServiceClient implements ServiceClient {
-    static Charset UTF8 = Charset.forName("UTF-8");
+    static Charset UTF8 = StandardCharsets.UTF_8;
     String baseUrl;
     URI baseUri;
     String replyUrl;
+    String oneWayUrl;
 
     boolean alwaysSendBasicAuthHeaders;
     String userName;
@@ -56,10 +59,11 @@ public class JsonServiceClient implements ServiceClient {
         this(baseUrl, true);
     }
     public JsonServiceClient(String baseUrl, boolean initCookies) {
-        setBaseUrl(baseUrl);
         if (initCookies) {
             initCookieHandler();
         }
+        setBaseUrl(baseUrl);
+        setBasePath("api");
     }
 
     public void initCookieHandler() {
@@ -76,8 +80,25 @@ public class JsonServiceClient implements ServiceClient {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        this.replyUrl = this.baseUrl + "json/reply/";
     }
+
+    public JsonServiceClient setBasePath() { return setBasePath(""); }
+    public JsonServiceClient setBasePath(String basePath) {
+        if (basePath == null || basePath.length() == 0) {
+            this.replyUrl = this.baseUri.resolve("json/reply") + "/";
+            this.oneWayUrl = this.baseUri.resolve("json/oneway") + "/";
+        } else {
+            if (basePath.endsWith("/")) {
+                basePath = basePath.substring(0, basePath.length() -1);
+            }
+            this.replyUrl = this.baseUri.resolve(basePath) + "/";
+            this.oneWayUrl = this.baseUri.resolve(basePath) + "/";
+        }
+        return this;
+    }
+
+    public String getBaseUrl() { return this.baseUrl; }
+    public String getReplyUrl() { return this.replyUrl; }
 
     public void setTimeout(int timeoutMs) {
         this.timeoutMs = timeoutMs;
@@ -85,15 +106,15 @@ public class JsonServiceClient implements ServiceClient {
 
     public GsonBuilder getGsonBuilder() {
         return new GsonBuilder()
-                .registerTypeAdapterFactory(JsonSerializers.getCaseInsensitiveEnumTypeAdapterFactory())
-                .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
-                .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
-                .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
-                .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
-                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
-                .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer())
-                .registerTypeAdapter(byte[].class, JsonSerializers.getByteArraySerializer())
-                .registerTypeAdapter(byte[].class, JsonSerializers.getByteArrayDeserializer());
+            .registerTypeAdapterFactory(JsonSerializers.getCaseInsensitiveEnumTypeAdapterFactory())
+            .registerTypeAdapter(Date.class, JsonSerializers.getDateSerializer())
+            .registerTypeAdapter(Date.class, JsonSerializers.getDateDeserializer())
+            .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanSerializer())
+            .registerTypeAdapter(TimeSpan.class, JsonSerializers.getTimeSpanDeserializer())
+            .registerTypeAdapter(UUID.class, JsonSerializers.getGuidSerializer())
+            .registerTypeAdapter(UUID.class, JsonSerializers.getGuidDeserializer())
+            .registerTypeAdapter(byte[].class, JsonSerializers.getByteArraySerializer())
+            .registerTypeAdapter(byte[].class, JsonSerializers.getByteArrayDeserializer());
     }
 
     public Gson getGson() {
@@ -103,23 +124,23 @@ public class JsonServiceClient implements ServiceClient {
         return gson;
     }
 
-    public String toJson(Object o){
+    public String toJson(Object o) {
         String json = getGson().toJson(o);
         return json;
     }
 
-    public Object fromJson(String json, Class c){
+    public Object fromJson(String json, Class c) {
         Object o = getGson().fromJson(json, c);
         return o;
     }
 
     public void setGson(Gson gson) { this.gson = gson; }
 
-    public String createUrl(Object requestDto){
+    public String createUrl(Object requestDto) {
         return createUrl(requestDto, null);
     }
 
-    public String createUrl(Object requestDto, Map<String,String> query){
+    public String createUrl(Object requestDto, Map<String,String> query) {
         String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
 
         StringBuilder sb = new StringBuilder();

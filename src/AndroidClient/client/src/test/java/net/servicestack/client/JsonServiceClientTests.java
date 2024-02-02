@@ -52,13 +52,13 @@ public class JsonServiceClientTests extends TestCase {
     }
 
     public void test_does_process_missing_service_correctly() {
-        JsonServiceClient localTestClient = new JsonServiceClient("https://techstacks.io/");
+        JsonServiceClient localTestClient = new JsonServiceClient("https://blazordiffusion.com/");
 
         try {
             localTestClient.get(new EchoTypes());
             fail("Should throw");
         } catch (WebServiceException ex) {
-            assertEquals(ex.getStatusCode(), 405);
+            assertEquals(ex.getStatusCode(), 404);
         }
     }
 
@@ -77,5 +77,20 @@ public class JsonServiceClientTests extends TestCase {
         EchoTypes response = client.get(request);
         assertTrue(response != null);
         assertEquals(request.getDateTime(),response.getDateTime());
+    }
+
+    public void test_can_change_basePath() {
+        JsonServiceClient client = new JsonServiceClient("https://test.servicestack.net/");
+        assertEquals("https://test.servicestack.net/api/", client.getReplyUrl());
+
+        client.setBasePath();
+        assertEquals("https://test.servicestack.net/json/reply/", client.getReplyUrl());
+
+        client.setBasePath("api");
+        assertEquals("https://test.servicestack.net/api/", client.getReplyUrl());
+        client.setBasePath("/api");
+        assertEquals("https://test.servicestack.net/api/", client.getReplyUrl());
+        client.setBasePath("/api/");
+        assertEquals("https://test.servicestack.net/api/", client.getReplyUrl());
     }
 }

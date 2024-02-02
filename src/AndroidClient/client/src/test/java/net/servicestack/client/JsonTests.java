@@ -45,7 +45,7 @@ public class JsonTests extends TestCase {
 
         String url = client.createUrl(request);
 
-        assertEquals("https://test.servicestack.net/json/reply/HelloDateTime?dateTime=" + URLEncoder.encode("/Date(978310861000-0000)/", "UTF-8"), url);
+        assertEquals("https://test.servicestack.net/api/HelloDateTime?dateTime=" + URLEncoder.encode("/Date(978310861000-0000)/", "UTF-8"), url);
     }
 
     public void test_Can_get_time_components(){
