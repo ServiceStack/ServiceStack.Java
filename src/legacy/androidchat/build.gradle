@@ -1,32 +1,29 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services'
 
 buildscript {
     repositories {
-        maven { url 'https://maven.fabric.io/public' }
+        google()
     }
-
     dependencies {
-        // These docs use an open ended version so that our plugin
-        // can be updated quickly in response to Android tooling updates
-
-        // We recommend changing it to the latest version from our changelog:
-        // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-        classpath 'io.fabric.tools:gradle:1.28.0'
+        classpath 'com.google.gms:google-services:4.4.0'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
     }
+
 }
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 android {
-    compileSdkVersion 28
+    compileSdkVersion 34
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "servicestack.net.androidchat"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -57,5 +54,5 @@ dependencies {
     implementation('com.twitter.sdk.android:twitter:2.3.1@aar') {
         transitive = true;
     }
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.1'
 }
