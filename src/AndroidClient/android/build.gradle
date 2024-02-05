@@ -14,7 +14,7 @@ if (project.hasProperty('versionSuffix')) {
 
 // Specify dependencies
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.10'
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
     implementation fileTree(include: '*.jar', dir: 'libs')
     androidTestImplementation 'junit:junit:4.13.1'
@@ -25,7 +25,8 @@ dependencies {
 
 // Android specific configurations
 android {
-    compileSdkVersion 31
+    namespace "net.servicestack.android"
+    compileSdk 34
 
     lintOptions {
         abortOnError false
@@ -33,7 +34,7 @@ android {
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 31
+        targetSdkVersion 34
 
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
