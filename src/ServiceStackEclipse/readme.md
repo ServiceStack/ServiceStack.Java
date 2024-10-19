@@ -33,7 +33,7 @@ Updating a ServiceStack Reference works as normal where you can change any of th
 ServiceStack references can still be added without the use of a Maven project. However, two dependencies will have to added to your Eclipse project for the generated Java to compile. Both JARs are available to download from JCenter or MavenCentral.
 
 1. [`net.servicestack:client`](http://search.maven.org/#search%7Cga%7C1%7Cnet.servicestack)
-2. [`com.google.code.gson:gson:2.3.1`](http://search.maven.org/#artifactdetails%7Ccom.google.code.gson%7Cgson%7C2.3.1%7Cjar)
+2. [`com.google.code.gson:gson:2.11.0`](http://search.maven.org/#artifactdetails%7Ccom.google.code.gson%7Cgson%7C2.3.1%7Cjar)
 
 Once you have downloaded these jars, add them to a folder in your project, eg `/lib`.
 

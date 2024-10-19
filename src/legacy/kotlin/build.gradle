@@ -21,11 +21,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation 'junit:junit:4.13.1'
-    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.13.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':android')
-    androidTestImplementation 'com.google.code.gson:gson:2.10'
+    androidTestImplementation 'com.google.code.gson:gson:2.11'
 }
 buildscript {
     ext.kotlin_version = '1.9.0'

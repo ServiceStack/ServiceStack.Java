@@ -13,8 +13,8 @@ if (project.hasProperty('versionSuffix')) {
 
 // Specify dependencies
 dependencies {
-    implementation 'com.google.code.gson:gson:2.10'
-    testImplementation 'junit:junit:4.13.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation 'pl.pragmatists:JUnitParams:1.1.1'
 }
 
