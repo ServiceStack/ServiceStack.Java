@@ -1,4 +1,4 @@
-//  Copyright (c) 2015 ServiceStack LLC. All rights reserved.
+//  Copyright (c) 2013-present ServiceStack, Inc. All rights reserved.
 
 package test.servicestack.net.kotlin.test
 
