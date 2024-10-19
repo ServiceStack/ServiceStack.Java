@@ -40,7 +40,7 @@ public class AddReferenceWizard extends Wizard {
     boolean packageSelected = false;
 
     private static final String dependencyGroupId = "net.servicestack";
-    private static final String dependencyVersion = "1.1.1";
+    private static final String dependencyVersion = "1.1.2";
     private static final String clientPackageId = "client";
 
     private static final String gsonDependencyGroupId = "com.google.code.gson";
