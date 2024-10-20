@@ -1,5 +1,7 @@
 name: Publish client to Maven Central
-
+# This workflow only Stages the package. You must manually login to https://oss.sonatype.org and publish from the Staging
+# Repository. Recent outputs from this workflow will be listed there.
+# You must "Close" each opened staging repository, then "Release". Closing can take some time, as can releasing.
 on:
   workflow_dispatch:
 
