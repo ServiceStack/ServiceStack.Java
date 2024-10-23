@@ -46,3 +46,5 @@ src/ServiceStackEclipse/**/.settings
 
 src/AndroidClient/client/pom.xml
 .idea/
+src/AndroidClient/.idea/**/*
+
