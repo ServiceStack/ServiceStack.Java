@@ -1,5 +1,5 @@
 /* Options:
-Date: 2024-10-21 06:25:17
+Date: 2024-10-23 04:54:03
 Version: 8.41
 Tip: To override a DTO option, remove "//" prefix before updating
 BaseUrl: https://openai.servicestack.net
@@ -11,10 +11,10 @@ Package: net.servicestack.openai
 //AddServiceStackTypes: True
 //AddResponseStatus: False
 //AddDescriptionAsComments: True
-//AddImplicitVersion:
-//IncludeTypes:
-//ExcludeTypes:
-//TreatTypesAsStrings:
+//AddImplicitVersion: 
+//IncludeTypes: 
+//ExcludeTypes: 
+//TreatTypesAsStrings: 
 DefaultImports: java.math.*,java.util.*,net.servicestack.client.*,com.google.gson.annotations.*,com.google.gson.reflect.*,java.io.InputStream
 */
 
@@ -32,19 +32,19 @@ public class dtos
 
     public static class AdminData implements IReturn<AdminDataResponse>, IGet
     {
-
+        
         private static Object responseType = AdminDataResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * Convert an audio file to a different format
-     */
+    * Convert an audio file to a different format
+    */
     public static class ConvertAudio implements IReturn<MediaTransformResponse>, IMediaTransform
     {
         /**
-         * The desired output format for the converted audio
-         */
+        * The desired output format for the converted audio
+        */
         @ApiMember(Description="The desired output format for the converted audio")
         @Required()
         public AudioFormat outputFormat = null;
@@ -53,17 +53,17 @@ public class dtos
         public InputStream audio = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public AudioFormat getOutputFormat() { return outputFormat; }
         public ConvertAudio setOutputFormat(AudioFormat value) { this.outputFormat = value; return this; }
         public InputStream getAudio() { return audio; }
@@ -77,13 +77,13 @@ public class dtos
     }
 
     /**
-     * Convert an audio file to a different format
-     */
+    * Convert an audio file to a different format
+    */
     public static class QueueConvertAudio implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform
     {
         /**
-         * The desired output format for the converted audio
-         */
+        * The desired output format for the converted audio
+        */
         @ApiMember(Description="The desired output format for the converted audio")
         @Required()
         public AudioFormat outputFormat = null;
@@ -92,23 +92,23 @@ public class dtos
         public InputStream audio = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public AudioFormat getOutputFormat() { return outputFormat; }
         public QueueConvertAudio setOutputFormat(AudioFormat value) { this.outputFormat = value; return this; }
         public InputStream getAudio() { return audio; }
@@ -127,7 +127,7 @@ public class dtos
     {
         public Date from = null;
         public Date to = null;
-
+        
         public Date getFrom() { return from; }
         public GetSummaryStats setFrom(Date value) { this.from = value; return this; }
         public Date getTo() { return to; }
@@ -138,7 +138,7 @@ public class dtos
 
     public static class PopulateChatSummary implements IReturn<StringsResponse>, IGet
     {
-
+        
         private static Object responseType = StringsResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -147,7 +147,7 @@ public class dtos
     {
         public String apiBaseUrl = null;
         public String apiKey = null;
-
+        
         public String getApiBaseUrl() { return apiBaseUrl; }
         public GetComfyModels setApiBaseUrl(String value) { this.apiBaseUrl = value; return this; }
         public String getApiKey() { return apiKey; }
@@ -158,29 +158,29 @@ public class dtos
 
     public static class GetComfyModelMappings implements IReturn<GetComfyModelMappingsResponse>
     {
-
+        
         private static Object responseType = GetComfyModelMappingsResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * Get job status
-     */
+    * Get job status
+    */
     @Api(Description="Get job status")
     public static class GetJobStatus implements IReturn<GetJobStatusResponse>, IGet
     {
         /**
-         * Unique identifier of the background job
-         */
+        * Unique identifier of the background job
+        */
         @ApiMember(Description="Unique identifier of the background job")
         public Long jobId = null;
 
         /**
-         * Client-provided identifier for the request
-         */
+        * Client-provided identifier for the request
+        */
         @ApiMember(Description="Client-provided identifier for the request")
         public String refId = null;
-
+        
         public Long getJobId() { return jobId; }
         public GetJobStatus setJobId(Long value) { this.jobId = value; return this; }
         public String getRefId() { return refId; }
@@ -190,76 +190,76 @@ public class dtos
     }
 
     /**
-     * Active Media Worker Models available in AI Server
-     */
+    * Active Media Worker Models available in AI Server
+    */
     public static class ActiveMediaModels implements IReturn<StringsResponse>, IGet
     {
-
+        
         private static Object responseType = StringsResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * Generate image from text description
-     */
+    * Generate image from text description
+    */
     @Api(Description="Generate image from text description")
     public static class TextToImage implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * The main prompt describing the desired image
-         */
+        * The main prompt describing the desired image
+        */
         @ApiMember(Description="The main prompt describing the desired image")
         @Validate(Validator="NotEmpty")
         public String positivePrompt = null;
 
         /**
-         * Optional prompt specifying what should not be in the image
-         */
+        * Optional prompt specifying what should not be in the image
+        */
         @ApiMember(Description="Optional prompt specifying what should not be in the image")
         public String negativePrompt = null;
 
         /**
-         * Desired width of the generated image
-         */
+        * Desired width of the generated image
+        */
         @ApiMember(Description="Desired width of the generated image")
         public Integer width = null;
 
         /**
-         * Desired height of the generated image
-         */
+        * Desired height of the generated image
+        */
         @ApiMember(Description="Desired height of the generated image")
         public Integer height = null;
 
         /**
-         * Number of images to generate in a single batch
-         */
+        * Number of images to generate in a single batch
+        */
         @ApiMember(Description="Number of images to generate in a single batch")
         public Integer batchSize = null;
 
         /**
-         * The AI model to use for image generation
-         */
+        * The AI model to use for image generation
+        */
         @ApiMember(Description="The AI model to use for image generation")
         public String model = null;
 
         /**
-         * Optional seed for reproducible results
-         */
+        * Optional seed for reproducible results
+        */
         @ApiMember(Description="Optional seed for reproducible results")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public String getPositivePrompt() { return positivePrompt; }
         public TextToImage setPositivePrompt(String value) { this.positivePrompt = value; return this; }
         public String getNegativePrompt() { return negativePrompt; }
@@ -283,67 +283,67 @@ public class dtos
     }
 
     /**
-     * Generate image from another image
-     */
+    * Generate image from another image
+    */
     @Api(Description="Generate image from another image")
     public static class ImageToImage implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * The image to use as input
-         */
+        * The image to use as input
+        */
         @ApiMember(Description="The image to use as input")
         @Required()
         public InputStream image = null;
 
         /**
-         * Prompt describing the desired output
-         */
+        * Prompt describing the desired output
+        */
         @ApiMember(Description="Prompt describing the desired output")
         @Validate(Validator="NotEmpty")
         public String positivePrompt = null;
 
         /**
-         * Negative prompt describing what should not be in the image
-         */
+        * Negative prompt describing what should not be in the image
+        */
         @ApiMember(Description="Negative prompt describing what should not be in the image")
         public String negativePrompt = null;
 
         /**
-         * The AI model to use for image generation
-         */
+        * The AI model to use for image generation
+        */
         @ApiMember(Description="The AI model to use for image generation")
         public String model = null;
 
         /**
-         * Optional specific amount of denoise to apply
-         */
+        * Optional specific amount of denoise to apply
+        */
         @ApiMember(Description="Optional specific amount of denoise to apply")
         public Float denoise = null;
 
         /**
-         * Number of images to generate in a single batch
-         */
+        * Number of images to generate in a single batch
+        */
         @ApiMember(Description="Number of images to generate in a single batch")
         public Integer batchSize = null;
 
         /**
-         * Optional seed for reproducible results in image generation
-         */
+        * Optional seed for reproducible results in image generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in image generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public ImageToImage setImage(InputStream value) { this.image = value; return this; }
         public String getPositivePrompt() { return positivePrompt; }
@@ -367,36 +367,36 @@ public class dtos
     }
 
     /**
-     * Upscale an image
-     */
+    * Upscale an image
+    */
     @Api(Description="Upscale an image")
     public static class ImageUpscale implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * The image to upscale
-         */
+        * The image to upscale
+        */
         @ApiMember(Description="The image to upscale")
         @Required()
         public InputStream image = null;
 
         /**
-         * Optional seed for reproducible results in image generation
-         */
+        * Optional seed for reproducible results in image generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in image generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public ImageUpscale setImage(InputStream value) { this.image = value; return this; }
         public Integer getSeed() { return seed; }
@@ -410,62 +410,62 @@ public class dtos
     }
 
     /**
-     * Generate image with masked area
-     */
+    * Generate image with masked area
+    */
     @Api(Description="Generate image with masked area")
     public static class ImageWithMask implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * Prompt describing the desired output in the masked area
-         */
+        * Prompt describing the desired output in the masked area
+        */
         @ApiMember(Description="Prompt describing the desired output in the masked area")
         @Validate(Validator="NotEmpty")
         public String positivePrompt = null;
 
         /**
-         * Negative prompt describing what should not be in the masked area
-         */
+        * Negative prompt describing what should not be in the masked area
+        */
         @ApiMember(Description="Negative prompt describing what should not be in the masked area")
         public String negativePrompt = null;
 
         /**
-         * The image to use as input
-         */
+        * The image to use as input
+        */
         @ApiMember(Description="The image to use as input")
         @Required()
         public InputStream image = null;
 
         /**
-         * The mask to use as input
-         */
+        * The mask to use as input
+        */
         @ApiMember(Description="The mask to use as input")
         @Required()
         public InputStream mask = null;
 
         /**
-         * Optional specific amount of denoise to apply
-         */
+        * Optional specific amount of denoise to apply
+        */
         @ApiMember(Description="Optional specific amount of denoise to apply")
         public Float denoise = null;
 
         /**
-         * Optional seed for reproducible results in image generation
-         */
+        * Optional seed for reproducible results in image generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in image generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public String getPositivePrompt() { return positivePrompt; }
         public ImageWithMask setPositivePrompt(String value) { this.positivePrompt = value; return this; }
         public String getNegativePrompt() { return negativePrompt; }
@@ -487,30 +487,30 @@ public class dtos
     }
 
     /**
-     * Convert image to text
-     */
+    * Convert image to text
+    */
     @Api(Description="Convert image to text")
     public static class ImageToText implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * The image to convert to text
-         */
+        * The image to convert to text
+        */
         @ApiMember(Description="The image to convert to text")
         @Required()
         public InputStream image = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public ImageToText setImage(InputStream value) { this.image = value; return this; }
         public String getRefId() { return refId; }
@@ -522,78 +522,78 @@ public class dtos
     }
 
     /**
-     * Generate image from text description
-     */
+    * Generate image from text description
+    */
     @Api(Description="Generate image from text description")
     public static class QueueTextToImage implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * The main prompt describing the desired image
-         */
+        * The main prompt describing the desired image
+        */
         @ApiMember(Description="The main prompt describing the desired image")
         @Validate(Validator="NotEmpty")
         public String positivePrompt = null;
 
         /**
-         * Optional prompt specifying what should not be in the image
-         */
+        * Optional prompt specifying what should not be in the image
+        */
         @ApiMember(Description="Optional prompt specifying what should not be in the image")
         public String negativePrompt = null;
 
         /**
-         * Desired width of the generated image
-         */
+        * Desired width of the generated image
+        */
         @ApiMember(Description="Desired width of the generated image")
         public Integer width = null;
 
         /**
-         * Desired height of the generated image
-         */
+        * Desired height of the generated image
+        */
         @ApiMember(Description="Desired height of the generated image")
         public Integer height = null;
 
         /**
-         * Number of images to generate in a single batch
-         */
+        * Number of images to generate in a single batch
+        */
         @ApiMember(Description="Number of images to generate in a single batch")
         public Integer batchSize = null;
 
         /**
-         * The AI model to use for image generation
-         */
+        * The AI model to use for image generation
+        */
         @ApiMember(Description="The AI model to use for image generation")
         public String model = null;
 
         /**
-         * Optional seed for reproducible results
-         */
+        * Optional seed for reproducible results
+        */
         @ApiMember(Description="Optional seed for reproducible results")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
-
+        
         public String getPositivePrompt() { return positivePrompt; }
         public QueueTextToImage setPositivePrompt(String value) { this.positivePrompt = value; return this; }
         public String getNegativePrompt() { return negativePrompt; }
@@ -621,48 +621,48 @@ public class dtos
     }
 
     /**
-     * Upscale an image
-     */
+    * Upscale an image
+    */
     @Api(Description="Upscale an image")
     public static class QueueImageUpscale implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * The image to upscale
-         */
+        * The image to upscale
+        */
         @ApiMember(Description="The image to upscale")
         @Required()
         public InputStream image = null;
 
         /**
-         * Optional seed for reproducible results in image generation
-         */
+        * Optional seed for reproducible results in image generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in image generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
-
+        
         public InputStream getImage() { return image; }
         public QueueImageUpscale setImage(InputStream value) { this.image = value; return this; }
         public Integer getSeed() { return seed; }
@@ -680,79 +680,79 @@ public class dtos
     }
 
     /**
-     * Generate image from another image
-     */
+    * Generate image from another image
+    */
     @Api(Description="Generate image from another image")
     public static class QueueImageToImage implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * The image to use as input
-         */
+        * The image to use as input
+        */
         @ApiMember(Description="The image to use as input")
         @Required()
         public InputStream image = null;
 
         /**
-         * Prompt describing the desired output
-         */
+        * Prompt describing the desired output
+        */
         @ApiMember(Description="Prompt describing the desired output")
         @Validate(Validator="NotEmpty")
         public String positivePrompt = null;
 
         /**
-         * Negative prompt describing what should not be in the image
-         */
+        * Negative prompt describing what should not be in the image
+        */
         @ApiMember(Description="Negative prompt describing what should not be in the image")
         public String negativePrompt = null;
 
         /**
-         * The AI model to use for image generation
-         */
+        * The AI model to use for image generation
+        */
         @ApiMember(Description="The AI model to use for image generation")
         public String model = null;
 
         /**
-         * Optional specific amount of denoise to apply
-         */
+        * Optional specific amount of denoise to apply
+        */
         @ApiMember(Description="Optional specific amount of denoise to apply")
         public Float denoise = null;
 
         /**
-         * Number of images to generate in a single batch
-         */
+        * Number of images to generate in a single batch
+        */
         @ApiMember(Description="Number of images to generate in a single batch")
         public Integer batchSize = null;
 
         /**
-         * Optional seed for reproducible results in image generation
-         */
+        * Optional seed for reproducible results in image generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in image generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public QueueImageToImage setImage(InputStream value) { this.image = value; return this; }
         public String getPositivePrompt() { return positivePrompt; }
@@ -780,74 +780,74 @@ public class dtos
     }
 
     /**
-     * Generate image with masked area
-     */
+    * Generate image with masked area
+    */
     @Api(Description="Generate image with masked area")
     public static class QueueImageWithMask implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * Prompt describing the desired output in the masked area
-         */
+        * Prompt describing the desired output in the masked area
+        */
         @ApiMember(Description="Prompt describing the desired output in the masked area")
         @Validate(Validator="NotEmpty")
         public String positivePrompt = null;
 
         /**
-         * Negative prompt describing what should not be in the masked area
-         */
+        * Negative prompt describing what should not be in the masked area
+        */
         @ApiMember(Description="Negative prompt describing what should not be in the masked area")
         public String negativePrompt = null;
 
         /**
-         * The image to use as input
-         */
+        * The image to use as input
+        */
         @ApiMember(Description="The image to use as input")
         @Required()
         public InputStream image = null;
 
         /**
-         * The mask to use as input
-         */
+        * The mask to use as input
+        */
         @ApiMember(Description="The mask to use as input")
         @Required()
         public InputStream mask = null;
 
         /**
-         * Optional specific amount of denoise to apply
-         */
+        * Optional specific amount of denoise to apply
+        */
         @ApiMember(Description="Optional specific amount of denoise to apply")
         public Float denoise = null;
 
         /**
-         * Optional seed for reproducible results in image generation
-         */
+        * Optional seed for reproducible results in image generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in image generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
-
+        
         public String getPositivePrompt() { return positivePrompt; }
         public QueueImageWithMask setPositivePrompt(String value) { this.positivePrompt = value; return this; }
         public String getNegativePrompt() { return negativePrompt; }
@@ -873,42 +873,42 @@ public class dtos
     }
 
     /**
-     * Convert image to text
-     */
+    * Convert image to text
+    */
     @Api(Description="Convert image to text")
     public static class QueueImageToText implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * The image to convert to text
-         */
+        * The image to convert to text
+        */
         @ApiMember(Description="The image to convert to text")
         @Required()
         public InputStream image = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
-
+        
         public InputStream getImage() { return image; }
         public QueueImageToText setImage(InputStream value) { this.image = value; return this; }
         public String getRefId() { return refId; }
@@ -924,36 +924,36 @@ public class dtos
     }
 
     /**
-     * Convert an image to a different format
-     */
+    * Convert an image to a different format
+    */
     public static class ConvertImage implements IReturn<MediaTransformResponse>, IMediaTransform, IPost
     {
         /**
-         * The image file to be converted
-         */
+        * The image file to be converted
+        */
         @ApiMember(Description="The image file to be converted")
         @Required()
         public InputStream image = null;
 
         /**
-         * The desired output format for the converted image
-         */
+        * The desired output format for the converted image
+        */
         @ApiMember(Description="The desired output format for the converted image")
         @Required()
         public ImageOutputFormat outputFormat = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public ConvertImage setImage(InputStream value) { this.image = value; return this; }
         public ImageOutputFormat getOutputFormat() { return outputFormat; }
@@ -967,53 +967,53 @@ public class dtos
     }
 
     /**
-     * Crop an image to a specified area
-     */
+    * Crop an image to a specified area
+    */
     public static class CropImage implements IReturn<MediaTransformResponse>, IMediaTransform, IPost
     {
         /**
-         * The X-coordinate of the top-left corner of the crop area
-         */
+        * The X-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The X-coordinate of the top-left corner of the crop area")
         public Integer x = null;
 
         /**
-         * The Y-coordinate of the top-left corner of the crop area
-         */
+        * The Y-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The Y-coordinate of the top-left corner of the crop area")
         public Integer y = null;
 
         /**
-         * The width of the crop area
-         */
+        * The width of the crop area
+        */
         @ApiMember(Description="The width of the crop area")
         public Integer width = null;
 
         /**
-         * The height of the crop area
-         */
+        * The height of the crop area
+        */
         @ApiMember(Description="The height of the crop area")
         public Integer height = null;
 
         /**
-         * The image file to be cropped
-         */
+        * The image file to be cropped
+        */
         @ApiMember(Description="The image file to be cropped")
         @Required()
         public InputStream image = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public Integer getX() { return x; }
         public CropImage setX(Integer value) { this.x = value; return this; }
         public Integer getY() { return y; }
@@ -1033,47 +1033,47 @@ public class dtos
     }
 
     /**
-     * Add a watermark to an image
-     */
+    * Add a watermark to an image
+    */
     public static class WatermarkImage implements IReturn<MediaTransformResponse>, IMediaTransform, IPost
     {
         /**
-         * The image file to be watermarked
-         */
+        * The image file to be watermarked
+        */
         @ApiMember(Description="The image file to be watermarked")
         @Required()
         public InputStream image = null;
 
         /**
-         * The position of the watermark on the image
-         */
+        * The position of the watermark on the image
+        */
         @ApiMember(Description="The position of the watermark on the image")
         public WatermarkPosition position = null;
 
         /**
-         * Scale of the watermark relative
-         */
+        * Scale of the watermark relative
+        */
         @ApiMember(Description="Scale of the watermark relative")
         public Float watermarkScale = null;
 
         /**
-         * The opacity of the watermark (0.0 to 1.0)
-         */
+        * The opacity of the watermark (0.0 to 1.0)
+        */
         @ApiMember(Description="The opacity of the watermark (0.0 to 1.0)")
         public Float opacity = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public WatermarkImage setImage(InputStream value) { this.image = value; return this; }
         public WatermarkPosition getPosition() { return position; }
@@ -1091,41 +1091,41 @@ public class dtos
     }
 
     /**
-     * Scale an image to a specified size
-     */
+    * Scale an image to a specified size
+    */
     public static class ScaleImage implements IReturn<MediaTransformResponse>, IMediaTransform, IPost
     {
         /**
-         * The image file to be scaled
-         */
+        * The image file to be scaled
+        */
         @ApiMember(Description="The image file to be scaled")
         @Required()
         public InputStream image = null;
 
         /**
-         * Desired width of the scaled image
-         */
+        * Desired width of the scaled image
+        */
         @ApiMember(Description="Desired width of the scaled image")
         public Integer width = null;
 
         /**
-         * Desired height of the scaled image
-         */
+        * Desired height of the scaled image
+        */
         @ApiMember(Description="Desired height of the scaled image")
         public Integer height = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public ScaleImage setImage(InputStream value) { this.image = value; return this; }
         public Integer getWidth() { return width; }
@@ -1141,59 +1141,59 @@ public class dtos
     }
 
     /**
-     * Crop an image to a specified area
-     */
+    * Crop an image to a specified area
+    */
     public static class QueueCropImage implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform, IPost
     {
         /**
-         * The X-coordinate of the top-left corner of the crop area
-         */
+        * The X-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The X-coordinate of the top-left corner of the crop area")
         public Integer x = null;
 
         /**
-         * The Y-coordinate of the top-left corner of the crop area
-         */
+        * The Y-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The Y-coordinate of the top-left corner of the crop area")
         public Integer y = null;
 
         /**
-         * The width of the crop area
-         */
+        * The width of the crop area
+        */
         @ApiMember(Description="The width of the crop area")
         public Integer width = null;
 
         /**
-         * The height of the crop area
-         */
+        * The height of the crop area
+        */
         @ApiMember(Description="The height of the crop area")
         public Integer height = null;
 
         /**
-         * The image file to be cropped
-         */
+        * The image file to be cropped
+        */
         @ApiMember(Description="The image file to be cropped")
         @Required()
         public InputStream image = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public Integer getX() { return x; }
         public QueueCropImage setX(Integer value) { this.x = value; return this; }
         public Integer getY() { return y; }
@@ -1215,47 +1215,47 @@ public class dtos
     }
 
     /**
-     * Scale an image to a specified size
-     */
+    * Scale an image to a specified size
+    */
     public static class QueueScaleImage implements IReturn<MediaTransformResponse>, IQueueMediaTransform, IPost
     {
         /**
-         * The image file to be scaled
-         */
+        * The image file to be scaled
+        */
         @ApiMember(Description="The image file to be scaled")
         @Required()
         public InputStream image = null;
 
         /**
-         * Desired width of the scaled image
-         */
+        * Desired width of the scaled image
+        */
         @ApiMember(Description="Desired width of the scaled image")
         public Integer width = null;
 
         /**
-         * Desired height of the scaled image
-         */
+        * Desired height of the scaled image
+        */
         @ApiMember(Description="Desired height of the scaled image")
         public Integer height = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public QueueScaleImage setImage(InputStream value) { this.image = value; return this; }
         public Integer getWidth() { return width; }
@@ -1273,53 +1273,53 @@ public class dtos
     }
 
     /**
-     * Add a watermark to an image
-     */
+    * Add a watermark to an image
+    */
     public static class QueueWatermarkImage implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform, IPost
     {
         /**
-         * The image file to be watermarked
-         */
+        * The image file to be watermarked
+        */
         @ApiMember(Description="The image file to be watermarked")
         @Required()
         public InputStream image = null;
 
         /**
-         * The position of the watermark on the image
-         */
+        * The position of the watermark on the image
+        */
         @ApiMember(Description="The position of the watermark on the image")
         public WatermarkPosition position = null;
 
         /**
-         * The opacity of the watermark (0.0 to 1.0)
-         */
+        * The opacity of the watermark (0.0 to 1.0)
+        */
         @ApiMember(Description="The opacity of the watermark (0.0 to 1.0)")
         public Float opacity = null;
 
         /**
-         * Scale of the watermark relative
-         */
+        * Scale of the watermark relative
+        */
         @ApiMember(Description="Scale of the watermark relative")
         public Float watermarkScale = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public QueueWatermarkImage setImage(InputStream value) { this.image = value; return this; }
         public WatermarkPosition getPosition() { return position; }
@@ -1339,42 +1339,42 @@ public class dtos
     }
 
     /**
-     * Convert an image to a different format
-     */
+    * Convert an image to a different format
+    */
     public static class QueueConvertImage implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform, IPost
     {
         /**
-         * The image file to be converted
-         */
+        * The image file to be converted
+        */
         @ApiMember(Description="The image file to be converted")
         @Required()
         public InputStream image = null;
 
         /**
-         * The desired output format for the converted image
-         */
+        * The desired output format for the converted image
+        */
         @ApiMember(Description="The desired output format for the converted image")
         @Required()
         public ImageOutputFormat outputFormat = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getImage() { return image; }
         public QueueConvertImage setImage(InputStream value) { this.image = value; return this; }
         public ImageOutputFormat getOutputFormat() { return outputFormat; }
@@ -1391,19 +1391,19 @@ public class dtos
 
     public static class QueryMediaTypes extends QueryDb<MediaType> implements IReturn<QueryResponse<MediaType>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<MediaType>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * Media Providers
-     */
+    * Media Providers
+    */
     public static class QueryMediaProviders extends QueryDb<MediaProvider> implements IReturn<QueryResponse<MediaProvider>>
     {
         public Integer id = null;
         public String name = null;
-
+        
         public Integer getId() { return id; }
         public QueryMediaProviders setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -1413,11 +1413,11 @@ public class dtos
     }
 
     /**
-     * Text to Speech Voice models
-     */
+    * Text to Speech Voice models
+    */
     public static class QueryTextToSpeechVoices extends QueryDb<TextToSpeechVoice> implements IReturn<QueryResponse<TextToSpeechVoice>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<TextToSpeechVoice>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
@@ -1432,7 +1432,7 @@ public class dtos
         public String state = null;
         public String replyTo = null;
         public String refId = null;
-
+        
         public GenerationArgs getRequest() { return request; }
         public CreateGeneration setRequest(GenerationArgs value) { this.request = value; return this; }
         public String getProvider() { return provider; }
@@ -1448,12 +1448,12 @@ public class dtos
     }
 
     /**
-     * Media Models
-     */
+    * Media Models
+    */
     public static class QueryMediaModels extends QueryDb<MediaModel> implements IReturn<QueryResponse<MediaModel>>
     {
         public String id = null;
-
+        
         public String getId() { return id; }
         public QueryMediaModels setId(String value) { this.id = value; return this; }
         private static Object responseType = new TypeToken<QueryResponse<MediaModel>>(){}.getType();
@@ -1466,7 +1466,7 @@ public class dtos
     {
         public Integer id = null;
         public String refId = null;
-
+        
         public Integer getId() { return id; }
         public GetGeneration setId(Integer value) { this.id = value; return this; }
         public String getRefId() { return refId; }
@@ -1476,44 +1476,44 @@ public class dtos
     }
 
     /**
-     * Update a Generation API Provider
-     */
+    * Update a Generation API Provider
+    */
     public static class UpdateMediaProvider implements IReturn<IdResponse>, IPatchDb<MediaProvider>
     {
         public Integer id = null;
         /**
-         * The API Key to use for this Provider
-         */
+        * The API Key to use for this Provider
+        */
         public String apiKey = null;
         /**
-         * Send the API Key in the Header instead of Authorization Bearer
-         */
+        * Send the API Key in the Header instead of Authorization Bearer
+        */
         public String apiKeyHeader = null;
         /**
-         * Override Base URL for the Generation Provider
-         */
+        * Override Base URL for the Generation Provider
+        */
         public String apiBaseUrl = null;
         /**
-         * Url to check if the API is online
-         */
+        * Url to check if the API is online
+        */
         public String heartbeatUrl = null;
         /**
-         * How many requests should be made concurrently
-         */
+        * How many requests should be made concurrently
+        */
         public Integer concurrency = null;
         /**
-         * What priority to give this Provider to use for processing models
-         */
+        * What priority to give this Provider to use for processing models
+        */
         public Integer priority = null;
         /**
-         * Whether the Provider is enabled
-         */
+        * Whether the Provider is enabled
+        */
         public Boolean enabled = null;
         /**
-         * The models this API Provider should process
-         */
+        * The models this API Provider should process
+        */
         public ArrayList<String> models = null;
-
+        
         public Integer getId() { return id; }
         public UpdateMediaProvider setId(Integer value) { this.id = value; return this; }
         public String getApiKey() { return apiKey; }
@@ -1537,52 +1537,52 @@ public class dtos
     }
 
     /**
-     * Add an API Provider to Generation API Providers
-     */
+    * Add an API Provider to Generation API Providers
+    */
     public static class CreateMediaProvider implements IReturn<IdResponse>, ICreateDb<MediaProvider>
     {
         /**
-         * The name of the API Provider
-         */
+        * The name of the API Provider
+        */
         public String name = null;
         /**
-         * The API Key to use for this Provider
-         */
+        * The API Key to use for this Provider
+        */
         public String apiKey = null;
         /**
-         * Send the API Key in the Header instead of Authorization Bearer
-         */
+        * Send the API Key in the Header instead of Authorization Bearer
+        */
         public String apiKeyHeader = null;
         /**
-         * Base URL for the Generation Provider
-         */
+        * Base URL for the Generation Provider
+        */
         public String apiBaseUrl = null;
         /**
-         * Url to check if the API is online
-         */
+        * Url to check if the API is online
+        */
         public String heartbeatUrl = null;
         /**
-         * How many requests should be made concurrently
-         */
+        * How many requests should be made concurrently
+        */
         public Integer concurrency = null;
         /**
-         * What priority to give this Provider to use for processing models
-         */
+        * What priority to give this Provider to use for processing models
+        */
         public Integer priority = null;
         /**
-         * Whether the Provider is enabled
-         */
+        * Whether the Provider is enabled
+        */
         public Boolean enabled = null;
         /**
-         * The date the Provider was last online
-         */
+        * The date the Provider was last online
+        */
         public Date offlineDate = null;
         /**
-         * Models this API Provider should process
-         */
+        * Models this API Provider should process
+        */
         public ArrayList<String> models = null;
         public String mediaTypeId = null;
-
+        
         public String getName() { return name; }
         public CreateMediaProvider setName(String value) { this.name = value; return this; }
         public String getApiKey() { return apiKey; }
@@ -1618,7 +1618,7 @@ public class dtos
         public String state = null;
         public String replyTo = null;
         public String refId = null;
-
+        
         public MediaTransformArgs getRequest() { return request; }
         public CreateMediaTransform setRequest(MediaTransformArgs value) { this.request = value; return this; }
         public String getProvider() { return provider; }
@@ -1637,7 +1637,7 @@ public class dtos
     public static class Hello implements IReturn<HelloResponse>, IGet
     {
         public String name = null;
-
+        
         public String getName() { return name; }
         public Hello setName(String value) { this.name = value; return this; }
         private static Object responseType = HelloResponse.class;
@@ -1648,7 +1648,7 @@ public class dtos
     {
         @Validate(Validator="NotEmpty")
         public String apiBaseUrl = null;
-
+        
         public String getApiBaseUrl() { return apiBaseUrl; }
         public GetOllamaModels setApiBaseUrl(String value) { this.apiBaseUrl = value; return this; }
         private static Object responseType = GetOllamaModelsResponse.class;
@@ -1656,42 +1656,42 @@ public class dtos
     }
 
     /**
-     * Different Models available in AI Server
-     */
+    * Different Models available in AI Server
+    */
     public static class QueryAiModels extends QueryDb<AiModel> implements IReturn<QueryResponse<AiModel>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<AiModel>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * The Type and behavior of different API Providers
-     */
+    * The Type and behavior of different API Providers
+    */
     public static class QueryAiTypes extends QueryDb<AiType> implements IReturn<QueryResponse<AiType>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<AiType>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * Active AI Worker Models available in AI Server
-     */
+    * Active AI Worker Models available in AI Server
+    */
     public static class ActiveAiModels implements IReturn<StringsResponse>, IGet
     {
-
+        
         private static Object responseType = StringsResponse.class;
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * AI Providers
-     */
+    * AI Providers
+    */
     public static class QueryAiProviders extends QueryDb<AiProvider> implements IReturn<QueryResponse<AiProvider>>
     {
         public String name = null;
-
+        
         public String getName() { return name; }
         public QueryAiProviders setName(String value) { this.name = value; return this; }
         private static Object responseType = new TypeToken<QueryResponse<AiProvider>>(){}.getType();
@@ -1700,7 +1700,7 @@ public class dtos
 
     public static class GetWorkerStats implements IReturn<GetWorkerStatsResponse>, IGet
     {
-
+        
         private static Object responseType = GetWorkerStatsResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1709,7 +1709,7 @@ public class dtos
     {
         @Validate(Validator="NotEmpty")
         public String worker = null;
-
+        
         public String getWorker() { return worker; }
         public CancelWorker setWorker(String value) { this.worker = value; return this; }
         private static Object responseType = EmptyResponse.class;
@@ -1720,7 +1720,7 @@ public class dtos
     public static class GetModelImage implements IReturn<byte[]>, IGet
     {
         public String model = null;
-
+        
         public String getModel() { return model; }
         public GetModelImage setModel(String value) { this.model = value; return this; }
         private static Object responseType = byte[].class;
@@ -1728,24 +1728,24 @@ public class dtos
     }
 
     /**
-     * Given a list of messages comprising a conversation, the model will return a response.
-     */
+    * Given a list of messages comprising a conversation, the model will return a response.
+    */
     @Route(Path="/v1/chat/completions", Verbs="POST")
     public static class OpenAiChatCompletion extends OpenAiChat implements IReturn<OpenAiChatResponse>, IPost
     {
         /**
-         * Provide a unique identifier to track requests
-         */
+        * Provide a unique identifier to track requests
+        */
         public String refId = null;
         /**
-         * Specify which AI Provider to use
-         */
+        * Specify which AI Provider to use
+        */
         public String provider = null;
         /**
-         * Categorize like requests under a common group
-         */
+        * Categorize like requests under a common group
+        */
         public String tag = null;
-
+        
         public String getRefId() { return refId; }
         public OpenAiChatCompletion setRefId(String value) { this.refId = value; return this; }
         public String getProvider() { return provider; }
@@ -1763,7 +1763,7 @@ public class dtos
         public String replyTo = null;
         public String tag = null;
         public OpenAiChat request = null;
-
+        
         public String getRefId() { return refId; }
         public QueueOpenAiChatCompletion setRefId(String value) { this.refId = value; return this; }
         public String getProvider() { return provider; }
@@ -1782,7 +1782,7 @@ public class dtos
     {
         public Integer id = null;
         public String refId = null;
-
+        
         public Integer getId() { return id; }
         public WaitForOpenAiChat setId(Integer value) { this.id = value; return this; }
         public String getRefId() { return refId; }
@@ -1795,7 +1795,7 @@ public class dtos
     {
         public Integer id = null;
         public String refId = null;
-
+        
         public Integer getId() { return id; }
         public GetOpenAiChat setId(Integer value) { this.id = value; return this; }
         public String getRefId() { return refId; }
@@ -1808,7 +1808,7 @@ public class dtos
     {
         public Long jobId = null;
         public String refId = null;
-
+        
         public Long getJobId() { return jobId; }
         public GetOpenAiChatStatus setJobId(Long value) { this.jobId = value; return this; }
         public String getRefId() { return refId; }
@@ -1819,7 +1819,7 @@ public class dtos
 
     public static class GetActiveProviders implements IReturn<GetActiveProvidersResponse>, IGet
     {
-
+        
         private static Object responseType = GetActiveProvidersResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -1830,7 +1830,7 @@ public class dtos
         public String model = null;
         public OpenAiChat request = null;
         public String prompt = null;
-
+        
         public String getProvider() { return provider; }
         public ChatAiProvider setProvider(String value) { this.provider = value; return this; }
         public String getModel() { return model; }
@@ -1854,7 +1854,7 @@ public class dtos
         public Integer refId = null;
         public String refIdStr = null;
         public HashMap<String,String> meta = null;
-
+        
         public String getKey() { return key; }
         public CreateApiKey setKey(String value) { this.key = value; return this; }
         public String getName() { return name; }
@@ -1878,67 +1878,67 @@ public class dtos
     }
 
     /**
-     * Add an AI Provider to process AI Requests
-     */
+    * Add an AI Provider to process AI Requests
+    */
     public static class CreateAiProvider implements IReturn<IdResponse>, ICreateDb<AiProvider>
     {
         /**
-         * The Type of this API Provider
-         */
+        * The Type of this API Provider
+        */
         @Validate(Validator="GreaterThan(0)")
         public String aiTypeId = null;
 
         /**
-         * The Base URL for the API Provider
-         */
+        * The Base URL for the API Provider
+        */
         public String apiBaseUrl = null;
         /**
-         * The unique name for this API Provider
-         */
+        * The unique name for this API Provider
+        */
         @Validate(Validator="NotEmpty")
         public String name = null;
 
         /**
-         * The API Key to use for this Provider
-         */
+        * The API Key to use for this Provider
+        */
         public String apiKeyVar = null;
         /**
-         * The API Key to use for this Provider
-         */
+        * The API Key to use for this Provider
+        */
         public String apiKey = null;
         /**
-         * Send the API Key in the Header instead of Authorization Bearer
-         */
+        * Send the API Key in the Header instead of Authorization Bearer
+        */
         public String apiKeyHeader = null;
         /**
-         * The URL to check if the API Provider is still online
-         */
+        * The URL to check if the API Provider is still online
+        */
         public String heartbeatUrl = null;
         /**
-         * Override API Paths for different AI Requests
-         */
+        * Override API Paths for different AI Requests
+        */
         public HashMap<TaskType,String> taskPaths = null;
         /**
-         * How many requests should be made concurrently
-         */
+        * How many requests should be made concurrently
+        */
         public Integer concurrency = null;
         /**
-         * What priority to give this Provider to use for processing models
-         */
+        * What priority to give this Provider to use for processing models
+        */
         public Integer priority = null;
         /**
-         * Whether the Provider is enabled
-         */
+        * Whether the Provider is enabled
+        */
         public Boolean enabled = null;
         /**
-         * The models this API Provider should process
-         */
+        * The models this API Provider should process
+        */
         public ArrayList<AiProviderModel> models = null;
         /**
-         * The selected models this API Provider should process
-         */
+        * The selected models this API Provider should process
+        */
         public ArrayList<String> selectedModels = null;
-
+        
         public String getAiTypeId() { return aiTypeId; }
         public CreateAiProvider setAiTypeId(String value) { this.aiTypeId = value; return this; }
         public String getApiBaseUrl() { return apiBaseUrl; }
@@ -1973,58 +1973,58 @@ public class dtos
     {
         public Integer id = null;
         /**
-         * The Type of this API Provider
-         */
+        * The Type of this API Provider
+        */
         public String aiTypeId = null;
         /**
-         * The Base URL for the API Provider
-         */
+        * The Base URL for the API Provider
+        */
         public String apiBaseUrl = null;
         /**
-         * The unique name for this API Provider
-         */
+        * The unique name for this API Provider
+        */
         public String name = null;
         /**
-         * The API Key to use for this Provider
-         */
+        * The API Key to use for this Provider
+        */
         public String apiKeyVar = null;
         /**
-         * The API Key to use for this Provider
-         */
+        * The API Key to use for this Provider
+        */
         public String apiKey = null;
         /**
-         * Send the API Key in the Header instead of Authorization Bearer
-         */
+        * Send the API Key in the Header instead of Authorization Bearer
+        */
         public String apiKeyHeader = null;
         /**
-         * The URL to check if the API Provider is still online
-         */
+        * The URL to check if the API Provider is still online
+        */
         public String heartbeatUrl = null;
         /**
-         * Override API Paths for different AI Requests
-         */
+        * Override API Paths for different AI Requests
+        */
         public HashMap<TaskType,String> taskPaths = null;
         /**
-         * How many requests should be made concurrently
-         */
+        * How many requests should be made concurrently
+        */
         public Integer concurrency = null;
         /**
-         * What priority to give this Provider to use for processing models
-         */
+        * What priority to give this Provider to use for processing models
+        */
         public Integer priority = null;
         /**
-         * Whether the Provider is enabled
-         */
+        * Whether the Provider is enabled
+        */
         public Boolean enabled = null;
         /**
-         * The models this API Provider should process
-         */
+        * The models this API Provider should process
+        */
         public ArrayList<AiProviderModel> models = null;
         /**
-         * The selected models this API Provider should process
-         */
+        * The selected models this API Provider should process
+        */
         public ArrayList<String> selectedModels = null;
-
+        
         public Integer getId() { return id; }
         public UpdateAiProvider setId(Integer value) { this.id = value; return this; }
         public String getAiTypeId() { return aiTypeId; }
@@ -2058,26 +2058,26 @@ public class dtos
     }
 
     /**
-     * Delete API Provider
-     */
+    * Delete API Provider
+    */
     public static class DeleteAiProvider implements IReturnVoid, IDeleteDb<AiProvider>
     {
         public Integer id = null;
-
+        
         public Integer getId() { return id; }
         public DeleteAiProvider setId(Integer value) { this.id = value; return this; }
     }
 
     public static class QueryPrompts extends QueryData<Prompt> implements IReturn<QueryResponse<Prompt>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<Prompt>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     public static class Reload implements IReturn<EmptyResponse>, IPost
     {
-
+        
         private static Object responseType = EmptyResponse.class;
         public Object getResponseType() { return responseType; }
     }
@@ -2086,7 +2086,7 @@ public class dtos
     {
         public String provider = null;
         public Boolean online = null;
-
+        
         public String getProvider() { return provider; }
         public ChangeAiProviderStatus setProvider(String value) { this.provider = value; return this; }
         public Boolean isOnline() { return online; }
@@ -2096,54 +2096,54 @@ public class dtos
     }
 
     /**
-     * Convert text to speech
-     */
+    * Convert text to speech
+    */
     @Api(Description="Convert text to speech")
     public static class QueueTextToSpeech implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * The text to be converted to speech
-         */
+        * The text to be converted to speech
+        */
         @ApiMember(Description="The text to be converted to speech")
         @Required()
         public String text = null;
 
         /**
-         * Optional seed for reproducible results in speech generation
-         */
+        * Optional seed for reproducible results in speech generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in speech generation")
         public Integer seed = null;
 
         /**
-         * The AI model to use for speech generation
-         */
+        * The AI model to use for speech generation
+        */
         @ApiMember(Description="The AI model to use for speech generation")
         public String model = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
-
+        
         public String getText() { return text; }
         public QueueTextToSpeech setText(String value) { this.text = value; return this; }
         public Integer getSeed() { return seed; }
@@ -2163,42 +2163,42 @@ public class dtos
     }
 
     /**
-     * Convert speech to text
-     */
+    * Convert speech to text
+    */
     @Api(Description="Convert speech to text")
     public static class QueueSpeechToText implements IReturn<QueueGenerationResponse>, IQueueGeneration
     {
         /**
-         * The audio stream containing the speech to be transcribed
-         */
+        * The audio stream containing the speech to be transcribed
+        */
         @ApiMember(Description="The audio stream containing the speech to be transcribed")
         @Required()
         public InputStream audio = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
 
         /**
-         * Optional state to associate with the request
-         */
+        * Optional state to associate with the request
+        */
         @ApiMember(Description="Optional state to associate with the request")
         public String state = null;
-
+        
         public InputStream getAudio() { return audio; }
         public QueueSpeechToText setAudio(InputStream value) { this.audio = value; return this; }
         public String getRefId() { return refId; }
@@ -2214,42 +2214,42 @@ public class dtos
     }
 
     /**
-     * Convert text to speech
-     */
+    * Convert text to speech
+    */
     @Api(Description="Convert text to speech")
     public static class TextToSpeech implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * The text to be converted to speech
-         */
+        * The text to be converted to speech
+        */
         @ApiMember(Description="The text to be converted to speech")
         @Validate(Validator="NotEmpty")
         public String input = null;
 
         /**
-         * Optional specific model and voice to use for speech generation
-         */
+        * Optional specific model and voice to use for speech generation
+        */
         @ApiMember(Description="Optional specific model and voice to use for speech generation")
         public String model = null;
 
         /**
-         * Optional seed for reproducible results in speech generation
-         */
+        * Optional seed for reproducible results in speech generation
+        */
         @ApiMember(Description="Optional seed for reproducible results in speech generation")
         public Integer seed = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public String getInput() { return input; }
         public TextToSpeech setInput(String value) { this.input = value; return this; }
         public String getModel() { return model; }
@@ -2265,30 +2265,30 @@ public class dtos
     }
 
     /**
-     * Convert speech to text
-     */
+    * Convert speech to text
+    */
     @Api(Description="Convert speech to text")
     public static class SpeechToText implements IReturn<GenerationResponse>, IGeneration
     {
         /**
-         * The audio stream containing the speech to be transcribed
-         */
+        * The audio stream containing the speech to be transcribed
+        */
         @ApiMember(Description="The audio stream containing the speech to be transcribed")
         @Required()
         public InputStream audio = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getAudio() { return audio; }
         public SpeechToText setAudio(InputStream value) { this.audio = value; return this; }
         public String getRefId() { return refId; }
@@ -2300,42 +2300,42 @@ public class dtos
     }
 
     /**
-     * Scale video
-     */
+    * Scale video
+    */
     @Api(Description="Scale video")
     public static class ScaleVideo implements IReturn<MediaTransformResponse>, IMediaTransform
     {
         /**
-         * The video file to be scaled
-         */
+        * The video file to be scaled
+        */
         @ApiMember(Description="The video file to be scaled")
         @Required()
         public InputStream video = null;
 
         /**
-         * Desired width of the scaled video
-         */
+        * Desired width of the scaled video
+        */
         @ApiMember(Description="Desired width of the scaled video")
         public Integer width = null;
 
         /**
-         * Desired height of the scaled video
-         */
+        * Desired height of the scaled video
+        */
         @ApiMember(Description="Desired height of the scaled video")
         public Integer height = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getVideo() { return video; }
         public ScaleVideo setVideo(InputStream value) { this.video = value; return this; }
         public Integer getWidth() { return width; }
@@ -2351,43 +2351,43 @@ public class dtos
     }
 
     /**
-     * Watermark video
-     */
+    * Watermark video
+    */
     @Api(Description="Watermark video")
     public static class WatermarkVideo implements IReturn<MediaTransformResponse>, IMediaTransform
     {
         /**
-         * The video file to be watermarked
-         */
+        * The video file to be watermarked
+        */
         @ApiMember(Description="The video file to be watermarked")
         @Required()
         public InputStream video = null;
 
         /**
-         * The image file to use as a watermark
-         */
+        * The image file to use as a watermark
+        */
         @ApiMember(Description="The image file to use as a watermark")
         @Required()
         public InputStream watermark = null;
 
         /**
-         * Position of the watermark
-         */
+        * Position of the watermark
+        */
         @ApiMember(Description="Position of the watermark")
         public WatermarkPosition position = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getVideo() { return video; }
         public WatermarkVideo setVideo(InputStream value) { this.video = value; return this; }
         public InputStream getWatermark() { return watermark; }
@@ -2403,13 +2403,13 @@ public class dtos
     }
 
     /**
-     * Convert a video to a different format
-     */
+    * Convert a video to a different format
+    */
     public static class ConvertVideo implements IReturn<MediaTransformResponse>, IMediaTransform
     {
         /**
-         * The desired output format for the converted video
-         */
+        * The desired output format for the converted video
+        */
         @ApiMember(Description="The desired output format for the converted video")
         @Required()
         public ConvertVideoOutputFormat outputFormat = null;
@@ -2418,17 +2418,17 @@ public class dtos
         public InputStream video = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public ConvertVideoOutputFormat getOutputFormat() { return outputFormat; }
         public ConvertVideo setOutputFormat(ConvertVideoOutputFormat value) { this.outputFormat = value; return this; }
         public InputStream getVideo() { return video; }
@@ -2442,37 +2442,37 @@ public class dtos
     }
 
     /**
-     * Crop a video to a specified area
-     */
+    * Crop a video to a specified area
+    */
     public static class CropVideo implements IReturn<MediaTransformResponse>, IMediaTransform
     {
         /**
-         * The X-coordinate of the top-left corner of the crop area
-         */
+        * The X-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The X-coordinate of the top-left corner of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
         public Integer x = null;
 
         /**
-         * The Y-coordinate of the top-left corner of the crop area
-         */
+        * The Y-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The Y-coordinate of the top-left corner of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
         public Integer y = null;
 
         /**
-         * The width of the crop area
-         */
+        * The width of the crop area
+        */
         @ApiMember(Description="The width of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
         public Integer width = null;
 
         /**
-         * The height of the crop area
-         */
+        * The height of the crop area
+        */
         @ApiMember(Description="The height of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
@@ -2482,17 +2482,17 @@ public class dtos
         public InputStream video = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public Integer getX() { return x; }
         public CropVideo setX(Integer value) { this.x = value; return this; }
         public Integer getY() { return y; }
@@ -2512,20 +2512,20 @@ public class dtos
     }
 
     /**
-     * Trim a video to a specified duration via start and end times
-     */
+    * Trim a video to a specified duration via start and end times
+    */
     public static class TrimVideo implements IReturn<MediaTransformResponse>, IMediaTransform
     {
         /**
-         * The start time of the trimmed video (format: MM:SS)
-         */
+        * The start time of the trimmed video (format: MM:SS)
+        */
         @ApiMember(Description="The start time of the trimmed video (format: MM:SS)")
         @Required()
         public String startTime = null;
 
         /**
-         * The end time of the trimmed video (format: MM:SS)
-         */
+        * The end time of the trimmed video (format: MM:SS)
+        */
         @ApiMember(Description="The end time of the trimmed video (format: MM:SS)")
         public String endTime = null;
 
@@ -2533,17 +2533,17 @@ public class dtos
         public InputStream video = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public String getStartTime() { return startTime; }
         public TrimVideo setStartTime(String value) { this.startTime = value; return this; }
         public String getEndTime() { return endTime; }
@@ -2559,48 +2559,48 @@ public class dtos
     }
 
     /**
-     * Scale video
-     */
+    * Scale video
+    */
     @Api(Description="Scale video")
     public static class QueueScaleVideo implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform
     {
         /**
-         * The video file to be scaled
-         */
+        * The video file to be scaled
+        */
         @ApiMember(Description="The video file to be scaled")
         @Required()
         public InputStream video = null;
 
         /**
-         * Desired width of the scaled video
-         */
+        * Desired width of the scaled video
+        */
         @ApiMember(Description="Desired width of the scaled video")
         public Integer width = null;
 
         /**
-         * Desired height of the scaled video
-         */
+        * Desired height of the scaled video
+        */
         @ApiMember(Description="Desired height of the scaled video")
         public Integer height = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getVideo() { return video; }
         public QueueScaleVideo setVideo(InputStream value) { this.video = value; return this; }
         public Integer getWidth() { return width; }
@@ -2618,49 +2618,49 @@ public class dtos
     }
 
     /**
-     * Watermark video
-     */
+    * Watermark video
+    */
     @Api(Description="Watermark video")
     public static class QueueWatermarkVideo implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform
     {
         /**
-         * The video file to be watermarked
-         */
+        * The video file to be watermarked
+        */
         @ApiMember(Description="The video file to be watermarked")
         @Required()
         public InputStream video = null;
 
         /**
-         * The image file to use as a watermark
-         */
+        * The image file to use as a watermark
+        */
         @ApiMember(Description="The image file to use as a watermark")
         @Required()
         public InputStream watermark = null;
 
         /**
-         * Position of the watermark
-         */
+        * Position of the watermark
+        */
         @ApiMember(Description="Position of the watermark")
         public WatermarkPosition position = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public InputStream getVideo() { return video; }
         public QueueWatermarkVideo setVideo(InputStream value) { this.video = value; return this; }
         public InputStream getWatermark() { return watermark; }
@@ -2678,13 +2678,13 @@ public class dtos
     }
 
     /**
-     * Convert a video to a different format
-     */
+    * Convert a video to a different format
+    */
     public static class QueueConvertVideo implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform
     {
         /**
-         * The desired output format for the converted video
-         */
+        * The desired output format for the converted video
+        */
         @ApiMember(Description="The desired output format for the converted video")
         @Required()
         public ConvertVideoOutputFormat outputFormat = null;
@@ -2693,23 +2693,23 @@ public class dtos
         public InputStream video = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public ConvertVideoOutputFormat getOutputFormat() { return outputFormat; }
         public QueueConvertVideo setOutputFormat(ConvertVideoOutputFormat value) { this.outputFormat = value; return this; }
         public InputStream getVideo() { return video; }
@@ -2725,37 +2725,37 @@ public class dtos
     }
 
     /**
-     * Crop a video to a specified area
-     */
+    * Crop a video to a specified area
+    */
     public static class QueueCropVideo implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform
     {
         /**
-         * The X-coordinate of the top-left corner of the crop area
-         */
+        * The X-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The X-coordinate of the top-left corner of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
         public Integer x = null;
 
         /**
-         * The Y-coordinate of the top-left corner of the crop area
-         */
+        * The Y-coordinate of the top-left corner of the crop area
+        */
         @ApiMember(Description="The Y-coordinate of the top-left corner of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
         public Integer y = null;
 
         /**
-         * The width of the crop area
-         */
+        * The width of the crop area
+        */
         @ApiMember(Description="The width of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
         public Integer width = null;
 
         /**
-         * The height of the crop area
-         */
+        * The height of the crop area
+        */
         @ApiMember(Description="The height of the crop area")
         @Validate(Validator="GreaterThan(0)")
         @Required()
@@ -2765,23 +2765,23 @@ public class dtos
         public InputStream video = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public Integer getX() { return x; }
         public QueueCropVideo setX(Integer value) { this.x = value; return this; }
         public Integer getY() { return y; }
@@ -2803,20 +2803,20 @@ public class dtos
     }
 
     /**
-     * Trim a video to a specified duration via start and end times
-     */
+    * Trim a video to a specified duration via start and end times
+    */
     public static class QueueTrimVideo implements IReturn<QueueMediaTransformResponse>, IQueueMediaTransform
     {
         /**
-         * The start time of the trimmed video (format: HH:MM:SS)
-         */
+        * The start time of the trimmed video (format: HH:MM:SS)
+        */
         @ApiMember(Description="The start time of the trimmed video (format: HH:MM:SS)")
         @Required()
         public String startTime = null;
 
         /**
-         * The end time of the trimmed video (format: HH:MM:SS)
-         */
+        * The end time of the trimmed video (format: HH:MM:SS)
+        */
         @ApiMember(Description="The end time of the trimmed video (format: HH:MM:SS)")
         public String endTime = null;
 
@@ -2824,23 +2824,23 @@ public class dtos
         public InputStream video = null;
 
         /**
-         * Optional client-provided identifier for the request
-         */
+        * Optional client-provided identifier for the request
+        */
         @ApiMember(Description="Optional client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Optional queue or topic to reply to
-         */
+        * Optional queue or topic to reply to
+        */
         @ApiMember(Description="Optional queue or topic to reply to")
         public String replyTo = null;
 
         /**
-         * Tag to identify the request
-         */
+        * Tag to identify the request
+        */
         @ApiMember(Description="Tag to identify the request")
         public String tag = null;
-
+        
         public String getStartTime() { return startTime; }
         public QueueTrimVideo setStartTime(String value) { this.startTime = value; return this; }
         public String getEndTime() { return endTime; }
@@ -2864,7 +2864,7 @@ public class dtos
         public String path = null;
 
         public Boolean download = null;
-
+        
         public String getPath() { return path; }
         public GetArtifact setPath(String value) { this.path = value; return this; }
         public Boolean isDownload() { return download; }
@@ -2878,7 +2878,7 @@ public class dtos
     {
         @Validate(Validator="NotEmpty")
         public String path = null;
-
+        
         public String getPath() { return path; }
         public DeleteFile setPath(String value) { this.path = value; return this; }
         private static Object responseType = EmptyResponse.class;
@@ -2888,7 +2888,7 @@ public class dtos
     public static class DeleteFiles implements IReturn<DeleteFilesResponse>, IPost
     {
         public ArrayList<String> paths = null;
-
+        
         public ArrayList<String> getPaths() { return paths; }
         public DeleteFiles setPaths(ArrayList<String> value) { this.paths = value; return this; }
         private static Object responseType = DeleteFilesResponse.class;
@@ -2903,7 +2903,7 @@ public class dtos
 
         @Validate(Validator="NotEmpty")
         public String path = null;
-
+        
         public String getVariant() { return variant; }
         public GetVariant setVariant(String value) { this.variant = value; return this; }
         public String getPath() { return path; }
@@ -2916,7 +2916,7 @@ public class dtos
     {
         public String path = null;
         public Date date = null;
-
+        
         public String getPath() { return path; }
         public MigrateArtifact setPath(String value) { this.path = value; return this; }
         public Date getDate() { return date; }
@@ -2926,8 +2926,8 @@ public class dtos
     }
 
     /**
-     * Sign In
-     */
+    * Sign In
+    */
     @Route(Path="/auth", Verbs="GET,POST")
     // @Route(Path="/auth/{provider}", Verbs="GET,POST")
     @Api(Description="Sign In")
@@ -2935,8 +2935,8 @@ public class dtos
     public static class Authenticate implements IReturn<AuthenticateResponse>, IPost
     {
         /**
-         * AuthProvider, e.g. credentials
-         */
+        * AuthProvider, e.g. credentials
+        */
         @DataMember(Order=1)
         public String provider = null;
 
@@ -2963,7 +2963,7 @@ public class dtos
 
         @DataMember(Order=9)
         public HashMap<String,String> meta = null;
-
+        
         public String getProvider() { return provider; }
         public Authenticate setProvider(String value) { this.provider = value; return this; }
         public String getUserName() { return userName; }
@@ -2988,40 +2988,40 @@ public class dtos
 
     public static class QueryMediaTypesData extends QueryData<MediaType> implements IReturn<QueryResponse<MediaType>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<MediaType>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     public static class QueryTextToSpeechVoicesData extends QueryData<TextToSpeechVoice> implements IReturn<QueryResponse<TextToSpeechVoice>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<TextToSpeechVoice>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     public static class QueryAiModelsData extends QueryData<AiModel> implements IReturn<QueryResponse<AiModel>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<AiModel>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     public static class QueryAiTypesData extends QueryData<AiType> implements IReturn<QueryResponse<AiType>>
     {
-
+        
         private static Object responseType = new TypeToken<QueryResponse<AiType>>(){}.getType();
         public Object getResponseType() { return responseType; }
     }
 
     /**
-     * Delete a Generation API Provider
-     */
+    * Delete a Generation API Provider
+    */
     public static class DeleteMediaProvider implements IReturn<IdResponse>, IDeleteDb<MediaProvider>
     {
         public Integer id = null;
         public String name = null;
-
+        
         public Integer getId() { return id; }
         public DeleteMediaProvider setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -3033,34 +3033,34 @@ public class dtos
     public static class AdminDataResponse
     {
         public ArrayList<PageStats> pageStats = null;
-
+        
         public ArrayList<PageStats> getPageStats() { return pageStats; }
         public AdminDataResponse setPageStats(ArrayList<PageStats> value) { this.pageStats = value; return this; }
     }
 
     /**
-     * Response object for transform requests
-     */
+    * Response object for transform requests
+    */
     public static class MediaTransformResponse
     {
         /**
-         * List of generated outputs
-         */
+        * List of generated outputs
+        */
         @ApiMember(Description="List of generated outputs")
         public ArrayList<ArtifactOutput> outputs = null;
 
         /**
-         * List of generated text outputs
-         */
+        * List of generated text outputs
+        */
         @ApiMember(Description="List of generated text outputs")
         public ArrayList<TextOutput> textOutputs = null;
 
         /**
-         * Detailed response status information
-         */
+        * Detailed response status information
+        */
         @ApiMember(Description="Detailed response status information")
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<ArtifactOutput> getOutputs() { return outputs; }
         public MediaTransformResponse setOutputs(ArrayList<ArtifactOutput> value) { this.outputs = value; return this; }
         public ArrayList<TextOutput> getTextOutputs() { return textOutputs; }
@@ -3070,46 +3070,46 @@ public class dtos
     }
 
     /**
-     * Base class for queueable transformation requests
-     */
+    * Base class for queueable transformation requests
+    */
     public static class QueueMediaTransformResponse
     {
         /**
-         * Unique identifier of the background job
-         */
+        * Unique identifier of the background job
+        */
         @ApiMember(Description="Unique identifier of the background job")
         public Long jobId = null;
 
         /**
-         * Client-provided identifier for the request
-         */
+        * Client-provided identifier for the request
+        */
         @ApiMember(Description="Client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Current state of the background job
-         */
+        * Current state of the background job
+        */
         @ApiMember(Description="Current state of the background job")
         public BackgroundJobState jobState = null;
 
         /**
-         * Current status of the transformation request
-         */
+        * Current status of the transformation request
+        */
         @ApiMember(Description="Current status of the transformation request")
         public String status = null;
 
         /**
-         * Detailed response status information
-         */
+        * Detailed response status information
+        */
         @ApiMember(Description="Detailed response status information")
         public ResponseStatus responseStatus = null;
 
         /**
-         * URL to check the status of the request
-         */
+        * URL to check the status of the request
+        */
         @ApiMember(Description="URL to check the status of the request")
         public String statusUrl = null;
-
+        
         public Long getJobId() { return jobId; }
         public QueueMediaTransformResponse setJobId(Long value) { this.jobId = value; return this; }
         public String getRefId() { return refId; }
@@ -3129,7 +3129,7 @@ public class dtos
         public ArrayList<SummaryStats> providerStats = null;
         public ArrayList<SummaryStats> modelStats = null;
         public ArrayList<SummaryStats> monthStats = null;
-
+        
         public ArrayList<SummaryStats> getProviderStats() { return providerStats; }
         public GetSummaryStatsResponse setProviderStats(ArrayList<SummaryStats> value) { this.providerStats = value; return this; }
         public ArrayList<SummaryStats> getModelStats() { return modelStats; }
@@ -3149,7 +3149,7 @@ public class dtos
 
         @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<String> getResults() { return results; }
         public StringsResponse setResults(ArrayList<String> value) { this.results = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
@@ -3162,7 +3162,7 @@ public class dtos
     {
         public ArrayList<String> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<String> getResults() { return results; }
         public GetComfyModelsResponse setResults(ArrayList<String> value) { this.results = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -3172,7 +3172,7 @@ public class dtos
     public static class GetComfyModelMappingsResponse
     {
         public HashMap<String,String> models = null;
-
+        
         public HashMap<String,String> getModels() { return models; }
         public GetComfyModelMappingsResponse setModels(HashMap<String,String> value) { this.models = value; return this; }
     }
@@ -3180,47 +3180,47 @@ public class dtos
     public static class GetJobStatusResponse
     {
         /**
-         * Unique identifier of the background job
-         */
+        * Unique identifier of the background job
+        */
         @ApiMember(Description="Unique identifier of the background job")
         public Long jobId = null;
 
         /**
-         * Client-provided identifier for the request
-         */
+        * Client-provided identifier for the request
+        */
         @ApiMember(Description="Client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Current state of the background job
-         */
+        * Current state of the background job
+        */
         @ApiMember(Description="Current state of the background job")
         public BackgroundJobState jobState = null;
 
         /**
-         * Current status of the generation request
-         */
+        * Current status of the generation request
+        */
         @ApiMember(Description="Current status of the generation request")
         public String status = null;
 
         /**
-         * List of generated outputs
-         */
+        * List of generated outputs
+        */
         @ApiMember(Description="List of generated outputs")
         public ArrayList<ArtifactOutput> outputs = null;
 
         /**
-         * List of generated text outputs
-         */
+        * List of generated text outputs
+        */
         @ApiMember(Description="List of generated text outputs")
         public ArrayList<TextOutput> textOutputs = null;
 
         /**
-         * Detailed response status information
-         */
+        * Detailed response status information
+        */
         @ApiMember(Description="Detailed response status information")
         public ResponseStatus responseStatus = null;
-
+        
         public Long getJobId() { return jobId; }
         public GetJobStatusResponse setJobId(Long value) { this.jobId = value; return this; }
         public String getRefId() { return refId; }
@@ -3238,28 +3238,28 @@ public class dtos
     }
 
     /**
-     * Response object for generation requests
-     */
+    * Response object for generation requests
+    */
     public static class GenerationResponse
     {
         /**
-         * List of generated outputs
-         */
+        * List of generated outputs
+        */
         @ApiMember(Description="List of generated outputs")
         public ArrayList<ArtifactOutput> outputs = null;
 
         /**
-         * List of generated text outputs
-         */
+        * List of generated text outputs
+        */
         @ApiMember(Description="List of generated text outputs")
         public ArrayList<TextOutput> textOutputs = null;
 
         /**
-         * Detailed response status information
-         */
+        * Detailed response status information
+        */
         @ApiMember(Description="Detailed response status information")
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<ArtifactOutput> getOutputs() { return outputs; }
         public GenerationResponse setOutputs(ArrayList<ArtifactOutput> value) { this.outputs = value; return this; }
         public ArrayList<TextOutput> getTextOutputs() { return textOutputs; }
@@ -3271,41 +3271,41 @@ public class dtos
     public static class QueueGenerationResponse
     {
         /**
-         * Unique identifier of the background job
-         */
+        * Unique identifier of the background job
+        */
         @ApiMember(Description="Unique identifier of the background job")
         public Long jobId = null;
 
         /**
-         * Client-provided identifier for the request
-         */
+        * Client-provided identifier for the request
+        */
         @ApiMember(Description="Client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Current state of the background job
-         */
+        * Current state of the background job
+        */
         @ApiMember(Description="Current state of the background job")
         public BackgroundJobState jobState = null;
 
         /**
-         * Current status of the generation request
-         */
+        * Current status of the generation request
+        */
         @ApiMember(Description="Current status of the generation request")
         public String status = null;
 
         /**
-         * Detailed response status information
-         */
+        * Detailed response status information
+        */
         @ApiMember(Description="Detailed response status information")
         public ResponseStatus responseStatus = null;
 
         /**
-         * URL to check the status of the generation request
-         */
+        * URL to check the status of the generation request
+        */
         @ApiMember(Description="URL to check the status of the generation request")
         public String statusUrl = null;
-
+        
         public Long getJobId() { return jobId; }
         public QueueGenerationResponse setJobId(Long value) { this.jobId = value; return this; }
         public String getRefId() { return refId; }
@@ -3321,7 +3321,7 @@ public class dtos
     }
 
     @DataContract
-    public static class QueryResponse<MediaType>
+    public static class QueryResponse<T>
     {
         @DataMember(Order=1)
         public Integer offset = null;
@@ -3337,24 +3337,24 @@ public class dtos
 
         @DataMember(Order=5)
         public ResponseStatus responseStatus = null;
-
+        
         public Integer getOffset() { return offset; }
-        public QueryResponse<MediaType> setOffset(Integer value) { this.offset = value; return this; }
+        public QueryResponse<T> setOffset(Integer value) { this.offset = value; return this; }
         public Integer getTotal() { return total; }
-        public QueryResponse<MediaType> setTotal(Integer value) { this.total = value; return this; }
+        public QueryResponse<T> setTotal(Integer value) { this.total = value; return this; }
         public ArrayList<MediaType> getResults() { return results; }
-        public QueryResponse<MediaType> setResults(ArrayList<MediaType> value) { this.results = value; return this; }
+        public QueryResponse<T> setResults(ArrayList<MediaType> value) { this.results = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
-        public QueryResponse<MediaType> setMeta(HashMap<String,String> value) { this.meta = value; return this; }
+        public QueryResponse<T> setMeta(HashMap<String,String> value) { this.meta = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
-        public QueryResponse<MediaType> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
+        public QueryResponse<T> setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
 
     public static class CreateGenerationResponse
     {
         public Long id = null;
         public String refId = null;
-
+        
         public Long getId() { return id; }
         public CreateGenerationResponse setId(Long value) { this.id = value; return this; }
         public String getRefId() { return refId; }
@@ -3367,7 +3367,7 @@ public class dtos
         public GenerationResult result = null;
         public ArrayList<AiProviderFileOutput> outputs = null;
         public ArrayList<AiProviderTextOutput> textOutputs = null;
-
+        
         public GenerationArgs getRequest() { return request; }
         public GetGenerationResponse setRequest(GenerationArgs value) { this.request = value; return this; }
         public GenerationResult getResult() { return result; }
@@ -3386,7 +3386,7 @@ public class dtos
 
         @DataMember(Order=2)
         public ResponseStatus responseStatus = null;
-
+        
         public String getId() { return id; }
         public IdResponse setId(String value) { this.id = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -3397,7 +3397,7 @@ public class dtos
     {
         public Long id = null;
         public String refId = null;
-
+        
         public Long getId() { return id; }
         public CreateTransformResponse setId(Long value) { this.id = value; return this; }
         public String getRefId() { return refId; }
@@ -3407,7 +3407,7 @@ public class dtos
     public static class HelloResponse
     {
         public String result = null;
-
+        
         public String getResult() { return result; }
         public HelloResponse setResult(String value) { this.result = value; return this; }
     }
@@ -3416,7 +3416,7 @@ public class dtos
     {
         public ArrayList<OllamaModel> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<OllamaModel> getResults() { return results; }
         public GetOllamaModelsResponse setResults(ArrayList<OllamaModel> value) { this.results = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -3428,7 +3428,7 @@ public class dtos
         public ArrayList<WorkerStats> results = null;
         public HashMap<String,Integer> queueCounts = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<WorkerStats> getResults() { return results; }
         public GetWorkerStatsResponse setResults(ArrayList<WorkerStats> value) { this.results = value; return this; }
         public HashMap<String,Integer> getQueueCounts() { return queueCounts; }
@@ -3442,7 +3442,7 @@ public class dtos
     {
         @DataMember(Order=1)
         public ResponseStatus responseStatus = null;
-
+        
         public ResponseStatus getResponseStatus() { return responseStatus; }
         public EmptyResponse setResponseStatus(ResponseStatus value) { this.responseStatus = value; return this; }
     }
@@ -3451,50 +3451,50 @@ public class dtos
     public static class OpenAiChatResponse
     {
         /**
-         * A unique identifier for the chat completion.
-         */
+        * A unique identifier for the chat completion.
+        */
         @DataMember(Name="id")
         @SerializedName("id")
         public String id = null;
 
         /**
-         * A list of chat completion choices. Can be more than one if n is greater than 1.
-         */
+        * A list of chat completion choices. Can be more than one if n is greater than 1.
+        */
         @DataMember(Name="choices")
         @SerializedName("choices")
         public ArrayList<Choice> choices = null;
 
         /**
-         * The Unix timestamp (in seconds) of when the chat completion was created.
-         */
+        * The Unix timestamp (in seconds) of when the chat completion was created.
+        */
         @DataMember(Name="created")
         @SerializedName("created")
         public Long created = null;
 
         /**
-         * The model used for the chat completion.
-         */
+        * The model used for the chat completion.
+        */
         @DataMember(Name="model")
         @SerializedName("model")
         public String model = null;
 
         /**
-         * This fingerprint represents the backend configuration that the model runs with.
-         */
+        * This fingerprint represents the backend configuration that the model runs with.
+        */
         @DataMember(Name="system_fingerprint")
         @SerializedName("system_fingerprint")
         public String systemFingerprint = null;
 
         /**
-         * The object type, which is always chat.completion.
-         */
+        * The object type, which is always chat.completion.
+        */
         @DataMember(Name="object")
         @SerializedName("object")
         public String object = null;
 
         /**
-         * Usage statistics for the completion request.
-         */
+        * Usage statistics for the completion request.
+        */
         @DataMember(Name="usage")
         @SerializedName("usage")
         public OpenAiUsage usage = null;
@@ -3502,7 +3502,7 @@ public class dtos
         @DataMember(Name="responseStatus")
         @SerializedName("responseStatus")
         public ResponseStatus responseStatus = null;
-
+        
         public String getId() { return id; }
         public OpenAiChatResponse setId(String value) { this.id = value; return this; }
         public ArrayList<Choice> getChoices() { return choices; }
@@ -3527,7 +3527,7 @@ public class dtos
         public String refId = null;
         public String statusUrl = null;
         public ResponseStatus responseStatus = null;
-
+        
         public Long getId() { return id; }
         public QueueOpenAiChatResponse setId(Long value) { this.id = value; return this; }
         public String getRefId() { return refId; }
@@ -3542,7 +3542,7 @@ public class dtos
     {
         public BackgroundJobBase result = null;
         public ResponseStatus responseStatus = null;
-
+        
         public BackgroundJobBase getResult() { return result; }
         public GetOpenAiChatResponse setResult(BackgroundJobBase value) { this.result = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -3552,41 +3552,41 @@ public class dtos
     public static class GetOpenAiChatStatusResponse
     {
         /**
-         * Unique identifier of the background job
-         */
+        * Unique identifier of the background job
+        */
         @ApiMember(Description="Unique identifier of the background job")
         public Long jobId = null;
 
         /**
-         * Client-provided identifier for the request
-         */
+        * Client-provided identifier for the request
+        */
         @ApiMember(Description="Client-provided identifier for the request")
         public String refId = null;
 
         /**
-         * Current state of the background job
-         */
+        * Current state of the background job
+        */
         @ApiMember(Description="Current state of the background job")
         public BackgroundJobState jobState = null;
 
         /**
-         * Current status of the generation request
-         */
+        * Current status of the generation request
+        */
         @ApiMember(Description="Current status of the generation request")
         public String status = null;
 
         /**
-         * Detailed response status information
-         */
+        * Detailed response status information
+        */
         @ApiMember(Description="Detailed response status information")
         public ResponseStatus responseStatus = null;
 
         /**
-         * Chat response
-         */
+        * Chat response
+        */
         @ApiMember(Description="Chat response")
         public OpenAiChatResponse chatResponse = null;
-
+        
         public Long getJobId() { return jobId; }
         public GetOpenAiChatStatusResponse setJobId(Long value) { this.jobId = value; return this; }
         public String getRefId() { return refId; }
@@ -3605,7 +3605,7 @@ public class dtos
     {
         public ArrayList<AiProvider> results = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<AiProvider> getResults() { return results; }
         public GetActiveProvidersResponse setResults(ArrayList<AiProvider> value) { this.results = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -3624,7 +3624,7 @@ public class dtos
         public Date expiryDate = null;
         public Date cancelledDate = null;
         public String notes = null;
-
+        
         public Integer getId() { return id; }
         public CreateApiKeyResponse setId(Integer value) { this.id = value; return this; }
         public String getKey() { return key; }
@@ -3658,7 +3658,7 @@ public class dtos
 
         @DataMember(Order=3)
         public ResponseStatus responseStatus = null;
-
+        
         public String getResult() { return result; }
         public StringResponse setResult(String value) { this.result = value; return this; }
         public HashMap<String,String> getMeta() { return meta; }
@@ -3673,7 +3673,7 @@ public class dtos
         public ArrayList<String> missing = null;
         public ArrayList<String> failed = null;
         public ResponseStatus responseStatus = null;
-
+        
         public ArrayList<String> getDeleted() { return deleted; }
         public DeleteFilesResponse setDeleted(ArrayList<String> value) { this.deleted = value; return this; }
         public ArrayList<String> getMissing() { return missing; }
@@ -3688,7 +3688,7 @@ public class dtos
     {
         public String filePath = null;
         public ResponseStatus responseStatus = null;
-
+        
         public String getFilePath() { return filePath; }
         public MigrateArtifactResponse setFilePath(String value) { this.filePath = value; return this; }
         public ResponseStatus getResponseStatus() { return responseStatus; }
@@ -3739,7 +3739,7 @@ public class dtos
 
         @DataMember(Order=14)
         public HashMap<String,String> meta = null;
-
+        
         public String getUserId() { return userId; }
         public AuthenticateResponse setUserId(String value) { this.userId = value; return this; }
         public String getSessionId() { return sessionId; }
@@ -3799,8 +3799,8 @@ public class dtos
     }
 
     /**
-     * Base class for queue generation requests
-     */
+    * Base class for queue generation requests
+    */
     public static interface IQueueGeneration
     {
         public String refId = null;
@@ -3831,7 +3831,7 @@ public class dtos
 
     public static class QueryDb<T> extends QueryBase
     {
-
+        
     }
 
     public static class MediaType
@@ -3843,7 +3843,7 @@ public class dtos
         public String icon = null;
         public HashMap<String,String> apiModels = null;
         public AiServiceProvider provider = null;
-
+        
         public String getId() { return id; }
         public MediaType setId(String value) { this.id = value; return this; }
         public String getApiBaseUrl() { return apiBaseUrl; }
@@ -3880,7 +3880,7 @@ public class dtos
         public MediaType mediaType = null;
 
         public ArrayList<String> models = null;
-
+        
         public Integer getId() { return id; }
         public MediaProvider setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -3919,7 +3919,7 @@ public class dtos
     {
         public String id = null;
         public String model = null;
-
+        
         public String getId() { return id; }
         public TextToSpeechVoice setId(String value) { this.id = value; return this; }
         public String getModel() { return model; }
@@ -3952,7 +3952,7 @@ public class dtos
         public Double quality = null;
         public String voice = null;
         public String language = null;
-
+        
         public String getModel() { return model; }
         public GenerationArgs setModel(String value) { this.model = value; return this; }
         public Integer getSteps() { return steps; }
@@ -4018,7 +4018,7 @@ public class dtos
         public Integer steps = null;
         public String negativePrompt = null;
         public ModelType modelType = null;
-
+        
         public String getId() { return id; }
         public MediaModel setId(String value) { this.id = value; return this; }
         public HashMap<String,String> getApiModels() { return apiModels; }
@@ -4075,7 +4075,7 @@ public class dtos
         public String videoCodec = null;
         public String audioBitrate = null;
         public Integer audioSampleRate = null;
-
+        
         public MediaTransformTaskType getTaskType() { return taskType; }
         public MediaTransformArgs setTaskType(MediaTransformTaskType value) { this.taskType = value; return this; }
         public InputStream getVideoInput() { return videoInput; }
@@ -4138,7 +4138,7 @@ public class dtos
         public String website = null;
         public String description = null;
         public String icon = null;
-
+        
         public String getId() { return id; }
         public AiModel setId(String value) { this.id = value; return this; }
         public ArrayList<String> getTags() { return tags; }
@@ -4162,7 +4162,7 @@ public class dtos
         public String heartbeatUrl = null;
         public String icon = null;
         public HashMap<String,String> apiModels = null;
-
+        
         public String getId() { return id; }
         public AiType setId(String value) { this.id = value; return this; }
         public AiProviderType getProvider() { return provider; }
@@ -4200,7 +4200,7 @@ public class dtos
 
         @Ignore()
         public ArrayList<String> selectedModels = null;
-
+        
         public Integer getId() { return id; }
         public AiProvider setId(Integer value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -4236,46 +4236,46 @@ public class dtos
     }
 
     /**
-     * A list of messages comprising the conversation so far.
-     */
+    * A list of messages comprising the conversation so far.
+    */
     @DataContract
     public static class OpenAiMessage
     {
         /**
-         * The contents of the message.
-         */
+        * The contents of the message.
+        */
         @DataMember(Name="content")
         @SerializedName("content")
         public String content = null;
 
         /**
-         * The role of the author of this message. Valid values are `system`, `user`, `assistant` and `tool`.
-         */
+        * The role of the author of this message. Valid values are `system`, `user`, `assistant` and `tool`.
+        */
         @DataMember(Name="role")
         @SerializedName("role")
         public String role = null;
 
         /**
-         * An optional name for the participant. Provides the model information to differentiate between participants of the same role.
-         */
+        * An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+        */
         @DataMember(Name="name")
         @SerializedName("name")
         public String name = null;
 
         /**
-         * The tool calls generated by the model, such as function calls.
-         */
+        * The tool calls generated by the model, such as function calls.
+        */
         @DataMember(Name="tool_calls")
         @SerializedName("tool_calls")
         public ArrayList<ToolCall> toolCalls = null;
 
         /**
-         * Tool call that this message is responding to.
-         */
+        * Tool call that this message is responding to.
+        */
         @DataMember(Name="tool_call_id")
         @SerializedName("tool_call_id")
         public String toolCallId = null;
-
+        
         public String getContent() { return content; }
         public OpenAiMessage setContent(String value) { this.content = value; return this; }
         public String getRole() { return role; }
@@ -4292,12 +4292,12 @@ public class dtos
     public static class OpenAiResponseFormat
     {
         /**
-         * An object specifying the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
-         */
+        * An object specifying the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
+        */
         @DataMember(Name="response_format")
         @SerializedName("response_format")
         public ResponseFormat type = null;
-
+        
         public ResponseFormat getType() { return type; }
         public OpenAiResponseFormat setType(ResponseFormat value) { this.type = value; return this; }
     }
@@ -4306,141 +4306,141 @@ public class dtos
     public static class OpenAiTools
     {
         /**
-         * The type of the tool. Currently, only function is supported.
-         */
+        * The type of the tool. Currently, only function is supported.
+        */
         @DataMember(Name="type")
         @SerializedName("type")
         public OpenAiToolType type = null;
-
+        
         public OpenAiToolType getType() { return type; }
         public OpenAiTools setType(OpenAiToolType value) { this.type = value; return this; }
     }
 
     /**
-     * Given a list of messages comprising a conversation, the model will return a response.
-     */
+    * Given a list of messages comprising a conversation, the model will return a response.
+    */
     @DataContract
     public static class OpenAiChat
     {
         /**
-         * A list of messages comprising the conversation so far.
-         */
+        * A list of messages comprising the conversation so far.
+        */
         @DataMember(Name="messages")
         @SerializedName("messages")
         public ArrayList<OpenAiMessage> messages = null;
 
         /**
-         * ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API
-         */
+        * ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API
+        */
         @DataMember(Name="model")
         @SerializedName("model")
         public String model = null;
 
         /**
-         * Number between `-2.0` and `2.0`. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
-         */
+        * Number between `-2.0` and `2.0`. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+        */
         @DataMember(Name="frequency_penalty")
         @SerializedName("frequency_penalty")
         public Double frequencyPenalty = null;
 
         /**
-         * Modify the likelihood of specified tokens appearing in the completion.
-         */
+        * Modify the likelihood of specified tokens appearing in the completion.
+        */
         @DataMember(Name="logit_bias")
         @SerializedName("logit_bias")
         public HashMap<Integer,Integer> logitBias = null;
 
         /**
-         * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the content of message.
-         */
+        * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the content of message.
+        */
         @DataMember(Name="logprobs")
         @SerializedName("logprobs")
         public Boolean logProbs = null;
 
         /**
-         * An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. logprobs must be set to true if this parameter is used.
-         */
+        * An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability. logprobs must be set to true if this parameter is used.
+        */
         @DataMember(Name="top_logprobs")
         @SerializedName("top_logprobs")
         public Integer topLogProbs = null;
 
         /**
-         * The maximum number of tokens that can be generated in the chat completion.
-         */
+        * The maximum number of tokens that can be generated in the chat completion.
+        */
         @DataMember(Name="max_tokens")
         @SerializedName("max_tokens")
         public Integer maxTokens = null;
 
         /**
-         * How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
-         */
+        * How many chat completion choices to generate for each input message. Note that you will be charged based on the number of generated tokens across all of the choices. Keep `n` as `1` to minimize costs.
+        */
         @DataMember(Name="n")
         @SerializedName("n")
         public Integer n = null;
 
         /**
-         * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-         */
+        * Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+        */
         @DataMember(Name="presence_penalty")
         @SerializedName("presence_penalty")
         public Double presencePenalty = null;
 
         /**
-         * An object specifying the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`. Setting Type to ResponseFormat.JsonObject enables JSON mode, which guarantees the message the model generates is valid JSON.
-         */
+        * An object specifying the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models newer than `gpt-3.5-turbo-1106`. Setting Type to ResponseFormat.JsonObject enables JSON mode, which guarantees the message the model generates is valid JSON.
+        */
         @DataMember(Name="response_format")
         @SerializedName("response_format")
         public OpenAiResponseFormat responseFormat = null;
 
         /**
-         * This feature is in Beta. If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend.
-         */
+        * This feature is in Beta. If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to the system_fingerprint response parameter to monitor changes in the backend.
+        */
         @DataMember(Name="seed")
         @SerializedName("seed")
         public Integer seed = null;
 
         /**
-         * Up to 4 sequences where the API will stop generating further tokens.
-         */
+        * Up to 4 sequences where the API will stop generating further tokens.
+        */
         @DataMember(Name="stop")
         @SerializedName("stop")
         public ArrayList<String> stop = null;
 
         /**
-         * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a `data: [DONE]` message.
-         */
+        * If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a `data: [DONE]` message.
+        */
         @DataMember(Name="stream")
         @SerializedName("stream")
         public Boolean stream = null;
 
         /**
-         * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-         */
+        * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+        */
         @DataMember(Name="temperature")
         @SerializedName("temperature")
         public Double temperature = null;
 
         /**
-         * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-         */
+        * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+        */
         @DataMember(Name="top_p")
         @SerializedName("top_p")
         public Double topP = null;
 
         /**
-         * A list of tools the model may call. Currently, only functions are supported as a tool. Use this to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are supported.
-         */
+        * A list of tools the model may call. Currently, only functions are supported as a tool. Use this to provide a list of functions the model may generate JSON inputs for. A max of 128 functions are supported.
+        */
         @DataMember(Name="tools")
         @SerializedName("tools")
         public ArrayList<OpenAiTools> tools = null;
 
         /**
-         * A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
-         */
+        * A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+        */
         @DataMember(Name="user")
         @SerializedName("user")
         public String user = null;
-
+        
         public ArrayList<OpenAiMessage> getMessages() { return messages; }
         public OpenAiChat setMessages(ArrayList<OpenAiMessage> value) { this.messages = value; return this; }
         public String getModel() { return model; }
@@ -4491,7 +4491,7 @@ public class dtos
     {
         public String model = null;
         public String apiModel = null;
-
+        
         public String getModel() { return model; }
         public AiProviderModel setModel(String value) { this.model = value; return this; }
         public String getApiModel() { return apiModel; }
@@ -4500,7 +4500,7 @@ public class dtos
 
     public static class QueryData<T> extends QueryBase
     {
-
+        
     }
 
     public static class Prompt
@@ -4508,7 +4508,7 @@ public class dtos
         public String id = null;
         public String name = null;
         public String value = null;
-
+        
         public String getId() { return id; }
         public Prompt setId(String value) { this.id = value; return this; }
         public String getName() { return name; }
@@ -4529,7 +4529,7 @@ public class dtos
     {
         public String label = null;
         public Integer total = null;
-
+        
         public String getLabel() { return label; }
         public PageStats setLabel(String value) { this.label = value; return this; }
         public Integer getTotal() { return total; }
@@ -4537,28 +4537,28 @@ public class dtos
     }
 
     /**
-     * Output object for generated artifacts
-     */
+    * Output object for generated artifacts
+    */
     public static class ArtifactOutput
     {
         /**
-         * URL to access the generated image
-         */
+        * URL to access the generated image
+        */
         @ApiMember(Description="URL to access the generated image")
         public String url = null;
 
         /**
-         * Filename of the generated image
-         */
+        * Filename of the generated image
+        */
         @ApiMember(Description="Filename of the generated image")
         public String fileName = null;
 
         /**
-         * Provider used for image generation
-         */
+        * Provider used for image generation
+        */
         @ApiMember(Description="Provider used for image generation")
         public String provider = null;
-
+        
         public String getUrl() { return url; }
         public ArtifactOutput setUrl(String value) { this.url = value; return this; }
         public String getFileName() { return fileName; }
@@ -4568,16 +4568,16 @@ public class dtos
     }
 
     /**
-     * Output object for generated text
-     */
+    * Output object for generated text
+    */
     public static class TextOutput
     {
         /**
-         * The generated text
-         */
+        * The generated text
+        */
         @ApiMember(Description="The generated text")
         public String text = null;
-
+        
         public String getText() { return text; }
         public TextOutput setText(String value) { this.text = value; return this; }
     }
@@ -4600,7 +4600,7 @@ public class dtos
         public Integer totalCompletionTokens = null;
         public Double totalMinutes = null;
         public Double tokensPerSecond = null;
-
+        
         public String getName() { return name; }
         public SummaryStats setName(String value) { this.name = value; return this; }
         public Integer getTotal() { return total; }
@@ -4620,7 +4620,7 @@ public class dtos
         public ArrayList<AiProviderTextOutput> textOutputs = null;
         public ArrayList<AiProviderFileOutput> outputs = null;
         public String error = null;
-
+        
         public ArrayList<AiProviderTextOutput> getTextOutputs() { return textOutputs; }
         public GenerationResult setTextOutputs(ArrayList<AiProviderTextOutput> value) { this.textOutputs = value; return this; }
         public ArrayList<AiProviderFileOutput> getOutputs() { return outputs; }
@@ -4633,7 +4633,7 @@ public class dtos
     {
         public String fileName = null;
         public String url = null;
-
+        
         public String getFileName() { return fileName; }
         public AiProviderFileOutput setFileName(String value) { this.fileName = value; return this; }
         public String getUrl() { return url; }
@@ -4643,7 +4643,7 @@ public class dtos
     public static class AiProviderTextOutput
     {
         public String text = null;
-
+        
         public String getText() { return text; }
         public AiProviderTextOutput setText(String value) { this.text = value; return this; }
     }
@@ -4674,7 +4674,7 @@ public class dtos
         @DataMember(Name="details")
         @SerializedName("details")
         public OllamaModelDetails details = null;
-
+        
         public String getName() { return name; }
         public OllamaModel setName(String value) { this.name = value; return this; }
         public String getModel() { return model; }
@@ -4699,7 +4699,7 @@ public class dtos
         public Long failed = null;
         public Long runningJob = null;
         public TimeSpan runningTime = null;
-
+        
         public String getName() { return name; }
         public WorkerStats setName(String value) { this.name = value; return this; }
         public Long getQueued() { return queued; }
@@ -4721,26 +4721,26 @@ public class dtos
     public static class Choice
     {
         /**
-         * The reason the model stopped generating tokens. This will be stop if the model hit a natural stop point or a provided stop sequence, length if the maximum number of tokens specified in the request was reached, content_filter if content was omitted due to a flag from our content filters, tool_calls if the model called a tool
-         */
+        * The reason the model stopped generating tokens. This will be stop if the model hit a natural stop point or a provided stop sequence, length if the maximum number of tokens specified in the request was reached, content_filter if content was omitted due to a flag from our content filters, tool_calls if the model called a tool
+        */
         @DataMember(Name="finish_reason")
         @SerializedName("finish_reason")
         public String finishReason = null;
 
         /**
-         * The index of the choice in the list of choices.
-         */
+        * The index of the choice in the list of choices.
+        */
         @DataMember(Name="index")
         @SerializedName("index")
         public Integer index = null;
 
         /**
-         * A chat completion message generated by the model.
-         */
+        * A chat completion message generated by the model.
+        */
         @DataMember(Name="message")
         @SerializedName("message")
         public ChoiceMessage message = null;
-
+        
         public String getFinishReason() { return finishReason; }
         public Choice setFinishReason(String value) { this.finishReason = value; return this; }
         public Integer getIndex() { return index; }
@@ -4750,32 +4750,32 @@ public class dtos
     }
 
     /**
-     * Usage statistics for the completion request.
-     */
+    * Usage statistics for the completion request.
+    */
     @DataContract
     public static class OpenAiUsage
     {
         /**
-         * Number of tokens in the generated completion.
-         */
+        * Number of tokens in the generated completion.
+        */
         @DataMember(Name="completion_tokens")
         @SerializedName("completion_tokens")
         public Integer completionTokens = null;
 
         /**
-         * Number of tokens in the prompt.
-         */
+        * Number of tokens in the prompt.
+        */
         @DataMember(Name="prompt_tokens")
         @SerializedName("prompt_tokens")
         public Integer promptTokens = null;
 
         /**
-         * Total number of tokens used in the request (prompt + completion).
-         */
+        * Total number of tokens used in the request (prompt + completion).
+        */
         @DataMember(Name="total_tokens")
         @SerializedName("total_tokens")
         public Integer totalTokens = null;
-
+        
         public Integer getCompletionTokens() { return completionTokens; }
         public OpenAiUsage setCompletionTokens(Integer value) { this.completionTokens = value; return this; }
         public Integer getPromptTokens() { return promptTokens; }
@@ -4822,7 +4822,7 @@ public class dtos
         public ResponseStatus error = null;
         public HashMap<String,String> args = null;
         public HashMap<String,String> meta = null;
-
+        
         public Long getId() { return id; }
         public BackgroundJobBase setId(Long value) { this.id = value; return this; }
         public Long getParentId() { return parentId; }
@@ -4920,7 +4920,7 @@ public class dtos
 
         @DataMember(Order=7)
         public HashMap<String,String> meta = null;
-
+        
         public Integer getSkip() { return skip; }
         public QueryBase setSkip(Integer value) { this.skip = value; return this; }
         public Integer getTake() { return take; }
@@ -5046,32 +5046,32 @@ public class dtos
     }
 
     /**
-     * The tool calls generated by the model, such as function calls.
-     */
+    * The tool calls generated by the model, such as function calls.
+    */
     @DataContract
     public static class ToolCall
     {
         /**
-         * The ID of the tool call.
-         */
+        * The ID of the tool call.
+        */
         @DataMember(Name="id")
         @SerializedName("id")
         public String id = null;
 
         /**
-         * The type of the tool. Currently, only `function` is supported.
-         */
+        * The type of the tool. Currently, only `function` is supported.
+        */
         @DataMember(Name="type")
         @SerializedName("type")
         public String type = null;
 
         /**
-         * The function that the model called.
-         */
+        * The function that the model called.
+        */
         @DataMember(Name="function")
         @SerializedName("function")
         public String function = null;
-
+        
         public String getId() { return id; }
         public ToolCall setId(String value) { this.id = value; return this; }
         public String getType() { return type; }
@@ -5117,7 +5117,7 @@ public class dtos
         @DataMember(Name="quantization_level")
         @SerializedName("quantization_level")
         public String quantizationLevel = null;
-
+        
         public String getParentModel() { return parentModel; }
         public OllamaModelDetails setParentModel(String value) { this.parentModel = value; return this; }
         public String getFormat() { return format; }
@@ -5136,26 +5136,26 @@ public class dtos
     public static class ChoiceMessage
     {
         /**
-         * The contents of the message.
-         */
+        * The contents of the message.
+        */
         @DataMember(Name="content")
         @SerializedName("content")
         public String content = null;
 
         /**
-         * The tool calls generated by the model, such as function calls.
-         */
+        * The tool calls generated by the model, such as function calls.
+        */
         @DataMember(Name="tool_calls")
         @SerializedName("tool_calls")
         public ArrayList<ToolCall> toolCalls = null;
 
         /**
-         * The role of the author of this message.
-         */
+        * The role of the author of this message.
+        */
         @DataMember(Name="role")
         @SerializedName("role")
         public String role = null;
-
+        
         public String getContent() { return content; }
         public ChoiceMessage setContent(String value) { this.content = value; return this; }
         public ArrayList<ToolCall> getToolCalls() { return toolCalls; }
