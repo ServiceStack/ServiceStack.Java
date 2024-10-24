@@ -2,13 +2,15 @@
 
 package net.servicestack.client;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.GsonBuilder;
 import junit.framework.TestCase;
-import net.servicestack.client.dto.*;
+import net.servicestack.client.tests.TestDtos;
 
 public class GsonTests extends TestCase {
 
@@ -117,9 +119,11 @@ public class GsonTests extends TestCase {
     public void test_Can_deserialize_Hello() {
         String json = "{\"Result\":\"World\"}\n";
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setFieldNamingStrategy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
 
-        HelloResponse response = gson.fromJson(json, HelloResponse.class);
+        TestDtos.HelloResponse response = gson.fromJson(json, TestDtos.HelloResponse.class);
 
         assertEquals("World", response.getResult());
     }
