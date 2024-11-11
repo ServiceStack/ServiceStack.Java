@@ -166,7 +166,7 @@ public class JsonServiceClientTests extends TestCase {
             );
 
             assertNotNull("Response should not be null", response);
-            assertEquals("Id should match", Optional.of(1), response.getId());
+            assertEquals("Id should match", 1, (int)response.getId());
             assertEquals("RefId should match", "zid", response.getRefId());
             assertEquals("Should have correct number of files", 2, response.getFiles().size());
 
@@ -174,14 +174,14 @@ public class JsonServiceClientTests extends TestCase {
             TestDtos.UploadInfo file1 = response.getFiles().get(0);
             assertEquals("First file name should match", "audio", file1.getName());
             assertEquals("First filename should match", "test.txt", file1.getFileName());
-            assertEquals("First file content length should match", Optional.of("Hello World".length()), file1.getContentLength());
+            assertEquals("First file content length should match", "Hello World".length(), (long)file1.getContentLength());
             assertEquals("First file content type should match", "text/plain", file1.getContentType());
 
             // Verify second file
             TestDtos.UploadInfo file2 = response.getFiles().get(1);
             assertEquals("Second file name should match", "content", file2.getName());
             assertEquals("Second filename should match", "test.md", file2.getFileName());
-            assertEquals("Second file content length should match", Optional.of("## Heading".length()), file2.getContentLength());
+            assertEquals("Second file content length should match", "## Heading".length(), (long)file2.getContentLength());
             assertEquals("Second file content type should match", "text/markdown", file2.getContentType());
 
         } catch (Exception e) {
