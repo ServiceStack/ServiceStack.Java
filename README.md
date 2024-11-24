@@ -5,6 +5,32 @@ for updates, or [StackOverflow](http://stackoverflow.com/questions/ask) or the [
 
 This repository contains the source for ServiceStack plugins for the leading Android Studio, IntelliJ and Eclipse Java IDE's providing Java developers a highly productive development experience for consuming Typed ServiceStack Services by leveraging [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) directly within their IDE! 
 
+### v1.1.4 Changes
+
+Added new ServiceClient APIs:
+
+```java
+<TResponse> TResponse postFileWithRequest(IReturn<TResponse> request, FileUpload file);
+<TResponse> TResponse postFileWithRequest(Object request, FileUpload file, Object responseType);
+<TResponse> TResponse postFileWithRequest(String path, Object request, FileUpload file, Object responseType);
+
+<TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] files);
+<TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Object responseType);
+<TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Object responseType);
+```
+
+Added new AsyncServiceClient APIs:
+
+```java
+<T> void postFileWithRequestAsync(IReturn<T> request, FileUpload file, final AsyncResult<T> asyncResult);
+<T> void postFileWithRequestAsync(Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult);
+<T> void postFileWithRequestAsync(String path, Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult);
+
+<T> void postFilesWithRequestAsync(IReturn<T> request, FileUpload[] files, final AsyncResult<T> asyncResult);
+<T> void postFilesWithRequestAsync(Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult);
+<T> void postFilesWithRequestAsync(String path, Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult);
+```
+
 ### v1.1.0 Changes
 
 Switched to use `/api` pre-defined route by default, revert to legacy `/json/reply` pre-defined route with:
