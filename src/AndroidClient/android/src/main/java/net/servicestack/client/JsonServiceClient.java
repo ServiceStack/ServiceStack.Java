@@ -8,12 +8,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.net.CookieHandler;
@@ -682,5 +677,76 @@ public class JsonServiceClient implements ServiceClient {
     public void clearCookies() {
         CookieManager cookieManager = (CookieManager) CookieHandler.getDefault();
         cookieManager.getCookieStore().removeAll();
+    }
+
+    // Add these methods to JsonServiceClient class:
+
+    public <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] filesresponseType) {
+        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
+        return postFilesWithRequest(requestUrl, request, files, request.getResponseType());
+    }
+
+    public <TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Class<TResponse> responseType) {
+        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
+        return postFilesWithRequest(requestUrl, request, files, responseType);
+    }
+
+    private static final String BOUNDARY = "---" + UUID.randomUUID().toString() + "---";
+
+    public <TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Class<TResponse> responseType) {
+        try {
+            // Prepare multipart data
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            DataOutputStream dos = new DataOutputStream(baos);
+
+            // Add request DTO fields
+            for (Field field : Utils.getSerializableFields(request.getClass())) {
+                Object value = field.get(request);
+                if (value != null) {
+                    writeMultipartField(dos, field.getName(), Utils.stripQuotes(getGson().toJson(value)));
+                }
+            }
+
+            // Add files
+            for (FileUpload file : files) {
+                writeMultipartFile(dos, file);
+            }
+
+            // End multipart
+            dos.writeBytes("--" + BOUNDARY + "--\r\n");
+            dos.flush();
+            dos.close();
+
+            byte[] requestBody = baos.toByteArray();
+            String contentType = "multipart/form-data; boundary=" + BOUNDARY;
+
+            return send(resolveUrl(path), HttpMethods.Post, requestBody, contentType, responseType);
+
+        } catch (IOException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void writeMultipartField(DataOutputStream dos, String fieldName, String value) throws IOException {
+        dos.writeBytes("--" + BOUNDARY + "\r\n");
+        dos.writeBytes("Content-Disposition: form-data; name=\"" + fieldName + "\"\r\n");
+        dos.writeBytes("Content-Type: text/plain; charset=" + UTF8.name() + "\r\n");
+        dos.writeBytes("\r\n");
+        dos.writeBytes(value + "\r\n");
+    }
+
+    private void writeMultipartFile(DataOutputStream dos, FileUpload file) throws IOException {
+        dos.writeBytes("--" + BOUNDARY + "\r\n");
+        dos.writeBytes("Content-Disposition: form-data; name=\"" + file.getFieldName() +
+                "\"; filename=\"" + file.getFileName() + "\"\r\n");
+        dos.writeBytes("Content-Type: " + file.getContentType() + "\r\n");
+        dos.writeBytes("\r\n");
+        dos.write(file.getFileBytes());
+        dos.writeBytes("\r\n");
+    }
+
+    // Convenience method for single file upload
+    public <TResponse> TResponse postFileWithRequest(String path, Object request, FileUpload file, Class<TResponse> responseType) {
+        return postFilesWithRequest(path, request, new FileUpload[]{file}, responseType);
     }
 }
