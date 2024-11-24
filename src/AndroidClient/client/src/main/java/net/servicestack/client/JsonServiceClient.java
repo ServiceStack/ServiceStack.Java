@@ -681,6 +681,16 @@ public class JsonServiceClient implements ServiceClient {
 
     // Add these methods to JsonServiceClient class:
 
+    public <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] filesresponseType) {
+        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
+        return postFilesWithRequest(requestUrl, request, files, request.getResponseType());
+    }
+
+    public <TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Class<TResponse> responseType) {
+        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
+        return postFilesWithRequest(requestUrl, request, files, responseType);
+    }
+
     private static final String BOUNDARY = "---" + UUID.randomUUID().toString() + "---";
 
     public <TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Class<TResponse> responseType) {
