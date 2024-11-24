@@ -60,4 +60,12 @@ public interface ServiceClient {
     String getCookieValue(String name);
     String getTokenCookie();
     String getRefreshTokenCookie();
+
+    <TResponse> TResponse postFileWithRequest(IReturn<TResponse> request, FileUpload file);
+    <TResponse> TResponse postFileWithRequest(Object request, FileUpload file, Object responseType);
+    <TResponse> TResponse postFileWithRequest(String path, Object request, FileUpload file, Object responseType);
+
+    <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] files);
+    <TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Object responseType);
+    <TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Object responseType);
 }

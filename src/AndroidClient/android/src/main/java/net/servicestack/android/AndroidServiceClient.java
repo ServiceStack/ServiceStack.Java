@@ -17,6 +17,7 @@ import net.servicestack.client.IReturnVoid;
 import net.servicestack.client.JsonServiceClient;
 import net.servicestack.client.Utils;
 import net.servicestack.cookies.SerializableCookieStore;
+import net.servicestack.client.FileUpload;
 
 import java.lang.reflect.Type;
 import java.net.CookieHandler;
@@ -907,5 +908,49 @@ public class AndroidServiceClient extends JsonServiceClient implements AsyncServ
     @Override
     public void deleteAsync(String path, AsyncSuccess<byte[]> success) {
         deleteAsync(path, createAsyncResult(success, null));
+    }
+
+    @Override
+    public <T> void postFileWithRequestAsync(IReturn<T> request, FileUpload file, final AsyncResult<T> asyncResult) {
+        this.<T>postFilesWithRequestAsync(this.apiUrl(request), request, new FileUpload[]{file}, request.getResponseType(), asyncResult);
+    }
+    @Override
+    public <T> void postFileWithRequestAsync(Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult) {
+        this.<T>postFilesWithRequestAsync(this.apiUrl(request), request, new FileUpload[]{file}, responseType, asyncResult);
+    }
+    @Override
+    public <T> void postFileWithRequestAsync(String path, Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult) {
+        this.<T>postFilesWithRequestAsync(path, request, new FileUpload[]{file}, responseType, asyncResult);
+    }
+
+    @Override
+    public <T> void postFilesWithRequestAsync(IReturn<T> request, FileUpload[] files, final AsyncResult<T> asyncResult) {
+        this.<T>postFilesWithRequestAsync(this.apiUrl(request), request, files, request.getResponseType(), asyncResult);
+    }
+    @Override
+    public <T> void postFilesWithRequestAsync(Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult) {
+        this.<T>postFilesWithRequestAsync(this.apiUrl(request), request, files, responseType, asyncResult);
+    }
+
+    @Override
+    public <T> void postFilesWithRequestAsync(String path, Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult) {
+        final AndroidServiceClient client = this;
+        execTask(new AsyncTask<String, Void, T>() {
+            @Override
+            protected T doInBackground(String... params) {
+                try {
+                    return client.postFilesWithRequest(params[0], request, files, responseType);
+                } catch (Exception e) {
+                    asyncResult.setError(e);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(T response) {
+                asyncResult.completeResult(response);
+            }
+
+        }, path);
     }
 }

@@ -78,4 +78,12 @@ public interface AsyncServiceClient {
     <T> void deleteAsync(String path, final Type responseType, final AsyncSuccess<T> success);
     void deleteAsync(String path, final AsyncResult<byte[]> asyncResult);
     void deleteAsync(String path, final AsyncSuccess<byte[]> success);
+
+    <T> void postFileWithRequestAsync(IReturn<T> request, FileUpload file, final AsyncResult<T> asyncResult);
+    <T> void postFileWithRequestAsync(Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult);
+    <T> void postFileWithRequestAsync(String path, Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult);
+
+    <T> void postFilesWithRequestAsync(IReturn<T> request, FileUpload[] files, final AsyncResult<T> asyncResult);
+    <T> void postFilesWithRequestAsync(Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult);
+    <T> void postFilesWithRequestAsync(String path, Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult);
 }

@@ -131,12 +131,16 @@ public class JsonServiceClient implements ServiceClient {
 
     public void setGson(Gson gson) { this.gson = gson; }
 
+    public String apiUrl(Object requestDto){
+        return this.replyUrl + requestDto.getClass().getSimpleName();
+    }
+
     public String createUrl(Object requestDto) {
         return createUrl(requestDto, null);
     }
 
     public String createUrl(Object requestDto, Map<String,String> query) {
-        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
+        String requestUrl = this.apiUrl(requestDto);
 
         StringBuilder sb = new StringBuilder();
         Field lastField = null;
@@ -679,21 +683,33 @@ public class JsonServiceClient implements ServiceClient {
         cookieManager.getCookieStore().removeAll();
     }
 
-    // Add these methods to JsonServiceClient class:
-
-    public <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] filesresponseType) {
-        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
-        return postFilesWithRequest(requestUrl, request, files, request.getResponseType());
+    // Convenience method for single file upload
+    @Override
+    public <TResponse> TResponse postFileWithRequest(IReturn<TResponse> request, FileUpload file) {
+        return postFilesWithRequest(this.apiUrl(request), request, new FileUpload[]{file}, request.getResponseType());
+    }
+    @Override
+    public <TResponse> TResponse postFileWithRequest(Object request, FileUpload file, Object responseType) {
+        return postFilesWithRequest(this.apiUrl(request), request, new FileUpload[]{file}, responseType);
+    }
+    @Override
+    public <TResponse> TResponse postFileWithRequest(String path, Object request, FileUpload file, Object responseType) {
+        return postFilesWithRequest(path, request, new FileUpload[]{file}, responseType);
     }
 
-    public <TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Class<TResponse> responseType) {
-        String requestUrl = this.replyUrl + requestDto.getClass().getSimpleName();
-        return postFilesWithRequest(requestUrl, request, files, responseType);
+    @Override
+    public <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] files) {
+        return this.postFilesWithRequest(this.apiUrl(request), request, files, request.getResponseType());
+    }
+    @Override
+    public <TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Object responseType) {
+        return this.postFilesWithRequest(this.apiUrl(request), request, files, responseType);
     }
 
     private static final String BOUNDARY = "---" + UUID.randomUUID().toString() + "---";
 
-    public <TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Class<TResponse> responseType) {
+    @Override
+    public <TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Object responseType) {
         try {
             // Prepare multipart data
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -743,10 +759,5 @@ public class JsonServiceClient implements ServiceClient {
         dos.writeBytes("\r\n");
         dos.write(file.getFileBytes());
         dos.writeBytes("\r\n");
-    }
-
-    // Convenience method for single file upload
-    public <TResponse> TResponse postFileWithRequest(String path, Object request, FileUpload file, Class<TResponse> responseType) {
-        return postFilesWithRequest(path, request, new FileUpload[]{file}, responseType);
     }
 }
