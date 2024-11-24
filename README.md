@@ -10,13 +10,13 @@ This repository contains the source for ServiceStack plugins for the leading And
 Added new ServiceClient APIs:
 
 ```java
-<T> TResponse postFileWithRequest(IReturn<T> request, FileUpload file);
-<T> TResponse postFileWithRequest(Object request, FileUpload file, Object responseType);
-<T> TResponse postFileWithRequest(String path, Object request, FileUpload file, Object responseType);
+<T> T postFileWithRequest(IReturn<T> request, FileUpload file);
+<T> T postFileWithRequest(Object request, FileUpload file, Object responseType);
+<T> T postFileWithRequest(String path, Object request, FileUpload file, Object responseType);
 
-<T> TResponse postFilesWithRequest(IReturn<T> request, FileUpload[] files);
-<T> TResponse postFilesWithRequest(Object request, FileUpload[] files, Object responseType);
-<T> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Object responseType);
+<T> T postFilesWithRequest(IReturn<T> request, FileUpload[] files);
+<T> T postFilesWithRequest(Object request, FileUpload[] files, Object responseType);
+<T> T postFilesWithRequest(String path, Object request, FileUpload[] files, Object responseType);
 ```
 
 Added new AsyncServiceClient APIs:
