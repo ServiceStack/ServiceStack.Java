@@ -3,10 +3,8 @@ package net.servicestack.client;
 import junit.framework.TestCase;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.List;
 
 import net.servicestack.openai.dtos.*;  // You'll need to generate these DTOs
 
@@ -54,7 +52,7 @@ public class AiServerTests extends TestCase {
         byte[] fileBytes = Files.readAllBytes(audioFile.toPath());
 
         // Create file upload
-        FileUpload upload = new FileUpload(
+        UploadFile upload = new UploadFile(
                 "audio",              // field name
                 "test_audio.wav",     // filename
                 "audio/wav",          // content type
@@ -65,7 +63,7 @@ public class AiServerTests extends TestCase {
         GenerationResponse response = client.postFilesWithRequest(
                 "/api/SpeechToText",
                 request,
-                new FileUpload[]{upload},
+                new UploadFile[]{upload},
                 GenerationResponse.class
         );
 

@@ -5,6 +5,10 @@ for updates, or [StackOverflow](http://stackoverflow.com/questions/ask) or the [
 
 This repository contains the source for ServiceStack plugins for the leading Android Studio, IntelliJ and Eclipse Java IDE's providing Java developers a highly productive development experience for consuming Typed ServiceStack Services by leveraging [Add ServiceStack Reference](https://github.com/ServiceStack/ServiceStack/wiki/Add-ServiceStack-Reference) directly within their IDE! 
 
+### v1.1.5 Changes
+
+- Rename FileUpload to `UploadFile` to match other ServiceStack libraries
+
 ### v1.1.4 Changes
 
 Added new ServiceClient APIs:

@@ -21,7 +21,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -685,31 +684,31 @@ public class JsonServiceClient implements ServiceClient {
 
     // Convenience method for single file upload
     @Override
-    public <TResponse> TResponse postFileWithRequest(IReturn<TResponse> request, FileUpload file) {
-        return postFilesWithRequest(this.apiUrl(request), request, new FileUpload[]{file}, request.getResponseType());
+    public <TResponse> TResponse postFileWithRequest(IReturn<TResponse> request, UploadFile file) {
+        return postFilesWithRequest(this.apiUrl(request), request, new UploadFile[]{file}, request.getResponseType());
     }
     @Override
-    public <TResponse> TResponse postFileWithRequest(Object request, FileUpload file, Object responseType) {
-        return postFilesWithRequest(this.apiUrl(request), request, new FileUpload[]{file}, responseType);
+    public <TResponse> TResponse postFileWithRequest(Object request, UploadFile file, Object responseType) {
+        return postFilesWithRequest(this.apiUrl(request), request, new UploadFile[]{file}, responseType);
     }
     @Override
-    public <TResponse> TResponse postFileWithRequest(String path, Object request, FileUpload file, Object responseType) {
-        return postFilesWithRequest(path, request, new FileUpload[]{file}, responseType);
+    public <TResponse> TResponse postFileWithRequest(String path, Object request, UploadFile file, Object responseType) {
+        return postFilesWithRequest(path, request, new UploadFile[]{file}, responseType);
     }
 
     @Override
-    public <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, FileUpload[] files) {
+    public <TResponse> TResponse postFilesWithRequest(IReturn<TResponse> request, UploadFile[] files) {
         return this.postFilesWithRequest(this.apiUrl(request), request, files, request.getResponseType());
     }
     @Override
-    public <TResponse> TResponse postFilesWithRequest(Object request, FileUpload[] files, Object responseType) {
+    public <TResponse> TResponse postFilesWithRequest(Object request, UploadFile[] files, Object responseType) {
         return this.postFilesWithRequest(this.apiUrl(request), request, files, responseType);
     }
 
     private static final String BOUNDARY = "---" + UUID.randomUUID().toString() + "---";
 
     @Override
-    public <TResponse> TResponse postFilesWithRequest(String path, Object request, FileUpload[] files, Object responseType) {
+    public <TResponse> TResponse postFilesWithRequest(String path, Object request, UploadFile[] files, Object responseType) {
         try {
             // Prepare multipart data
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -724,7 +723,7 @@ public class JsonServiceClient implements ServiceClient {
             }
 
             // Add files
-            for (FileUpload file : files) {
+            for (UploadFile file : files) {
                 writeMultipartFile(dos, file);
             }
 
@@ -751,13 +750,13 @@ public class JsonServiceClient implements ServiceClient {
         dos.writeBytes(value + "\r\n");
     }
 
-    private void writeMultipartFile(DataOutputStream dos, FileUpload file) throws IOException {
+    private void writeMultipartFile(DataOutputStream dos, UploadFile file) throws IOException {
         dos.writeBytes("--" + BOUNDARY + "\r\n");
         dos.writeBytes("Content-Disposition: form-data; name=\"" + file.getFieldName() +
                 "\"; filename=\"" + file.getFileName() + "\"\r\n");
         dos.writeBytes("Content-Type: " + file.getContentType() + "\r\n");
         dos.writeBytes("\r\n");
-        dos.write(file.getFileBytes());
+        dos.write(file.getContents());
         dos.writeBytes("\r\n");
     }
 }

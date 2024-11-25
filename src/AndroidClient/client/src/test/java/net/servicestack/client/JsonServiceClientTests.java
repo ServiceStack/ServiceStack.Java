@@ -3,10 +3,7 @@
 package net.servicestack.client;
 
 import junit.framework.TestCase;
-import net.servicestack.client.ConnectionFilter;
-import net.servicestack.client.JsonServiceClient;
 
-import net.servicestack.client.WebServiceException;
 import net.servicestack.client.tests.TestDtos;
 import test.dtos.*;
 
@@ -15,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public class JsonServiceClientTests extends TestCase {
 
@@ -105,8 +101,8 @@ public class JsonServiceClientTests extends TestCase {
             request.setRefId("zid");
 
             byte[] fileBytes = "Hello World".getBytes(StandardCharsets.UTF_8);
-            FileUpload[] files = new FileUpload[]{
-                    new FileUpload(
+            UploadFile[] files = new UploadFile[]{
+                    new UploadFile(
                             "audio",         // fieldName
                             "test.txt",      // fileName
                             "text/plain",    // contentType
@@ -143,14 +139,14 @@ public class JsonServiceClientTests extends TestCase {
             byte[] textFileBytes = "Hello World".getBytes(StandardCharsets.UTF_8);
             byte[] markdownFileBytes = "## Heading".getBytes(StandardCharsets.UTF_8);
 
-            FileUpload[] files = new FileUpload[]{
-                    new FileUpload(
+            UploadFile[] files = new UploadFile[]{
+                    new UploadFile(
                             "audio",         // fieldName
                             "test.txt",      // fileName
                             "text/plain",    // contentType
                             textFileBytes    // data
                     ),
-                    new FileUpload(
+                    new UploadFile(
                             "content",       // fieldName
                             "test.md",       // fileName
                             "text/markdown", // contentType

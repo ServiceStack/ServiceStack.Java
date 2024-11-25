@@ -4,7 +4,6 @@
 package net.servicestack.client;
 
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.util.Map;
 
 public interface AsyncServiceClient {
@@ -79,11 +78,11 @@ public interface AsyncServiceClient {
     void deleteAsync(String path, final AsyncResult<byte[]> asyncResult);
     void deleteAsync(String path, final AsyncSuccess<byte[]> success);
 
-    <T> void postFileWithRequestAsync(IReturn<T> request, FileUpload file, final AsyncResult<T> asyncResult);
-    <T> void postFileWithRequestAsync(Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult);
-    <T> void postFileWithRequestAsync(String path, Object request, FileUpload file, Object responseType, final AsyncResult<T> asyncResult);
+    <T> void postFileWithRequestAsync(IReturn<T> request, UploadFile file, final AsyncResult<T> asyncResult);
+    <T> void postFileWithRequestAsync(Object request, UploadFile file, Object responseType, final AsyncResult<T> asyncResult);
+    <T> void postFileWithRequestAsync(String path, Object request, UploadFile file, Object responseType, final AsyncResult<T> asyncResult);
 
-    <T> void postFilesWithRequestAsync(IReturn<T> request, FileUpload[] files, final AsyncResult<T> asyncResult);
-    <T> void postFilesWithRequestAsync(Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult);
-    <T> void postFilesWithRequestAsync(String path, Object request, FileUpload[] files, Object responseType, final AsyncResult<T> asyncResult);
+    <T> void postFilesWithRequestAsync(IReturn<T> request, UploadFile[] files, final AsyncResult<T> asyncResult);
+    <T> void postFilesWithRequestAsync(Object request, UploadFile[] files, Object responseType, final AsyncResult<T> asyncResult);
+    <T> void postFilesWithRequestAsync(String path, Object request, UploadFile[] files, Object responseType, final AsyncResult<T> asyncResult);
 }

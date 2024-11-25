@@ -1,20 +1,20 @@
 package net.servicestack.client;
 
-public class FileUpload {
+public class UploadFile {
     private String fieldName;
     private String fileName;
     private String contentType;
-    private byte[] fileBytes;
+    private byte[] contents;
 
-    public FileUpload(String fieldName, String fileName, String contentType, byte[] fileBytes) {
+    public UploadFile(String fieldName, String fileName, String contentType, byte[] contents) {
         this.fieldName = fieldName;
         this.fileName = fileName;
         this.contentType = contentType != null ? contentType : "application/octet-stream";
-        this.fileBytes = fileBytes;
+        this.contents = contents;
     }
 
     public String getFieldName() { return fieldName != null ? fieldName : "upload"; }
     public String getFileName() { return fileName; }
     public String getContentType() { return contentType; }
-    public byte[] getFileBytes() { return fileBytes; }
+    public byte[] getContents() { return contents; }
 }
